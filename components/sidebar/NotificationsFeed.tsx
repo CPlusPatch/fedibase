@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import { AuthContext } from "components/context/AuthContext";
-import Link from "next/link";
-import { useContext, useEffect, useState } from "react";
+import { Entity, WebSocketInterface } from "megalodon";
+import { useContext, useEffect, useRef, useState } from "react";
 import { Bell, EnvelopePaperHeartFill, Globe, Hash, House, PeopleFill } from "react-bootstrap-icons";
 
 const sidebarLinks = [
@@ -23,18 +23,24 @@ const sidebarLinks = [
 ];
 
 export default function NotificationsFeed() {
-	const [notifications, setNotifications] = useState<Entity.Notification[]>([])
+	const [notifications, setNotifications] = useState<Entity.Notification[]>([]);
 	const client = useContext(AuthContext);
 
 	useEffect(() => {
 		client.getNotifications().then((res) => {
 			setNotifications(res.data);
 		});
+
+		/* setInterval(() => {
+			client.getNotifications().then(res => {
+				setNotifications(res.data);
+			});
+		}, 10000); */
 	}, [client]);
 	
 	return (
-		<div className="flex flex-col gap-y-4 w-full h-full font-inter">
-			<h3 className="text-lg">Notifications</h3>
+		<div className="flex flex-col gap-y-6 w-full h-full font-inter">
+			<h3 className="text-lg font-bold">Notifications</h3>
 			<ul className="flex flex-col gap-y-4">
 				{notifications.map(n => (
 					<Notification key={n.id} n={n} />
@@ -45,6 +51,9 @@ export default function NotificationsFeed() {
 }
 
 const Notification = ({ n }: { n: Entity.Notification }) => {
+	const [expand, setExpand] = useState<boolean>(false);
+	const textRef = useRef<HTMLParagraphElement>(null);
+
 	return (
 		<li className="flex">
 			<div className="flex-shrink-0 mr-4">
@@ -56,10 +65,41 @@ const Notification = ({ n }: { n: Entity.Notification }) => {
 			</div>
 			<div>
 				<div className="flex flex-col gap-x-2 md:items-center md:flex-row">
-					<h4 className="font-bold">{n.status.account.username}</h4>
+					<h4 className="text-lg font-bold">{n.status.account.username}</h4>
 					<h6 className="text-gray-500 text-md">{n.status.account.acct}</h6>
 				</div>
-				<p className="mt-1" dangerouslySetInnerHTML={{ __html: n.status.content }}></p>
+				<div className="flex flex-col gap-y-1">
+					<div
+						className="w-full"
+						style={{
+							maskSize: "auto 8em auto auto",
+							maskPosition: "0 0,0 0",
+							maskRepeat: "repeat-x,repeat",
+							maskImage: expand
+								? ""
+								: "linear-gradient(to bottom, white 2em, transparent 8em)",
+							maskComposite: "excluse",
+							overflow: expand ? "" : "hidden",
+							maxHeight: expand ? "" : "8rem",
+						}}>
+						<p
+							ref={textRef}
+							className="mt-1"
+							dangerouslySetInnerHTML={{ __html: n.status.content }}></p>
+					</div>
+					{textRef?.current?.offsetHeight > 128 && (
+						<>
+							<hr />
+							<button
+								className="mx-auto w-full text-blue-800 hover:underline"
+								onClick={() => {
+									setExpand(!expand);
+								}}>
+								{expand === true ? "Less" : "More"}
+							</button>
+						</>
+					)}
+				</div>
 			</div>
 		</li>
 	);

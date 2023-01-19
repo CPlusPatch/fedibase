@@ -1,15 +1,36 @@
 import Button from "components/buttons/Button";
-import { Paperclip, Search } from "react-bootstrap-icons";
+import { AuthContext } from "components/context/AuthContext";
+import { Entity, Response } from "megalodon";
+import { FormEvent, useContext, useState } from "react";
+import { Paperclip, Search, X } from "react-bootstrap-icons";
+import { toast, Toaster } from "react-hot-toast";
 
 export default function LeftSidebar() {
+	const client = useContext(AuthContext);
+
+	const submitForm = (event: FormEvent<HTMLFormElement>) => {
+		event.preventDefault();
+
+		client.postStatus(event.target["comment"].value, {
+			visibility: "unlisted",
+		}).then((res: Response<Entity.Status>) => {
+			if (res.status == 200) {
+				toast("Post sent!", {
+					icon: "👍",
+				});
+			}
+		});
+	}
+
 	return (
 		<div className="flex flex-col gap-y-10 w-full h-full font-inter">
+			<Toaster position="top-left"/>
 			<div className="flex relative w-full">
 				<input className="px-4 py-2 w-full h-12 bg-gray-100 rounded-md border" placeholder="Search here..."/>
 				<Search className="absolute inset-y-0 right-4 w-4 h-full" />
 			</div>
 
-			<form action="#" className="relative bg-white">
+			<form action="#" className="relative bg-white" onSubmit={submitForm}>
 				<div className="overflow-hidden rounded-lg border border-gray-300 shadow-sm duration-200 focus-within:border-orange-500 focus-within:ring-1 focus-within:ring-orange-500">
 					<label htmlFor="comment" className="sr-only">
 						What&apos;s happening?
