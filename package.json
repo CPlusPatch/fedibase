@@ -12,10 +12,9 @@
 	"dependencies": {
 		"@headlessui/react": "^1.6.5",
 		"@heroicons/react": "^2.0.13",
-		"bufferutil": "^4.0.7",
 		"csstype": "^3.1.1",
 		"dompurify": "^2.4.1",
-		"megalodon": "^5.0.6",
+		"megalodon": "5.1.1",
 		"next": "^13.0.4",
 		"nextjs-progressbar": "^0.0.16",
 		"react": "^18.2.0",
@@ -23,7 +22,6 @@
 		"react-dom": "^18.2.0",
 		"react-hot-toast": "^2.4.0",
 		"react-parallax-tilt": "^1.7.71",
-		"sharp": "^0.31.2",
 		"utf-8-validate": "^6.0.0"
 	},
 	"devDependencies": {
@@ -44,5 +42,8 @@
 		"react": "18.2.0",
 		"react-dom": "18.2.0",
 		"axios": "1.2.2"
+	},
+	"browser": {
+		"fs": false
 	}
 }

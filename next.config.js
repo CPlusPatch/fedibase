@@ -7,16 +7,17 @@ const nextConfig = {
 	images: {
 		formats: ["image/avif", "image/webp"],
 	},
-	webpack: (config) => {
-		config.resolve.fallback = {
-			net: false,
-			tls: false,
-			dns: false,
-			fs: false,
-		};
-
+	webpack: (config, { isServer }) => {
+		if (!isServer) {
+			config.resolve.fallback.net = false;
+			config.resolve.fallback.dns = false;
+			config.resolve.fallback.tls = false;
+			config.resolve.fallback.zlib = false;
+			config.resolve.fallback.bufferutil = false;
+			config.resolve.fallback["utf-8-validate"] = false;
+		}
 		return config;
-	}
+	},
 };
 
 const withBundleAnalyzer = require("@next/bundle-analyzer")({
