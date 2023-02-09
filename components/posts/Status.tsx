@@ -1,5 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import { Entity } from "megalodon";
+import Link from "next/link";
 import { useRef, useState } from "react";
 
 export default function Status({ status, type }: { status: Entity.Status, type: "notification" | "post" }) {
@@ -8,7 +9,7 @@ export default function Status({ status, type }: { status: Entity.Status, type: 
 
 	return (
 		<div className="flex flex-row max-w-full">
-			<div className="flex-shrink-0 mr-4">
+			<Link href={`/users/@${status.account.id}`} className="flex-shrink-0 mr-4">
 				<img
 					alt={status.account.acct}
 					src={status.account.avatar}
@@ -16,7 +17,7 @@ export default function Status({ status, type }: { status: Entity.Status, type: 
 						type == "post" ? "w-16" : "w-10"
 					} text-gray-300 h-auto bg-white rounded border border-gray-300`}
 				/>
-			</div>
+			</Link>
 			<div className="flex flex-col min-w-0 grow">
 				<div className="flex flex-col gap-x-2 md:items-center md:flex-row">
 					<h4 className="flex-shrink text-lg font-bold">{status.account.username}</h4>
