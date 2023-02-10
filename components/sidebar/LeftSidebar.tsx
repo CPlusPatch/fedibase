@@ -1,9 +1,10 @@
 import Button from "components/buttons/Button";
 import { AuthContext } from "components/context/AuthContext";
+import Select from "components/forms/Select";
 import SmallSelect from "components/forms/SmallSelect";
 import { Entity, Response } from "megalodon";
 import { FormEvent, useContext, useState } from "react";
-import { Markdown, Paperclip, Search, TextLeft, X } from "react-bootstrap-icons";
+import { Envelope, Globe, LockFill, Markdown, Paperclip, Search, TextLeft, Unlock, UnlockFill, X } from "react-bootstrap-icons";
 import { toast, Toaster } from "react-hot-toast";
 
 const modes = [
@@ -19,22 +20,65 @@ const modes = [
 	},
 ];
 
+const visibilities = [
+	{
+		text: "Public",
+		value: "public",
+		icon: Globe,
+	},
+	{
+		text: "Unlisted",
+		value: "unlisted",
+		icon: UnlockFill,
+	},
+	{
+		text: "Private",
+		value: "private",
+		icon: LockFill,
+	},
+	{
+		text: "Direct",
+		value: "direct",
+		icon: Envelope,
+	},
+];
+
 export default function LeftSidebar() {
 	const client = useContext(AuthContext);
-	const [selectedMode, setSelectedMode] = useState(modes[0])
+	const [selectedMode, setSelectedMode] = useState(modes[0]);
+	const [selectedVis, setSelectedVis] = useState(visibilities[0]);
 
 	const submitForm = (event: FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
 
-		client.postStatus(event.target["comment"].value, {
-			visibility: "unlisted",
-		}).then((res: Response<Entity.Status>) => {
-			if (res.status == 200) {
-				toast("Post sent!", {
-					icon: "👍",
-				});
-			}
-		});
+		let visibility;
+
+		switch (selectedVis.value) {
+			case "unlisted":
+				visibility = "unlisted";
+				break;
+			case "public":
+				visibility = "public";
+				break;
+			case "private":
+				visibility = "private";
+				break;
+			case "direct":
+				visibility = "direct";
+				break;
+		}
+
+		client
+			.postStatus(event.target["comment"].value, {
+				visibility: visibility,
+			})
+			.then((res: Response<Entity.Status>) => {
+				if (res.status == 200) {
+					toast("Post sent!", {
+						icon: "👍",
+					});
+				}
+			});
 	}
 
 	return (
@@ -48,6 +92,7 @@ export default function LeftSidebar() {
 				<Search className="absolute inset-y-0 right-4 w-4 h-full" />
 			</div>
 
+			<div className="flex flex-col gap-y-2">
 			<form action="#" className="relative bg-white" onSubmit={submitForm}>
 				<div className="overflow-hidden rounded-lg border border-gray-300 shadow-sm duration-200 focus-within:border-orange-500 focus-within:ring-1 focus-within:ring-orange-500">
 					<textarea
@@ -89,6 +134,17 @@ export default function LeftSidebar() {
 					</div>
 				</div>
 			</form>
+
+			<div className="flex">
+				<div className="w-1/2">
+					<Select
+						items={visibilities}
+						selected={selectedVis}
+						setSelected={setSelectedVis}
+					/>
+				</div>
+			</div>
+			</div>
 		</div>
 	);
 };
