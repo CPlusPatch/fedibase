@@ -24,7 +24,7 @@ export default function SmallSelect({ items, selected, setSelected }: SelectOpti
 			});
 		}}>
 			<div className="relative mt-1">
-				<Listbox.Button className="flex relative flex-row gap-x-1 items-center p-2 text-gray-400 bg-white rounded duration-200 cursor-default hover:bg-gray-100">
+				<Listbox.Button className="flex relative flex-row gap-x-1 items-center p-2 text-gray-400 rounded duration-200 cursor-default hover:bg-gray-100">
 					<selected.icon className="w-5 h-5" aria-hidden="true" />
 					<ChevronDown className="w-4 h-4" />
 				</Listbox.Button>
@@ -36,7 +36,7 @@ export default function SmallSelect({ items, selected, setSelected }: SelectOpti
 					leave="ease-in duration-200"
 					leaveFrom="opacity-100 translate-y-0 sm:scale-100"
 					leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95">
-					<Listbox.Options className="overflow-auto absolute mt-1 text-base bg-white rounded border divide-y font-inter">
+					<Listbox.Options className="overflow-auto absolute z-30 mt-1 text-base bg-white rounded border divide-y font-inter">
 						{items.map(item => (
 							<Listbox.Option
 								key={item.value}

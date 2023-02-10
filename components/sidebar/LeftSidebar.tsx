@@ -47,9 +47,11 @@ export default function LeftSidebar() {
 	const client = useContext(AuthContext);
 	const [selectedMode, setSelectedMode] = useState(modes[0]);
 	const [selectedVis, setSelectedVis] = useState(visibilities[0]);
+	const [loading, setLoading] = useState<boolean>(false);
 
 	const submitForm = (event: FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
+		setLoading(true);
 
 		let visibility;
 
@@ -78,6 +80,8 @@ export default function LeftSidebar() {
 						icon: "👍",
 					});
 				}
+			}).finally(() => {
+				setLoading(false);
 			});
 	}
 
@@ -94,18 +98,19 @@ export default function LeftSidebar() {
 
 			<div className="flex flex-col gap-y-2">
 			<form action="#" className="relative bg-white" onSubmit={submitForm}>
-				<div className="overflow-hidden rounded-lg border border-gray-300 shadow-sm duration-200 focus-within:border-orange-500 focus-within:ring-1 focus-within:ring-orange-500">
+				<div className="overflow-hidden rounded border border-gray-300 shadow-sm duration-200 focus-within:border-orange-500 focus-within:ring-1 focus-within:ring-orange-500">
 					<textarea
 						rows={3}
 						name="comment"
 						id="comment"
-						className="block py-3 w-full border-0 resize-none focus:ring-0 sm:text-sm"
+						disabled={loading}
+						className="block py-3 w-full border-0 resize-none focus:ring-0 sm:text-sm disabled:bg-gray-200"
 						placeholder="What's happening?"
 						defaultValue={""}
 					/>
 
 					{/* Spacer element to match the height of the toolbar */}
-					<div className="py-2" aria-hidden="true">
+					<div className={`py-2 ${loading && "bg-gray-200"}`} aria-hidden="true">
 						{/* Matches height of button in toolbar (1px border + 36px content height) */}
 						<div className="py-px">
 							<div className="h-9" />
@@ -128,7 +133,7 @@ export default function LeftSidebar() {
 						/>
 					</div>
 					<div className="flex-shrink-0">
-						<Button style="orange" type="submit" className="">
+						<Button isLoading={loading} disabled={loading} style="orange" type="submit" className="">
 							Post
 						</Button>
 					</div>
