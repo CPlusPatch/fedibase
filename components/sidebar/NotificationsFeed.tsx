@@ -1,6 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import { AuthContext } from "components/context/AuthContext";
 import Status from "components/posts/Status";
+import Spinner from "components/spinners/Spinner";
 import { Entity } from "megalodon";
 import Link from "next/link";
 import { useContext, useEffect, useState } from "react";
@@ -30,16 +31,24 @@ export default function NotificationsFeed() {
 	}, [client]);
 	
 	return (
-		<div className="flex flex-col gap-y-6 w-full max-w-full h-full font-inter">
-			<div className="flex-row justify-between">
-				<h3 className="text-lg font-bold">Notifications</h3>
-			</div>
-			<ul className="flex flex-col gap-y-2 max-w-full divide-y-2">
-				{notifications.map(n => (
-					<Notification key={n.id} n={n} />
-				))}
-			</ul>
-		</div>
+		<>
+			{JSON.stringify(notifications) == "[]" ? (
+				<div className="flex justify-center items-center w-full h-full">
+					<Spinner className="w-10 h-10 text-gray-400 fill-orange-600" />
+				</div>
+			) : (
+				<div className="flex flex-col gap-y-6 w-full max-w-full h-full font-inter">
+					<div className="flex-row justify-between">
+						<h3 className="text-lg font-bold">Notifications</h3>
+					</div>
+					<ul className="flex flex-col gap-y-2 max-w-full divide-y-2">
+						{notifications.map(n => (
+							<Notification key={n.id} n={n} />
+						))}
+					</ul>
+				</div>
+			)}
+		</>
 	);
 }
 

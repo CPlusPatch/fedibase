@@ -7,19 +7,14 @@ import NotificationsFeed from "components/sidebar/NotificationsFeed";
 import Login from "components/login/Login";
 import { useEffect, useState } from "react";
 import { getFromLocalStorage } from "utils/functions";
+import { getCookie } from "cookies-next";
 
-const Home: NextPage = () => {
-	const [accessToken, setAccessToken] = useState<string>("");
-
-	useEffect(() => {
-		setAccessToken(getFromLocalStorage("accessToken", ""));
-	}, []);
-
+const Home = ({ instanceUrl, accessToken }) => {
 	return (
 		<div className="relative bg-gray-50">
 			<MetaTags title={`${process.env.NEXT_PUBLIC_AUTHOR_NAME} · Web Development`} />
 
-			{accessToken !== "" ? (
+			{accessToken && instanceUrl ? (
 				<>
 					<Nav current="/" />
 
@@ -49,5 +44,14 @@ const Home: NextPage = () => {
 		</div>
 	);
 };
+
+export function getServerSideProps({ req, res }) {
+	return {
+		props: {
+			accessToken: getCookie("accessToken", { req, res }) ?? "",
+			instanceUrl: getCookie("instanceUrl", { req, res }) ?? "",
+		},
+	};
+}
 
 export default Home;

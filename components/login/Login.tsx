@@ -6,6 +6,7 @@ import Link from "next/link";
 import Button from "components/buttons/Button";
 import MetaTags from "components/head/MetaTags";
 import { setToLocalStorage } from "utils/functions";
+import { setCookie } from "cookies-next";
 
 export default function Login() {
 	const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -14,8 +15,8 @@ export default function Login() {
 		event.preventDefault();
 		setIsLoading(true);
 
-		setToLocalStorage("instanceUrl", event.target["url"].value);
-		setToLocalStorage("accessToken", event.target["token"].value);
+		setCookie("instanceUrl", event.target["url"].value);
+		setCookie("accessToken", event.target["token"].value);
 		
 		setIsLoading(false);
 		window.location.reload();
