@@ -44,7 +44,6 @@ export default function NotificationsFeed() {
 }
 
 const Notification = ({ n }: { n: Entity.Notification }) => {
-	console.log(n.type)
 	return (
 		<>
 			{(n.type == "mention" || n.type == "favourite" || n.type == "reblog") && (
