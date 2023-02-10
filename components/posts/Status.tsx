@@ -39,14 +39,6 @@ export default function Status({
 					<div
 						className="w-full"
 						style={{
-							maskSize: "auto 8em auto auto",
-							maskPosition: "0 0,0 0",
-							maskRepeat: "repeat-x,repeat",
-							maskImage:
-								expand || textRef?.current?.offsetHeight < 128
-									? ""
-									: "linear-gradient(to bottom, white 2em, transparent 8em)",
-							maskComposite: "excluse",
 							overflow: expand ? "" : "hidden",
 							maxHeight: expand ? "" : "8rem",
 						}}>
