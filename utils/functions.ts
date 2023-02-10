@@ -15,3 +15,13 @@ export function isEmpty(obj: any): boolean {
 export function classNames(...classes) {
 	return classes.filter(Boolean).join(" ");
 }
+
+export function getFromLocalStorage(key: string, defaultValue: string) {
+	const item = localStorage.getItem(key);
+	return item === null ? defaultValue : item;
+}
+
+export function setToLocalStorage(key: string, value: string) {
+	localStorage.setItem(key, value);
+	return value;
+}

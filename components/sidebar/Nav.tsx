@@ -2,7 +2,7 @@ import { Transition } from "@headlessui/react";
 import SmallLogo from "components/logo/SmallLogo";
 import Link from "next/link";
 import { Fragment, useState } from "react";
-import { FileRichtextFill, GlobeEuropeAfrica, Grid1x2Fill, HouseDoorFill, PeopleFill, PersonCircle, PersonVcardFill } from "react-bootstrap-icons";
+import { GlobeEuropeAfrica, HouseDoorFill, PeopleFill, PersonCircle } from "react-bootstrap-icons";
 import { classNames } from "utils/functions";
 
 const navigation = [
@@ -28,7 +28,7 @@ export default function Nav({ current }: { current: string }) {
 		<div className="hidden fixed top-0 bottom-0 left-0 z-50 flex-col flex-1 col-span-1 min-h-0 bg-gray-50 bg-gradient-to-b border-r lg:flex">
 			<div className="flex overflow-y-auto flex-col flex-1 pt-5 pb-4">
 				<Link href="/" className="flex flex-shrink-0 justify-center items-center px-2">
-					<SmallLogo size="8" />
+					<SmallLogo size="w-8" />
 				</Link>
 				<nav
 					className="flex-1 px-2 mt-5 space-y-1"
