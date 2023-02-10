@@ -2,25 +2,12 @@
 import { AuthContext } from "components/context/AuthContext";
 import Status from "components/posts/Status";
 import { Entity } from "megalodon";
-import { useContext, useEffect, useRef, useState } from "react";
-import { Bell, EnvelopePaperHeartFill, Globe, Hash, House, PeopleFill, StarFill } from "react-bootstrap-icons";
+import { useContext, useEffect, useState } from "react";
+import { GridFill, List, StarFill } from "react-bootstrap-icons";
 
-const sidebarLinks = [
-	{
-		name: "Home",
-		icon: House,
-		href: "/web",
-	},
-	{
-		name: "Public",
-		icon: Bell,
-		href: "/web",
-	},
-	{
-		name: "Federated",
-		icon: Globe,
-		href: "/web",
-	},
+const modes = [
+	{ name: "Large", icon: GridFill, value: true },
+	{ name: "Small", icon: List, value: false },
 ];
 
 export default function NotificationsFeed() {
@@ -43,7 +30,9 @@ export default function NotificationsFeed() {
 	
 	return (
 		<div className="flex flex-col gap-y-6 w-full max-w-full h-full font-inter">
-			<h3 className="text-lg font-bold">Notifications</h3>
+			<div className="flex-row justify-between">
+				<h3 className="text-lg font-bold">Notifications</h3>
+			</div>
 			<ul className="flex flex-col gap-y-2 max-w-full divide-y-2">
 				{notifications.map(n => (
 					<Notification key={n.id} n={n} />
@@ -54,17 +43,31 @@ export default function NotificationsFeed() {
 }
 
 const Notification = ({ n }: { n: Entity.Notification }) => {
+	console.log(n.type)
 	return (
 		<>
-			{(n.type == "mention" || n.type == "favourite" || n.type == "boost") && (
+			{(n.type == "mention" || n.type == "favourite" || n.type == "reblog") && (
 				<li className="flex overflow-hidden flex-col gap-y-2 p-2 max-w-full">
 					{n.type == "favourite" && (
 						<span className="flex overflow-hidden flex-row gap-x-2 items-center max-w-full italic text-gray-500 overflow-ellipsis">
-							<StarFill className="w-4 h-4 fill-yellow-500" />
+							<StarFill className="w-4 h-4 fill-yellow-500 hover:animate-spin" />
 							{n.account.display_name} favourited your post
 						</span>
 					)}
-					<Status status={n.status} type="notification"/>
+					{n.type == "reblog" && (
+						<span className="flex overflow-hidden flex-row gap-x-2 items-center max-w-full italic text-gray-500 overflow-ellipsis">
+							<svg
+								xmlns="http://www.w3.org/2000/svg"
+								className="w-4 h-4 text-blue-500 hover:animate-spin"
+								viewBox="0 0 576 512">
+								<path
+									fill="currentColor"
+									d="M272 416c17.7 0 32-14.3 32-32s-14.3-32-32-32H160c-17.7 0-32-14.3-32-32V192h32c12.9 0 24.6-7.8 29.6-19.8s2.2-25.7-6.9-34.9l-64-64c-12.5-12.5-32.8-12.5-45.3 0l-64 64c-9.2 9.2-11.9 22.9-6.9 34.9S19.1 192 32.1 192h32v128c0 53 43 96 96 96H272zm32-320c-17.7 0-32 14.3-32 32s14.3 32 32 32h112c17.7 0 32 14.3 32 32v128h-32c-12.9 0-24.6 7.8-29.6 19.8s-2.2 25.7 6.9 34.9l64 64c12.5 12.5 32.8 12.5 45.3 0l64-64c9.2-9.2 11.9-22.9 6.9-34.9S556.9 320 543.9 320h-32V192c0-53-43-96-96-96H304z"></path>
+							</svg>
+							{n.account.display_name} boosted your post
+						</span>
+					)}
+					<Status status={n.status} type="notification" />
 				</li>
 			)}
 		</>
