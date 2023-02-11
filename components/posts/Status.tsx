@@ -27,18 +27,18 @@ export default function Status({
 						alt={status.account.acct}
 						src={status.account.avatar}
 						className={`${
-							type == "post" ? "w-16 h-16" : "w-10 h-10"
+							type == "post" ? "w-14 h-14" : "w-8 h-8"
 						} text-gray-300 bg-white rounded border border-gray-300`}
 					/>
 				</Link>
 				<div className="flex flex-col min-w-0 grow">
-					<div className="flex flex-col gap-x-2 md:items-center md:flex-row">
-						<h4 className="flex-shrink text-lg font-bold">
+					<div className="flex flex-col gap-x-2 text-[0.95rem] md:inline-block">
+						<h4 className="inline flex-shrink font-bold">
 							{status.account.display_name}
 						</h4>
 						<h6
 							title={status.account.acct}
-							className="overflow-hidden text-gray-500 overflow-ellipsis text-md">
+							className="inline overflow-hidden ml-0 text-gray-500 overflow-ellipsis md:ml-2">
 							@{status.account.acct}
 						</h6>
 					</div>
@@ -46,7 +46,7 @@ export default function Status({
 						<SensitiveTextSpoiler status={status} showText={showText} setShowText={setShowText}/>
 
 						<div
-							className="relative w-full"
+							className="relative w-full text-sm"
 							style={{
 								overflow: expand ? "" : "hidden",
 								maxHeight: expand ? "" : "8rem",
@@ -63,7 +63,7 @@ export default function Status({
 							<>
 								<hr />
 								<button
-									className="mx-auto w-full text-blue-800 hover:underline"
+									className="mx-auto w-full text-sm text-blue-800 hover:underline"
 									onClick={() => {
 										setExpand(!expand);
 									}}>

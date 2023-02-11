@@ -57,7 +57,7 @@ const Notification = ({ n }: { n: Entity.Notification }) => {
 					{n.type == "favourite" && (
 						<Link
 							href={`/users/@${n.account.id}`}
-							className="flex overflow-hidden flex-row gap-x-2 items-center max-w-full italic text-gray-500 overflow-ellipsis hover:underline">
+							className="flex overflow-hidden flex-row gap-x-2 items-center max-w-full text-sm italic text-gray-500 overflow-ellipsis hover:underline">
 							<IconStarFilled className="w-4 h-4 text-yellow-500 hover:animate-spin" />
 							{n.account.display_name} favourited your post
 						</Link>
@@ -65,7 +65,7 @@ const Notification = ({ n }: { n: Entity.Notification }) => {
 					{n.type == "reblog" && (
 						<Link
 							href={`/users/@${n.account.id}`}
-							className="flex overflow-hidden flex-row gap-x-2 items-center max-w-full italic text-gray-500 overflow-ellipsis hover:underline">
+							className="flex overflow-hidden flex-row gap-x-2 items-center max-w-full text-sm italic text-gray-500 overflow-ellipsis hover:underline">
 							<svg
 								xmlns="http://www.w3.org/2000/svg"
 								className="w-4 h-4 text-blue-500 hover:animate-spin"

@@ -91,17 +91,17 @@ export default function LeftSidebar() {
 			<Toaster position="top-left" />
 			<div className="flex relative w-full">
 				<input
-					className="px-4 py-2 w-full h-12 bg-gray-100 rounded-md border"
+					className="px-4 py-2 w-full h-10 text-sm bg-gray-100 rounded-md border"
 					placeholder="Search here..."
 				/>
 				<IconSearch className="absolute inset-y-0 right-4 w-4 h-full" />
 			</div>
 
 			<div className="flex flex-col gap-y-2">
-				<form action="#" className="relative bg-white" onSubmit={submitForm}>
+				<form action="#" className="relative text-sm bg-white" onSubmit={submitForm}>
 					<div className="overflow-hidden rounded border border-gray-300 shadow-sm duration-200 focus-within:border-orange-500 focus-within:ring-1 focus-within:ring-orange-500">
 						<textarea
-							rows={4}
+							rows={3}
 							name="comment"
 							id="comment"
 							disabled={loading}
@@ -147,7 +147,7 @@ export default function LeftSidebar() {
 				</form>
 
 				<div className="flex">
-					<div className="w-1/2">
+					<div className="w-2/3">
 						<Select
 							items={visibilities}
 							selected={selectedVis}

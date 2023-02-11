@@ -87,7 +87,7 @@ function NavElement({ item, current }: { item: any; current: boolean }) {
 					setShowTooltip(false);
 				}}>
 				<item.icon
-					className="flex-shrink-0 w-6 h-6 text-gray-600"
+					className="flex-shrink-0 w-5 h-5 text-gray-600"
 					aria-hidden="true"
 				/>
 			</Link>
