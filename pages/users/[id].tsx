@@ -1,23 +1,30 @@
-import type { NextPage } from "next";
 import MetaTags from "components/head/MetaTags";
 import LeftSidebar from "components/sidebar/LeftSidebar";
 import Nav from "components/sidebar/Nav";
 import NotificationsFeed from "components/sidebar/NotificationsFeed";
 import { UserFeed } from "components/feed/UserFeed";
 import { getFromLocalStorage } from "utils/functions";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import Login from "components/login/Login";
+import { AuthContext } from "components/context/AuthContext";
+import { Response, Entity } from "megalodon";
 
 const User = ({ id }) => {
 	const [accessToken, setAccessToken] = useState<string>("");
+	const client = useContext(AuthContext);
+	const [account, setAccount] = useState<Entity.Account>();
 
 	useEffect(() => {
+		client.getAccount(id.replace("@", "")).then((res: Response<Entity.Account>) => {
+			setAccount(res.data);
+		});
+
 		setAccessToken(getFromLocalStorage("accessToken", ""));
-	}, []);
+	}, [client, id]);
 	
 	return (
 		<div className="relative bg-gray-50">
-			<MetaTags title={`${process.env.NEXT_PUBLIC_AUTHOR_NAME} · Web Development`} />
+			<MetaTags title={`${account ? account.display_name : "Loading..."} · Fedibase`} />
 
 			{accessToken !== "" ? (
 				<>
@@ -31,7 +38,7 @@ const User = ({ id }) => {
 										<LeftSidebar />
 									</div>
 									<div className="overflow-y-scroll col-span-5 p-4 max-h-screen border-x">
-										<UserFeed id={id} />
+										<UserFeed account={account} />
 									</div>
 									<div className="hidden overflow-x-hidden p-4 min-w-0 max-h-screen md:col-span-3 md:flex">
 										<NotificationsFeed />

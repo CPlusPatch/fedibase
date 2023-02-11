@@ -36,13 +36,13 @@ export default function SmallSelect({ items, selected, setSelected }: SelectOpti
 					leave="ease-in duration-200"
 					leaveFrom="opacity-100 translate-y-0 sm:scale-100"
 					leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95">
-					<Listbox.Options className="overflow-auto absolute z-30 mt-1 text-base bg-white rounded border divide-y font-inter">
+					<Listbox.Options className="overflow-auto absolute z-30 mt-1 text-base bg-white rounded border font-inter">
 						{items.map(item => (
 							<Listbox.Option
 								key={item.value}
 								className={`flex relative flex-row gap-x-3 items-center p-2 text-gray-800 duration-200 cursor-default select-none hover:bg-gray-100`}
 								value={item.value}>
-								<item.icon className="w-6 h-auto" />
+								<item.icon className="w-4 h-auto" />
 								{item.text}
 							</Listbox.Option>
 						))}

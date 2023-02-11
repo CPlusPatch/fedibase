@@ -1,39 +1,38 @@
 /* eslint-disable @next/next/no-img-element */
 import { AuthContext } from "components/context/AuthContext";
 import Status from "components/posts/Status";
-import generator, { Entity, Response, WebSocketInterface } from "megalodon";
-import { LegacyRef, MutableRefObject, useContext, useEffect, useRef, useState } from "react";
+import { Entity, Response } from "megalodon";
+import { useContext, useEffect, useRef, useState } from "react";
 
-export const UserFeed = ({ id }: { id: string }) => {
+export const UserFeed = ({ account }: { account: Entity.Account }) => {
 	const [posts, setPosts] = useState<Entity.Status[]>([]);
-	const [user, setUser] = useState<Entity.Account>();
 	const client = useContext(AuthContext);
 
 	useEffect(() => {
-		client.getAccount(id.replace("@", "")).then((res: Response<Entity.Account>) => {
-			setUser(res.data);
-		});
-		
-		client.getAccountStatuses(id.replace("@", "")).then((res: Response<Entity.Status[]>) => {
-			setPosts(res.data);
-		});
-
-		const interval = setInterval(() => {
+		if (account) {
 			client
-				.getAccountStatuses(id.replace("@", ""))
+				.getAccountStatuses(account.id.replace("@", ""))
 				.then((res: Response<Entity.Status[]>) => {
 					setPosts(res.data);
 				});
-		}, 15000);
 
-/* 		return () => clearInterval(interval); */
-	}, [id, client]);
+			const interval = setInterval(() => {
+				client
+					.getAccountStatuses(account.id.replace("@", ""))
+					.then((res: Response<Entity.Status[]>) => {
+						setPosts(res.data);
+					});
+			}, 15000);
+
+			return () => clearInterval(interval);
+		}
+	}, [account, client]);
 
 	return (
 		<>
-			{user && (
+			{account && (
 				<div className="flex flex-col gap-y-5 px-2 mt-5 w-full h-full">
-					<UserProfile user={user} />
+					<UserProfile user={account} />
 					{posts.map(post => (
 						<Post key={post.id} post={post} />
 					))}

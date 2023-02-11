@@ -12,7 +12,7 @@ import { getCookie } from "cookies-next";
 const Home = ({ instanceUrl, accessToken }) => {
 	return (
 		<div className="relative bg-gray-50">
-			<MetaTags title={`${process.env.NEXT_PUBLIC_AUTHOR_NAME} · Web Development`} />
+			<MetaTags title={`Home · Fedibase`} />
 
 			{accessToken && instanceUrl ? (
 				<>

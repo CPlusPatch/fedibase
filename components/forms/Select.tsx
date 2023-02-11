@@ -41,15 +41,15 @@ export default function Select({ items, selected, setSelected }: SelectOptions) 
 						leave="ease-in duration-200"
 						leaveFrom="opacity-100 translate-y-0 sm:scale-100"
 						leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95">
-						<Listbox.Options className="overflow-auto absolute py-1 mt-1 w-full max-h-60 text-base bg-white rounded-md divide-y shadow-lg outline-none font-inter focus:outline-none sm:text-sm">
+						<Listbox.Options className="overflow-auto absolute mt-1 w-full max-h-60 text-base bg-white rounded-md shadow-lg outline-none font-inter focus:outline-none sm:text-sm">
 							{items.map(item => (
 								<Listbox.Option
 									key={item.text}
-									className={`flex relative flex-row gap-x-3 px-4 py-2 cursor-default select-none`}
+									className={`flex relative flex-row gap-x-3 items-center px-4 py-2 duration-200 hover:bg-gray-200`}
 									value={item.value}>
 									{({ selected }) => (
 										<>
-											<item.icon className="w-5 h-5"/>
+											<item.icon className="w-4 h-4"/>
 											<span
 												className={`block truncate`}>
 												{item.text}

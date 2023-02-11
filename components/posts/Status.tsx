@@ -18,6 +18,7 @@ export default function Status({
 	const client = useContext(AuthContext);
 	const [favourited, setFavourited] = useState<boolean>(status.favourited);
 	const [expand, setExpand] = useState<boolean>(false);
+	const [showText, setShowText] = useState<boolean>(false);	
 	const textRef = useRef<HTMLParagraphElement>(null);
 
 	return (
@@ -44,15 +45,28 @@ export default function Status({
 						</h6>
 					</div>
 					<div className="flex flex-col gap-y-1">
+						{status.sensitive && (
+							<div className="flex gap-x-2 items-center font-bold">
+								{status.spoiler_text == ""
+									? "Marked as sensitive"
+									: status.spoiler_text}
+
+								<Button style="gray" className="!py-1 !px-2" onClick={() => {
+									setShowText((t) => !t);
+								}}>{showText ? "Hide" : "Show"}</Button>
+							</div>
+						)}
 						<div
-							className="w-full"
+							className="relative w-full"
 							style={{
 								overflow: expand ? "" : "hidden",
 								maxHeight: expand ? "" : "8rem",
 							}}>
 							<p
 								ref={textRef}
-								className="mt-1"
+								className={`mt-1 rounded duration-200 ${
+									status.sensitive && !showText && "filter blur-lg"
+								}`}
 								dangerouslySetInnerHTML={{ __html: status.content }}></p>
 						</div>
 						{textRef?.current?.offsetHeight > 128 && (
@@ -87,15 +101,17 @@ export default function Status({
 						<IconMessage className="w-5 h-5" />
 					</button>
 
-					<button className="flex justify-center" onClick={() => {
-						if (favourited) {
-							client.unfavouriteStatus(status.id);
-						} else if (!favourited) {
-							client.favouriteStatus(status.id);
-						}
+					<button
+						className="flex justify-center"
+						onClick={() => {
+							if (favourited) {
+								client.unfavouriteStatus(status.id);
+							} else if (!favourited) {
+								client.favouriteStatus(status.id);
+							}
 
-						setFavourited((f) => !f);
-					}}>
+							setFavourited(f => !f);
+						}}>
 						{favourited ? (
 							<IconStarFilled className="w-5 h-5 text-yellow-400" />
 						) : (
