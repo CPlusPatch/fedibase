@@ -11,9 +11,10 @@ function App({ Component, pageProps }: AppProps) {
 		<>
 			<AuthContext.Provider
 				value={
-					(getCookie("accessToken") ?? "").toString() !== ""
+					(getCookie("accessToken") ?? "").toString() !== "" &&
+					(getCookie("instanceType") ?? "").toString() !== ""
 						? generator(
-								"pleroma",
+								(getCookie("instanceType") ?? "").toString() as any,
 								(getCookie("instanceUrl") ?? "").toString(),
 								(getCookie("accessToken") ?? "").toString(),
 						  )

@@ -8,7 +8,7 @@ import MetaTags from "components/head/MetaTags";
 import { setToLocalStorage } from "utils/functions";
 import { setCookie } from "cookies-next";
 import { Input, Label } from "components/forms/Input";
-import generator from "megalodon";
+import generator, { detector } from "megalodon";
 
 export default function Login() {
 	const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -21,7 +21,10 @@ export default function Login() {
 		setCookie("handle", event.target["handle"].value);
 		setCookie("accessToken", event.target["token"].value);
 
-		const client = generator("pleroma", event.target["url"].value, event.target["token"].value);
+		const instanceType = event.target["type"].value;
+		setCookie("instanceType", instanceType);
+
+		const client = generator(instanceType, event.target["url"].value, event.target["token"].value);
 
 		// Find ID of logged in account :( im sowwy
 		const accountIds = await client.searchAccount(event.target["handle"].value);
@@ -86,6 +89,12 @@ export default function Login() {
 								className="block px-3 py-2 w-full placeholder-gray-400 rounded-md border border-gray-300 shadow-sm duration-200 appearance-none disabled:bg-gray-100 focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm">
 								<Label>Token</Label>
 							</Input>
+
+							<select id="type" name="type">
+								<option value="pleroma">pleroma</option>
+								<option value="mastodon">mastodon</option>
+								<option value="misskey">misskey</option>
+							</select>
 
 							<div>
 								<Button

@@ -32,14 +32,14 @@ export default function Nav({ current }: { current: string }) {
 
 	useEffect(() => {
 		if (window) {
-			client.getAccount(getCookie("accountId").toString()).then(data => {
+			client?.getAccount(getCookie("accountId").toString()).then(data => {
 				setAccount(data.data);
 			});
 
 			if (getCookie("instanceData")?.toString()) {
 				setInstance(JSON.parse(getCookie("instanceData").toString()));
 			} else {
-				client.getInstance().then(data => {
+				client?.getInstance().then(data => {
 					setCookie("instanceData", JSON.stringify(data.data));
 					setInstance(data.data);
 				});

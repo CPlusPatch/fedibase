@@ -20,12 +20,12 @@ export default function NotificationsFeed() {
 	const client = useContext(AuthContext);
 
 	useEffect(() => {
-		client.getNotifications().then(res => {
+		client?.getNotifications().then(res => {
 			setNotifications(res.data);
 		});
 
 		const interval = setInterval(() => {
-			client.getNotifications().then(res => {
+			client?.getNotifications().then(res => {
 				setNotifications(res.data);
 			});
 		}, 15000);

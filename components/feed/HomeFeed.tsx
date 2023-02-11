@@ -11,12 +11,12 @@ export const HomeFeed = () => {
 	const client = useContext(AuthContext);
 
 	useEffect(() => {
-		client.getHomeTimeline().then((res: Response<Array<Entity.Status>>) => {
+		client?.getHomeTimeline().then((res: Response<Array<Entity.Status>>) => {
 			setPosts(res.data);
 		});
 
 		const interval = setInterval(() => {
-			client.getHomeTimeline().then((res: Response<Array<Entity.Status>>) => {
+			client?.getHomeTimeline().then((res: Response<Array<Entity.Status>>) => {
 				setPosts(res.data);
 			});
 		}, 15000);
