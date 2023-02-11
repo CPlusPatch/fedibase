@@ -1,4 +1,6 @@
+/* eslint-disable @next/next/no-img-element */
 import { Transition } from "@headlessui/react";
+import { IconHome, IconUsers, IconWorld } from "@tabler/icons-react";
 import { AuthContext } from "components/context/AuthContext";
 import SmallLogo from "components/logo/SmallLogo";
 import { getCookie } from "cookies-next";
@@ -10,28 +12,33 @@ import { classNames } from "utils/functions";
 const navigation = [
 	{
 		name: "Home",
-		icon: HouseDoorFill,
-		href: "/admin/posts",
+		icon: IconHome,
+		href: "/",
 	},
 	{
 		name: "Instance",
-		icon: PeopleFill,
-		href: "/admin/editor",
+		icon: IconUsers,
+		href: "/instance",
 	},
 	{
 		name: "Federated",
-		icon: GlobeEuropeAfrica,
-		href: "/admin/users",
+		icon: IconWorld,
+		href: "/federated",
 	},
 ];
 
 export default function Nav({ current }: { current: string }) {
 	const client = useContext(AuthContext);
 	const [account, setAccount] = useState<Entity.Account>();
+	const [instance, setInstance] = useState<Entity.Instance>();
 
 	useEffect(() => {
 		client.getAccount(getCookie("accountId").toString()).then(data => {
 			setAccount(data.data);
+		});
+
+		client.getInstance().then(data => {
+			setInstance(data.data);
 		});
 	}, [client])
 
@@ -39,7 +46,7 @@ export default function Nav({ current }: { current: string }) {
 		<div className="hidden fixed top-0 bottom-0 left-0 z-50 flex-col flex-1 col-span-1 min-h-0 bg-gray-50 bg-gradient-to-b border-r lg:flex">
 			<div className="flex overflow-y-auto flex-col flex-1 pt-5 pb-4">
 				<Link href="/" className="flex flex-shrink-0 justify-center items-center px-2">
-					<SmallLogo size="w-8" />
+					<img src={instance?.thumbnail} className="w-8 h-8 rounded" alt=""/>
 				</Link>
 				<nav
 					className="flex-1 px-2 mt-5 space-y-1"
@@ -49,7 +56,7 @@ export default function Nav({ current }: { current: string }) {
 					))}
 				</nav>
 				<Link href={`/users/${account?.id}`} className="flex justify-center items-center text-gray-600">
-					<img src={account?.avatar} className="w-9 h-9 rounded border"/>
+					<img src={account?.avatar} className="w-9 h-9 rounded border" alt=""/>
 				</Link>
 			</div>
 		</div>
