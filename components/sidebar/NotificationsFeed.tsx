@@ -1,12 +1,14 @@
 /* eslint-disable @next/next/no-img-element */
 import { IconStarFilled } from "@tabler/icons-react";
 import { AuthContext } from "components/context/AuthContext";
+import WithLoader from "components/loaders/WithLoader";
 import Status from "components/posts/Status";
 import Spinner from "components/spinners/Spinner";
 import { Entity } from "megalodon";
 import Link from "next/link";
 import { useContext, useEffect, useState } from "react";
 import { GridFill, List, StarFill } from "react-bootstrap-icons";
+import { isEmpty } from "utils/functions";
 
 const modes = [
 	{ name: "Large", icon: GridFill, value: true },
@@ -21,35 +23,29 @@ export default function NotificationsFeed() {
 		client.getNotifications().then(res => {
 			setNotifications(res.data);
 		});
-		
+
 		const interval = setInterval(() => {
 			client.getNotifications().then(res => {
 				setNotifications(res.data);
 			});
 		}, 15000);
 
-		return () => clearInterval(interval); 
+		return () => clearInterval(interval);
 	}, [client]);
-	
+
 	return (
-		<>
-			{JSON.stringify(notifications) == "[]" ? (
-				<div className="flex justify-center items-center w-full h-full">
-					<Spinner className="w-10 h-10 text-gray-400 fill-orange-600" />
+		<WithLoader variable={notifications}>
+			<div className="flex flex-col gap-y-6 w-full max-w-full h-full font-inter">
+				<div className="flex-row justify-between">
+					<h3 className="text-lg font-bold">Notifications</h3>
 				</div>
-			) : (
-				<div className="flex flex-col gap-y-6 w-full max-w-full h-full font-inter">
-					<div className="flex-row justify-between">
-						<h3 className="text-lg font-bold">Notifications</h3>
-					</div>
-					<ul className="flex flex-col gap-y-2 max-w-full divide-y-2">
-						{notifications.map(n => (
-							<Notification key={n.id} n={n} />
-						))}
-					</ul>
-				</div>
-			)}
-		</>
+				<ul className="flex flex-col gap-y-2 max-w-full divide-y-2">
+					{notifications.map(n => (
+						<Notification key={n.id} n={n} />
+					))}
+				</ul>
+			</div>
+		</WithLoader>
 	);
 }
 
@@ -81,7 +77,11 @@ const Notification = ({ n }: { n: Entity.Notification }) => {
 							{n.account.display_name} boosted your post
 						</Link>
 					)}
-					<Status showInteraction={n.type == "mention"} status={n.status} type="notification" />
+					<Status
+						showInteraction={n.type == "mention"}
+						status={n.status}
+						type="notification"
+					/>
 				</li>
 			)}
 		</>

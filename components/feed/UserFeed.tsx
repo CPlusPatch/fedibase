@@ -1,6 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import { AuthContext } from "components/context/AuthContext";
 import Status from "components/posts/Status";
+import UserProfile from "components/profile/UserProfile";
 import { Entity, Response } from "megalodon";
 import { useContext, useEffect, useRef, useState } from "react";
 
@@ -9,9 +10,10 @@ export const UserFeed = ({ account }: { account: Entity.Account }) => {
 	const client = useContext(AuthContext);
 
 	useEffect(() => {
+		// 	Check if account exists, as it might be null when the page starts loading
 		if (account) {
 			client
-				.getAccountStatuses(account.id.replace("@", ""))
+				.getAccountStatuses(account.id.replace("@", "")) // Remove the @ from the id in the URl bar, I forgot why it's even there
 				.then((res: Response<Entity.Status[]>) => {
 					setPosts(res.data);
 				});
@@ -24,6 +26,7 @@ export const UserFeed = ({ account }: { account: Entity.Account }) => {
 					});
 			}, 15000);
 
+			// Needed because React re-renders twice in development mode
 			return () => clearInterval(interval);
 		}
 	}, [account, client]);
@@ -42,39 +45,6 @@ export const UserFeed = ({ account }: { account: Entity.Account }) => {
 	);
 };
 
-function UserProfile({ user }: {
-	user: Entity.Account
-}) {
-	return (
-		<div className="flex flex-col gap-y-4 p-3 w-full border-b-2">
-			<div className="relative w-full">
-				<div className="flex overflow-hidden justify-center items-center w-full h-44 rounded">
-					<img src={user.header} className="w-full" />
-				</div>
-				<img className="absolute -bottom-5 left-5 w-20 rounded border" src={user.avatar} alt={user.acct} />
-			</div>
-			<div className="flex flex-row gap-x-4 px-4 mt-4 w-full">
-				<div className="flex flex-row gap-x-2 items-center">
-					<h4 className="flex-shrink text-2xl font-bold font-poppins">{user.display_name}</h4>
-					<h6
-						title={user.acct}
-						className="overflow-hidden text-gray-500 overflow-ellipsis font-inter">
-						{user.acct}
-					</h6>
-				</div>
-			</div>
-			<div className="p-3 w-full rounded-md border font-inter" dangerouslySetInnerHTML={{ __html: user.note }}></div>
-		</div>
-	);
-}
-
 const Post = ({ post }: { post: Entity.Status }) => {
-	const [expand, setExpand] = useState<boolean>(false);
-	const textRef = useRef<HTMLParagraphElement>(null);
-
-	return (
-		<>
-			<Status status={post} type="post" />
-		</>
-	);
+	return <Status status={post} type="post" />;
 };
