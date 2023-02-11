@@ -28,13 +28,13 @@ export default function Login() {
 		
 		accountIds.data.map(account => {
 			// bad hack but IT WORKS!!
-			if (account.acct == event.target["handle"].value.split("@")[0]) {
+			if (account.acct == event.target["handle"].value.split("@")[1]) {
 				setCookie("accountId", account.id);
+
+				setIsLoading(false);
+				window.location.reload();
 			}
 		});
-
-		setIsLoading(false);
-		window.location.reload();
 	}
 	
 	return (

@@ -2,11 +2,9 @@
 import { Transition } from "@headlessui/react";
 import { IconHome, IconUsers, IconWorld } from "@tabler/icons-react";
 import { AuthContext } from "components/context/AuthContext";
-import SmallLogo from "components/logo/SmallLogo";
-import { getCookie } from "cookies-next";
+import { getCookie, setCookie } from "cookies-next";
 import Link from "next/link";
 import { Fragment, useContext, useEffect, useState } from "react";
-import { GlobeEuropeAfrica, HouseDoorFill, PeopleFill, PersonCircle } from "react-bootstrap-icons";
 import { classNames } from "utils/functions";
 
 const navigation = [
@@ -33,13 +31,20 @@ export default function Nav({ current }: { current: string }) {
 	const [instance, setInstance] = useState<Entity.Instance>();
 
 	useEffect(() => {
-		client.getAccount(getCookie("accountId").toString()).then(data => {
-			setAccount(data.data);
-		});
+		if (window) {
+			client.getAccount(getCookie("accountId").toString()).then(data => {
+				setAccount(data.data);
+			});
 
-		client.getInstance().then(data => {
-			setInstance(data.data);
-		});
+			if (getCookie("instanceData")?.toString()) {
+				setInstance(JSON.parse(getCookie("instanceData").toString()));
+			} else {
+				client.getInstance().then(data => {
+					setCookie("instanceData", JSON.stringify(data.data));
+					setInstance(data.data);
+				});
+			}
+		}
 	}, [client])
 
 	return (

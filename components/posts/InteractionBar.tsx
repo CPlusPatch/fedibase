@@ -24,7 +24,7 @@ export default function InteractionBar({ status }: { status: Entity.Status }) {
 					setFavourited(f => !f);
 				}}>
 				{favourited ? (
-					<IconStarFilled className="w-5 h-5 text-yellow-400" />
+					<IconStarFilled className="w-5 h-5 text-yellow-400 animate-[spin_1s_ease-in-out]" />
 				) : (
 					<IconStar className="w-5 h-5" />
 				)}
