@@ -1,9 +1,10 @@
 /* eslint-disable @next/next/no-img-element */
-import { IconMessage, IconMoodHappy, IconQuote, IconRocket, IconStar, IconX } from "@tabler/icons-react";
+import { IconMessage, IconMoodHappy, IconQuote, IconRocket, IconStar, IconStarFilled, IconX } from "@tabler/icons-react";
 import Button from "components/buttons/Button";
+import { AuthContext } from "components/context/AuthContext";
 import { Entity } from "megalodon";
 import Link from "next/link";
-import { useRef, useState } from "react";
+import { useContext, useRef, useState } from "react";
 
 export default function Status({
 	status,
@@ -14,6 +15,8 @@ export default function Status({
 	type: "notification" | "post";
 	showInteraction?: boolean;
 }) {
+	const client = useContext(AuthContext);
+	const [favourited, setFavourited] = useState<boolean>(status.favourited);
 	const [expand, setExpand] = useState<boolean>(false);
 	const textRef = useRef<HTMLParagraphElement>(null);
 
@@ -84,8 +87,20 @@ export default function Status({
 						<IconMessage className="w-5 h-5" />
 					</button>
 
-					<button className="flex justify-center">
-						<IconStar className="w-5 h-5" />
+					<button className="flex justify-center" onClick={() => {
+						if (favourited) {
+							client.unfavouriteStatus(status.id);
+						} else if (!favourited) {
+							client.favouriteStatus(status.id);
+						}
+
+						setFavourited((f) => !f);
+					}}>
+						{favourited ? (
+							<IconStarFilled className="w-5 h-5 text-yellow-400" />
+						) : (
+							<IconStar className="w-5 h-5" />
+						)}
 					</button>
 
 					<button className="flex justify-center">
