@@ -1,7 +1,9 @@
 import { Transition } from "@headlessui/react";
+import { AuthContext } from "components/context/AuthContext";
 import SmallLogo from "components/logo/SmallLogo";
+import { getCookie } from "cookies-next";
 import Link from "next/link";
-import { Fragment, useState } from "react";
+import { Fragment, useContext, useEffect, useState } from "react";
 import { GlobeEuropeAfrica, HouseDoorFill, PeopleFill, PersonCircle } from "react-bootstrap-icons";
 import { classNames } from "utils/functions";
 
@@ -24,6 +26,15 @@ const navigation = [
 ];
 
 export default function Nav({ current }: { current: string }) {
+	const client = useContext(AuthContext);
+	const [account, setAccount] = useState<Entity.Account>();
+
+	useEffect(() => {
+		client.getAccount(getCookie("accountId").toString()).then(data => {
+			setAccount(data.data);
+		});
+	}, [client])
+
 	return (
 		<div className="hidden fixed top-0 bottom-0 left-0 z-50 flex-col flex-1 col-span-1 min-h-0 bg-gray-50 bg-gradient-to-b border-r lg:flex">
 			<div className="flex overflow-y-auto flex-col flex-1 pt-5 pb-4">
@@ -37,8 +48,8 @@ export default function Nav({ current }: { current: string }) {
 						<NavElement item={item} key={item.name} current={current === item.href}/>
 					))}
 				</nav>
-				<Link href="/account/settings/profile" className="flex justify-center items-center text-gray-600">
-					<PersonCircle className="w-7 h-7" />
+				<Link href={`/users/${account?.id}`} className="flex justify-center items-center text-gray-600">
+					<img src={account?.avatar} className="w-9 h-9 rounded border"/>
 				</Link>
 			</div>
 		</div>

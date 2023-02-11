@@ -47,8 +47,6 @@ const Post = ({ post }: {
 	const [expand, setExpand] = useState<boolean>(false);
 	const textRef = useRef<HTMLParagraphElement>(null);
 
-	console.log(post)
-
 	return (
 		<div className="flex flex-col gap-y-2">
 			{post.reblogged && (

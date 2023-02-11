@@ -1,4 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
+import { IconStarFilled } from "@tabler/icons-react";
 import { AuthContext } from "components/context/AuthContext";
 import Status from "components/posts/Status";
 import Spinner from "components/spinners/Spinner";
@@ -61,7 +62,7 @@ const Notification = ({ n }: { n: Entity.Notification }) => {
 						<Link
 							href={`/users/@${n.account.id}`}
 							className="flex overflow-hidden flex-row gap-x-2 items-center max-w-full italic text-gray-500 overflow-ellipsis hover:underline">
-							<StarFill className="w-4 h-4 fill-yellow-500 hover:animate-spin" />
+							<IconStarFilled className="w-4 h-4 text-yellow-500 hover:animate-spin" />
 							{n.account.display_name} favourited your post
 						</Link>
 					)}
@@ -80,7 +81,7 @@ const Notification = ({ n }: { n: Entity.Notification }) => {
 							{n.account.display_name} boosted your post
 						</Link>
 					)}
-					<Status status={n.status} type="notification" />
+					<Status showInteraction={n.type == "mention"} status={n.status} type="notification" />
 				</li>
 			)}
 		</>

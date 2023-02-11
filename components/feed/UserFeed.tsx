@@ -52,7 +52,7 @@ function UserProfile({ user }: {
 				<div className="flex overflow-hidden justify-center items-center w-full h-44 rounded">
 					<img src={user.header} className="w-full" />
 				</div>
-				<img className="absolute -bottom-5 left-5 w-20 rounded" src={user.avatar} alt={user.acct} />
+				<img className="absolute -bottom-5 left-5 w-20 rounded border" src={user.avatar} alt={user.acct} />
 			</div>
 			<div className="flex flex-row gap-x-4 px-4 mt-4 w-full">
 				<div className="flex flex-row gap-x-2 items-center">

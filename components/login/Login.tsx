@@ -7,6 +7,8 @@ import Button from "components/buttons/Button";
 import MetaTags from "components/head/MetaTags";
 import { setToLocalStorage } from "utils/functions";
 import { setCookie } from "cookies-next";
+import { Input, Label } from "components/forms/Input";
+import generator from "megalodon";
 
 export default function Login() {
 	const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -16,8 +18,21 @@ export default function Login() {
 		setIsLoading(true);
 
 		setCookie("instanceUrl", event.target["url"].value);
+		setCookie("handle", event.target["handle"].value);
 		setCookie("accessToken", event.target["token"].value);
+
+		const client = generator("pleroma", event.target["url"].value, event.target["token"].value);
+
+		// Find ID of logged in account :( im sowwy
+		const accountIds = await client.searchAccount(event.target["handle"].value);
 		
+		accountIds.data.map(account => {
+			// bad hack but IT WORKS!!
+			if (account.acct == event.target["handle"].value.split("@")[0]) {
+				setCookie("accountId", account.id);
+			}
+		});
+
 		setIsLoading(false);
 		window.location.reload();
 	}
@@ -39,43 +54,38 @@ export default function Login() {
 				<div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
 					<div className="px-4 py-8 bg-white shadow sm:rounded-lg sm:px-10 font-inter">
 						<form className="space-y-6" action="#" method="POST" onSubmit={loginForm}>
-							<div>
-								<label
-									htmlFor="url"
-									className="block text-sm font-medium text-gray-700">
-									Instance URL
-								</label>
-								<div className="mt-1">
-									<input
-										id="url"
-										name="url"
-										type="url"
-										autoComplete="url"
-										required
-										placeholder="https://fedi.cpluspatch.com"
-										disabled={isLoading}
-										className="block px-3 py-2 w-full placeholder-gray-400 rounded-md border border-gray-300 shadow-sm duration-200 appearance-none disabled:bg-gray-100 focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm"
-									/>
-								</div>
-							</div>
+							<Input
+								id="url"
+								name="url"
+								type="url"
+								autoComplete="url"
+								required
+								placeholder="https://fedi.cpluspatch.com"
+								isLoading={isLoading}
+								className="block px-3 py-2 w-full placeholder-gray-400 rounded-md border border-gray-300 shadow-sm duration-200 appearance-none disabled:bg-gray-100 focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm">
+								<Label>Instance URL</Label>
+							</Input>
 
-							<div>
-								<label
-									htmlFor="token"
-									className="block text-sm font-medium text-gray-700">
-									Access token
-								</label>
-								<div className="mt-1">
-									<input
-										id="token"
-										name="token"
-										type="token"
-										required
-										disabled={isLoading}
-										className="block px-3 py-2 w-full placeholder-gray-400 rounded-md border border-gray-300 shadow-sm duration-200 appearance-none disabled:bg-gray-100 focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm"
-									/>
-								</div>
-							</div>
+							<Input
+								id="handle"
+								name="handle"
+								type="text"
+								required
+								placeholder="@cpluspatch@fedi.cpluspatch.com"
+								isLoading={isLoading}
+								className="block px-3 py-2 w-full placeholder-gray-400 rounded-md border border-gray-300 shadow-sm duration-200 appearance-none disabled:bg-gray-100 focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm">
+								<Label>Fedi handle</Label>
+							</Input>
+
+							<Input
+								id="token"
+								name="token"
+								type="password"
+								required
+								isLoading={isLoading}
+								className="block px-3 py-2 w-full placeholder-gray-400 rounded-md border border-gray-300 shadow-sm duration-200 appearance-none disabled:bg-gray-100 focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm">
+								<Label>Token</Label>
+							</Input>
 
 							<div>
 								<Button
