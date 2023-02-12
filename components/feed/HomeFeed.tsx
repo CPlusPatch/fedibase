@@ -34,17 +34,21 @@ export const HomeFeed = () => {
 
 	return (
 		<WithLoader variable={posts}>
-			<div className="flex flex-col gap-y-5 px-2 mt-10 w-full h-full">
+			<div className="flex flex-col gap-y-5 w-full h-full">
 				<InfiniteScrollPosts posts={posts} loadNewPosts={() => {
 					console.log("loading more posts...");
 					
-					/* client
+					client
 						?.getHomeTimeline({
 							max_id: posts[posts.length - 1].id,
 						})
 						.then(res => {
-							setPosts(posts.concat(res.data));
-						}); */
+							setPosts([
+								...posts,
+								...res.data
+							]);
+							postsRef.current = [...posts, ...res.data];
+						});
 				}}/>
 			</div>
 		</WithLoader>

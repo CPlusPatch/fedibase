@@ -11,12 +11,13 @@ export default function InfiniteScrollPosts({ posts, loadNewPosts }: {
 }) {
 	return (
 		<div
-			className="overflow-y-auto"
+			className="flex overflow-y-auto flex-col gap-y-5 px-6 py-4 mt-10"
 			onScroll={e => {
 				if (e.currentTarget) {
 					// Check if scrolled to bottom
 					const { scrollTop, scrollHeight, clientHeight } = e.currentTarget;
-					if (scrollTop + clientHeight === scrollHeight) {
+
+					if (scrollTop + clientHeight >= scrollHeight) {
 						// Load more notifications
 						loadNewPosts();
 					}
