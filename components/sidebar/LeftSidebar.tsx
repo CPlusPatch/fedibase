@@ -4,7 +4,7 @@ import { AuthContext } from "components/context/AuthContext";
 import Select from "components/forms/Select";
 import SmallSelect from "components/forms/SmallSelect";
 import { Entity, Response } from "megalodon";
-import { FormEvent, useContext, useState } from "react";
+import { FormEvent, MutableRefObject, useContext, useRef, useState } from "react";
 import { Paperclip, Search } from "react-bootstrap-icons";
 import { toast, Toaster } from "react-hot-toast";
 
@@ -49,6 +49,7 @@ export default function LeftSidebar() {
 	const [selectedMode, setSelectedMode] = useState(modes[0]);
 	const [selectedVis, setSelectedVis] = useState(visibilities[0]);
 	const [loading, setLoading] = useState<boolean>(false);
+	const textareaRef: MutableRefObject<HTMLTextAreaElement> = useRef(null);
 
 	const submitForm = (event: FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
@@ -83,6 +84,7 @@ export default function LeftSidebar() {
 				}
 			}).finally(() => {
 				setLoading(false);
+				textareaRef.current.value = "";
 			});
 	}
 
@@ -102,6 +104,7 @@ export default function LeftSidebar() {
 					<div className="overflow-hidden rounded border border-gray-300 shadow-sm duration-200 focus-within:border-orange-500 focus-within:ring-1 focus-within:ring-orange-500">
 						<textarea
 							rows={3}
+							ref={textareaRef}
 							name="comment"
 							id="comment"
 							disabled={loading}
