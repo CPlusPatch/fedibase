@@ -6,7 +6,7 @@ import Status from "components/posts/Status";
 import Spinner from "components/spinners/Spinner";
 import { Entity } from "megalodon";
 import Link from "next/link";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { GridFill, List, StarFill } from "react-bootstrap-icons";
 import { isEmpty } from "utils/functions";
 
@@ -20,26 +20,35 @@ export default function NotificationsFeed() {
 	const client = useContext(AuthContext);
 
 	useEffect(() => {
-		client?.getNotifications().then(res => {
+		client?.getNotifications({
+			limit: 20
+		}).then(res => {
 			setNotifications(res.data);
 		});
 
-		const interval = setInterval(() => {
-			client?.getNotifications().then(res => {
-				setNotifications(res.data);
-			});
-		}, 15000);
-
-		return () => clearInterval(interval);
 	}, [client]);
-
 	return (
 		<WithLoader variable={notifications}>
 			<div className="flex flex-col gap-y-6 w-full max-w-full h-full font-inter">
 				<div className="flex-row justify-between">
 					<h3 className="text-lg font-bold">Notifications</h3>
 				</div>
-				<ul className="flex flex-col gap-y-2 max-w-full divide-y-2">
+				<ul onScroll={(e) => {
+					if (e.currentTarget) {
+						// Check if scrolled to bottom
+						const { scrollTop, scrollHeight, clientHeight } = e.currentTarget;
+						if (scrollTop + clientHeight === scrollHeight) {
+							// Load more notifications
+							client
+								?.getNotifications({
+									max_id: notifications[notifications.length - 1].id,
+								})
+								.then(res => {
+									setNotifications(notifications.concat(res.data));
+								});
+						}
+					}
+				}} className="flex overflow-y-auto flex-col gap-y-2 max-w-full divide-y-2">
 					{notifications.map(n => (
 						<Notification key={n.id} n={n} />
 					))}
@@ -53,7 +62,7 @@ const Notification = ({ n }: { n: Entity.Notification }) => {
 	return (
 		<>
 			{(n.type == "mention" || n.type == "favourite" || n.type == "reblog") && (
-				<li className="flex overflow-hidden flex-col gap-y-2 p-2 max-w-full">
+				<li className="flex flex-col gap-y-2 p-2 max-w-full">
 					{n.type == "favourite" && (
 						<Link
 							href={`/users/@${n.account.id}`}
