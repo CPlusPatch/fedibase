@@ -27,6 +27,12 @@ export function setToLocalStorage(key: string, value: string) {
 	return value;
 }
 
+/**
+ * Turns a string of HTML into a JSX element with emojis parsed
+ * @param string String of HTML to render
+ * @param emojis List of emojis in the text
+ * @returns JSX element of rendered HTML with the emoji
+ */
 export function withEmojis(string: string, emojis: Entity.Emoji[]) {
 		const blocks = string.split(":");
 
