@@ -60,7 +60,7 @@ export default function Status({
 							</h6>
 						</span>
 						<div className="whitespace-nowrap">
-							<span className="text-gray-700 hover:underline">
+							<span className="text-sm text-gray-700 hover:underline">
 								{fromNow(new Date(status.created_at))}
 							</span>
 						</div>
