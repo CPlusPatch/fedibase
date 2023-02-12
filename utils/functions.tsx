@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 /**
  * Checks if an object is empty (= to {})
  * @param obj The object to check
@@ -24,4 +25,22 @@ export function getFromLocalStorage(key: string, defaultValue: string) {
 export function setToLocalStorage(key: string, value: string) {
 	localStorage.setItem(key, value);
 	return value;
+}
+
+export function withEmojis(string: string, emojis: Entity.Emoji[]) {
+		const blocks = string.split(":");
+
+		let renderedHtml = "";
+		
+		blocks.map((block, index) => {
+			let html = block;
+			emojis.map((emoji, index2) => {
+				if (block == emoji.shortcode) {
+					html = `<img src="${emoji.url}" alt="" style="height: 1em; display: inline;"/>`;
+				}
+			});
+			renderedHtml += html;
+		});
+
+		return <span dangerouslySetInnerHTML={{ __html: renderedHtml }}></span>;
 }

@@ -1,3 +1,6 @@
+import EmojiRenderer from "components/emoji/EmojiRenderer";
+import { withEmojis } from "utils/functions";
+
 /* eslint-disable @next/next/no-img-element */
 export default function UserProfile({ user }: { user: Entity.Account }) {
 	return (
@@ -15,7 +18,7 @@ export default function UserProfile({ user }: { user: Entity.Account }) {
 			<div className="flex flex-row gap-x-4 px-4 mt-4 w-full">
 				<div className="flex flex-row gap-x-2 items-center">
 					<h4 className="flex-shrink text-xl font-bold font-poppins">
-						{user.display_name}
+						<EmojiRenderer string={user.display_name} emojis={user.emojis} />
 					</h4>
 					<h6
 						title={user.acct}
@@ -25,8 +28,9 @@ export default function UserProfile({ user }: { user: Entity.Account }) {
 				</div>
 			</div>
 			<div
-				className="p-3 w-full text-sm rounded-md border font-inter"
-				dangerouslySetInnerHTML={{ __html: user.note }}></div>
+				className="p-3 w-full text-sm rounded-md border font-inter">
+					{withEmojis(user.note, user.emojis)}
+				</div>
 		</div>
 	);
 }

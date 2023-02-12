@@ -7,6 +7,7 @@ const nextConfig = {
 	images: {
 		formats: ["image/avif", "image/webp"],
 	},
+	
 	webpack: (config, { isServer }) => {
 		if (!isServer) {
 			config.resolve.fallback.net = false;

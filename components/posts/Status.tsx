@@ -1,8 +1,10 @@
 /* eslint-disable @next/next/no-img-element */
 import Button from "components/buttons/Button";
+import EmojiRenderer from "components/emoji/EmojiRenderer";
 import { Entity } from "megalodon";
 import Link from "next/link";
 import { Dispatch, SetStateAction, useRef, useState } from "react";
+import { withEmojis } from "utils/functions";
 import InteractionBar from "./InteractionBar";
 import PostImages from "./PostImages";
 
@@ -34,7 +36,10 @@ export default function Status({
 				<div className="flex flex-col min-w-0 grow">
 					<div className="flex flex-col gap-x-2 text-[0.95rem] md:inline-block">
 						<h4 className="inline flex-shrink font-bold">
-							{status.account.display_name}
+							<EmojiRenderer
+								string={status.account.display_name}
+								emojis={status.account.emojis}
+							/>
 						</h4>
 						<h6
 							title={status.account.acct}
@@ -43,7 +48,11 @@ export default function Status({
 						</h6>
 					</div>
 					<div className="flex flex-col gap-y-1">
-						<SensitiveTextSpoiler status={status} showText={showText} setShowText={setShowText}/>
+						<SensitiveTextSpoiler
+							status={status}
+							showText={showText}
+							setShowText={setShowText}
+						/>
 
 						<div
 							className="relative w-full text-sm"
@@ -55,10 +64,11 @@ export default function Status({
 								ref={textRef}
 								className={`mt-1 rounded duration-200 ${
 									status.sensitive && !showText && "filter blur-lg"
-								}`}
-								dangerouslySetInnerHTML={{ __html: status.content }}></p>
+								}`}>
+								{withEmojis(status.content, status.emojis)}
+							</p>
 						</div>
-						
+
 						{textRef?.current?.offsetHeight > 128 && (
 							<>
 								<hr />
@@ -76,9 +86,7 @@ export default function Status({
 				</div>
 			</div>
 
-			{showInteraction && (
-				<InteractionBar status={status} />
-			)}
+			{showInteraction && <InteractionBar status={status} />}
 		</div>
 	);
 }
