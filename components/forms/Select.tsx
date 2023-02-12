@@ -41,7 +41,7 @@ export default function Select({ items, selected, setSelected }: SelectOptions) 
 						leave="ease-in duration-200"
 						leaveFrom="opacity-100 translate-y-0 sm:scale-100"
 						leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95">
-						<Listbox.Options className="overflow-auto absolute mt-1 w-full max-h-60 text-base bg-white rounded-md shadow-lg outline-none font-inter focus:outline-none sm:text-sm">
+						<Listbox.Options className="overflow-auto absolute z-20 mt-1 w-full max-h-60 text-base bg-white rounded-md shadow-lg outline-none font-inter focus:outline-none sm:text-sm">
 							{items.map(item => (
 								<Listbox.Option
 									key={item.text}

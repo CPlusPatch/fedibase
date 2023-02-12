@@ -9,11 +9,33 @@ import { setToLocalStorage } from "utils/functions";
 import { getCookie, setCookie } from "cookies-next";
 import { Input, Label } from "components/forms/Input";
 import generator, { detector, OAuth } from "megalodon";
+import Select from "components/forms/Select";
+import { IconLetterC, IconLetterM, IconLetterP } from "@tabler/icons-react";
 
-export default function Login() {
+const instanceTypes = [
+	{
+		icon: IconLetterP,
+		text: "Pleroma · Akkoma",
+		value: "pleroma",
+	},
+	{
+		icon: IconLetterM,
+		text: "Mastodon",
+		value: "mastodon",
+	},
+	{
+		icon: IconLetterC,
+		text: "Misskey · Calckey",
+		value: "misskey",
+	},
+];
+
+export default function LoginForm() {
 	const [isLoading, setIsLoading] = useState<boolean>(false);
 
 	const [mode, setMode] = useState<"login" | "code"> ("login");
+	const [selectedInstanceType, setSelectedInstanceType] = useState(instanceTypes[0]);
+
 	const [data, setData] = useState<{
 		instanceType: string,
 		instanceUrl: string,
@@ -33,10 +55,10 @@ export default function Login() {
 		setCookie("instanceUrl", instanceUrl);
 		setCookie("handle", handle);
 
-		const instanceType = event.target["type"].value;
+		const instanceType = selectedInstanceType.value;
 		setCookie("instanceType", instanceType);
 
-		const client = generator(instanceType, instanceUrl);
+		const client = generator(instanceType as any, instanceUrl);
 
 		const appData = await client.registerApp("Fedibase Web", {
 			scopes: [
@@ -62,7 +84,7 @@ export default function Login() {
 
 	const loginWithCode = async (event: any) => {
 		event.preventDefault();
-		//setIsLoading(true);
+		setIsLoading(true);
 		
 		const code = event.target["code"].value;
 
@@ -84,28 +106,26 @@ export default function Login() {
 					setCookie("accountId", account.id);
 
 					setIsLoading(false);
-					window.location.reload();
+					window.location.pathname = "/";
 				}
 			});
 		});
 	}
 	
 	return (
-		<div className="min-h-screen bg-gray-50">
-			<MetaTags title="Please sign in" />
-
-			<div className="flex flex-col justify-center py-12 min-h-screen sm:px-6 lg:px-8">
+		<div className="flex justify-center min-h-screen">
+			<div className="py-12 w-[30rem] flex flex-col justify-center sm:px-6 lg:px-8">
 				<div className="sm:mx-auto sm:w-full sm:max-w-md">
 					<div className="flex justify-center w-auto">
 						<SmallLogo size="w-12" />
 					</div>
 					<h2 className="mt-6 text-3xl font-extrabold text-center text-gray-900 font-poppins">
-						Enter credentials:
+						Login
 					</h2>
 				</div>
 
 				<div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-					<div className="px-4 py-8 bg-white shadow sm:rounded-lg sm:px-10 font-inter">
+					<div className="px-4 py-8 sm:px-10 font-inter">
 						{mode == "login" ? (
 							<form
 								className="space-y-6"
@@ -124,11 +144,7 @@ export default function Login() {
 									<Label>Fedi handle</Label>
 								</Input>
 
-								<select id="type" name="type">
-									<option value="pleroma">pleroma</option>
-									<option value="mastodon">mastodon</option>
-									<option value="misskey">misskey</option>
-								</select>
+								<Select selected={selectedInstanceType} setSelected={setSelectedInstanceType} items={instanceTypes} />
 
 								<div>
 									<Button
