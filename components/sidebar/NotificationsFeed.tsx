@@ -26,6 +26,22 @@ export default function NotificationsFeed() {
 			setNotifications(res.data);
 		});
 
+		/* const interval = setInterval(() => {
+			client
+				?.getNotifications({
+					since_id: notifications[0].id,
+				})
+				.then(res => {
+					setNotifications(n => [
+						...res.data,
+						...n
+					]);
+				});
+		}, 15000);
+
+		// Needed because React re-renders twice in development mode
+		return () => clearInterval(interval); */
+
 	}, [client]);
 	return (
 		<WithLoader variable={notifications}>
