@@ -19,11 +19,19 @@ const LoginPage = ({ code }) => {
 };
 
 export function getServerSideProps({ req, res, query }) {
-	console.log(query);
+	let code;
+
+	if (query.code) {
+		code = query.code;
+	} else if (query.token) {
+		code = query.token
+	} else {
+		code = ""
+	}
 
 	return {
 		props: {
-			code: query.code ?? ""
+			code: code
 		},
 	};
 }

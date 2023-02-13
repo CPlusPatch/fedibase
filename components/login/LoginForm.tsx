@@ -120,7 +120,7 @@ export default function LoginForm({
 					});
 				});
 		}
-	}, []);
+	}, [code]);
 	
 	return (
 		<div className="flex justify-center min-h-screen">
