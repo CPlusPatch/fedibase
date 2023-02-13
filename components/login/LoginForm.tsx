@@ -30,12 +30,10 @@ const instanceTypes = [
 	},
 ];
 
-export default function LoginForm({
-	code
-}) {
+export default function LoginForm({ code }) {
 	const [isLoading, setIsLoading] = useState<boolean>(false);
 
-	const [mode, setMode] = useState<"login" | "code"> (code ? "code" : "login");
+	const [mode, setMode] = useState<"login" | "code">(code ? "code" : "login");
 	const [selectedInstanceType, setSelectedInstanceType] = useState(instanceTypes[0]);
 
 	const loginForm = async (event: any) => {
@@ -44,7 +42,16 @@ export default function LoginForm({
 
 		const handle = event.target["handle"].value;
 
-		const instanceUrl = "https://" + handle.split("@")[2];
+		let domain: string = ""
+
+		if (handle.match(/@/g).length <= 2 && handle.match(/@/g).length >= 0)
+			domain = handle.split("@")[handle.match(/@/g).length]
+		else {
+			//TODO: put an error here.
+			domain = "kitsunes.gay"
+		}
+
+		const instanceUrl = `https://${domain}`;
 
 		setCookie("instanceUrl", instanceUrl);
 		setCookie("handle", handle);
@@ -55,10 +62,8 @@ export default function LoginForm({
 		const client = generator(instanceType as any, instanceUrl);
 
 		const appData = await client.registerApp("Fedibase Web", {
-			scopes: [
-				"read", "write", "follow"
-			],
-			redirect_uris: `http://${window.location.host}/login`
+			scopes: ["read", "write", "follow"],
+			redirect_uris: `http://${window.location.host}/login`,
 		});
 
 		const { clientId, clientSecret, url } = appData;
@@ -67,7 +72,7 @@ export default function LoginForm({
 		setCookie("clientSecret", clientSecret);
 
 		window.location.replace(url);
-	}
+	};
 
 	useEffect(() => {
 		if (code !== "") {
@@ -83,31 +88,25 @@ export default function LoginForm({
 				.fetchAccessToken(clientId, clientSecret, code)
 				.then(async (tokenData: OAuth.TokenData) => {
 					setCookie("accessToken", tokenData.accessToken);
-					
+
 					// Needed in case instance restricts searching to authenticated users
 					const client = generator(
 						instanceType as any,
 						instanceUrl,
 						tokenData.accessToken,
 					);
-
-					// Find ID of logged in account :( im sowwy
-					const notifs = await client.getNotifications({
-						limit: 100
+					
+					// Find ID of logged in account
+					client.verifyAccountCredentials().then(data => {
+						setCookie("accountId", data.data.id);
+						window.location.pathname = "/";
 					});
 
-					notifs.data.map(notif => {
-						// bad hack but IT WORKS!!
-						console.log(notif.status.account.acct);
-						if (notif.status.account.acct == handle.split("@")[1]) {
-							setCookie("accountId", notif.status.account.id);
-							window.location.pathname = "/";
-						}
-					});
+					// should work now? lemme test
 				});
 		}
 	}, [code]);
-	
+
 	return (
 		<div className="flex justify-center min-h-screen">
 			<div className="py-12 w-[30rem] flex flex-col justify-center sm:px-6 lg:px-8">
@@ -134,13 +133,17 @@ export default function LoginForm({
 									type="handle"
 									autoComplete="url"
 									required
-									placeholder="@cpluspatch@fedi.cpluspatch.com"
+									placeholder="@cpluspatch@kitsunes.gay"
 									isLoading={isLoading}
 									className="block px-3 py-2 w-full placeholder-gray-400 rounded-md border border-gray-300 shadow-sm duration-200 appearance-none disabled:bg-gray-100 focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm">
 									<Label>Fedi handle</Label>
 								</Input>
 
-								<Select selected={selectedInstanceType} setSelected={setSelectedInstanceType} items={instanceTypes} />
+								<Select
+									selected={selectedInstanceType}
+									setSelected={setSelectedInstanceType}
+									items={instanceTypes}
+								/>
 
 								<div>
 									<Button
