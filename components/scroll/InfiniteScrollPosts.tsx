@@ -1,7 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
-import { AuthContext } from "components/context/AuthContext";
-import { useState, useContext, useEffect } from "react";
-import { Entity, Response } from "megalodon";
+import { Entity } from "megalodon";
 import Link from "next/link";
 import Status from "components/posts/Status";
 import { withEmojis } from "utils/functions";

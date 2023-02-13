@@ -8,6 +8,7 @@ import SmallSelect from "components/forms/SmallSelect";
 import { Entity, Response } from "megalodon";
 import { FormEvent, MutableRefObject, useContext, useRef, useState } from "react";
 import { toast, Toaster } from "react-hot-toast";
+import { withEmojis } from "utils/functions";
 
 const modes = [
 	{
@@ -109,22 +110,27 @@ export default function LeftSidebar() {
 
 			<div className="flex flex-col gap-y-2">
 				{state?.replyingTo && (
-					<div className="flex relative flex-row gap-x-2 p-2 w-full text-sm bg-gray-200 rounded font-inter">
+					<div className="flex relative flex-row gap-x-2 p-2 w-full text-sm bg-gray-100 rounded border font-inter">
 						<img
 							src={(state?.replyingTo as Entity.Status).account.avatar}
 							className="w-10 h-10 rounded"
 							alt=""
 						/>
 						<div>
-							Replying to {(state?.replyingTo as Entity.Status).account.display_name}
+							Replying to{" "}
+							{withEmojis(
+								(state?.replyingTo as Entity.Status).account.display_name,
+								(state?.replyingTo as Entity.Status).account.emojis)}
 						</div>
 						<div className="absolute top-2 right-2">
-							<button className="bg-gray-100 rounded" onClick={() => {
-								setState((s: any) => ({
-									...s,
-									replyingTo: null,
-								}))
-							}}>
+							<button
+								className="bg-gray-100 rounded"
+								onClick={() => {
+									setState((s: any) => ({
+										...s,
+										replyingTo: null,
+									}));
+								}}>
 								<IconX className="w-4 h-4" />
 							</button>
 						</div>
