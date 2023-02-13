@@ -1,11 +1,12 @@
-import { IconAlignLeft, IconLock, IconLockOpen, IconMail, IconMarkdown, IconPaperclip, IconSearch, IconWorld } from "@tabler/icons-react";
+/* eslint-disable @next/next/no-img-element */
+import { IconAlignLeft, IconLock, IconLockOpen, IconMail, IconMarkdown, IconMessage, IconPaperclip, IconSearch, IconWorld, IconX } from "@tabler/icons-react";
 import Button from "components/buttons/Button";
 import { AuthContext } from "components/context/AuthContext";
+import { StateContext } from "components/context/StateContext";
 import Select from "components/forms/Select";
 import SmallSelect from "components/forms/SmallSelect";
 import { Entity, Response } from "megalodon";
 import { FormEvent, MutableRefObject, useContext, useRef, useState } from "react";
-import { Paperclip, Search } from "react-bootstrap-icons";
 import { toast, Toaster } from "react-hot-toast";
 
 const modes = [
@@ -51,6 +52,8 @@ export default function LeftSidebar() {
 	const [loading, setLoading] = useState<boolean>(false);
 	const textareaRef: MutableRefObject<HTMLTextAreaElement> = useRef(null);
 
+	const [state, setState] = useContext(StateContext) as any;
+
 	const submitForm = (event: FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
 		setLoading(true);
@@ -74,6 +77,7 @@ export default function LeftSidebar() {
 
 		client
 			.postStatus(event.target["comment"].value, {
+				in_reply_to_id: state?.replyingTo?.id ?? undefined,
 				visibility: visibility,
 			})
 			.then((res: Response<Entity.Status>) => {
@@ -85,6 +89,10 @@ export default function LeftSidebar() {
 			}).finally(() => {
 				setLoading(false);
 				textareaRef.current.value = "";
+				setState((s: any) => ({
+					...s,
+					replyingTo: null,
+				}));
 			});
 	}
 
@@ -100,6 +108,29 @@ export default function LeftSidebar() {
 			</div>
 
 			<div className="flex flex-col gap-y-2">
+				{state?.replyingTo && (
+					<div className="flex relative flex-row gap-x-2 p-2 w-full text-sm bg-gray-200 rounded font-inter">
+						<img
+							src={(state?.replyingTo as Entity.Status).account.avatar}
+							className="w-10 h-10 rounded"
+							alt=""
+						/>
+						<div>
+							Replying to {(state?.replyingTo as Entity.Status).account.display_name}
+						</div>
+						<div className="absolute top-2 right-2">
+							<button className="bg-gray-100 rounded" onClick={() => {
+								setState((s: any) => ({
+									...s,
+									replyingTo: null,
+								}))
+							}}>
+								<IconX className="w-4 h-4" />
+							</button>
+						</div>
+					</div>
+				)}
+
 				<form action="#" className="relative text-sm bg-white" onSubmit={submitForm}>
 					<div className="overflow-hidden rounded border border-gray-300 shadow-sm duration-200 focus-within:border-orange-500 focus-within:ring-1 focus-within:ring-orange-500">
 						<textarea

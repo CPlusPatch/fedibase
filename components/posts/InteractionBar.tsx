@@ -1,5 +1,6 @@
 import { IconMessage, IconMoodHappy, IconQuote, IconRocket, IconStar, IconStarFilled } from "@tabler/icons-react";
 import { AuthContext } from "components/context/AuthContext";
+import { StateContext } from "components/context/StateContext";
 import { Entity } from "megalodon";
 import { useContext, useState } from "react";
 
@@ -7,10 +8,15 @@ export default function InteractionBar({ status }: { status: Entity.Status }) {
 	const client = useContext(AuthContext);
 	const [favourited, setFavourited] = useState<boolean>(status.favourited);
 	const [boosted, setBoosted] = useState<boolean>(status.reblogged);
+	const [state, setState] = useContext(StateContext) as any;
 	
 	return (
 		<div className="grid grid-cols-5 justify-around px-5 mt-3 w-full text-gray-700">
-			<InteractionBarIcon>
+			<InteractionBarIcon onClick={() => {
+				setState({
+					replyingTo: status
+				})
+			}}>
 				<IconMessage className="w-5 h-5" />
 			</InteractionBarIcon>
 

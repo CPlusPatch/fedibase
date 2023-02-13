@@ -48,10 +48,7 @@ export default function Status({
 					<div className="flex flex-col justify-between gap-x-2 text-[0.95rem] md:flex-row">
 						<span className="inline overflow-hidden whitespace-nowrap text-ellipsis">
 							<h4 className="inline font-bold" title={status.account.display_name}>
-								<EmojiRenderer
-									string={status.account.display_name}
-									emojis={status.account.emojis}
-								/>
+								{withEmojis(status.account.display_name, status.account.emojis)}
 							</h4>
 							<h6
 								title={status.account.acct}
