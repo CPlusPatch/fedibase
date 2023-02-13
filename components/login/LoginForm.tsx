@@ -85,7 +85,12 @@ export default function LoginForm({ code }) {
 			const client = generator(instanceType as any, instanceUrl);
 
 			client
-				.fetchAccessToken(clientId, clientSecret, code)
+				.fetchAccessToken(
+					clientId,
+					clientSecret,
+					code,
+					`http://${window.location.host}/login`,
+					)
 				.then(async (tokenData: OAuth.TokenData) => {
 					setCookie("accessToken", tokenData.accessToken);
 
@@ -95,7 +100,7 @@ export default function LoginForm({ code }) {
 						instanceUrl,
 						tokenData.accessToken,
 					);
-					
+
 					// Find ID of logged in account
 					client.verifyAccountCredentials().then(data => {
 						setCookie("accountId", data.data.id);
