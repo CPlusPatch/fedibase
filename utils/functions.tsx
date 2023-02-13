@@ -1,3 +1,5 @@
+import { Entity } from "megalodon";
+
 /* eslint-disable @next/next/no-img-element */
 /**
  * Checks if an object is empty (= to {})
@@ -34,21 +36,23 @@ export function setToLocalStorage(key: string, value: string) {
  * @returns JSX element of rendered HTML with the emoji
  */
 export function withEmojis(string: string, emojis: Entity.Emoji[]) {
-		const blocks = string.split(":");
+		// Avoid replacing text with colons in it and instead use this funny regex to find all emojos
+		const blocks = [...string.matchAll(/:[^:\s]*(?:::[^:\s]*)*:/gim)];
 
-		let renderedHtml = "";
-		
-		blocks.map((block, index) => {
-			let html = block;
-			emojis.map((emoji, index2) => {
-				if (block == emoji.shortcode) {
-					html = `<img src="${emoji.url}" alt="" style="height: 1em; display: inline;"/>`;
-				}
-			});
-			renderedHtml += html;
-		});
+		// Sorry for messy code :3
+		blocks.forEach((block, index) => {
+			block.forEach((block2, index2) => {
+				let emoji: Entity.Emoji | null = null;
+				emojis.map((emoji2) => {
+					if (block2 == `:${emoji2.shortcode}:`) {
+						emoji = emoji2
+					}
+				})
+				string = string.replaceAll(block2, `<img src="${emoji?.url}" alt="" style="height: 1em; display: inline;"/>`)
+			})
+		})
 
-		return <span className="p-0 m-0" dangerouslySetInnerHTML={{ __html: renderedHtml }}></span>;
+		return <span className="p-0 m-0" dangerouslySetInnerHTML={{ __html: string }}></span>;
 }
 
 /**

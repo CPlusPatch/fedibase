@@ -88,7 +88,7 @@ export default function Status({
 							}}>
 							<p
 								ref={textRef}
-								className={`mt-1 rounded duration-200 ${
+								className={`mt-1 rounded duration-200 status-text ${
 									status.sensitive && !showText && "filter blur-lg"
 								}`}>
 								{withEmojis(status.content, status.emojis)}
