@@ -1,6 +1,6 @@
 import Head from "next/head";
 import SmallLogo from "components/logo/SmallLogo";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Spinner from "components/spinners/Spinner";
 import Link from "next/link";
 import Button from "components/buttons/Button";
@@ -30,10 +30,12 @@ const instanceTypes = [
 	},
 ];
 
-export default function LoginForm() {
+export default function LoginForm({
+	code
+}) {
 	const [isLoading, setIsLoading] = useState<boolean>(false);
 
-	const [mode, setMode] = useState<"login" | "code"> ("login");
+	const [mode, setMode] = useState<"login" | "code"> (code ? "code" : "login");
 	const [selectedInstanceType, setSelectedInstanceType] = useState(instanceTypes[0]);
 
 	const [data, setData] = useState<{
@@ -63,10 +65,14 @@ export default function LoginForm() {
 		const appData = await client.registerApp("Fedibase Web", {
 			scopes: [
 				"read", "write", "follow"
-			]
+			],
+			redirect_uris: `http://${window.location.host}/login`
 		});
 
 		const { clientId, clientSecret, url } = appData;
+
+		setCookie("clientId", clientId);
+		setCookie("clientSecret", clientSecret);
 
 		setData({
 			clientId: clientId,
@@ -76,41 +82,45 @@ export default function LoginForm() {
 			handle: handle
 		});
 
-		window.open(url);
-
-		setMode("code");
-		setIsLoading(false);
+		window.location.replace(url);
 	}
 
-	const loginWithCode = async (event: any) => {
-		event.preventDefault();
-		setIsLoading(true);
-		
-		const code = event.target["code"].value;
+	useEffect(() => {
+		if (code !== "") {
+			const instanceType = getCookie("instanceType").toString();
+			const instanceUrl = getCookie("instanceUrl").toString();
+			const clientId = getCookie("clientId").toString();
+			const clientSecret = getCookie("clientSecret").toString();
+			const handle = getCookie("handle").toString();
 
-		const client = generator(data.instanceType as any, data.instanceUrl);
+			const client = generator(instanceType as any, instanceUrl);
 
-		client.fetchAccessToken(data.clientId, data.clientSecret, code).then(async (tokenData: OAuth.TokenData) => {
-			setCookie("accessToken", tokenData.accessToken);
+			client
+				.fetchAccessToken(clientId, clientSecret, code)
+				.then(async (tokenData: OAuth.TokenData) => {
+					setCookie("accessToken", tokenData.accessToken);
 
-			// Needed in case instance restricts searching to authenticated users
-			const client = generator(data.instanceType as any, data.instanceUrl, tokenData.accessToken);
+					// Needed in case instance restricts searching to authenticated users
+					const client = generator(
+						instanceType as any,
+						instanceUrl,
+						tokenData.accessToken,
+					);
 
-			// Find ID of logged in account :( im sowwy
-			const accountIds = await client.searchAccount(data.handle);
-			
-			accountIds.data.map(account => {
-				// bad hack but IT WORKS!!
-				console.log(data.handle);
-				if (account.acct == data.handle.split("@")[1]) {
-					setCookie("accountId", account.id);
+					// Find ID of logged in account :( im sowwy
+					const accountIds = await client.searchAccount(handle);
 
-					setIsLoading(false);
-					window.location.pathname = "/";
-				}
-			});
-		});
-	}
+					accountIds.data.map(account => {
+						// bad hack but IT WORKS!!
+						console.log(handle);
+						if (account.acct == handle.split("@")[1]) {
+							setCookie("accountId", account.id);
+							window.location.pathname = "/";
+						}
+					});
+				});
+		}
+	}, []);
 	
 	return (
 		<div className="flex justify-center min-h-screen">
@@ -158,33 +168,7 @@ export default function LoginForm() {
 								</div>
 							</form>
 						) : (
-							<form
-								className="space-y-6"
-								action="#"
-								method="POST"
-								onSubmit={loginWithCode}>
-								<Input
-									id="code"
-									name="code"
-									type="password"
-									autoComplete={""}
-									required
-									isLoading={isLoading}
-									className="block px-3 py-2 w-full placeholder-gray-400 rounded-md border border-gray-300 shadow-sm duration-200 appearance-none disabled:bg-gray-100 focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm">
-									<Label>Code</Label>
-								</Input>
-
-								<div>
-									<Button
-										type="submit"
-										ringColor="orange-500"
-										style="orange"
-										className="w-full"
-										isLoading={isLoading}>
-										Submit
-									</Button>
-								</div>
-							</form>
+							<h4>Validating...</h4>
 						)}
 					</div>
 				</div>

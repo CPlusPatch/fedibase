@@ -3,7 +3,7 @@ import LoginForm from "components/login/LoginForm";
 import Image from "next/image";
 import wallpaper from "public/static/login-wallpaper.webp";
 
-const LoginPage = () => {
+const LoginPage = ({ code }) => {
 	return (
 		<div className="relative bg-gray-100">
 			<MetaTags title={`Login · Fedibase`} />
@@ -13,9 +13,19 @@ const LoginPage = () => {
 			</div>
 			<div className="absolute inset-0 backdrop-filter backdrop-blur-lg -z-10"></div> */}
 
-			<LoginForm />
+			<LoginForm code={code} />
 		</div>
 	);
 };
+
+export function getServerSideProps({ req, res, query }) {
+	console.log(query);
+
+	return {
+		props: {
+			code: query.code ?? ""
+		},
+	};
+}
 
 export default LoginPage;
