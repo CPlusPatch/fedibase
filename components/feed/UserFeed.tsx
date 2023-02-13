@@ -34,7 +34,7 @@ export const UserFeed = ({ account }: { account: Entity.Account }) => {
 	return (
 		<>
 			{account && (
-				<div className="flex flex-col gap-y-5 px-2 mt-5 w-full h-full">
+				<div className="flex overflow-scroll flex-col gap-y-5 px-2 mt-5 w-full h-full">
 					<UserProfile user={account} />
 					{posts.map(post => (
 						<Post key={post.id} post={post} />
