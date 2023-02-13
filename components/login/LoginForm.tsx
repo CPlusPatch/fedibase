@@ -38,14 +38,6 @@ export default function LoginForm({
 	const [mode, setMode] = useState<"login" | "code"> (code ? "code" : "login");
 	const [selectedInstanceType, setSelectedInstanceType] = useState(instanceTypes[0]);
 
-	const [data, setData] = useState<{
-		instanceType: string,
-		instanceUrl: string,
-		clientId: string,
-		clientSecret: string,
-		handle: string,
-	}>();
-
 	const loginForm = async (event: any) => {
 		event.preventDefault();
 		setIsLoading(true);
@@ -74,14 +66,6 @@ export default function LoginForm({
 		setCookie("clientId", clientId);
 		setCookie("clientSecret", clientSecret);
 
-		setData({
-			clientId: clientId,
-			clientSecret: clientSecret,
-			instanceType: instanceType,
-			instanceUrl: instanceUrl,
-			handle: handle
-		});
-
 		window.location.replace(url);
 	}
 
@@ -99,7 +83,7 @@ export default function LoginForm({
 				.fetchAccessToken(clientId, clientSecret, code)
 				.then(async (tokenData: OAuth.TokenData) => {
 					setCookie("accessToken", tokenData.accessToken);
-
+					
 					// Needed in case instance restricts searching to authenticated users
 					const client = generator(
 						instanceType as any,
@@ -108,13 +92,15 @@ export default function LoginForm({
 					);
 
 					// Find ID of logged in account :( im sowwy
-					const accountIds = await client.searchAccount(handle);
+					const notifs = await client.getNotifications({
+						limit: 100
+					});
 
-					accountIds.data.map(account => {
+					notifs.data.map(notif => {
 						// bad hack but IT WORKS!!
-						console.log(handle);
-						if (account.acct == handle.split("@")[1]) {
-							setCookie("accountId", account.id);
+						console.log(notif.status.account.acct);
+						if (notif.status.account.acct == handle.split("@")[1]) {
+							setCookie("accountId", notif.status.account.id);
 							window.location.pathname = "/";
 						}
 					});
