@@ -3,8 +3,9 @@ import { IconStarFilled } from "@tabler/icons-react";
 import { AuthContext } from "components/context/AuthContext";
 import WithLoader from "components/loaders/WithLoader";
 import Status from "components/posts/Status";
+import InfiniteScrollNotifications from "components/scroll/InfiniteScrollNotifications";
 import Spinner from "components/spinners/Spinner";
-import { Entity } from "megalodon";
+import { Entity, Response } from "megalodon";
 import Link from "next/link";
 import { useContext, useEffect, useRef, useState } from "react";
 import { GridFill, List, StarFill } from "react-bootstrap-icons";
@@ -18,57 +19,52 @@ const modes = [
 export default function NotificationsFeed() {
 	const [notifications, setNotifications] = useState<Entity.Notification[]>([]);
 	const client = useContext(AuthContext);
+	const notifsRef = useRef(notifications);
 
 	useEffect(() => {
-		client?.getNotifications({
-			limit: 20
-		}).then(res => {
-			setNotifications(res.data);
-		});
+		client
+			?.getNotifications({
+				limit: 20,
+			})
+			.then((res: Response<Entity.Notification[]>) => {
+				setNotifications(res.data);
+				notifsRef.current = res.data;
+			});
 
-		/* const interval = setInterval(() => {
+		const interval = setInterval(() => {
 			client
 				?.getNotifications({
-					since_id: notifications[0].id,
+					since_id: notifsRef.current[0].id,
 				})
 				.then(res => {
-					setNotifications(n => [
-						...res.data,
-						...n
-					]);
+					setNotifications(n => [...res.data, ...n]);
+					notifsRef.current = [...res.data, ...notifsRef.current];
 				});
 		}, 15000);
 
-		// Needed because React re-renders twice in development mode
-		return () => clearInterval(interval); */
-
+		return () => clearInterval(interval);
 	}, [client]);
+
 	return (
 		<WithLoader variable={notifications}>
 			<div className="flex flex-col gap-y-6 w-full max-w-full h-full font-inter">
 				<div className="flex-row justify-between">
 					<h3 className="text-lg font-bold">Notifications</h3>
 				</div>
-				<ul onScroll={(e) => {
-					if (e.currentTarget) {
-						// Check if scrolled to bottom
-						const { scrollTop, scrollHeight, clientHeight } = e.currentTarget;
-						if (scrollTop + clientHeight === scrollHeight) {
-							// Load more notifications
-							client
-								?.getNotifications({
-									max_id: notifications[notifications.length - 1].id,
-								})
-								.then(res => {
-									setNotifications(notifications.concat(res.data));
-								});
-						}
-					}
-				}} className="flex overflow-y-auto flex-col gap-y-2 max-w-full divide-y-2">
-					{notifications.map(n => (
-						<Notification key={n.id} n={n} />
-					))}
-				</ul>
+				<InfiniteScrollNotifications
+					notifs={notifications}
+					loadNewNotifs={() => {
+						console.log("loading more posts...");
+
+						client
+							?.getNotifications({
+								max_id: notifications[notifications.length - 1].id,
+							})
+							.then(res => {
+								setNotifications(n => [...n, ...res.data]);
+								notifsRef.current = [...notifications, ...res.data];
+							});
+					}}></InfiniteScrollNotifications>
 			</div>
 		</WithLoader>
 	);
@@ -94,7 +90,7 @@ const Notification = ({ n }: { n: Entity.Notification }) => {
 							className="overflow-hidden gap-x-2 max-w-full text-sm italic text-gray-500 overflow-ellipsis hover:underline">
 							<svg
 								xmlns="http://www.w3.org/2000/svg"
-								className="text-blue-500 hover:animate-spin w-[1em] inline pb-0.5"
+								className="text-blue-500 hover:animate-spin w-[1em] inline pb-0.5 mr-1"
 								viewBox="0 0 576 512">
 								<path
 									fill="currentColor"
