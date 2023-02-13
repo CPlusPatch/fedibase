@@ -48,7 +48,7 @@ export function withEmojis(string: string, emojis: Entity.Emoji[]) {
 			renderedHtml += html;
 		});
 
-		return <span dangerouslySetInnerHTML={{ __html: renderedHtml }}></span>;
+		return <span className="p-0 m-0" dangerouslySetInnerHTML={{ __html: renderedHtml }}></span>;
 }
 
 /**
