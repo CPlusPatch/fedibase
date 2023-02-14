@@ -1,26 +1,36 @@
-import { IconMessage, IconMoodHappy, IconQuote, IconRocket, IconStar, IconStarFilled } from "@tabler/icons-react";
+import {
+	IconLock,
+	IconMessage,
+	IconMoodHappy,
+	IconQuote,
+	IconRocket,
+	IconStar,
+	IconStarFilled,
+} from "@tabler/icons-react";
 import { AuthContext } from "components/context/AuthContext";
 import { StateContext } from "components/context/StateContext";
+import { stat } from "fs";
 import { Entity } from "megalodon";
 import { useContext, useState } from "react";
 
 /**
  * Small bar containing all the buttons on a post, such as "favourite", "quote", "reply"...
- * @returns 
+ * @returns
  */
 export default function InteractionBar({ status }: { status: Entity.Status }) {
 	const client = useContext(AuthContext);
 	const [favourited, setFavourited] = useState<boolean>(status.favourited);
 	const [boosted, setBoosted] = useState<boolean>(status.reblogged);
 	const [state, setState] = useContext(StateContext) as any;
-	
+
 	return (
 		<div className="grid grid-cols-5 justify-around px-5 mt-3 w-full text-gray-700">
-			<InteractionBarIcon onClick={() => {
-				setState({
-					replyingTo: status
-				})
-			}}>
+			<InteractionBarIcon
+				onClick={() => {
+					setState({
+						replyingTo: status,
+					});
+				}}>
 				<IconMessage className="w-5 h-5" />
 			</InteractionBarIcon>
 
@@ -51,10 +61,16 @@ export default function InteractionBar({ status }: { status: Entity.Status }) {
 
 					setBoosted(b => !b);
 				}}>
-				{boosted ? (
-					<IconRocket className="w-5 h-5 text-green-400 animate-[spin_1s_ease-in-out]" />
+				{status.visibility !== "private" && status.visibility !== "direct" ? (
+					<>
+						{boosted ? (
+							<IconRocket className="w-5 h-5 text-green-400 animate-[spin_1s_ease-in-out]" />
+						) : (
+							<IconRocket className="w-5 h-5" />
+						)}
+					</>
 				) : (
-					<IconRocket className="w-5 h-5" />
+					<IconLock className="w-5 h-5 text-gray-300" />
 				)}
 			</InteractionBarIcon>
 
