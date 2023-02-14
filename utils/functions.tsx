@@ -36,8 +36,9 @@ export function setToLocalStorage(key: string, value: string) {
  * @returns JSX element of rendered HTML with the emoji
  */
 export function withEmojis(string: string, emojis: Entity.Emoji[]) {
+		let renderedHtml = "";
 		// Avoid replacing text with colons in it and instead use this funny regex to find all emojos
-		const blocks = [...string.matchAll(/:[^:\s]*(?:::[^:\s]*)*:/gim)];
+		/* const blocks = [...string.matchAll(/:[^:\s]*(?:::[^:\s]*)*:/gim)];
 
 		// Sorry for messy code :3
 		blocks.forEach((block, index) => {
@@ -50,6 +51,13 @@ export function withEmojis(string: string, emojis: Entity.Emoji[]) {
 				})
 				string = string.replaceAll(block2, `<img src="${emoji?.url}" alt="" style="height: 1em; display: inline;"/>`)
 			})
+		}) */
+
+		emojis.forEach((emoji) => {
+			string = string.replaceAll(
+				`:${emoji.shortcode}:`,
+				`<img src="${emoji.url}" alt="" style="height: 1em; display: inline; margin-bottom: 0.25em"/>`,
+			);
 		})
 
 		return <span className="p-0 m-0" dangerouslySetInnerHTML={{ __html: string }}></span>;
