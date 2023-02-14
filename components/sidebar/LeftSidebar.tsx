@@ -137,12 +137,15 @@ export default function LeftSidebar() {
 					</div>
 				)}
 
-				<form action="#" className="relative text-sm bg-white" onSubmit={submitForm}>
+				<form action="#" className="relative text-sm bg-white" onSubmit={submitForm} onKeyUp={(e) => {
+					if (e.key === "Enter" && (e.ctrlKey || e.metaKey)) {
+						e.currentTarget.requestSubmit();
+					}
+				}}>
 					<div className="overflow-hidden rounded border border-gray-300 shadow-sm duration-200 focus-within:border-orange-500 focus-within:ring-1 focus-within:ring-orange-500">
 						<textarea
 							rows={3}
 							ref={textareaRef}
-							name="comment"
 							id="comment"
 							disabled={loading}
 							className="block py-3 w-full border-0 resize-none focus:ring-0 sm:text-sm disabled:bg-gray-200"
