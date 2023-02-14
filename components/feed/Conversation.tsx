@@ -13,11 +13,14 @@ export const Conversation = ({ id }) => {
 	useEffect(() => {
 		client.getStatus(id).then(data => {
 			setPosts([data.data]);
+			postsRef.current = [data.data]
 
 			client.getStatusContext(id).then(context => {
-				setPosts(p => [...context.data.ancestors, ...p, ...context.data.descendants]);
+				setPosts([...context.data.ancestors, ...postsRef.current, ...context.data.descendants]);
 			});
-		})
+		});
+
+		return () => setPosts([]);
 	}, [client, id]);
 
 	return (
