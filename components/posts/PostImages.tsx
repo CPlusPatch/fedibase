@@ -4,6 +4,10 @@ import Button from "components/buttons/Button";
 import { Entity } from "megalodon";
 import { useState } from "react";
 
+/**
+ * Images of a Status (extracted for modularity)
+ * @returns 
+ */
 export default function PostImages({ status }: { status: Entity.Status }) {
 	return (
 		<>

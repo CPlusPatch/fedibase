@@ -30,30 +30,14 @@ export function setToLocalStorage(key: string, value: string) {
 }
 
 /**
- * Turns a string of HTML into a JSX element with emojis parsed
+ * Turns a string of HTML into a JSX element with emojis parsed as img tags
  * @param string String of HTML to render
  * @param emojis List of emojis in the text
  * @returns JSX element of rendered HTML with the emoji
  */
 export function withEmojis(string: string, emojis: Entity.Emoji[]) {
-		let renderedHtml = "";
-		// Avoid replacing text with colons in it and instead use this funny regex to find all emojos
-		/* const blocks = [...string.matchAll(/:[^:\s]*(?:::[^:\s]*)*:/gim)];
-
-		// Sorry for messy code :3
-		blocks.forEach((block, index) => {
-			block.forEach((block2, index2) => {
-				let emoji: Entity.Emoji | null = null;
-				emojis.map((emoji2) => {
-					if (block2 == `:${emoji2.shortcode}:`) {
-						emoji = emoji2
-					}
-				})
-				string = string.replaceAll(block2, `<img src="${emoji?.url}" alt="" style="height: 1em; display: inline;"/>`)
-			})
-		}) */
-
 		emojis.forEach((emoji) => {
+			// img has .25em bottom margin to line up right
 			string = string.replaceAll(
 				`:${emoji.shortcode}:`,
 				`<img src="${emoji.url}" alt="" style="height: 1em; display: inline; margin-bottom: 0.25em"/>`,

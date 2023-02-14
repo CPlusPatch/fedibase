@@ -15,7 +15,7 @@ export default function Status({
 	showInteraction = true
 }: {
 	status: Entity.Status;
-	type: "notification" | "post";
+	type: "notification" | "post"; // Notification renders slightly different than a normal post
 	showInteraction?: boolean;
 }) {
 	const [expand, setExpand] = useState<boolean>(false);
@@ -25,6 +25,7 @@ export default function Status({
 	const client = useContext(AuthContext);
 
 	useEffect(() => {
+		// If the post is a reply, get the previous post's contents
 		if (status.in_reply_to_account_id && !inReplyAccount) client?.getAccount(status.in_reply_to_account_id).then(data => {
 			setInReplyAccount(data.data);
 		});
@@ -55,9 +56,9 @@ export default function Status({
 							</h6>
 						</span>
 						<div className="whitespace-nowrap">
-							<span className="text-sm text-gray-700 hover:underline">
+							<Link href={`/posts/${status.id}`} className="text-sm text-gray-700 hover:underline">
 								{fromNow(new Date(status.created_at))}
-							</span>
+							</Link>
 						</div>
 					</div>
 					<div className="flex flex-col gap-y-1">

@@ -4,6 +4,10 @@ import { StateContext } from "components/context/StateContext";
 import { Entity } from "megalodon";
 import { useContext, useState } from "react";
 
+/**
+ * Small bar containing all the buttons on a post, such as "favourite", "quote", "reply"...
+ * @returns 
+ */
 export default function InteractionBar({ status }: { status: Entity.Status }) {
 	const client = useContext(AuthContext);
 	const [favourited, setFavourited] = useState<boolean>(status.favourited);
