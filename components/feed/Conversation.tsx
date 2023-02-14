@@ -18,11 +18,11 @@ export const Conversation = ({ id }) => {
 				setPosts(p => [...context.data.ancestors, ...p, ...context.data.descendants]);
 			});
 		})
-	}, []);
+	}, [client, id]);
 
 	return (
 		<WithLoader variable={posts}>
-			<div className="flex flex-col gap-y-5 px-6 py-4 w-full h-full">
+			<div className="flex overflow-y-auto flex-col gap-y-5 px-6 py-4 w-full h-full">
 				{posts.map(post => (
 					<Post post={post} key={post.id} />
 				))}
