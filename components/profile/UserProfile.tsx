@@ -4,7 +4,7 @@ import { withEmojis } from "utils/functions";
 /* eslint-disable @next/next/no-img-element */
 export default function UserProfile({ user }: { user: Entity.Account }) {
 	return (
-		<div className="flex flex-col gap-y-4 p-3 w-full border-b-2">
+		<div className="flex flex-col gap-y-4 py-3 w-full">
 			<div className="relative w-full">
 				<div className="flex overflow-hidden justify-center items-center w-full h-44 bg-gray-200 rounded border">
 					<img src={user.header} className="w-full" alt="" />
@@ -18,7 +18,7 @@ export default function UserProfile({ user }: { user: Entity.Account }) {
 			<div className="flex flex-row gap-x-4 px-4 mt-4 w-full">
 				<div className="flex flex-row gap-x-2 items-center">
 					<h4 className="flex-shrink text-xl font-bold font-poppins">
-						<EmojiRenderer string={user.display_name} emojis={user.emojis} />
+						{withEmojis(user.display_name, user.emojis)}
 					</h4>
 					<h6
 						title={user.acct}

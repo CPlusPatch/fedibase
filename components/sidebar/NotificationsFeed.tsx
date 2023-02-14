@@ -4,17 +4,10 @@ import { AuthContext } from "components/context/AuthContext";
 import WithLoader from "components/loaders/WithLoader";
 import Status from "components/posts/Status";
 import InfiniteScrollNotifications from "components/scroll/InfiniteScrollNotifications";
-import Spinner from "components/spinners/Spinner";
 import { Entity, Response } from "megalodon";
 import Link from "next/link";
 import { useContext, useEffect, useRef, useState } from "react";
-import { GridFill, List, StarFill } from "react-bootstrap-icons";
-import { isEmpty, withEmojis } from "utils/functions";
-
-const modes = [
-	{ name: "Large", icon: GridFill, value: true },
-	{ name: "Small", icon: List, value: false },
-];
+import { withEmojis } from "utils/functions";
 
 export default function NotificationsFeed() {
 	const [notifications, setNotifications] = useState<Entity.Notification[]>([]);
@@ -54,7 +47,7 @@ export default function NotificationsFeed() {
 				<InfiniteScrollNotifications
 					notifs={notifications}
 					loadNewNotifs={() => {
-						console.log("loading more posts...");
+						console.log("loading more notifs...");
 
 						client
 							?.getNotifications({

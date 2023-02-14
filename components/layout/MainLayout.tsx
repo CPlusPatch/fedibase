@@ -10,7 +10,7 @@ export default function MainLayout({ children }) {
 						<div className="hidden overflow-y-scroll p-4 max-h-screen md:col-span-2 md:block">
 							<LeftSidebar />
 						</div>
-						<div className="overflow-y-hidden col-span-6 max-h-screen border-x">
+						<div className="overflow-y-scroll col-span-6 max-h-screen border-x">
 							{children}
 						</div>
 						<div className="hidden overflow-x-hidden p-4 min-w-0 max-h-screen md:col-span-3 md:flex">

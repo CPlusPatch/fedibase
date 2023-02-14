@@ -2,11 +2,9 @@
 import { IconMessage } from "@tabler/icons-react";
 import Button from "components/buttons/Button";
 import { AuthContext } from "components/context/AuthContext";
-import EmojiRenderer from "components/emoji/EmojiRenderer";
 import { Entity } from "megalodon";
 import Link from "next/link";
 import { Dispatch, SetStateAction, useContext, useEffect, useRef, useState } from "react";
-import { useInView } from "react-intersection-observer";
 import { fromNow, withEmojis } from "utils/functions";
 import InteractionBar from "./InteractionBar";
 import PostImages from "./PostImages";

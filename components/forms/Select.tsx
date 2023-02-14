@@ -1,6 +1,6 @@
 import { Listbox, Transition } from "@headlessui/react";
 import { Fragment, useState } from "react";
-import { Check, ChevronDown, ChevronExpand } from "react-bootstrap-icons";
+import { Check, ChevronExpand } from "react-bootstrap-icons";
 
 interface SelectOptions {
 	items: SelectItem[];

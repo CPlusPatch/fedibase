@@ -29,7 +29,7 @@ export default function InfiniteScrollPosts({ posts, loadNewPosts }: {
 	);
 }
 
-const Post = ({ post }: { post: Entity.Status }) => {
+export const Post = ({ post }: { post: Entity.Status }) => {
 	return (
 		<div className="flex flex-col gap-y-2">
 			{post.reblog && (
