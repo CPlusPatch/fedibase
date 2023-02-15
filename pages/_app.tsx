@@ -4,7 +4,6 @@ import NextNProgress from "nextjs-progressbar";
 import { AppProps } from 'next/app';
 import { AuthContext } from 'components/context/AuthContext';
 import generator from 'megalodon';
-import { getCookie } from 'cookies-next';
 import { StateContext } from 'components/context/StateContext';
 import { useState } from 'react';
 
@@ -19,16 +18,21 @@ function App({ Component, pageProps }: AppProps) {
 			<StateContext.Provider value={[state, setState] as any}>
 				<AuthContext.Provider
 					value={
-						(getCookie("accessToken") ?? "").toString() !== "" &&
-						(getCookie("instanceType") ?? "").toString() !== ""
+						typeof window !== "undefined" &&
+						localStorage.getItem("accessToken") &&
+						localStorage.getItem("instanceType")
 							? generator(
-									(getCookie("instanceType") ?? "").toString() as any,
-									(getCookie("instanceUrl") ?? "").toString(),
-									(getCookie("accessToken") ?? "").toString(),
+									localStorage.getItem("instanceType") as any,
+									localStorage.getItem("instanceUrl"),
+									localStorage.getItem("accessToken"),
 							  )
 							: null
 					}>
 					<Head>
+						{typeof window !== "undefined" &&
+							localStorage.getItem("accessToken") == null && window.location.pathname !== "/login" && (
+								<meta httpEquiv="refresh" content="0;url=/login" />
+							)}
 						<meta name="viewport" content="width=device-width, initial-scale=1" />
 					</Head>
 					<NextNProgress />

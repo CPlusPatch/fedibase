@@ -2,7 +2,6 @@
 import { Transition } from "@headlessui/react";
 import { IconHome, IconUsers, IconWorld } from "@tabler/icons-react";
 import { AuthContext } from "components/context/AuthContext";
-import { getCookie, setCookie } from "cookies-next";
 import Link from "next/link";
 import { Fragment, useContext, useEffect, useState } from "react";
 import { classNames } from "utils/functions";
@@ -32,15 +31,16 @@ export default function Nav({ current }: { current: string }) {
 
 	useEffect(() => {
 		if (window) {
-			client?.getAccount(getCookie("accountId").toString()).then(data => {
+			client?.verifyAccountCredentials().then(data => {
 				setAccount(data.data);
 			});
 
-			if (getCookie("instanceData")?.toString()) {
-				setInstance(JSON.parse(getCookie("instanceData").toString()));
+			if (localStorage.getItem("instanceData")) {
+				setInstance(JSON.parse(localStorage.getItem("instanceData")));
 			} else {
 				client?.getInstance().then(data => {
-					setCookie("instanceData", JSON.stringify(data.data));
+					// Caches instance data
+					localStorage.setItem("instanceData", JSON.stringify(data.data));
 					setInstance(data.data);
 				});
 			}

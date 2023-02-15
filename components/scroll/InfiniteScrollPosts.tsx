@@ -29,9 +29,9 @@ export default function InfiniteScrollPosts({ posts, loadNewPosts }: {
 	);
 }
 
-export const Post = ({ post }: { post: Entity.Status }) => {
+export const Post = ({ post, highlight = false }: { post: Entity.Status; highlight?: boolean }) => {
 	return (
-		<div className="flex flex-col gap-y-2">
+		<div className={`flex flex-col gap-y-2 ${highlight && "bg-gray-400"}`}>
 			{post.reblog && (
 				<Link
 					href={`/users/@${post.account.id}`}

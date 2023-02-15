@@ -1,14 +1,8 @@
-import Head from "next/head";
 import SmallLogo from "components/logo/SmallLogo";
 import { useEffect, useState } from "react";
-import Spinner from "components/spinners/Spinner";
-import Link from "next/link";
 import Button from "components/buttons/Button";
-import MetaTags from "components/head/MetaTags";
-import { setToLocalStorage } from "utils/functions";
-import { getCookie, setCookie } from "cookies-next";
 import { Input, Label } from "components/forms/Input";
-import generator, { detector, OAuth } from "megalodon";
+import generator, { OAuth } from "megalodon";
 import Select from "components/forms/Select";
 import { IconLetterC, IconLetterM, IconLetterP } from "@tabler/icons-react";
 
@@ -47,17 +41,12 @@ export default function LoginForm({ code }) {
 		if (handle.match(/@/g).length <= 2 && handle.match(/@/g).length >= 0)
 			domain = handle.split("@")[handle.match(/@/g).length]
 		else {
-			//TODO: put an error here.
+			// TODO: put an error here.
 			domain = "kitsunes.gay"
 		}
 
 		const instanceUrl = `https://${domain}`;
-
-		setCookie("instanceUrl", instanceUrl);
-		setCookie("handle", handle);
-
 		const instanceType = selectedInstanceType.value;
-		setCookie("instanceType", instanceType);
 
 		const client = generator(instanceType as any, instanceUrl);
 
@@ -72,19 +61,27 @@ export default function LoginForm({ code }) {
 
 		const { clientId, clientSecret, url } = appData;
 
-		setCookie("clientId", clientId);
+		/* setCookie("clientId", clientId);
 		setCookie("clientSecret", clientSecret);
+		setCookie("instanceUrl", instanceUrl);
+		setCookie("handle", handle);
+		setCookie("instanceType", instanceType); */
+
+		localStorage.setItem("clientId", clientId);
+		localStorage.setItem("clientSecret", clientSecret);
+		localStorage.setItem("instanceUrl", instanceUrl);
+		localStorage.setItem("handle", handle);
+		localStorage.setItem("instanceType", instanceType);
 
 		window.location.replace(url);
 	};
 
 	useEffect(() => {
 		if (code !== "") {
-			const instanceType = getCookie("instanceType").toString();
-			const instanceUrl = getCookie("instanceUrl").toString();
-			const clientId = getCookie("clientId").toString();
-			const clientSecret = getCookie("clientSecret").toString();
-			const handle = getCookie("handle").toString();
+			const instanceType = localStorage.getItem("instanceType");
+			const instanceUrl = localStorage.getItem("instanceUrl");
+			const clientId = localStorage.getItem("clientId");
+			const clientSecret = localStorage.getItem("clientSecret");
 
 			const client = generator(instanceType as any, instanceUrl);
 
@@ -96,7 +93,7 @@ export default function LoginForm({ code }) {
 					`http://${window.location.host}/login`,
 					)
 				.then(async (tokenData: OAuth.TokenData) => {
-					setCookie("accessToken", tokenData.accessToken);
+					localStorage.setItem("accessToken", tokenData.accessToken);
 
 					// Needed in case instance restricts searching to authenticated users
 					const client = generator(
@@ -107,11 +104,9 @@ export default function LoginForm({ code }) {
 
 					// Find ID of logged in account
 					client.verifyAccountCredentials().then(data => {
-						setCookie("accountId", data.data.id);
+						localStorage.setItem("accountId", data.data.id);
 						window.location.pathname = "/";
 					});
-
-					// should work now? lemme test
 				});
 		}
 	}, [code]);
