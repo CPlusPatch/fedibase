@@ -24,6 +24,7 @@ specifiers:
   megalodon: 5.1.1
   next: ^13.0.4
   nextjs-progressbar: ^0.0.16
+  performant-array-to-tree: ^1.11.0
   postcss: ^8.4.16
   react: 18.2.0
   react-bootstrap-icons: ^1.10.2
@@ -45,6 +46,7 @@ dependencies:
   megalodon: 5.1.1_utf-8-validate@6.0.2
   next: 13.1.6_biqbaboplfbrettd7655fr4n2y
   nextjs-progressbar: 0.0.16_next@13.1.6+react@18.2.0
+  performant-array-to-tree: 1.11.0
   react: 18.2.0
   react-bootstrap-icons: 1.10.2_react@18.2.0
   react-dom: 18.2.0_react@18.2.0
@@ -2244,6 +2246,10 @@ packages:
     resolution: {integrity: sha512-gDKb8aZMDeD/tZWs9P6+q0J9Mwkdl6xMV8TjnGP3qJVJ06bdMgkbBlLU8IdfOsIsFz2BW1rNVT3XuNEl8zPAvw==}
     engines: {node: '>=8'}
     dev: true
+
+  /performant-array-to-tree/1.11.0:
+    resolution: {integrity: sha512-YwCqIDvnaebXaKuKQhI5yJD6ryDc3FxvoeX/5ougXTKDUWb7s5S2BuBgIyftCa4sBe1+ZU5Kmi4RJy+pjjjrpw==}
+    dev: false
 
   /picocolors/1.0.0:
     resolution: {integrity: sha512-1fygroTLlHu66zi26VoTDv8yRgm0Fccecssto+MhsZ0D/DGW2sm8E8AjW7NU5VVTRt5GxbeZ5qBuJr+HyLYkjQ==}

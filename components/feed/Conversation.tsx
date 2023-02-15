@@ -1,26 +1,33 @@
 /* eslint-disable @next/next/no-img-element */
 import { AuthContext } from "components/context/AuthContext";
 import WithLoader from "components/loaders/WithLoader";
-import InfiniteScrollPosts, { Post } from "components/scroll/InfiniteScrollPosts";
-import { Entity, Response } from "megalodon";
-import { useContext, useEffect, useRef, useState } from "react";
+import { Post } from "components/scroll/InfiniteScrollPosts";
+import { Entity } from "megalodon";
+import { arrayToTree } from "performant-array-to-tree";
+import { useContext, useEffect, useState } from "react";
 
 export const Conversation = ({ id }) => {
 	const [ancestors, setAncestors] = useState<Entity.Status[]>([]);
 	const [posts, setPosts] = useState<Entity.Status[]>([]);
-	const [descendants, setDescendants] = useState<Entity.Status[]>([]);
+	const [descendants, setDescendants] = useState([]);
 	const client = useContext(AuthContext);
-	const postsRef = useRef(posts);
 
 	useEffect(() => {
 		client.getStatus(id).then(data => {
 			setPosts([data.data]);
 
 			client.getStatusContext(id).then(context => {
-				setAncestors([...context.data.ancestors]);
-				setDescendants([...context.data.descendants]);
-				console.log([...context.data.descendants]);
-				//setPosts([...context.data.ancestors, ...postsRef.current, ...context.data.descendants]);
+				setAncestors(context.data.ancestors);
+				setDescendants(
+					arrayToTree(context.data.descendants, {
+						id: "id",
+						parentId: "in_reply_to_id",
+						rootParentIds: {
+							[id]: true,
+						},
+						dataField: null,
+					}) as any,
+				);
 			});
 		});
 
@@ -36,12 +43,31 @@ export const Conversation = ({ id }) => {
 				{posts.map(post => (
 					<Post post={post} key={post.id} />
 				))}
-				<div className="pl-6 border-l-4">
+				<div className="flex flex-col gap-y-4 pl-2 border-l-4">
 					{descendants.map(post => (
-						<Post post={post} key={post.id} />
+						<PostWithChildren post={post} key={post.id} />
 					))}
 				</div>
 			</div>
 		</WithLoader>
 	);
 };
+
+function PostWithChildren({ post }) {
+	return (
+		<>
+			{post.children.length > 0 ? (
+				<>
+				<Post post={post} />
+					<div className="flex flex-col gap-y-4 pl-2 border-l-4">
+						{post.children.map(postChild => (
+							<PostWithChildren post={postChild} key={postChild.id}/>
+						))}
+					</div>
+				</>
+			) : (
+				<Post post={post} />
+			)}
+		</>
+	);
+}
