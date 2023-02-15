@@ -75,7 +75,7 @@ export default function MobileNavbar() {
 													<IconX className="w-6 h-6" aria-hidden="true" />
 												</button>
 											</div>
-											<div className="relative flex-1 px-4 mt-6 sm:px-6">
+											<div className="flex overflow-x-hidden relative px-4 mt-6 sm:px-6">
 												<NotificationsFeed withTitle={false} />
 											</div>
 										</div>
