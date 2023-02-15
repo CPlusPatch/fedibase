@@ -9,7 +9,7 @@ export default function MobileNavbar() {
 	
 	return (
 		<>
-			<div className="flex justify-between px-6 py-4 border-b md:hidden">
+			<div className="flex fixed inset-x-0 top-0 z-30 justify-between px-6 py-4 bg-white border-b md:hidden">
 				<Button
 					style="gray"
 					className="!p-3 !border-none !shadow-none"
