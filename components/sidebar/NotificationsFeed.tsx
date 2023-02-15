@@ -9,7 +9,11 @@ import Link from "next/link";
 import { useContext, useEffect, useRef, useState } from "react";
 import { withEmojis } from "utils/functions";
 
-export default function NotificationsFeed() {
+export default function NotificationsFeed({
+	withTitle = true
+}: {
+	withTitle?: boolean
+}) {
 	const [notifications, setNotifications] = useState<Entity.Notification[]>([]);
 	const client = useContext(AuthContext);
 	const notifsRef = useRef(notifications);
@@ -41,9 +45,9 @@ export default function NotificationsFeed() {
 	return (
 		<WithLoader variable={notifications}>
 			<div className="flex flex-col gap-y-6 w-full max-w-full h-full font-inter">
-				<div className="flex-row justify-between">
+				{withTitle && <div className="flex-row justify-between">
 					<h3 className="text-lg font-bold">Notifications</h3>
-				</div>
+				</div>}
 				<InfiniteScrollNotifications
 					notifs={notifications}
 					loadNewNotifs={() => {

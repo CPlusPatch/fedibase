@@ -3,6 +3,7 @@ import { Entity } from "megalodon";
 import Link from "next/link";
 import Status from "components/posts/Status";
 import { withEmojis } from "utils/functions";
+import { useState } from "react";
 
 export default function InfiniteScrollPosts({ posts, loadNewPosts }: {
 	posts: Entity.Status[];
@@ -10,7 +11,7 @@ export default function InfiniteScrollPosts({ posts, loadNewPosts }: {
 }) {
 	return (
 		<div
-			className="flex overflow-y-auto flex-col gap-y-5 px-6 py-4 mt-10"
+			className="flex overflow-y-auto flex-col gap-y-5 px-6 py-4 md:mt-10"
 			onScroll={e => {
 				if (e.currentTarget) {
 					// Check if scrolled to bottom
