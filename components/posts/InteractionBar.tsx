@@ -30,6 +30,7 @@ export default function InteractionBar({ status }: { status: Entity.Status }) {
 					setState(s => ({
 						...s,
 						replyingTo: status,
+						mobileEditorOpened: true,
 					}));
 				}}>
 				<IconMessage className="w-5 h-5" />
