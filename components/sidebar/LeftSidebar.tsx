@@ -1,13 +1,13 @@
 /* eslint-disable @next/next/no-img-element */
 import { Transition, Dialog } from "@headlessui/react";
-import { IconAlignLeft, IconLock, IconLockOpen, IconMail, IconMarkdown, IconMessage, IconPaperclip, IconSearch, IconWorld, IconX } from "@tabler/icons-react";
+import { IconAlignLeft, IconLock, IconLockOpen, IconMail, IconMarkdown, IconPaperclip, IconSearch, IconWorld, IconX } from "@tabler/icons-react";
 import Button from "components/buttons/Button";
 import { AuthContext } from "components/context/AuthContext";
 import { StateContext } from "components/context/StateContext";
 import Select from "components/forms/Select";
 import SmallSelect from "components/forms/SmallSelect";
 import { Entity, Response } from "megalodon";
-import { FormEvent, Fragment, MutableRefObject, useContext, useRef, useState } from "react";
+import { FormEvent, Fragment, useContext, useRef, useState } from "react";
 import { toast, Toaster } from "react-hot-toast";
 import { withEmojis } from "utils/functions";
 
@@ -98,7 +98,7 @@ export default function LeftSidebar() {
 			<Transition.Root show={state.mobileEditorOpened} as={Fragment}>
 				<Dialog
 					as="div"
-					className="relative z-50"
+					className="block relative z-50 md:hidden"
 					onClose={() =>
 						setState(s => ({
 							...s,

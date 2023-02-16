@@ -1,10 +1,11 @@
 /* eslint-disable @next/next/no-img-element */
+import { Popover, Transition } from "@headlessui/react";
 import { IconMessage } from "@tabler/icons-react";
 import Button from "components/buttons/Button";
 import { AuthContext } from "components/context/AuthContext";
 import { Entity } from "megalodon";
 import Link from "next/link";
-import { Dispatch, SetStateAction, useContext, useEffect, useRef, useState } from "react";
+import { Dispatch, Fragment, SetStateAction, useContext, useEffect, useRef, useState } from "react";
 import { fromNow, withEmojis } from "utils/functions";
 import InteractionBar from "./InteractionBar";
 import PostImages from "./PostImages";
@@ -12,24 +13,15 @@ import PostImages from "./PostImages";
 export default function Status({
 	status,
 	type,
-	showInteraction = true
+	showInteraction = true,
 }: {
 	status: Entity.Status;
 	type: "notification" | "post"; // Notification renders slightly different than a normal post
 	showInteraction?: boolean;
 }) {
 	const [expand, setExpand] = useState<boolean>(false);
-	const [showText, setShowText] = useState<boolean>(false);	
+	const [showText, setShowText] = useState<boolean>(false);
 	const textRef = useRef<HTMLParagraphElement>(null);
-	const [inReplyAccount, setInReplyAccount] = useState<Entity.Account>();
-	const client = useContext(AuthContext);
-
-	useEffect(() => {
-		// If the post is a reply, get the previous post's contents
-		if (status.in_reply_to_account_id && !inReplyAccount) client?.getAccount(status.in_reply_to_account_id).then(data => {
-			setInReplyAccount(data.data);
-		});
-	}, [client, inReplyAccount, status.in_reply_to_account_id])
 
 	return (
 		<div className="flex flex-col max-w-full">
@@ -57,23 +49,15 @@ export default function Status({
 							</h6>
 						</span>
 						<div className="whitespace-nowrap">
-							<Link href={`/posts/${status.id}`} className="text-sm text-gray-700 hover:underline">
+							<Link
+								href={`/posts/${status.id}`}
+								className="text-sm text-gray-700 hover:underline">
 								{fromNow(new Date(status.created_at))}
 							</Link>
 						</div>
 					</div>
 					<div className="flex flex-col gap-y-1">
-						{status.in_reply_to_id && (
-							<span className="text-xs text-gray-600 hover:underline">
-								<IconMessage className="inline mr-1 w-4 h-4" />
-								Replying to{" "}
-								{inReplyAccount &&
-									withEmojis(
-										inReplyAccount?.display_name,
-										inReplyAccount?.emojis,
-									)}
-							</span>
-						)}
+						{status.in_reply_to_id && <ReplyTo status={status} />}
 						<SensitiveTextSpoiler
 							status={status}
 							showText={showText}
@@ -117,11 +101,52 @@ export default function Status({
 	);
 }
 
-export function DummyStatus({
-	type = "post"
-}: {
-	type: "post" | "notification"
-}) {
+export function ReplyTo({ status }: { status: Entity.Status }) {
+	const [replyStatus, setReplyStatus] = useState<Entity.Status>();
+	const client = useContext(AuthContext);
+	const [open, setOpen] = useState<boolean>(false);
+
+	useEffect(() => {
+		// If the post is a reply, get the previous post's contents
+		if (status.in_reply_to_id && !replyStatus)
+			client?.getStatus(status.in_reply_to_id).then(data => {
+				setReplyStatus(data.data);
+			});
+	}, [client, replyStatus, status.in_reply_to_id]);
+
+	return (
+		<div
+			className="inline relative bg-slate-300/0"
+			onMouseEnter={e => {
+				setOpen(true);
+			}}
+			onMouseLeave={e => {
+				setOpen(false);
+			}}>
+			<span className="text-xs text-gray-600 hover:underline">
+				<IconMessage className="inline mr-1 w-4 h-4" />
+				Replying to{" "}
+				{replyStatus &&
+					withEmojis(replyStatus.account.display_name, replyStatus.account.emojis)}
+			</span>
+			<Transition
+				as={Fragment}
+				show={open}
+				enter="transition ease-out duration-200"
+				enterFrom="opacity-0 translate-y-1"
+				enterTo="opacity-100 translate-y-0"
+				leave="transition ease-in duration-150"
+				leaveFrom="opacity-100 translate-y-0"
+				leaveTo="opacity-0 translate-y-1">
+				<div className="absolute left-0 z-10 px-4 py-3 max-w-sm bg-gray-50 rounded border transform translate-x-[-5.55rem] lg:max-w-3xl">
+					{replyStatus && <Status status={replyStatus} type="post" />}
+				</div>
+			</Transition>
+		</div>
+	);
+}
+
+export function DummyStatus({ type = "post" }: { type: "post" | "notification" }) {
 	return (
 		<div className="flex flex-col max-w-full">
 			<div className="flex flex-row max-w-full">
@@ -136,18 +161,13 @@ export function DummyStatus({
 				<div className="flex flex-col min-w-0 grow">
 					<div className="justify-between gap-x-2 text-[0.95rem] flex flex-row">
 						<span className="flex overflow-hidden flex-col whitespace-nowrap md:inline text-ellipsis">
-							<h4 className="inline font-bold">
-								
-							</h4>
-							<h6
-								className="inline overflow-hidden ml-0 text-gray-500 overflow-ellipsis md:ml-2">
+							<h4 className="inline font-bold"></h4>
+							<h6 className="inline overflow-hidden ml-0 text-gray-500 overflow-ellipsis md:ml-2">
 								@namw
 							</h6>
 						</span>
 						<div className="whitespace-nowrap">
-							<div className="text-sm text-gray-700 hover:underline">
-								
-							</div>
+							<div className="text-sm text-gray-700 hover:underline"></div>
 						</div>
 					</div>
 					<div className="flex flex-col gap-y-1">
@@ -157,18 +177,14 @@ export function DummyStatus({
 								Replying to gay
 							</span>
 						)}
-						<div
-							className="relative w-full text-sm">
-							<p
-								className={`mt-1 rounded duration-200 status-text`}>
-								
-							</p>
+						<div className="relative w-full text-sm">
+							<p className={`mt-1 rounded duration-200 status-text`}></p>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-	)
+	);
 }
 
 function SensitiveTextSpoiler({
