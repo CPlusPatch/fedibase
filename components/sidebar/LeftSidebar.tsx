@@ -51,11 +51,14 @@ export default function LeftSidebar() {
 	const [selectedMode, setSelectedMode] = useState(modes[0]);
 	const [selectedVis, setSelectedVis] = useState(visibilities[0]);
 	const [loading, setLoading] = useState<boolean>(false);
-	const textareaRef: MutableRefObject<HTMLTextAreaElement> = useRef(null);
+	const textareaRef = useRef<HTMLTextAreaElement>(null);
+	const fileInputRef = useRef<HTMLInputElement>(null);
+	const [files, setFiles] = useState <File[] | []>([]);
+	const [fileIds, setFileIds] = useState<string[]>([]);
 
 	const [state, setState] = useContext(StateContext) as any;
 
-	const submitForm = (event: FormEvent<HTMLFormElement>) => {
+	const submitForm = async (event: FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
 		setLoading(true);
 
@@ -80,6 +83,7 @@ export default function LeftSidebar() {
 			.postStatus(event.target["comment"].value, {
 				in_reply_to_id: state?.replyingTo?.id ?? undefined,
 				visibility: visibility,
+				media_ids: fileIds
 			})
 			.then((res: Response<Entity.Status>) => {
 				if (res.status == 200) {
@@ -94,6 +98,8 @@ export default function LeftSidebar() {
 					...s,
 					replyingTo: null,
 				}));
+				setFileIds([]);
+				setFiles([]);
 			});
 	}
 
@@ -120,7 +126,8 @@ export default function LeftSidebar() {
 							Replying to{" "}
 							{withEmojis(
 								(state?.replyingTo as Entity.Status).account.display_name,
-								(state?.replyingTo as Entity.Status).account.emojis)}
+								(state?.replyingTo as Entity.Status).account.emojis,
+							)}
 						</div>
 						<div className="absolute top-2 right-2">
 							<button
@@ -137,11 +144,15 @@ export default function LeftSidebar() {
 					</div>
 				)}
 
-				<form action="#" className="relative text-sm bg-white" onSubmit={submitForm} onKeyUp={(e) => {
-					if (e.key === "Enter" && (e.ctrlKey || e.metaKey)) {
-						e.currentTarget.requestSubmit();
-					}
-				}}>
+				<form
+					action="#"
+					className="relative text-sm bg-white"
+					onSubmit={submitForm}
+					onKeyUp={e => {
+						if (e.key === "Enter" && (e.ctrlKey || e.metaKey)) {
+							e.currentTarget.requestSubmit();
+						}
+					}}>
 					<div className="overflow-hidden rounded border border-gray-300 shadow-sm duration-200 focus-within:border-orange-500 focus-within:ring-1 focus-within:ring-orange-500">
 						<textarea
 							rows={3}
@@ -166,9 +177,27 @@ export default function LeftSidebar() {
 						<div className="flex items-center space-x-2">
 							<button
 								type="button"
+								onClick={() => {
+									fileInputRef.current.click()
+								}}
 								className="flex relative flex-row gap-x-1 items-center p-2 text-gray-400 rounded duration-200 cursor-default hover:bg-gray-100">
 								<IconPaperclip className="w-5 h-5" aria-hidden="true" />
 								<span className="sr-only">Attach a file</span>
+								<input type="file" className="hidden" ref={fileInputRef} onChange={async (e) => {
+									setFiles(f => [
+										...f,
+										...e.target.files
+									]);
+									setLoading(true);
+									const ids = await Promise.all([...e.target.files].map(async file => {
+										return (await client.uploadMedia(e.target.files[0])).data.id
+									}));
+									setLoading(false);
+									setFileIds(f => [
+										...f,
+										...ids
+									])
+								}} />
 							</button>
 							<SmallSelect
 								items={modes}
@@ -198,6 +227,10 @@ export default function LeftSidebar() {
 						/>
 					</div>
 				</div>
+
+				{files.length > 0 && files.map((file: File, index: number) => {
+					return <img key={index} alt="" src={window.URL.createObjectURL(file)} />
+				})}
 			</div>
 		</div>
 	);

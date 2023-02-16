@@ -27,9 +27,10 @@ export default function InteractionBar({ status }: { status: Entity.Status }) {
 		<div className="grid grid-cols-5 justify-around px-5 mt-3 w-full text-gray-700">
 			<InteractionBarIcon
 				onClick={() => {
-					setState({
+					setState(s => ({
+						...s,
 						replyingTo: status,
-					});
+					}));
 				}}>
 				<IconMessage className="w-5 h-5" />
 			</InteractionBarIcon>
