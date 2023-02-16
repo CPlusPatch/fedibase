@@ -1,6 +1,7 @@
 import { Dialog, Transition } from "@headlessui/react";
 import { IconBell, IconMenu2, IconX } from "@tabler/icons-react";
 import Button from "components/buttons/Button";
+import SmallLogo from "components/logo/SmallLogo";
 import NotificationsFeed from "components/sidebar/NotificationsFeed";
 import { useState, Fragment } from "react";
 
@@ -9,7 +10,7 @@ export default function MobileNavbar() {
 	
 	return (
 		<>
-			<div className="flex fixed inset-x-0 top-0 z-30 justify-between px-6 py-4 bg-white border-b md:hidden">
+			<div className="flex fixed inset-x-0 top-0 z-30 justify-between items-center px-6 py-3 bg-white border-b md:hidden">
 				<Button
 					style="gray"
 					className="!p-3 !border-none !shadow-none"
@@ -18,6 +19,7 @@ export default function MobileNavbar() {
 					}}>
 					<IconMenu2 className="" />
 				</Button>
+				<SmallLogo size="w-10 !h-10" />
 				<Button
 					style="gray"
 					className="!p-3 !border-none !shadow-none"
