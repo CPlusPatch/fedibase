@@ -28,7 +28,7 @@ export default function MobileNavbar() {
 				</Button>
 			</div>
 			<Transition.Root show={open} as={Fragment}>
-				<Dialog as="div" className="relative z-10" onClose={setOpen}>
+				<Dialog as="div" className="relative z-40" onClose={setOpen}>
 					<Transition.Child
 						as={Fragment}
 						enter="ease-in-out duration-500"
@@ -42,7 +42,7 @@ export default function MobileNavbar() {
 
 					<div className="overflow-hidden fixed inset-0">
 						<div className="overflow-hidden absolute inset-0">
-							<div className="flex fixed inset-y-0 right-0 pl-10 max-w-full pointer-events-none">
+							<div className="flex fixed inset-y-0 right-0 ml-10 max-w-full pointer-events-none">
 								<Transition.Child
 									as={Fragment}
 									enter="transform transition ease-in-out duration-500 sm:duration-700"
@@ -75,7 +75,7 @@ export default function MobileNavbar() {
 													<IconX className="w-6 h-6" aria-hidden="true" />
 												</button>
 											</div>
-											<div className="flex overflow-x-hidden relative px-4 mt-6 sm:px-6">
+											<div className="flex relative px-4 mt-6 max-w-full h-full sm:px-6">
 												<NotificationsFeed withTitle={false} />
 											</div>
 										</div>

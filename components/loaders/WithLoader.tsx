@@ -10,7 +10,7 @@ export default function WithLoader({ variable, children }) {
 	return (
 		<>
 			{isEmpty(variable) ? (
-				<div className="flex justify-center items-center w-full h-full">
+				<div className="flex justify-center items-center w-full h-full grow">
 					<Spinner className="w-10 h-10 text-gray-400 fill-orange-600" />
 				</div>
 			) : (
