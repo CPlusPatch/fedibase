@@ -34,6 +34,7 @@ function PostImage({ status, image }: { status: Entity.Status; image: Entity.Att
 				className={`filter duration-500 rounded ${revealed ? "":"filter blur-2xl"}`}
 				src={image.preview_url}
 				alt={image.description}
+				loading="lazy"
 			/>
 			{status.sensitive && !revealed && (
 				<>

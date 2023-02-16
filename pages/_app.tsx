@@ -10,8 +10,10 @@ import { useState } from 'react';
 function App({ Component, pageProps }: AppProps) {
 	const [state, setState] = useState<{
 		replyingTo: null | Entity.Status;
+		mobileEditorOpened: boolean;
 	} | null>({
 		replyingTo: null,
+		mobileEditorOpened: false,
 	});
 	return (
 		<>

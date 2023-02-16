@@ -36,6 +36,7 @@ export default function Status({
 			<div className="flex flex-row max-w-full">
 				<Link href={`/users/@${status.account.id}`} className="flex-shrink-0 mr-4">
 					<img
+						loading="lazy"
 						alt={status.account.acct}
 						src={status.account.avatar}
 						className={`${
@@ -114,6 +115,60 @@ export default function Status({
 			{showInteraction && <InteractionBar status={status} />}
 		</div>
 	);
+}
+
+export function DummyStatus({
+	type = "post"
+}: {
+	type: "post" | "notification"
+}) {
+	return (
+		<div className="flex flex-col max-w-full">
+			<div className="flex flex-row max-w-full">
+				<div className="flex-shrink-0 mr-4">
+					<img
+						alt=""
+						className={`${
+							type == "post" ? "w-14 h-14" : "w-8 h-8"
+						} text-gray-300 bg-white rounded border border-gray-300`}
+					/>
+				</div>
+				<div className="flex flex-col min-w-0 grow">
+					<div className="justify-between gap-x-2 text-[0.95rem] flex flex-row">
+						<span className="flex overflow-hidden flex-col whitespace-nowrap md:inline text-ellipsis">
+							<h4 className="inline font-bold">
+								
+							</h4>
+							<h6
+								className="inline overflow-hidden ml-0 text-gray-500 overflow-ellipsis md:ml-2">
+								@namw
+							</h6>
+						</span>
+						<div className="whitespace-nowrap">
+							<div className="text-sm text-gray-700 hover:underline">
+								
+							</div>
+						</div>
+					</div>
+					<div className="flex flex-col gap-y-1">
+						{Math.random() > 0.7 && (
+							<span className="text-xs text-gray-600 hover:underline">
+								<IconMessage className="inline mr-1 w-4 h-4" />
+								Replying to gay
+							</span>
+						)}
+						<div
+							className="relative w-full text-sm">
+							<p
+								className={`mt-1 rounded duration-200 status-text`}>
+								
+							</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	)
 }
 
 function SensitiveTextSpoiler({
