@@ -30,12 +30,21 @@ function PostImage({ status, image }: { status: Entity.Status; image: Entity.Att
 
 	return (
 		<div className="overflow-hidden relative">
-			<img
-				className={`filter duration-500 rounded ${revealed ? "":"filter blur-2xl"}`}
-				src={image.preview_url}
-				alt={image.description}
-				loading="lazy"
-			/>
+			{image.type == "image" && (
+				<img
+					className={`filter duration-500 rounded ${revealed ? "":"filter blur-2xl"}`}
+					src={image.remote_url}
+					alt={image.description}
+					loading="lazy"
+				/>
+			)}
+			{image.type == "video" && (
+				<video
+					className={`filter duration-500 rounded ${revealed ? "":"filter blur-2xl"}`}
+					controls={true}
+					src={image.remote_url}
+				/>
+			)}
 			{status.sensitive && !revealed && (
 				<>
 					<div

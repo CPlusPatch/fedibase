@@ -5,6 +5,7 @@ import { classNames } from "utils/functions";
 const styles = {
 	gray: "text-gray-700 bg-white border-gray-300 outline-none hover:bg-gray-50",
 	orange: "bg-orange-600 hover:bg-orange-700 text-white border-transparent",
+	orangeLight: "text-orange-700 bg-orange-100 hover:bg-orange-200 border-transparent",
 };
 
 interface ButtonProps {

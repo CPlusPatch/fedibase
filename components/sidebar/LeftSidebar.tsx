@@ -227,6 +227,7 @@ function SendForm() {
 						ref={textareaRef}
 						id="comment"
 						rows={6}
+						autoFocus={true}
 						onChange={e => {
 							setCharacters(e.target.value);
 						}}
@@ -307,9 +308,9 @@ function SendForm() {
 							<Button
 								isLoading={loading}
 								disabled={loading}
-								style="orange"
+								style="orangeLight"
 								type="submit"
-								className="text-orange-700 bg-orange-100 !px-4 !py-2 !text-base hover:bg-orange-200">
+								className="!px-4 !py-2 !text-base">
 								Post
 							</Button>
 						</div>
