@@ -30,6 +30,8 @@ const navigation = [
 
 export default function Nav() {
 	const client = useContext(AuthContext);
+	const [state, setState]: any = useContext(StateContext);
+	
 	const [account, setAccount] = useState<Entity.Account>();
 	const [instance, setInstance] = useState<Entity.Instance>();
 
@@ -54,14 +56,21 @@ export default function Nav() {
 	return (
 		<div className="hidden fixed top-0 bottom-0 left-0 z-50 flex-col flex-1 col-span-1 min-h-0 bg-gray-50 bg-gradient-to-b border-r lg:flex">
 			<div className="flex overflow-y-auto flex-col flex-1 pt-5 pb-4">
-				<Link href="/" className="flex flex-shrink-0 justify-center items-center px-2">
+				<Link href="/" onClick={(e) => {
+					e.preventDefault();
+					history.pushState(null, null, "/");
+					setState(s => ({
+						...s,
+						params: "/",
+					}));
+				}} className="flex flex-shrink-0 justify-center items-center px-2">
 					<img src={instance?.thumbnail} className="w-8 h-8 rounded" alt=""/>
 				</Link>
 				<nav
 					className="flex-1 px-2 mt-5 space-y-1"
 					aria-label="Sidebar">
 					{navigation.map((item) => (
-						<NavElement item={item} key={item.name} current={typeof window !== "undefined" ? window.location.pathname === item.href : false}/>
+						<NavElement item={item} key={item.name} />
 					))}
 				</nav>
 				<Link href={`/users/${account?.id}`} className="flex justify-center items-center text-gray-600">
@@ -72,9 +81,14 @@ export default function Nav() {
 	);
 }
 
-function NavElement({ item, current }: { item: any; current: boolean }) {
+function NavElement({ item }: { item: any }) {
+	const [current, setCurrent] = useState<boolean>(false);
 	const [state, setState]: any = useContext(StateContext);
 	let [showTooltip, setShowTooltip] = useState<boolean>(false);
+
+	useEffect(() => {
+		setCurrent(typeof window !== "undefined" ? window.location.pathname === item.href : false);
+	}, [item.href])
 
 	return (
 		<div className="flex flex-row items-center">
