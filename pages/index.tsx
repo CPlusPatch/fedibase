@@ -20,9 +20,11 @@ const Home = () => {
 	}, [setState]);
 
 	useEffect(() => {
-		window.addEventListener("popstate", handlePopState)
-
-		return () => window.removeEventListener("popstate", handlePopState);
+		if (window) {
+			window.addEventListener("popstate", handlePopState)
+	
+			return () => window.removeEventListener("popstate", handlePopState);
+		}
 	}, [handlePopState])
 
 	return (

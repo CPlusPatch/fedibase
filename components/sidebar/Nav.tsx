@@ -61,7 +61,7 @@ export default function Nav() {
 					className="flex-1 px-2 mt-5 space-y-1"
 					aria-label="Sidebar">
 					{navigation.map((item) => (
-						<NavElement item={item} key={item.name} current={window.location.pathname === item.href}/>
+						<NavElement item={item} key={item.name} current={typeof window !== "undefined" ? window.location.pathname === item.href : false}/>
 					))}
 				</nav>
 				<Link href={`/users/${account?.id}`} className="flex justify-center items-center text-gray-600">
