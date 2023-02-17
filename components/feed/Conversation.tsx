@@ -36,14 +36,18 @@ export const Conversation = ({ id }) => {
 
 	return (
 		<WithLoader variable={posts}>
-			<div className="flex overflow-y-auto flex-col gap-y-5 px-6 py-4 w-full h-full">
-				{ancestors.map(post => (
-					<Post post={post} key={post.id} />
-				))}
-				{posts.map(post => (
-					<Post post={post} key={post.id} />
-				))}
-				<div className="flex flex-col gap-y-4 pl-2 border-l-4">
+			<div className="flex overflow-y-auto flex-col gap-y-5 py-4 w-full h-full">
+				<div className="px-6">
+					{ancestors.map(post => (
+						<Post post={post} key={post.id} />
+					))}
+				</div>
+				<div className="px-6 py-4 border-y-2">
+					{posts.map(post => (
+						<Post post={post} key={post.id} />
+					))}
+				</div>
+				<div className="flex flex-col gap-y-4 px-6">
 					{descendants.map(post => (
 						<PostWithChildren post={post} key={post.id} />
 					))}

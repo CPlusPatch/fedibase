@@ -1,6 +1,16 @@
 /* eslint-disable @next/next/no-img-element */
 import { Transition, Dialog } from "@headlessui/react";
-import { IconAlignLeft, IconLock, IconLockOpen, IconMail, IconMarkdown, IconPaperclip, IconSearch, IconWorld, IconX } from "@tabler/icons-react";
+import {
+	IconAlignLeft,
+	IconLock,
+	IconLockOpen,
+	IconMail,
+	IconMarkdown,
+	IconPaperclip,
+	IconSearch,
+	IconWorld,
+	IconX,
+} from "@tabler/icons-react";
 import Button from "components/buttons/Button";
 import { AuthContext } from "components/context/AuthContext";
 import { StateContext } from "components/context/StateContext";
@@ -15,11 +25,13 @@ const modes = [
 	{
 		text: "Plaintext",
 		value: "text",
+		description: "Just plain text",
 		icon: IconAlignLeft,
 	},
 	{
 		text: "Markdown",
 		value: "markdown",
+		description: "Use Markdown syntax",
 		icon: IconMarkdown,
 	},
 ];
@@ -28,21 +40,25 @@ const visibilities = [
 	{
 		text: "Public",
 		value: "public",
+		description: "Post to public timelines",
 		icon: IconWorld,
 	},
 	{
 		text: "Unlisted",
 		value: "unlisted",
+		description: "Don't post to public timelines",
 		icon: IconLockOpen,
 	},
 	{
 		text: "Private",
 		value: "private",
+		description: "Followers-only",
 		icon: IconLock,
 	},
 	{
 		text: "Direct",
 		value: "direct",
+		description: "Send as Direct Message",
 		icon: IconMail,
 	},
 ];
@@ -52,7 +68,7 @@ export default function LeftSidebar() {
 
 	return (
 		<>
-			<div className="flex flex-col gap-y-10 w-full h-full font-inter">
+			<div className="flex hidden flex-col gap-y-10 w-full h-full font-inter">
 				<Toaster position="top-left" />
 				<div className="flex relative w-full">
 					<input
@@ -91,14 +107,12 @@ export default function LeftSidebar() {
 							</div>
 						</div>
 					)}
-
-					<SendForm />
 				</div>
 			</div>
 			<Transition.Root show={state.mobileEditorOpened} as={Fragment}>
 				<Dialog
 					as="div"
-					className="block relative z-50 md:hidden"
+					className="block relative z-50"
 					onClose={() =>
 						setState(s => ({
 							...s,
@@ -113,20 +127,20 @@ export default function LeftSidebar() {
 						leave="ease-in duration-200"
 						leaveFrom="opacity-100"
 						leaveTo="opacity-0">
-						<div className="fixed inset-0 backdrop-blur-lg transition-all bg-gray-400/40" />
+						<div className="fixed inset-0 backdrop-blur-lg transition-all bg-orange-500/30" />
 					</Transition.Child>
 
 					<div className="overflow-y-auto fixed inset-0 z-10">
-						<div className="flex justify-center items-start p-4 min-h-full text-center sm:p-0">
+						<div className="flex justify-center items-center p-4 min-h-full text-center sm:p-0">
 							<Transition.Child
 								as={Fragment}
 								enter="ease-out duration-300"
-								enterFrom="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-								enterTo="opacity-100 translate-y-0 sm:scale-100"
+								enterFrom="opacity-0 translate-y-4 translate-y-0 scale-95"
+								enterTo="opacity-100 translate-y-0 scale-100"
 								leave="ease-in duration-200"
-								leaveFrom="opacity-100 translate-y-0 sm:scale-100"
-								leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95">
-								<Dialog.Panel className="relative my-8 w-full text-left transition-all transform sm:max-w-lg">
+								leaveFrom="opacity-100 translate-y-0 scale-100"
+								leaveTo="opacity-0 translate-y-4 translate-y-0 scale-95">
+								<Dialog.Panel className="relative my-8 w-full text-left transition-all transform sm:max-w-xl">
 									<SendForm />
 								</Dialog.Panel>
 							</Transition.Child>
@@ -136,20 +150,21 @@ export default function LeftSidebar() {
 			</Transition.Root>
 		</>
 	);
-};
+}
 
 function SendForm() {
 	// Context stuff
 	const client = useContext(AuthContext);
 	const [state, setState] = useContext(StateContext) as any;
-	
+
 	// State stuff
 	const [selectedMode, setSelectedMode] = useState(modes[0]);
 	const [selectedVis, setSelectedVis] = useState(visibilities[0]);
 	const [files, setFiles] = useState<File[] | []>([]);
 	const [fileIds, setFileIds] = useState<string[]>([]);
 	const [loading, setLoading] = useState<boolean>(false);
-	
+	const [characters, setCharacters] = useState<string>("");
+
 	// Element refs
 	const fileInputRef = useRef<HTMLInputElement>(null);
 	const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -158,27 +173,10 @@ function SendForm() {
 		event.preventDefault();
 		setLoading(true);
 
-		let visibility;
-
-		switch (selectedVis.value) {
-			case "unlisted":
-				visibility = "unlisted";
-				break;
-			case "public":
-				visibility = "public";
-				break;
-			case "private":
-				visibility = "private";
-				break;
-			case "direct":
-				visibility = "direct";
-				break;
-		}
-
 		client
 			.postStatus(event.target["comment"].value, {
 				in_reply_to_id: state?.replyingTo?.id ?? undefined,
-				visibility: visibility,
+				visibility: selectedVis.value as any,
 				media_ids: fileIds,
 			})
 			.then((res: Response<Entity.Status>) => {
@@ -190,102 +188,134 @@ function SendForm() {
 			})
 			.finally(() => {
 				setLoading(false);
-				textareaRef.current.value = "";
+				setFileIds([]);
+				setFiles([]);
 				setState((s: any) => ({
 					...s,
 					replyingTo: null,
+					mobileEditorOpened: false
 				}));
-				setFileIds([]);
-				setFiles([]);
 			});
 	};
 	return (
 		<>
 			<form
 				action="#"
-				className="relative text-sm"
+				className="relative text-sm font-inter"
 				onSubmit={submitForm}
 				onKeyUp={e => {
 					if (e.key === "Enter" && (e.ctrlKey || e.metaKey)) {
 						e.currentTarget.requestSubmit();
 					}
 				}}>
-				<div className="overflow-hidden bg-white rounded border border-gray-300 shadow-sm duration-200 focus-within:border-orange-500 focus-within:ring-1 focus-within:ring-orange-500">
+				<div className={`px-3 py-2 w-full rounded-2xl border border-gray-300 shadow-sm ${loading ? "bg-gray-100" : "bg-white"}`}>
+					<div className="flex justify-between p-3 w-full">
+						<h1 className="text-xl font-bold">Compose</h1>
+						<button onClick={e => {
+							e.preventDefault()
+							setState((s: any) => ({
+								...s,
+								mobileEditorOpened: false,
+								replyingTo: null,
+							}))
+						}}>
+							<IconX />
+						</button>
+					</div>
+
 					<textarea
-						rows={3}
 						ref={textareaRef}
 						id="comment"
+						rows={6}
+						onChange={e => {
+							setCharacters(e.target.value);
+						}}
 						disabled={loading}
-						className="block py-3 w-full border-0 resize-none focus:ring-0 sm:text-sm disabled:bg-gray-200"
+						className="block py-3 w-full bg-transparent border-0 resize-none focus:ring-0"
 						placeholder="What's happening?"
 						defaultValue={""}
 					/>
 
-					{/* Spacer element to match the height of the toolbar */}
-					<div className={`py-2 ${loading && "bg-gray-200"}`} aria-hidden="true">
-						{/* Matches height of button in toolbar (1px border + 36px content height) */}
-						<div className="py-px">
-							<div className="h-9" />
+					<div className="flex inset-x-0 bottom-0 justify-between py-2 pr-2 pl-3">
+						<div className="flex items-center space-x-1">
+							<button
+								type="button"
+								onClick={() => {
+									fileInputRef.current.click();
+								}}
+								className="flex relative flex-row gap-x-1 items-center p-2 text-gray-600 rounded duration-200 cursor-default hover:bg-gray-100">
+								<IconPaperclip className="w-6 h-6" aria-hidden="true" />
+								<span className="sr-only">Attach a file</span>
+								<input
+									type="file"
+									className="hidden"
+									ref={fileInputRef}
+									onChange={async e => {
+										setFiles(f => [...f, ...e.target.files]);
+										setLoading(true);
+										const ids = await Promise.all(
+											[...e.target.files].map(async file => {
+												return (await client.uploadMedia(e.target.files[0]))
+													.data.id;
+											}),
+										);
+										setLoading(false);
+										setFileIds(f => [...f, ...ids]);
+									}}
+								/>
+							</button>
+							<SmallSelect
+								items={modes}
+								selected={selectedMode}
+								setSelected={setSelectedMode}
+							/>
+							<SmallSelect
+								items={visibilities}
+								selected={selectedVis}
+								setSelected={setSelectedVis}
+							/>
+						</div>
+						<div className="flex flex-row flex-shrink-0 gap-x-4 items-center">
+							<div className="flex flex-row gap-x-2 items-center">
+								<span className="text-gray-600">
+									{(
+										JSON.parse(
+											localStorage.getItem("instanceData"),
+										) as Entity.Instance
+									).max_toot_chars - characters.length}
+								</span>
+								<svg width="27" height="27" viewBox="0 0 27 27">
+									<circle
+										cx="13.5"
+										cy="13.5"
+										r="10"
+										fill="none"
+										strokeWidth="3"
+										className="stroke-gray-500 dark:stroke-white/20"></circle>
+									<circle
+										cx="13.5"
+										cy="13.5"
+										r="10"
+										fill="none"
+										strokeDasharray="62.832"
+										strokeDashoffset="62.832"
+										strokeLinecap="round"
+										strokeWidth="3.5"
+										className="stroke-primary-500"></circle>
+								</svg>
+							</div>
+							<Button
+								isLoading={loading}
+								disabled={loading}
+								style="orange"
+								type="submit"
+								className="text-orange-700 bg-orange-100 !px-4 !py-2 !text-base hover:bg-orange-200">
+								Post
+							</Button>
 						</div>
 					</div>
 				</div>
-
-				<div className="flex absolute inset-x-0 bottom-0 justify-between py-2 pr-2 pl-3">
-					<div className="flex items-center space-x-2">
-						<button
-							type="button"
-							onClick={() => {
-								fileInputRef.current.click();
-							}}
-							className="flex relative flex-row gap-x-1 items-center p-2 text-gray-400 rounded duration-200 cursor-default hover:bg-gray-100">
-							<IconPaperclip className="w-5 h-5" aria-hidden="true" />
-							<span className="sr-only">Attach a file</span>
-							<input
-								type="file"
-								className="hidden"
-								ref={fileInputRef}
-								onChange={async e => {
-									setFiles(f => [...f, ...e.target.files]);
-									setLoading(true);
-									const ids = await Promise.all(
-										[...e.target.files].map(async file => {
-											return (await client.uploadMedia(e.target.files[0]))
-												.data.id;
-										}),
-									);
-									setLoading(false);
-									setFileIds(f => [...f, ...ids]);
-								}}
-							/>
-						</button>
-						<SmallSelect
-							items={modes}
-							selected={selectedMode}
-							setSelected={setSelectedMode}
-						/>
-					</div>
-					<div className="flex-shrink-0">
-						<Button
-							isLoading={loading}
-							disabled={loading}
-							style="orange"
-							type="submit"
-							className="">
-							Post
-						</Button>
-					</div>
-				</div>
 			</form>
-
-			<div className="flex">
-				<div className="w-2/3">
-					<Select
-						items={visibilities}
-						selected={selectedVis}
-						setSelected={setSelectedVis}
-					/>
-				</div>
-			</div>
 
 			{files.length > 0 &&
 				files.map((file: File, index: number) => {
