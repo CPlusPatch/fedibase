@@ -19,6 +19,7 @@ export const HomeFeed = () => {
 		});
 
 		const interval = setInterval(() => {
+			if (postsRef.current.length > 0)
 			client
 				?.getHomeTimeline({
 					since_id: postsRef.current[0].id,

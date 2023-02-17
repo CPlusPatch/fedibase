@@ -3,6 +3,7 @@ import { Popover, Transition } from "@headlessui/react";
 import { IconMessage } from "@tabler/icons-react";
 import Button from "components/buttons/Button";
 import { AuthContext } from "components/context/AuthContext";
+import { StateContext } from "components/context/StateContext";
 import { Entity } from "megalodon";
 import Link from "next/link";
 import { Dispatch, Fragment, SetStateAction, useContext, useEffect, useRef, useState } from "react";
@@ -22,6 +23,7 @@ export default function Status({
 	const [expand, setExpand] = useState<boolean>(false);
 	const [showText, setShowText] = useState<boolean>(false);
 	const textRef = useRef<HTMLParagraphElement>(null);
+	const [state, setState]: any = useContext(StateContext);
 
 	return (
 		<div className="flex flex-col max-w-full">
@@ -49,11 +51,24 @@ export default function Status({
 							</h6>
 						</span>
 						<div className="whitespace-nowrap">
-							<Link
+							<a
 								href={`/posts/${status.id}`}
+								onClick={e => {
+									if (!e.ctrlKey && !e.metaKey) {
+										e.preventDefault();
+										setState(s => ({
+											...s,
+											params: {
+												...s.params,
+												id: status.id,
+											},
+										}));
+										history.pushState(null, null, `/posts/${status.id}`);
+									}
+								}}
 								className="text-sm text-gray-700 hover:underline">
 								{fromNow(new Date(status.created_at))}
-							</Link>
+							</a>
 						</div>
 					</div>
 					<div className="flex flex-col gap-y-1">
