@@ -20,7 +20,7 @@ const User = ({ id }) => {
 		<div className="relative bg-gray-50 font-inter">
 			<MetaTags title={`${account ? account.display_name : "Loading..."} · Fedibase`} />
 
-			<Nav current="/" />
+			<Nav />
 
 			<MainLayout>
 				<UserFeed account={account} />

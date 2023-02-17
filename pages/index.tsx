@@ -5,6 +5,7 @@ import MainLayout from "components/layout/MainLayout";
 import { useCallback, useContext, useEffect } from "react";
 import { StateContext } from "components/context/StateContext";
 import { Conversation } from "components/feed/Conversation";
+import { LocalFeed } from "components/feed/LocalFeed";
 
 const Home = () => {
 	const [state, setState]: any = useContext(StateContext);
@@ -28,9 +29,10 @@ const Home = () => {
 		<div className="relative bg-gray-50 font-inter">
 			<MetaTags title={`Home · Fedibase`} />
 
-			<Nav current="/" />
+			<Nav />
 
-			<MainLayout>{state?.params?.id ? <Conversation id={state.params.id} /> : <HomeFeed />}</MainLayout>
+			<MainLayout>{state?.params?.id ? <Conversation id={state.params.id} /> : 
+				state?.params?.type == "local" ? <LocalFeed /> : <HomeFeed />}</MainLayout>
 		</div>
 	);
 };

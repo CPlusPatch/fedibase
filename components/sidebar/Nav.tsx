@@ -2,6 +2,7 @@
 import { Transition } from "@headlessui/react";
 import { IconHome, IconUsers, IconWorld } from "@tabler/icons-react";
 import { AuthContext } from "components/context/AuthContext";
+import { StateContext } from "components/context/StateContext";
 import Link from "next/link";
 import { Fragment, useContext, useEffect, useState } from "react";
 import { classNames } from "utils/functions";
@@ -11,20 +12,23 @@ const navigation = [
 		name: "Home",
 		icon: IconHome,
 		href: "/",
+		type: "",
 	},
 	{
 		name: "Instance",
 		icon: IconUsers,
-		href: "/instance",
+		href: "/local",
+		type: "local",
 	},
 	{
 		name: "Federated",
 		icon: IconWorld,
 		href: "/federated",
+		type: "federated"
 	},
 ];
 
-export default function Nav({ current }: { current: string }) {
+export default function Nav() {
 	const client = useContext(AuthContext);
 	const [account, setAccount] = useState<Entity.Account>();
 	const [instance, setInstance] = useState<Entity.Instance>();
@@ -57,7 +61,7 @@ export default function Nav({ current }: { current: string }) {
 					className="flex-1 px-2 mt-5 space-y-1"
 					aria-label="Sidebar">
 					{navigation.map((item) => (
-						<NavElement item={item} key={item.name} current={current === item.href}/>
+						<NavElement item={item} key={item.name} current={window.location.pathname === item.href}/>
 					))}
 				</nav>
 				<Link href={`/users/${account?.id}`} className="flex justify-center items-center text-gray-600">
@@ -69,16 +73,29 @@ export default function Nav({ current }: { current: string }) {
 }
 
 function NavElement({ item, current }: { item: any; current: boolean }) {
+	const [state, setState]: any = useContext(StateContext);
 	let [showTooltip, setShowTooltip] = useState<boolean>(false);
+
 	return (
 		<div className="flex flex-row items-center">
 			<Link
 				href={item.href}
+				onClick={e => {
+					if (!e.ctrlKey && !e.metaKey) {
+						e.preventDefault();
+						setState(s => ({
+							...s,
+							params: {
+								...s.params,
+								type: item.type
+							},
+						}));
+						history.pushState(null, null, item.href);
+					}
+				}}
 				className={classNames(
-					current
-						? "bg-gray-300/40"
-						: "hover:bg-gray-300/40 hover:bg-opacity-75",
-					"flex justify-center items-center p-2 mx-2 text-sm font-medium rounded-md duration-200 group"
+					current ? "bg-gray-300/40" : "hover:bg-gray-300/40 hover:bg-opacity-75",
+					"flex justify-center items-center p-2 mx-2 text-sm font-medium rounded-md duration-200 group",
 				)}
 				onMouseEnter={() => {
 					setShowTooltip(true);
@@ -86,10 +103,7 @@ function NavElement({ item, current }: { item: any; current: boolean }) {
 				onMouseLeave={() => {
 					setShowTooltip(false);
 				}}>
-				<item.icon
-					className="flex-shrink-0 w-5 h-5 text-gray-600"
-					aria-hidden="true"
-				/>
+				<item.icon className="flex-shrink-0 w-5 h-5 text-gray-600" aria-hidden="true" />
 			</Link>
 			<Transition
 				as={Fragment}
