@@ -37,9 +37,14 @@ export default function Nav() {
 
 	useEffect(() => {
 		if (window) {
-			client?.verifyAccountCredentials().then(data => {
-				setAccount(data.data);
-			});
+			client
+				?.verifyAccountCredentials()
+				.then(data => {
+					setAccount(data.data);
+				})
+				.catch(e => {
+					console.log(e);
+				});
 
 			if (localStorage.getItem("instanceData")) {
 				setInstance(JSON.parse(localStorage.getItem("instanceData")));

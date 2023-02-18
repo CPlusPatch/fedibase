@@ -19,6 +19,9 @@ export const HomeFeed = () => {
 			.then((res: Response<Array<Entity.Status>>) => {
 				setPosts(res.data);
 				postsRef.current = res.data;
+			})
+			.catch(e => {
+				console.log(e);
 			});
 
 		const interval = setInterval(() => {

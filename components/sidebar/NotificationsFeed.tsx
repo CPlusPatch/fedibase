@@ -22,9 +22,12 @@ export default function NotificationsFeed({ withTitle = true }: { withTitle?: bo
 			.then((res: Response<Entity.Notification[]>) => {
 				setNotifications(res.data);
 				notifsRef.current = res.data;
+			}).catch(e => {
+				console.log(e);
 			});
 
 		const interval = setInterval(() => {
+			if (notifsRef.current.length > 0)
 			client
 				?.getNotifications({
 					since_id: notifsRef.current[0].id,
