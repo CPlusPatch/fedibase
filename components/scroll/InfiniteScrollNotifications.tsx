@@ -39,7 +39,7 @@ const Notification = ({ n }: { n: Entity.Notification }) => {
 						<Link
 							href={`/users/@${n.account.id}`}
 							className="overflow-hidden gap-x-2 max-w-full text-sm italic text-gray-500 overflow-ellipsis dark:text-gray-400 hover:underline">
-							<IconStarFilled className="inline mr-1 w-[1em] pb-0.5 text-yellow-500 hover:animate-spin" />
+							<IconStarFilled aria-hidden={true} className="inline mr-1 w-[1em] pb-0.5 text-yellow-500 hover:animate-spin" />
 							{withEmojis(n.account.display_name, n.account.emojis)} favourited your
 							post
 						</Link>
@@ -49,6 +49,7 @@ const Notification = ({ n }: { n: Entity.Notification }) => {
 							href={`/users/@${n.account.id}`}
 							className="overflow-hidden gap-x-2 max-w-full text-sm italic text-gray-500 overflow-ellipsis dark:text-gray-400 hover:underline">
 							<svg
+								aria-hidden={true}
 								xmlns="http://www.w3.org/2000/svg"
 								className="text-blue-500 hover:animate-spin w-[1em] inline pb-0.5 mr-1"
 								viewBox="0 0 576 512">

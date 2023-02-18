@@ -26,7 +26,7 @@ export default function MobileNavbar() {
 
 	return (
 		<>
-			<div className="flex fixed inset-x-0 top-0 z-30 justify-between items-center px-6 py-3 bg-white border-b dark:border-gray-700 bg-dark md:hidden">
+			<header className="flex fixed inset-x-0 top-0 z-30 justify-between items-center px-6 py-3 bg-white border-b dark:border-gray-700 bg-dark md:hidden">
 				<Button
 					style="gray"
 					className="!p-3 !border-none !shadow-none"
@@ -36,7 +36,8 @@ export default function MobileNavbar() {
 							notificationsOpened: true,
 						}));
 					}}>
-					<IconMenu2 className="" />
+					<IconMenu2 aria-hidden={true} className="" />
+					<span className="sr-only">Open sidebar (opens notifications for now)</span>
 				</Button>
 				<Link href="/">
 					<SmallLogo size="w-10 !h-10" />
@@ -50,9 +51,10 @@ export default function MobileNavbar() {
 							notificationsOpened: true,
 						}));
 					}}>
-					<IconBell className="" />
+					<IconBell aria-hidden={true} className="" />
+					<span className="sr-only">Open notifications</span>
 				</Button>
-			</div>
+			</header>
 			<div className="fixed right-0 bottom-0 z-30 mx-7 my-7">
 				<Button
 					onClick={() => {
@@ -63,7 +65,8 @@ export default function MobileNavbar() {
 					}}
 					style="gray"
 					className="bg-gray-200 !p-3">
-					<IconPencilPlus className="w-10 h-10" />
+					<IconPencilPlus className="w-10 h-10" aria-hidden={true} />
+					<span className="sr-only">Compose new post</span>
 				</Button>
 			</div>
 			<Transition.Root show={state.notificationsOpened} as={Fragment}>

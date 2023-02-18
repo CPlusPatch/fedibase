@@ -33,7 +33,8 @@ export default function InteractionBar({ status }: { status: Entity.Status }) {
 						mobileEditorOpened: true,
 					}));
 				}}>
-				<IconMessage className="w-5 h-5" />
+				<IconMessage aria-hidden={true} className="w-5 h-5" />
+				<span className="sr-only">Reply to this post</span>
 			</InteractionBarIcon>
 
 			<InteractionBarIcon
@@ -47,9 +48,18 @@ export default function InteractionBar({ status }: { status: Entity.Status }) {
 					setFavourited(f => !f);
 				}}>
 				{favourited ? (
-					<IconStarFilled className="w-5 h-5 text-yellow-400 animate-[spin_1s_ease-in-out]" />
+					<>
+						<span className="sr-only">You favourited this post!</span>
+						<IconStarFilled
+							aria-hidden={true}
+							className="w-5 h-5 text-yellow-400 animate-[spin_1s_ease-in-out]"
+						/>
+					</>
 				) : (
-					<IconStar className="w-5 h-5" />
+					<>
+						<span className="sr-only">Favourite this post</span>
+						<IconStar aria-hidden={true} className="w-5 h-5" />
+					</>
 				)}
 			</InteractionBarIcon>
 
@@ -66,22 +76,36 @@ export default function InteractionBar({ status }: { status: Entity.Status }) {
 				{status.visibility !== "private" && status.visibility !== "direct" ? (
 					<>
 						{boosted ? (
-							<IconRocket className="w-5 h-5 text-green-400 animate-[spin_1s_ease-in-out]" />
+							<>
+								<span className="sr-only">You boosted this post!</span>
+								<IconRocket
+									aria-hidden={true}
+									className="w-5 h-5 text-green-400 animate-[spin_1s_ease-in-out]"
+								/>
+							</>
 						) : (
-							<IconRocket className="w-5 h-5" />
+							<>
+								<span className="sr-only">Boost this post</span>
+								<IconRocket aria-hidden={true} className="w-5 h-5" />
+							</>
 						)}
 					</>
 				) : (
-					<IconLock className="w-5 h-5 text-gray-300" />
+					<>
+						<span className="sr-only">This post is locked and cannot be boosted</span>
+						<IconLock aria-hidden={true} className="w-5 h-5 text-gray-300" />
+					</>
 				)}
 			</InteractionBarIcon>
 
 			<InteractionBarIcon>
-				<IconMoodHappy className="w-5 h-5" />
+				<IconMoodHappy className="w-5 h-5" aria-hidden={true} />
+				<span className="sr-only">Add reaction (not implemented)</span>
 			</InteractionBarIcon>
 
 			<InteractionBarIcon>
-				<IconQuote className="w-5 h-5" />
+				<IconQuote className="w-5 h-5" aria-hidden={true} />
+				<span className="sr-only">Quote this post (not implemented)</span>
 			</InteractionBarIcon>
 		</div>
 	);

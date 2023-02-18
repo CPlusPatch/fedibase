@@ -40,7 +40,7 @@ export function withEmojis(string: string, emojis: Entity.Emoji[]) {
 			// img has .25em bottom margin to line up right
 			string = string.replaceAll(
 				`:${emoji.shortcode}:`,
-				`<img src="${emoji.url}" alt="" style="height: 1em; display: inline; margin-bottom: 0.25em"/>`,
+				`<img src="${emoji.url}" alt="Emoji (${emoji.shortcode})" style="height: 1em; display: inline; margin-bottom: 0.25em"/>`,
 			);
 		})
 

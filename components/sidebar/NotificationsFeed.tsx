@@ -1,13 +1,9 @@
 /* eslint-disable @next/next/no-img-element */
-import { IconStarFilled } from "@tabler/icons-react";
 import { AuthContext } from "components/context/AuthContext";
-import WithLoader from "components/loaders/WithLoader";
-import Status, { DummyStatus } from "components/posts/Status";
+import { DummyStatus } from "components/posts/Status";
 import InfiniteScrollNotifications from "components/scroll/InfiniteScrollNotifications";
 import { Entity, Response } from "megalodon";
-import Link from "next/link";
 import { useContext, useEffect, useRef, useState } from "react";
-import { withEmojis } from "utils/functions";
 
 export default function NotificationsFeed({ withTitle = true }: { withTitle?: boolean }) {
 	const [notifications, setNotifications] = useState<Entity.Notification[]>([]);

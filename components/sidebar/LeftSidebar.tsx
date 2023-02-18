@@ -347,7 +347,7 @@ function SendForm() {
 								<span className="text-gray-600 dark:text-gray-300">
 									{max_chars - characters.length}
 								</span>
-								<svg width="27" height="27" viewBox="0 0 27 27">
+								<svg width="27" height="27" viewBox="0 0 27 27" aria-hidden={true}>
 									<circle
 										cx="13.5"
 										cy="13.5"

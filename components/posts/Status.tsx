@@ -44,7 +44,7 @@ export default function Status({
 				}} className="flex-shrink-0 mr-4">
 					<img
 						loading="lazy"
-						alt={status.account.acct}
+						alt={`${status.account.acct}'s avatar`}
 						src={status.account.avatar}
 						className={`${
 							type == "post" ? "w-14 h-14" : "w-8 h-8"
@@ -137,7 +137,7 @@ export function DummyStatus({ type = "post" }: { type: "post" | "notification" }
 		setRandom(Math.random());
 	}, [])
 	return (
-		<div className="flex flex-col max-w-full">
+		<div className="flex flex-col max-w-full" aria-hidden={true}>
 			<div className="flex flex-row max-w-full">
 				<span className="flex-shrink-0 mr-4">
 					<div
@@ -206,7 +206,7 @@ export function ReplyTo({ status }: { status: Entity.Status }) {
 				setOpen(false);
 			}}>
 			<span className="text-xs text-gray-600 hover:underline dark:text-gray-300">
-				<IconMessage className="inline mr-1 w-4 h-4" />
+				<IconMessage className="inline mr-1 w-4 h-4" aria-hidden={true} />
 				Replying to{" "}
 				{replyStatus &&
 					withEmojis(replyStatus.account.display_name, replyStatus.account.emojis)}

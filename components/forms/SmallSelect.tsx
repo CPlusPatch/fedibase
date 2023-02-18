@@ -46,7 +46,7 @@ export default function SmallSelect({ items, selected, setSelected }: SelectOpti
 									item.value == selected.value && "bg-orange-100 dark:bg-orange-800"
 								} flex relative flex-row gap-x-3 items-center p-2 text-gray-800 dark:text-gray-100 duration-200 cursor-default select-none hover:bg-gray-100 dark:hover:bg-gray-700`}
 								value={item.value}>
-								<item.icon className="w-4 h-auto text-gray-500" />
+								<item.icon className="w-4 h-auto text-gray-500" aria-hidden={true}/>
 								<div className="flex flex-col">
 									<span className="text-sm font-semibold">{item.text}</span>
 									<span className="text-sm text-orange-700 dark:text-orange-200">
