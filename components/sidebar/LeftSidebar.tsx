@@ -164,6 +164,8 @@ function SendForm() {
 	const [fileIds, setFileIds] = useState<string[]>([]);
 	const [loading, setLoading] = useState<boolean>(false);
 	const [characters, setCharacters] = useState<string>("");
+	const [emojis, setEmojis] = useState<Entity.Emoji[]>([]);
+	const [emojisSuggestions, setEmojisSuggestions] = useState<Entity.Emoji[]>([]);
 
 	const max_chars = (JSON.parse(localStorage.getItem("instanceData")) as Entity.Instance).max_toot_chars;
 
@@ -179,7 +181,11 @@ function SendForm() {
 		})
 
 		if (state.replyingTo) setCharacters(mentions);
-	}, [state.replyingTo])
+
+		client.getInstanceCustomEmojis().then(data => {
+			setEmojis(data.data);
+		})
+	}, [client, state.replyingTo])
 
 	const submitForm = async (event: FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
@@ -243,14 +249,58 @@ function SendForm() {
 						ref={textareaRef}
 						id="comment"
 						rows={6}
-						onChange={e => {
+						onChange={async e => {
 							setCharacters(e.target.value);
+
+							const split = e.target.value.split(":");
+
+							if (
+								split.length > 1 &&
+								/^\w+$/.test(split[split.length - 1]) &&
+								split[split.length - 1] !== ""
+							) {
+								const matched = split[split.length - 1];
+
+								emojis.map(e => {
+									if (e.shortcode.startsWith(matched)) {
+										setEmojisSuggestions(s => [...s, e]);
+									}
+								});
+							} else {
+								setEmojisSuggestions([]);
+							}
 						}}
 						disabled={loading}
 						className="block py-3 w-full bg-transparent border-0 resize-none disabled:text-gray-400 focus:ring-0 dark:placeholder:text-gray-400"
 						placeholder="What's happening?"
 						defaultValue={characters}
 					/>
+
+					<Transition
+						as={Fragment}
+						enter="ease-out duration-200"
+						enterFrom="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+						enterTo="opacity-100 translate-y-0 sm:scale-100"
+						leave="ease-in duration-200"
+						leaveFrom="opacity-100 translate-y-0 sm:scale-100"
+						leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+						show={emojisSuggestions.length > 0}>
+						<div className="flex absolute z-[60] flex-col rounded border bg-dark dark:border-gray-700">
+							{emojisSuggestions.slice(0, 5).map(s => (
+								<div onClick={e => {
+									const val = textareaRef.current.value;
+									textareaRef.current.value = val.replace(
+										val.split(":")[val.split(":").length - 1],
+										`${s.shortcode}: `
+									);
+									setEmojisSuggestions([]);
+								}} key={s.shortcode} className="flex flex-row gap-x-4 px-3 py-2 duration-200 hover:bg-gray-100 hover:dark:bg-gray-800">
+									<img src={s.url} className="w-5 h-5" alt="" />
+									<span>{s.shortcode}</span>
+								</div>
+							))}
+						</div>
+					</Transition>
 
 					<div className="flex inset-x-0 bottom-0 justify-between py-2 pr-2 pl-3">
 						<div className="flex items-center space-x-1">
@@ -309,8 +359,9 @@ function SendForm() {
 										cy="13.5"
 										r="10"
 										fill="none"
-										strokeDasharray={(1 - (characters.length / 
-										max_chars)) * 62.832}
+										strokeDasharray={
+											(1 - characters.length / max_chars) * 62.832
+										}
 										strokeDashoffset="62.832"
 										strokeLinecap="round"
 										strokeWidth="3.5"
