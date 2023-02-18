@@ -1,5 +1,12 @@
 /** @type {import('next').NextConfig} */
 
+const withPWA = require("next-pwa")({
+	dest: "public",
+	register: true,
+	disable: false,
+	skipWaiting: true,
+});
+
 const nextConfig = {
 	reactStrictMode: true,
 	swcMinify: true,
@@ -7,7 +14,6 @@ const nextConfig = {
 	images: {
 		formats: ["image/avif", "image/webp"],
 	},
-	
 	webpack: (config, { isServer }) => {
 		if (!isServer) {
 			config.resolve.fallback.net = false;
@@ -26,4 +32,4 @@ const withBundleAnalyzer = require("@next/bundle-analyzer")({
 });
 
 
-module.exports = withBundleAnalyzer(nextConfig);
+module.exports = withPWA(withBundleAnalyzer(nextConfig));
