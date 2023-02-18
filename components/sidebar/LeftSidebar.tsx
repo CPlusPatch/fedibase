@@ -131,7 +131,7 @@ export default function LeftSidebar() {
 					</Transition.Child>
 
 					<div className="overflow-y-auto fixed inset-0 z-10">
-						<div className="flex justify-center items-center p-4 min-h-full text-center sm:p-0">
+						<div className="flex justify-center items-start p-4 min-h-full text-center md:items-center sm:p-0">
 							<Transition.Child
 								as={Fragment}
 								enter="ease-out duration-300"
