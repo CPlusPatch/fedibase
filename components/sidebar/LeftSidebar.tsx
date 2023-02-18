@@ -218,17 +218,21 @@ function SendForm() {
 						e.currentTarget.requestSubmit();
 					}
 				}}>
-				<div className={`px-3 py-2 w-full rounded-2xl border border-gray-300 shadow-sm ${loading ? "bg-gray-100" : "bg-white"}`}>
+				<div
+					className={`px-3 py-2 w-full rounded-2xl border border-gray-300 dark:border-gray-700 shadow-sm ${
+						loading ? "bg-gray-100 bg-dark" : "bg-white bg-dark"
+					}`}>
 					<div className="flex justify-between p-3 w-full">
 						<h1 className="text-xl font-bold">Compose</h1>
-						<button onClick={e => {
-							e.preventDefault()
-							setState((s: any) => ({
-								...s,
-								mobileEditorOpened: false,
-								replyingTo: null,
-							}))
-						}}>
+						<button
+							onClick={e => {
+								e.preventDefault();
+								setState((s: any) => ({
+									...s,
+									mobileEditorOpened: false,
+									replyingTo: null,
+								}));
+							}}>
 							<IconX />
 						</button>
 					</div>

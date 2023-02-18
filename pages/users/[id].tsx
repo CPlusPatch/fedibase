@@ -17,7 +17,7 @@ const User = ({ id }) => {
 	}, [client, id]);
 
 	return (
-		<div className="relative bg-gray-50 font-inter">
+		<div className="relative bg-gray-50 dark:bg-gray-900 font-inter">
 			<MetaTags title={`${account ? account.display_name : "Loading..."} · Fedibase`} />
 
 			<Nav />

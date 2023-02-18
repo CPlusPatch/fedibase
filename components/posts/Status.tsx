@@ -35,18 +35,18 @@ export default function Status({
 						src={status.account.avatar}
 						className={`${
 							type == "post" ? "w-14 h-14" : "w-8 h-8"
-						} text-gray-300 bg-white rounded border border-gray-300`}
+						} bg-white bg-dark rounded border border-gray-300 dark:border-gray-700 `}
 					/>
 				</Link>
 				<div className="flex flex-col min-w-0 grow">
 					<div className="justify-between gap-x-2 text-[0.95rem] flex flex-row">
 						<span className="flex overflow-hidden flex-col whitespace-nowrap md:inline text-ellipsis">
-							<h4 className="inline font-bold" title={status.account.display_name}>
+							<h4 className="inline font-bold dark:text-gray-200" title={status.account.display_name}>
 								{withEmojis(status.account.display_name, status.account.emojis)}
 							</h4>
 							<h6
 								title={status.account.acct}
-								className="inline overflow-hidden ml-0 text-gray-500 overflow-ellipsis md:ml-2">
+								className="inline overflow-hidden ml-0 text-gray-500 overflow-ellipsis dark:text-gray-400 md:ml-2">
 								@{status.account.acct}
 							</h6>
 						</span>
@@ -66,7 +66,7 @@ export default function Status({
 										history.pushState(null, null, `/posts/${status.id}`);
 									}
 								}}
-								className="text-sm text-gray-700 hover:underline">
+								className="text-sm text-gray-700 dark:text-gray-300 hover:underline">
 								{fromNow(new Date(status.created_at))}
 							</a>
 						</div>
@@ -87,7 +87,7 @@ export default function Status({
 							}}>
 							<p
 								ref={textRef}
-								className={`mt-1 rounded duration-200 status-text ${
+								className={`mt-1 rounded duration-200 status-text dark:text-gray-50 ${
 									status.sensitive && !showText && "filter blur-lg"
 								}`}>
 								{withEmojis(status.content, status.emojis)}
@@ -98,7 +98,7 @@ export default function Status({
 							<>
 								<hr />
 								<button
-									className="mx-auto w-full text-sm text-blue-800 hover:underline"
+									className="mx-auto w-full text-sm text-blue-800 dark:text-blue-100 hover:underline"
 									onClick={() => {
 										setExpand(!expand);
 									}}>
@@ -138,7 +138,7 @@ export function ReplyTo({ status }: { status: Entity.Status }) {
 			onMouseLeave={e => {
 				setOpen(false);
 			}}>
-			<span className="text-xs text-gray-600 hover:underline">
+			<span className="text-xs text-gray-600 hover:underline dark:text-gray-300">
 				<IconMessage className="inline mr-1 w-4 h-4" />
 				Replying to{" "}
 				{replyStatus &&
@@ -153,51 +153,10 @@ export function ReplyTo({ status }: { status: Entity.Status }) {
 				leave="transition ease-in duration-150"
 				leaveFrom="opacity-100 translate-y-0"
 				leaveTo="opacity-0 translate-y-1">
-				<div className="absolute left-0 z-10 px-4 py-3 max-w-sm bg-gray-50 rounded border transform translate-x-[-5.55rem] lg:max-w-3xl">
+				<div className="absolute left-0 z-10 px-4 py-3 max-w-sm bg-gray-50 bg-dark rounded dark:border-gray-700 border transform translate-x-[-5.55rem] lg:max-w-3xl">
 					{replyStatus && <Status status={replyStatus} type="post" />}
 				</div>
 			</Transition>
-		</div>
-	);
-}
-
-export function DummyStatus({ type = "post" }: { type: "post" | "notification" }) {
-	return (
-		<div className="flex flex-col max-w-full">
-			<div className="flex flex-row max-w-full">
-				<div className="flex-shrink-0 mr-4">
-					<img
-						alt=""
-						className={`${
-							type == "post" ? "w-14 h-14" : "w-8 h-8"
-						} text-gray-300 bg-white rounded border border-gray-300`}
-					/>
-				</div>
-				<div className="flex flex-col min-w-0 grow">
-					<div className="justify-between gap-x-2 text-[0.95rem] flex flex-row">
-						<span className="flex overflow-hidden flex-col whitespace-nowrap md:inline text-ellipsis">
-							<h4 className="inline font-bold"></h4>
-							<h6 className="inline overflow-hidden ml-0 text-gray-500 overflow-ellipsis md:ml-2">
-								@namw
-							</h6>
-						</span>
-						<div className="whitespace-nowrap">
-							<div className="text-sm text-gray-700 hover:underline"></div>
-						</div>
-					</div>
-					<div className="flex flex-col gap-y-1">
-						{Math.random() > 0.7 && (
-							<span className="text-xs text-gray-600 hover:underline">
-								<IconMessage className="inline mr-1 w-4 h-4" />
-								Replying to gay
-							</span>
-						)}
-						<div className="relative w-full text-sm">
-							<p className={`mt-1 rounded duration-200 status-text`}></p>
-						</div>
-					</div>
-				</div>
-			</div>
 		</div>
 	);
 }

@@ -42,7 +42,7 @@ const Home = () => {
 	}, [handlePopState, state]);
 
 	return (
-		<div className="relative bg-gray-50 font-inter">
+		<div className="relative font-inter bg-dark">
 			<MetaTags title={`Home · Fedibase`} />
 
 			<Nav />

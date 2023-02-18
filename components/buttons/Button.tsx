@@ -3,9 +3,9 @@ import { DetailedHTMLProps, ButtonHTMLAttributes } from "react";
 import { classNames } from "utils/functions";
 
 const styles = {
-	gray: "text-gray-700 bg-white border-gray-300 outline-none hover:bg-gray-50",
+	gray: "text-gray-700 bg-white bg-dark border-gray-300 outline-none hover:bg-gray-50 dark:border-gray-600 dark:text-gray-200",
 	orange: "bg-orange-600 hover:bg-orange-700 text-white border-transparent",
-	orangeLight: "text-orange-700 bg-orange-100 hover:bg-orange-200 border-transparent",
+	orangeLight: "text-orange-700 dark:text-orange-200 bg-orange-100 dark:bg-orange-800 hover:bg-orange-200 border-transparent",
 };
 
 interface ButtonProps {

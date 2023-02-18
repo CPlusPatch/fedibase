@@ -2,7 +2,7 @@ import { Html, Head, Main, NextScript } from 'next/document';
 
 export default function MyDocument(/* { props } */) {
 	return (
-    <Html lang='en-us' /* className={props.isDarkTheme ? "dark" : ""} */>
+    <Html lang='en-us' /* className={props.isDarkTheme ? "dark" : ""} */ className='dark'>
 		<Head>
 		</Head>
 

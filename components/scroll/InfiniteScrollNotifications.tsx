@@ -11,7 +11,7 @@ export default function InfiniteScrollNotifications({ notifs, loadNewNotifs }: {
 }) {
 	return (
 		<div
-			className="flex overflow-y-auto flex-col gap-y-2 max-w-full divide-y-2"
+			className="flex overflow-y-auto flex-col gap-y-2 max-w-full divide-y-2 dark:divide-gray-700"
 			onScroll={e => {
 				if (e.currentTarget) {
 					// Check if scrolled to bottom
@@ -24,8 +24,8 @@ export default function InfiniteScrollNotifications({ notifs, loadNewNotifs }: {
 				}
 			}}>
 			{notifs.map(n => (
-					<Notification key={n.id} n={n} />
-				))}
+				<Notification key={n.id} n={n} />
+			))}
 		</div>
 	);
 }
@@ -38,7 +38,7 @@ const Notification = ({ n }: { n: Entity.Notification }) => {
 					{n.type == "favourite" && (
 						<Link
 							href={`/users/@${n.account.id}`}
-							className="overflow-hidden gap-x-2 max-w-full text-sm italic text-gray-500 overflow-ellipsis hover:underline">
+							className="overflow-hidden gap-x-2 max-w-full text-sm italic text-gray-500 overflow-ellipsis dark:text-gray-400 hover:underline">
 							<IconStarFilled className="inline mr-1 w-[1em] pb-0.5 text-yellow-500 hover:animate-spin" />
 							{withEmojis(n.account.display_name, n.account.emojis)} favourited your
 							post
@@ -47,7 +47,7 @@ const Notification = ({ n }: { n: Entity.Notification }) => {
 					{n.type == "reblog" && (
 						<Link
 							href={`/users/@${n.account.id}`}
-							className="overflow-hidden gap-x-2 max-w-full text-sm italic text-gray-500 overflow-ellipsis hover:underline">
+							className="overflow-hidden gap-x-2 max-w-full text-sm italic text-gray-500 dark:text-gray-400  overflow-ellipsis hover:underline">
 							<svg
 								xmlns="http://www.w3.org/2000/svg"
 								className="text-blue-500 hover:animate-spin w-[1em] inline pb-0.5 mr-1"

@@ -6,7 +6,7 @@ import NotificationsFeed from "components/sidebar/NotificationsFeed";
 
 export default function MainLayout({ children }) {
 	return (
-		<div className="flex flex-col w-full min-h-screen bg-gray-50 duration-200">
+		<div className="flex flex-col w-full min-h-screen duration-200 bg-gradient-light">
 			<div className="flex relative mx-auto w-full max-w-full h-full grow md:pl-[4.3rem]">
 				<main className="grow">
 					<MobileNavbar />
@@ -14,7 +14,7 @@ export default function MainLayout({ children }) {
 						<div className="hidden overflow-y-scroll p-4 max-h-screen md:col-span-2 md:block">
 							<LeftSidebar />
 						</div>
-						<div className="overflow-x-hidden col-span-6 pt-20 max-h-screen border-x md:pt-0">
+						<div className="overflow-x-hidden col-span-6 pt-20 max-h-screen border-x dark:border-gray-700 md:pt-0">
 							{children}
 						</div>
 						<div className="hidden overflow-x-hidden p-4 min-w-0 max-h-screen md:col-span-3 md:flex">

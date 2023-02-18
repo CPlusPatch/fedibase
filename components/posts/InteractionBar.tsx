@@ -24,7 +24,7 @@ export default function InteractionBar({ status }: { status: Entity.Status }) {
 	const [state, setState] = useContext(StateContext) as any;
 
 	return (
-		<div className="grid grid-cols-5 justify-around px-5 mt-3 w-full text-gray-700">
+		<div className="grid grid-cols-5 justify-around px-5 mt-3 w-full text-gray-700 dark:text-gray-400">
 			<InteractionBarIcon
 				onClick={() => {
 					setState(s => ({
