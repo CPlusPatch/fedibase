@@ -25,6 +25,10 @@ export default function Status({
 	const textRef = useRef<HTMLParagraphElement>(null);
 	const [state, setState]: any = useContext(StateContext);
 
+	useEffect(() => {
+		console.log(status)
+	}, [status])
+
 	return (
 		<div className="flex flex-col max-w-full">
 			<div className="flex flex-row max-w-full">
