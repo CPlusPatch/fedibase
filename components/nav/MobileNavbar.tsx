@@ -1,5 +1,12 @@
 import { Dialog, Transition } from "@headlessui/react";
-import { IconBell, IconMenu2, IconPaperclip, IconPencilPlus, IconPlus, IconX } from "@tabler/icons-react";
+import {
+	IconBell,
+	IconMenu2,
+	IconPaperclip,
+	IconPencilPlus,
+	IconPlus,
+	IconX,
+} from "@tabler/icons-react";
 import Button from "components/buttons/Button";
 import { AuthContext } from "components/context/AuthContext";
 import { StateContext } from "components/context/StateContext";
@@ -12,39 +19,11 @@ import { useState, Fragment, useContext, FormEvent, MutableRefObject, useRef } f
 import toast from "react-hot-toast";
 
 export default function MobileNavbar() {
-	const [open, setOpen] = useState(false);
 	const [state, setState]: any = useContext(StateContext);
 	const client = useContext(AuthContext);
 	const [loading, setLoading] = useState<boolean>(false);
 	const textareaRef: MutableRefObject<HTMLTextAreaElement> = useRef(null);
 
-	const submitForm = (event: FormEvent<HTMLFormElement>) => {
-		event.preventDefault();
-		setLoading(true);
-
-		client
-			.postStatus(event.target["comment"].value, {
-				in_reply_to_id: state?.replyingTo?.id ?? undefined,
-				visibility: "public",
-			})
-			.then((res: Response<Entity.Status>) => {
-				if (res.status == 200) {
-					toast("Post sent!", {
-						icon: "👍",
-					});
-				}
-			})
-			.finally(() => {
-				setLoading(false);
-				textareaRef.current.value = "";
-				setState((s: any) => ({
-					...s,
-					replyingTo: null,
-					mobileEditorOpened: false,
-				}));
-			});
-	};
-	
 	return (
 		<>
 			<div className="flex fixed inset-x-0 top-0 z-30 justify-between items-center px-6 py-3 bg-white border-b dark:border-gray-700 bg-dark md:hidden">
@@ -52,7 +31,10 @@ export default function MobileNavbar() {
 					style="gray"
 					className="!p-3 !border-none !shadow-none"
 					onClick={() => {
-						setOpen(o => !o);
+						setState(s => ({
+							...s,
+							notificationsOpened: true,
+						}));
 					}}>
 					<IconMenu2 className="" />
 				</Button>
@@ -63,7 +45,10 @@ export default function MobileNavbar() {
 					style="gray"
 					className="!p-3 !border-none !shadow-none"
 					onClick={() => {
-						setOpen(o => !o);
+						setState(s => ({
+							...s,
+							notificationsOpened: true,
+						}));
 					}}>
 					<IconBell className="" />
 				</Button>
@@ -81,8 +66,16 @@ export default function MobileNavbar() {
 					<IconPencilPlus className="w-10 h-10" />
 				</Button>
 			</div>
-			<Transition.Root show={open} as={Fragment}>
-				<Dialog as="div" className="relative z-40" onClose={setOpen}>
+			<Transition.Root show={state.notificationsOpened} as={Fragment}>
+				<Dialog
+					as="div"
+					className="relative z-40"
+					onClose={() => {
+						setState(s => ({
+							...s,
+							notificationsOpened: false,
+						}));
+					}}>
 					<Transition.Child
 						as={Fragment}
 						enter="ease-in-out duration-500"
@@ -124,7 +117,12 @@ export default function MobileNavbar() {
 												<button
 													type="button"
 													className="text-gray-300 rounded-md hover:text-white focus:outline-none"
-													onClick={() => setOpen(false)}>
+													onClick={() =>
+														setState(s => ({
+															...s,
+															notificationsOpened: false,
+														}))
+													}>
 													<span className="sr-only">Close panel</span>
 													<IconX className="w-6 h-6" aria-hidden="true" />
 												</button>

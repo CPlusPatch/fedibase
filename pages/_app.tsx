@@ -11,9 +11,11 @@ function App({ Component, pageProps }: AppProps) {
 	const [state, setState] = useState<{
 		replyingTo: null | Entity.Status;
 		mobileEditorOpened: boolean;
+		notificationsOpened: boolean;
 	} | null>({
 		replyingTo: null,
 		mobileEditorOpened: false,
+		notificationsOpened: false,
 	});
 	return (
 		<>

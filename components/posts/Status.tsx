@@ -41,6 +41,7 @@ export default function Status({
 								...s.params,
 								id: status.account.id,
 							},
+							notificationsOpened: false,
 						}));
 						history.pushState(null, null, `/users/${status.account.id}`);
 					}
@@ -78,6 +79,7 @@ export default function Status({
 												...s.params,
 												id: status.id,
 											},
+											notificationsOpened: false,
 										}));
 										history.pushState(null, null, `/posts/${status.id}`);
 									}
