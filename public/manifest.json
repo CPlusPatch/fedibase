@@ -3,7 +3,7 @@
   "short_name": "Fedibase",
   "theme_color": "#f38121",
   "background_color": "#181a1b",
-  "display": "fullScreen",
+  "display": "standalone",
   "orientation": "portrait",
   "scope": "/",
   "start_url": "/",
