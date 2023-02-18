@@ -165,6 +165,8 @@ function SendForm() {
 	const [loading, setLoading] = useState<boolean>(false);
 	const [characters, setCharacters] = useState<string>("");
 
+	const max_chars = (JSON.parse(localStorage.getItem("instanceData")) as Entity.Instance).max_toot_chars;
+
 	// Element refs
 	const fileInputRef = useRef<HTMLInputElement>(null);
 	const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -293,11 +295,7 @@ function SendForm() {
 						<div className="flex flex-row flex-shrink-0 gap-x-4 items-center">
 							<div className="flex flex-row gap-x-2 items-center">
 								<span className="text-gray-600 dark:text-gray-300">
-									{(
-										JSON.parse(
-											localStorage.getItem("instanceData"),
-										) as Entity.Instance
-									).max_toot_chars - characters.length}
+									{max_chars - characters.length}
 								</span>
 								<svg width="27" height="27" viewBox="0 0 27 27">
 									<circle
@@ -312,7 +310,8 @@ function SendForm() {
 										cy="13.5"
 										r="10"
 										fill="none"
-										strokeDasharray="62.832"
+										strokeDasharray={(1 - (characters.length / 
+										max_chars)) * 62.832}
 										strokeDashoffset="62.832"
 										strokeLinecap="round"
 										strokeWidth="3.5"
