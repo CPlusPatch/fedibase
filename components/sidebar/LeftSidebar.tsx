@@ -17,7 +17,7 @@ import { StateContext } from "components/context/StateContext";
 import Select from "components/forms/Select";
 import SmallSelect from "components/forms/SmallSelect";
 import { Entity, Response } from "megalodon";
-import { FormEvent, Fragment, useContext, useRef, useState } from "react";
+import { FormEvent, Fragment, useContext, useEffect, useRef, useState } from "react";
 import { toast, Toaster } from "react-hot-toast";
 import { withEmojis } from "utils/functions";
 
@@ -169,6 +169,16 @@ function SendForm() {
 	const fileInputRef = useRef<HTMLInputElement>(null);
 	const textareaRef = useRef<HTMLTextAreaElement>(null);
 
+	useEffect(() => {
+		let mentions = "@" + (state.replyingTo as Entity.Status)?.account.acct + " ";
+
+		(state.replyingTo as Entity.Status)?.mentions.map(m => {
+			mentions += "@" + m.acct + " "
+		})
+
+		setCharacters(mentions);
+	}, [state.replyingTo])
+
 	const submitForm = async (event: FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
 		setLoading(true);
@@ -234,7 +244,7 @@ function SendForm() {
 						disabled={loading}
 						className="block py-3 w-full bg-transparent border-0 resize-none focus:ring-0"
 						placeholder="What's happening?"
-						defaultValue={""}
+						defaultValue={characters}
 					/>
 
 					<div className="flex inset-x-0 bottom-0 justify-between py-2 pr-2 pl-3">
