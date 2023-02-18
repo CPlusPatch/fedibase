@@ -47,7 +47,7 @@ export default function MobileNavbar() {
 	
 	return (
 		<>
-			<div className="flex fixed inset-x-0 top-0 z-30 justify-between items-center px-6 py-3 bg-white border-b md:hidden">
+			<div className="flex fixed inset-x-0 top-0 z-30 justify-between items-center px-6 py-3 bg-white border-b dark:border-gray-700 bg-dark md:hidden">
 				<Button
 					style="gray"
 					className="!p-3 !border-none !shadow-none"
@@ -116,9 +116,9 @@ export default function MobileNavbar() {
 											leaveTo="opacity-0">
 											<div className="flex absolute top-0 left-0 pt-4 pr-2 -ml-8 sm:-ml-10 sm:pr-4"></div>
 										</Transition.Child>
-										<div className="flex overflow-y-scroll flex-col py-6 h-full bg-white shadow-xl">
+										<div className="flex overflow-y-scroll flex-col py-6 h-full bg-white shadow-xl bg-dark">
 											<div className="flex justify-between px-4 sm:px-6">
-												<Dialog.Title className="text-lg font-medium text-gray-900">
+												<Dialog.Title className="text-lg font-medium text-gray-900 dark:text-gray-50">
 													Notifications
 												</Dialog.Title>
 												<button
