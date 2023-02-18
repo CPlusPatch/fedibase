@@ -249,23 +249,24 @@ function SendForm() {
 						ref={textareaRef}
 						id="comment"
 						rows={6}
-						onChange={async e => {
-							setCharacters(e.target.value);
+						onChange={async event => {
+							setCharacters(event.target.value);
 
-							const split = e.target.value.split(":");
+							const split = event.target.value.split(":");
 
 							if (
 								split.length > 1 &&
-								/^\w+$/.test(split[split.length - 1]) &&
-								split[split.length - 1] !== ""
+								/^\w+$/.test(split[split.length - 1])
 							) {
 								const matched = split[split.length - 1];
-
+								
+								let emojisSugges = []
 								emojis.map(e => {
 									if (e.shortcode.startsWith(matched)) {
-										setEmojisSuggestions(s => [...s, e]);
+										emojisSugges.push(e);
 									}
 								});
+								setEmojisSuggestions(emojisSugges);
 							} else {
 								setEmojisSuggestions([]);
 							}
