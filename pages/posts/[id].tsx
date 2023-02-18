@@ -5,7 +5,7 @@ import { Conversation } from "components/feed/Conversation";
 
 const User = ({ id }) => {
 	return (
-		<div className="relative bg-gray-50 font-inter">
+		<div className="relative font-inter bg-dark">
 			<MetaTags title={`Post · Fedibase`} />
 
 			<Nav />

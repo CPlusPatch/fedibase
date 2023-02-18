@@ -219,11 +219,11 @@ function SendForm() {
 					}
 				}}>
 				<div
-					className={`px-3 py-2 w-full rounded-2xl border border-gray-300 dark:border-gray-700 shadow-sm ${
+					className={`px-3 py-2 w-full rounded-2xl border dark:text-gray-100 border-gray-300 dark:border-gray-700 shadow-sm ${
 						loading ? "bg-gray-100 bg-dark" : "bg-white bg-dark"
 					}`}>
 					<div className="flex justify-between p-3 w-full">
-						<h1 className="text-xl font-bold">Compose</h1>
+						<h1 className="text-xl font-bold dark:text-gray-50">Compose</h1>
 						<button
 							onClick={e => {
 								e.preventDefault();
@@ -246,7 +246,7 @@ function SendForm() {
 							setCharacters(e.target.value);
 						}}
 						disabled={loading}
-						className="block py-3 w-full bg-transparent border-0 resize-none focus:ring-0"
+						className="block py-3 w-full bg-transparent border-0 resize-none focus:ring-0 dark:placeholder:text-gray-400"
 						placeholder="What's happening?"
 						defaultValue={characters}
 					/>
@@ -258,7 +258,7 @@ function SendForm() {
 								onClick={() => {
 									fileInputRef.current.click();
 								}}
-								className="flex relative flex-row gap-x-1 items-center p-2 text-gray-600 rounded duration-200 cursor-default hover:bg-gray-100">
+								className="flex relative flex-row gap-x-1 items-center p-2 text-gray-600 rounded duration-200 cursor-default dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">
 								<IconPaperclip className="w-6 h-6" aria-hidden="true" />
 								<span className="sr-only">Attach a file</span>
 								<input
@@ -292,7 +292,7 @@ function SendForm() {
 						</div>
 						<div className="flex flex-row flex-shrink-0 gap-x-4 items-center">
 							<div className="flex flex-row gap-x-2 items-center">
-								<span className="text-gray-600">
+								<span className="text-gray-600 dark:text-gray-300">
 									{(
 										JSON.parse(
 											localStorage.getItem("instanceData"),
@@ -306,7 +306,7 @@ function SendForm() {
 										r="10"
 										fill="none"
 										strokeWidth="3"
-										className="stroke-gray-500 dark:stroke-white/20"></circle>
+										className="stroke-gray-500 dark:stroke-white/80"></circle>
 									<circle
 										cx="13.5"
 										cy="13.5"
@@ -316,7 +316,7 @@ function SendForm() {
 										strokeDashoffset="62.832"
 										strokeLinecap="round"
 										strokeWidth="3.5"
-										className="stroke-primary-500"></circle>
+										className="stroke-orange-500"></circle>
 								</svg>
 							</div>
 							<Button

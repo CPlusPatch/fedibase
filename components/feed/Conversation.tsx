@@ -42,7 +42,7 @@ export const Conversation = ({ id }) => {
 						<Post post={post} key={post.id} />
 					))}
 				</div>
-				<div className="px-6 py-4 border-y-2">
+				<div className="px-6 py-4 border-y-2 dark:border-gray-700">
 					{posts.map(post => (
 						<Post post={post} key={post.id} />
 					))}
@@ -63,7 +63,7 @@ function PostWithChildren({ post }) {
 			{post.children.length > 0 ? (
 				<>
 				<Post post={post} />
-					<div className="flex flex-col gap-y-4 pl-2 border-l-4">
+					<div className="flex flex-col gap-y-4 pl-2 border-l-4 dark:border-gray-500">
 						{post.children.map(postChild => (
 							<PostWithChildren post={postChild} key={postChild.id}/>
 						))}
