@@ -6,9 +6,13 @@ import { useCallback, useContext, useEffect, useState } from "react";
 import { StateContext } from "components/context/StateContext";
 import { Conversation } from "components/feed/Conversation";
 import { LocalFeed } from "components/feed/LocalFeed";
+import { UserFeed } from "components/feed/UserFeed";
+import { AuthContext } from "components/context/AuthContext";
 
 const Home = () => {
 	const [state, setState]: any = useContext(StateContext);
+	const client = useContext(AuthContext);
+	
 	const [component, setComponent] = useState(<></>)
 
 	const handlePopState = useCallback(
@@ -33,13 +37,18 @@ const Home = () => {
 				setComponent(<LocalFeed />);
 			} else if (paths[1] === "") {
 				setComponent(<HomeFeed />);
+			} else if (paths[1] === "users") {
+				client.getAccount(paths[2].replace("@", "")).then((res) => {
+					setComponent(<UserFeed account={res.data} />);
+				});
+				
 			}
 
 			window.addEventListener("popstate", handlePopState);
 
 			return () => window.removeEventListener("popstate", handlePopState);
 		}
-	}, [handlePopState, state]);
+	}, [client, handlePopState, state]);
 
 	return (
 		<div className="relative font-inter bg-dark">

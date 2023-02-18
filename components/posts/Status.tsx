@@ -32,7 +32,19 @@ export default function Status({
 	return (
 		<div className="flex flex-col max-w-full">
 			<div className="flex flex-row max-w-full">
-				<Link href={`/users/@${status.account.id}`} className="flex-shrink-0 mr-4">
+				<a href={`/users/${status.account.id}`} onClick={e => {
+					if (!e.ctrlKey && !e.metaKey) {
+						e.preventDefault();
+						setState(s => ({
+							...s,
+							params: {
+								...s.params,
+								id: status.account.id,
+							},
+						}));
+						history.pushState(null, null, `/users/${status.account.id}`);
+					}
+				}} className="flex-shrink-0 mr-4">
 					<img
 						loading="lazy"
 						alt={status.account.acct}
@@ -41,7 +53,7 @@ export default function Status({
 							type == "post" ? "w-14 h-14" : "w-8 h-8"
 						} bg-white bg-dark rounded border border-gray-300 dark:border-gray-700 `}
 					/>
-				</Link>
+				</a>
 				<div className="flex flex-col min-w-0 grow">
 					<div className="justify-between gap-x-2 text-[0.95rem] flex flex-row">
 						<span className="flex overflow-hidden flex-col whitespace-nowrap md:inline text-ellipsis">
