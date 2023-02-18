@@ -176,7 +176,7 @@ function SendForm() {
 			mentions += "@" + m.acct + " "
 		})
 
-		setCharacters(mentions);
+		if (state.replyingTo) setCharacters(mentions);
 	}, [state.replyingTo])
 
 	const submitForm = async (event: FormEvent<HTMLFormElement>) => {
