@@ -75,7 +75,7 @@ export default function InfiniteScrollPosts({
 }) {
 	return (
 		<div
-			className="flex overflow-y-scroll flex-col gap-y-5 px-6 py-4"
+			className="flex overflow-y-scroll flex-col gap-y-5 px-6 py-4 no-scroll"
 			onScroll={e => {
 				if (e.currentTarget) {
 					// Check if scrolled to bottom
