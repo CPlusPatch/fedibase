@@ -2,18 +2,14 @@
 import { IconStarFilled } from "@tabler/icons-react";
 import { AuthContext } from "components/context/AuthContext";
 import WithLoader from "components/loaders/WithLoader";
-import Status from "components/posts/Status";
+import Status, { DummyStatus } from "components/posts/Status";
 import InfiniteScrollNotifications from "components/scroll/InfiniteScrollNotifications";
 import { Entity, Response } from "megalodon";
 import Link from "next/link";
 import { useContext, useEffect, useRef, useState } from "react";
 import { withEmojis } from "utils/functions";
 
-export default function NotificationsFeed({
-	withTitle = true
-}: {
-	withTitle?: boolean
-}) {
+export default function NotificationsFeed({ withTitle = true }: { withTitle?: boolean }) {
 	const [notifications, setNotifications] = useState<Entity.Notification[]>([]);
 	const client = useContext(AuthContext);
 	const notifsRef = useRef(notifications);
@@ -43,11 +39,13 @@ export default function NotificationsFeed({
 	}, [client]);
 
 	return (
-		<WithLoader variable={notifications}>
-			<div className="flex flex-col gap-y-6 w-full max-w-full h-full font-inter">
-				{withTitle && <div className="flex-row justify-between">
+		<div className="flex flex-col gap-y-6 w-full max-w-full h-full font-inter">
+			{withTitle && (
+				<div className="flex-row justify-between">
 					<h3 className="text-lg font-bold dark:text-gray-50">Notifications</h3>
-				</div>}
+				</div>
+			)}
+			{notifications.length > 0 ? (
 				<InfiniteScrollNotifications
 					notifs={notifications}
 					loadNewNotifs={() => {
@@ -62,7 +60,17 @@ export default function NotificationsFeed({
 								notifsRef.current = [...notifications, ...res.data];
 							});
 					}}></InfiniteScrollNotifications>
-			</div>
-		</WithLoader>
+			) : (
+				<div className="flex overflow-y-auto flex-col gap-y-4 max-w-full no-scroll">
+					<DummyStatus type="notification" />
+					<DummyStatus type="notification" />
+					<DummyStatus type="notification" />
+					<DummyStatus type="notification" />
+					<DummyStatus type="notification" />
+					<DummyStatus type="notification" />
+					<DummyStatus type="notification" />
+				</div>
+			)}
+		</div>
 	);
 }

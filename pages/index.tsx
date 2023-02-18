@@ -48,10 +48,10 @@ const Home = () => {
 
 			return () => window.removeEventListener("popstate", handlePopState);
 		}
-	}, [client, handlePopState, state]);
+	}, [client, handlePopState]);
 
 	return (
-		<div className="relative font-inter bg-dark">
+		<div className="relative text-base not-italic font-inter bg-dark">
 			<MetaTags title={`Home · Fedibase`} />
 
 			<Nav />

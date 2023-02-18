@@ -60,11 +60,11 @@ export default function Nav() {
 					href="/"
 					onClick={e => {
 						e.preventDefault();
-						history.pushState(null, null, "/");
 						setState(s => ({
 							...s,
-							params: "/",
+							params: {},
 						}));
+						history.pushState(null, null, "/");
 					}}
 					className="flex flex-shrink-0 justify-center items-center px-2">
 					<img src={instance?.thumbnail} className="w-8 h-8 rounded" alt="" />

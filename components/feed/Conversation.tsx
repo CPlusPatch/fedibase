@@ -1,6 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import { AuthContext } from "components/context/AuthContext";
 import WithLoader from "components/loaders/WithLoader";
+import { DummyStatus } from "components/posts/Status";
 import { Post } from "components/scroll/InfiniteScrollPosts";
 import { Entity } from "megalodon";
 import { arrayToTree } from "performant-array-to-tree";
@@ -35,25 +36,37 @@ export const Conversation = ({ id }) => {
 	}, [client, id]);
 
 	return (
-		<WithLoader variable={posts}>
-			<div className="flex overflow-y-auto flex-col gap-y-5 py-4 w-full h-full no-scroll">
-				<div className="flex flex-col gap-y-4 px-6">
-					{ancestors.map(post => (
-						<Post post={post} key={post.id} />
-					))}
+		<>
+			{posts.length > 0 ? (
+				<div className="flex overflow-y-auto flex-col gap-y-5 py-4 w-full h-full no-scroll">
+					<div className="flex flex-col gap-y-4 px-6">
+						{ancestors.map(post => (
+							<Post post={post} key={post.id} />
+						))}
+					</div>
+					<div className="px-6 py-4 border-y-2 dark:border-gray-700">
+						{posts.map(post => (
+							<Post post={post} key={post.id} />
+						))}
+					</div>
+					<div className="flex flex-col gap-y-4 px-6">
+						{descendants.map(post => (
+							<PostWithChildren post={post} key={post.id} />
+						))}
+					</div>
 				</div>
-				<div className="px-6 py-4 border-y-2 dark:border-gray-700">
-					{posts.map(post => (
-						<Post post={post} key={post.id} />
-					))}
+			) : (
+				<div className="flex overflow-y-auto flex-col gap-y-4 px-6 py-4 w-full h-full no-scroll">
+					<DummyStatus type="post" />
+					<DummyStatus type="post" />
+					<DummyStatus type="post" />
+					<DummyStatus type="post" />
+					<DummyStatus type="post" />
+					<DummyStatus type="post" />
+					<DummyStatus type="post" />
 				</div>
-				<div className="flex flex-col gap-y-4 px-6">
-					{descendants.map(post => (
-						<PostWithChildren post={post} key={post.id} />
-					))}
-				</div>
-			</div>
-		</WithLoader>
+			)}
+		</>
 	);
 };
 
