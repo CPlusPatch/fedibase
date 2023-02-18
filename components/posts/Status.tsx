@@ -173,7 +173,7 @@ function SensitiveTextSpoiler({
 	return (
 		<>
 			{status.sensitive && (
-				<div className="flex gap-x-2 items-center font-bold">
+				<div className="flex gap-x-2 items-center font-bold dark:text-gray-100">
 					{status.spoiler_text == "" ? "Marked as sensitive" : status.spoiler_text}
 
 					<Button
