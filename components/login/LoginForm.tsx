@@ -61,12 +61,6 @@ export default function LoginForm({ code }) {
 
 		const { clientId, clientSecret, url } = appData;
 
-		/* setCookie("clientId", clientId);
-		setCookie("clientSecret", clientSecret);
-		setCookie("instanceUrl", instanceUrl);
-		setCookie("handle", handle);
-		setCookie("instanceType", instanceType); */
-
 		localStorage.setItem("clientId", clientId);
 		localStorage.setItem("clientSecret", clientSecret);
 		localStorage.setItem("instanceUrl", instanceUrl);
@@ -118,7 +112,7 @@ export default function LoginForm({ code }) {
 					<div className="flex justify-center w-auto">
 						<SmallLogo size="w-12" />
 					</div>
-					<h2 className="mt-6 text-3xl font-extrabold text-center text-gray-900 font-poppins">
+					<h2 className="mt-6 text-3xl font-extrabold text-center text-gray-900 dark:text-gray-50 font-poppins">
 						Login
 					</h2>
 				</div>
@@ -139,7 +133,7 @@ export default function LoginForm({ code }) {
 									required
 									placeholder="@cpluspatch@kitsunes.gay"
 									isLoading={isLoading}
-									className="block px-3 py-2 w-full placeholder-gray-400 rounded-md border border-gray-300 shadow-sm duration-200 appearance-none disabled:bg-gray-100 focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm">
+									className="block px-3 py-2 w-full placeholder-gray-400 rounded-md border border-gray-300 shadow-sm duration-200 appearance-none dark:placeholder-gray-500 dark:border-gray-600 disabled:bg-gray-100 disabled:dark:bg-gray-800 focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm">
 									<Label>Fedi handle</Label>
 								</Input>
 
@@ -161,7 +155,7 @@ export default function LoginForm({ code }) {
 								</div>
 							</form>
 						) : (
-							<h4>Validating...</h4>
+							<h4 className="dark:text-gray-100">Validating...</h4>
 						)}
 					</div>
 				</div>

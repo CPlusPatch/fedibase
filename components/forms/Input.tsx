@@ -22,7 +22,7 @@ export function Input({
 					name={name}
 					disabled={isLoading}
 					className={classNames(
-						"block px-3 py-2 w-full placeholder-gray-400 rounded-md border border-gray-300 shadow-sm duration-200 appearance-none outline-none disabled:bg-gray-100 focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm",
+						"block px-3 py-2 w-full placeholder-gray-400 bg-white rounded-md border border-gray-300 shadow-sm duration-200 appearance-none outline-none dark:text-gray-100 bg-dark disabled:bg-gray-100 focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm",
 						className,
 					)}
 					{...props}
@@ -34,7 +34,7 @@ export function Input({
 
 export function Label({ children }) {
 	return (
-		<label htmlFor="name" className="block text-sm font-medium text-gray-600">
+		<label htmlFor="name" className="block text-sm font-medium text-gray-600 dark:text-gray-300">
 			{children}
 		</label>
 	);

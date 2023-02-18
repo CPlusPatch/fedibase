@@ -27,7 +27,7 @@ export default function Select({ items, selected, setSelected }: SelectOptions) 
 					});
 				}}>
 				<div className="relative mt-1">
-					<Listbox.Button className="relative py-2 pr-10 pl-3 w-full text-left bg-white rounded border shadow-sm cursor-default bg-dark focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm">
+					<Listbox.Button className="relative py-2 pr-10 pl-3 w-full text-left bg-white rounded border shadow-sm cursor-default bg-dark dark:border-gray-700 dark:text-gray-100 focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm">
 						<span className="block truncate">{selected.text}</span>
 						<span className="flex absolute inset-y-0 right-0 items-center pr-2 pointer-events-none">
 							<ChevronExpand className="w-5 h-5 text-gray-400" aria-hidden="true" />
@@ -45,7 +45,7 @@ export default function Select({ items, selected, setSelected }: SelectOptions) 
 							{items.map(item => (
 								<Listbox.Option
 									key={item.text}
-									className={`flex relative flex-row gap-x-3 items-center px-4 py-2 duration-200 hover:bg-gray-200`}
+									className={`flex relative flex-row gap-x-3 items-center px-4 py-2 duration-200 hover:bg-gray-200 hover:dark:bg-gray-700 dark:text-gray-100`}
 									value={item.value}>
 									{({ selected }) => (
 										<>
@@ -54,11 +54,6 @@ export default function Select({ items, selected, setSelected }: SelectOptions) 
 												className={`block truncate`}>
 												{item.text}
 											</span>
-											{selected ? (
-												<span className="flex absolute inset-y-0 left-0 items-center pl-3 text-amber-600">
-													<Check className="w-5 h-5" aria-hidden="true" />
-												</span>
-											) : null}
 										</>
 									)}
 								</Listbox.Option>

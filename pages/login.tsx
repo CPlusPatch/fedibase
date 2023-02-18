@@ -5,7 +5,7 @@ import wallpaper from "public/static/login-wallpaper.webp";
 
 const LoginPage = ({ code }) => {
 	return (
-		<div className="relative bg-gray-100">
+		<div className="relative bg-gray-100 bg-dark">
 			<MetaTags title={`Login · Fedibase`} />
 
 			{/* <div className="overflow-hidden absolute inset-0 w-full h-full -z-20">
