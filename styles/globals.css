@@ -119,3 +119,11 @@ a {
 .dark .bg-dark {
 	background-color: rgb(24 26 27 / 1) !important;
 }
+
+.no-scroll {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+.no-scroll::-webkit-scrollbar {
+  display: none; /* Chrome, Safari and Opera */
+}

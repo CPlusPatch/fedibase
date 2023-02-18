@@ -11,7 +11,7 @@ export default function InfiniteScrollNotifications({ notifs, loadNewNotifs }: {
 }) {
 	return (
 		<div
-			className="flex overflow-y-auto flex-col gap-y-2 max-w-full divide-y-2 dark:divide-gray-700"
+			className="flex overflow-y-auto flex-col gap-y-2 max-w-full divide-y-2 dark:divide-gray-700 no-scroll"
 			onScroll={e => {
 				if (e.currentTarget) {
 					// Check if scrolled to bottom
@@ -47,7 +47,7 @@ const Notification = ({ n }: { n: Entity.Notification }) => {
 					{n.type == "reblog" && (
 						<Link
 							href={`/users/@${n.account.id}`}
-							className="overflow-hidden gap-x-2 max-w-full text-sm italic text-gray-500 dark:text-gray-400  overflow-ellipsis hover:underline">
+							className="overflow-hidden gap-x-2 max-w-full text-sm italic text-gray-500 overflow-ellipsis dark:text-gray-400 hover:underline">
 							<svg
 								xmlns="http://www.w3.org/2000/svg"
 								className="text-blue-500 hover:animate-spin w-[1em] inline pb-0.5 mr-1"

@@ -36,7 +36,7 @@ export const Conversation = ({ id }) => {
 
 	return (
 		<WithLoader variable={posts}>
-			<div className="flex overflow-y-auto flex-col gap-y-5 py-4 w-full h-full">
+			<div className="flex overflow-y-auto flex-col gap-y-5 py-4 w-full h-full no-scroll">
 				<div className="flex flex-col gap-y-4 px-6">
 					{ancestors.map(post => (
 						<Post post={post} key={post.id} />
