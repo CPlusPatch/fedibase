@@ -1,11 +1,10 @@
 import { Listbox, Transition } from "@headlessui/react";
-import { Fragment, useState } from "react";
-import { ChevronDown } from "react-bootstrap-icons";
+import { Fragment } from "react";
 
 interface SelectOptions {
 	items: SelectItem[];
-	selected: any;
-	setSelected: any;
+	selected: SelectItem;
+	setSelected: React.Dispatch<React.SetStateAction<SelectItem>>;
 }
 
 interface SelectItem {
@@ -18,13 +17,12 @@ interface SelectItem {
 export default function SmallSelect({ items, selected, setSelected }: SelectOptions) {
 	return (
 		<Listbox
-			value={selected}
+			value={selected.value}
 			onChange={value => {
-				items.map(item => {
-					if (item.value == value) {
-						setSelected(item);
-					}
-				});
+				const selectedItem = items.find(item => item.value === value);
+				if (selectedItem) {
+					setSelected(selectedItem);
+				}
 			}}>
 			<div className="relative z-50 mt-1 font-inter">
 				<Listbox.Button className="flex relative flex-row gap-x-1 items-center p-2 text-gray-600 rounded duration-200 cursor-default dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">
@@ -43,10 +41,14 @@ export default function SmallSelect({ items, selected, setSelected }: SelectOpti
 							<Listbox.Option
 								key={item.value}
 								className={`${
-									item.value == selected.value && "bg-orange-100 dark:bg-orange-800"
+									item.value === selected.value &&
+									"bg-orange-100 dark:bg-gray-800"
 								} flex relative flex-row gap-x-3 items-center p-2 text-gray-800 dark:text-gray-100 duration-200 cursor-default select-none hover:bg-gray-100 dark:hover:bg-gray-700`}
 								value={item.value}>
-								<item.icon className="w-4 h-auto text-gray-500" aria-hidden={true}/>
+								<item.icon
+									className="w-4 h-auto text-gray-500"
+									aria-hidden={true}
+								/>
 								<div className="flex flex-col">
 									<span className="text-sm font-semibold">{item.text}</span>
 									<span className="text-sm text-orange-700 dark:text-orange-200">
