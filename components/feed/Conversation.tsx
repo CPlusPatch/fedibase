@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import { AuthContext } from "components/context/AuthContext";
 import WithLoader from "components/loaders/WithLoader";
-import { DummyStatus } from "components/posts/Status";
+import DummyStatus from "components/posts/DummyStatus";
 import { Post } from "components/scroll/InfiniteScrollPosts";
 import { Entity } from "megalodon";
 import { arrayToTree } from "performant-array-to-tree";

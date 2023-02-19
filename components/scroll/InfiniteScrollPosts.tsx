@@ -1,28 +1,31 @@
 /* eslint-disable @next/next/no-img-element */
 import { Entity } from "megalodon";
 import Link from "next/link";
-import Status from "components/posts/Status";
+import Status, { StatusType } from "components/posts/Status";
 import { withEmojis } from "utils/functions";
-import { useState } from "react";
+import { useCallback } from "react";
 
-export default function InfiniteScrollPosts({ posts, loadNewPosts }: {
+export default function InfiniteScrollPosts({
+	posts,
+	loadNewPosts,
+}: {
 	posts: Entity.Status[];
-	loadNewPosts(): void
+	loadNewPosts(): void;
 }) {
+	const handleScroll = useCallback(
+		e => {
+			const { scrollTop, scrollHeight, clientHeight } = e.currentTarget;
+			if (scrollTop + clientHeight >= scrollHeight) {
+				loadNewPosts();
+			}
+		},
+		[loadNewPosts],
+	);
+
 	return (
 		<div
 			className="flex overflow-y-auto flex-col gap-y-5 px-6 py-4 md:mt-10 no-scroll"
-			onScroll={e => {
-				if (e.currentTarget) {
-					// Check if scrolled to bottom
-					const { scrollTop, scrollHeight, clientHeight } = e.currentTarget;
-
-					if (scrollTop + clientHeight >= scrollHeight) {
-						// Load more notifications
-						loadNewPosts();
-					}
-				}
-			}}>
+			onScroll={handleScroll}>
 			{posts.map(post => (
 				<Post key={post.id} post={post} />
 			))}
@@ -30,9 +33,9 @@ export default function InfiniteScrollPosts({ posts, loadNewPosts }: {
 	);
 }
 
-export const Post = ({ post, highlight = false }: { post: Entity.Status; highlight?: boolean }) => {
+export const Post = ({ post }: { post: Entity.Status; }) => {
 	return (
-		<div className={`flex flex-col gap-y-2 ${highlight && "bg-gray-400"}`}>
+		<div className={`flex flex-col gap-y-2`}>
 			{post.reblog && (
 				<Link
 					href={`/users/@${post.account.id}`}
@@ -50,7 +53,7 @@ export const Post = ({ post, highlight = false }: { post: Entity.Status; highlig
 					{withEmojis(post.account.display_name, post.account.emojis)} boosted
 				</Link>
 			)}
-			<Status status={post.reblog !== null ? post.reblog : post} type="post" />
+			<Status status={post.reblog !== null ? post.reblog : post} type={StatusType.Post} />
 		</div>
 	);
 };

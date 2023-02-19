@@ -9,14 +9,11 @@ import { useEffect, useState } from 'react';
 import { getCookie } from 'cookies-next';
 
 function App({ Component, pageProps }: AppProps) {
-	const [state, setState] = useState<{
-		replyingTo: null | Entity.Status;
-		mobileEditorOpened: boolean;
-		notificationsOpened: boolean;
-	} | null>({
+	const [state, setState] = useState({
 		replyingTo: null,
 		mobileEditorOpened: false,
 		notificationsOpened: false,
+		path: ""
 	});
 
 	useEffect(() => {
@@ -32,7 +29,7 @@ function App({ Component, pageProps }: AppProps) {
 
 	return (
 		<>
-			<StateContext.Provider value={[state, setState] as any}>
+			<StateContext.Provider value={[state, setState]}>
 				<AuthContext.Provider
 					value={
 						typeof window !== "undefined" &&

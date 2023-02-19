@@ -7,19 +7,16 @@ import {
 	IconMail,
 	IconMarkdown,
 	IconPaperclip,
-	IconSearch,
 	IconWorld,
 	IconX,
 } from "@tabler/icons-react";
 import Button from "components/buttons/Button";
 import { AuthContext } from "components/context/AuthContext";
 import { StateContext } from "components/context/StateContext";
-import Select from "components/forms/Select";
 import SmallSelect from "components/forms/SmallSelect";
 import { Entity, Response } from "megalodon";
 import { FormEvent, Fragment, useContext, useEffect, useRef, useState } from "react";
-import { toast, Toaster } from "react-hot-toast";
-import { withEmojis } from "utils/functions";
+import { toast } from "react-hot-toast";
 
 const modes = [
 	{
@@ -64,51 +61,10 @@ const visibilities = [
 ];
 
 export default function LeftSidebar() {
-	const [state, setState] = useContext(StateContext) as any;
+	const [state, setState] = useContext(StateContext);
 
 	return (
 		<>
-			<div className="flex hidden flex-col gap-y-10 w-full h-full font-inter">
-				<Toaster position="top-left" />
-				<div className="flex relative w-full">
-					<input
-						className="px-4 py-2 w-full h-10 text-sm bg-gray-100 rounded-md border"
-						placeholder="Search here..."
-					/>
-					<IconSearch className="absolute inset-y-0 right-4 w-4 h-full" />
-				</div>
-
-				<div className="flex flex-col gap-y-2">
-					{state?.replyingTo && (
-						<div className="flex relative flex-row gap-x-2 p-2 w-full text-sm bg-gray-100 rounded border font-inter">
-							<img
-								src={(state?.replyingTo as Entity.Status).account.avatar}
-								className="w-10 h-10 rounded"
-								alt=""
-							/>
-							<div>
-								Replying to{" "}
-								{withEmojis(
-									(state?.replyingTo as Entity.Status).account.display_name,
-									(state?.replyingTo as Entity.Status).account.emojis,
-								)}
-							</div>
-							<div className="absolute top-2 right-2">
-								<button
-									className="bg-gray-100 rounded"
-									onClick={() => {
-										setState((s: any) => ({
-											...s,
-											replyingTo: null,
-										}));
-									}}>
-									<IconX className="w-4 h-4" />
-								</button>
-							</div>
-						</div>
-					)}
-				</div>
-			</div>
 			<Transition.Root show={state.mobileEditorOpened} as={Fragment}>
 				<Dialog
 					as="div"
@@ -174,17 +130,14 @@ function SendForm() {
 	const textareaRef = useRef<HTMLTextAreaElement>(null);
 
 	useEffect(() => {
-		let mentions = "@" + (state.replyingTo as Entity.Status)?.account.acct + " ";
-
-		(state.replyingTo as Entity.Status)?.mentions.map(m => {
-			mentions += "@" + m.acct + " "
-		})
-
-		if (state.replyingTo) setCharacters(mentions);
+		if (state.replyingTo) {
+			const mentions = state.replyingTo.mentions.map(m => "@" + m.acct + " ").join(" ");
+			setCharacters(mentions);
+		}
 
 		client.getInstanceCustomEmojis().then(data => {
 			setEmojis(data.data);
-		})
+		});
 	}, [client, state.replyingTo])
 
 	const submitForm = async (event: FormEvent<HTMLFormElement>) => {
@@ -235,7 +188,7 @@ function SendForm() {
 						<button
 							onClick={e => {
 								e.preventDefault();
-								setState((s: any) => ({
+								setState(s => ({
 									...s,
 									mobileEditorOpened: false,
 									replyingTo: null,
@@ -250,23 +203,17 @@ function SendForm() {
 						id="comment"
 						rows={6}
 						onChange={async event => {
-							setCharacters(event.target.value);
+							const { value } = event.target;
+							setCharacters(value);
 
-							const split = event.target.value.split(":");
-
-							if (
-								split.length > 1 &&
-								/^\w+$/.test(split[split.length - 1])
-							) {
+							const split = value.split(":");
+							if (split.length > 1 && /^\w+$/.test(split[split.length - 1])) {
 								const matched = split[split.length - 1];
-								
-								let emojisSugges = []
-								emojis.map(e => {
-									if (e.shortcode.startsWith(matched)) {
-										emojisSugges.push(e);
-									}
-								});
-								setEmojisSuggestions(emojisSugges);
+
+								const matchedEmojis = emojis.filter(e =>
+									e.shortcode.startsWith(matched),
+								);
+								setEmojisSuggestions(matchedEmojis);
 							} else {
 								setEmojisSuggestions([]);
 							}
@@ -287,18 +234,19 @@ function SendForm() {
 						leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
 						show={emojisSuggestions.length > 0}>
 						<div className="flex absolute z-[60] flex-col rounded border bg-dark dark:border-gray-700">
-							{emojisSuggestions.slice(0, 5).map(s => (
-								<div onClick={e => {
-									const val = textareaRef.current.value;
-									textareaRef.current.value = val.replace(
-										val.split(":")[val.split(":").length - 1],
-										`${s.shortcode}: `
-									);
-									setEmojisSuggestions([]);
-								}} key={s.shortcode} className="flex flex-row gap-x-4 px-3 py-2 duration-200 hover:bg-gray-100 hover:dark:bg-gray-800">
-									<img src={s.url} className="w-5 h-5" alt="" />
-									<span>{s.shortcode}</span>
-								</div>
+							{emojisSuggestions.slice(0, 5).map(emoji => (
+								<EmojiItem
+									key={emoji.shortcode}
+									emoji={emoji}
+									onClick={() => {
+										const val = textareaRef.current.value;
+										textareaRef.current.value = val.replace(
+											val.split(":")[val.split(":").length - 1],
+											`${emoji.shortcode}: `,
+										);
+										setEmojis([]);
+									}}
+								/>
 							))}
 						</div>
 					</Transition>
@@ -310,14 +258,18 @@ function SendForm() {
 								onClick={() => {
 									fileInputRef.current.click();
 								}}
+								title="Attach a file"
 								className="flex relative flex-row gap-x-1 items-center p-2 text-gray-600 rounded duration-200 cursor-default dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">
 								<IconPaperclip className="w-6 h-6" aria-hidden="true" />
 								<span className="sr-only">Attach a file</span>
-								<input
-									type="file"
-									className="hidden"
-									ref={fileInputRef}
-									onChange={async e => {
+							</button>
+							<input
+								type="file"
+								className="hidden"
+								ref={fileInputRef}
+								multiple
+								onChange={async e => {
+									try {
 										setFiles(f => [...f, ...e.target.files]);
 										setLoading(true);
 										const ids = await Promise.all(
@@ -328,9 +280,12 @@ function SendForm() {
 										);
 										setLoading(false);
 										setFileIds(f => [...f, ...ids]);
-									}}
-								/>
-							</button>
+									} catch (error) {
+										console.error(error);
+										// Handle error
+									}
+								}}
+							/>
 							<SmallSelect
 								items={modes}
 								selected={selectedMode}
@@ -387,5 +342,16 @@ function SendForm() {
 					return <img key={index} alt="" src={window.URL.createObjectURL(file)} />;
 				})}
 		</>
+	);
+}
+
+function EmojiItem({ emoji, onClick }) {
+	return (
+		<div
+			onClick={onClick}
+			className="flex flex-row gap-x-4 px-3 py-2 duration-200 hover:bg-gray-100 hover:dark:bg-gray-800">
+			<img src={emoji.url} className="w-5 h-5" alt="" />
+			<span>{emoji.shortcode}</span>
+		</div>
 	);
 }

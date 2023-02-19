@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import { AuthContext } from "components/context/AuthContext";
 import WithLoader from "components/loaders/WithLoader";
-import { DummyStatus } from "components/posts/Status";
+import DummyStatus from "components/posts/DummyStatus";
 import InfiniteScrollPosts from "components/scroll/InfiniteScrollPosts";
 import { Entity, Response } from "megalodon";
 import { useContext, useEffect, useRef, useState } from "react";

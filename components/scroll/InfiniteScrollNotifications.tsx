@@ -1,28 +1,30 @@
 /* eslint-disable @next/next/no-img-element */
 import { Entity } from "megalodon";
 import Link from "next/link";
-import Status from "components/posts/Status";
+import Status, { StatusType } from "components/posts/Status";
 import { withEmojis } from "utils/functions";
 import { IconStarFilled } from "@tabler/icons-react";
+import { useCallback } from "react";
 
 export default function InfiniteScrollNotifications({ notifs, loadNewNotifs }: {
 	notifs: Entity.Notification[];
 	loadNewNotifs(): void
 }) {
+
+	const handleScroll = useCallback(
+		e => {
+			const { scrollTop, scrollHeight, clientHeight } = e.currentTarget;
+			if (scrollTop + clientHeight >= scrollHeight) {
+				loadNewNotifs();
+			}
+		},
+		[loadNewNotifs],
+	);
+
 	return (
 		<div
 			className="flex overflow-y-auto flex-col gap-y-2 max-w-full divide-y-2 dark:divide-gray-700 no-scroll"
-			onScroll={e => {
-				if (e.currentTarget) {
-					// Check if scrolled to bottom
-					const { scrollTop, scrollHeight, clientHeight } = e.currentTarget;
-
-					if (scrollTop + clientHeight >= scrollHeight) {
-						// Load more notifications
-						loadNewNotifs();
-					}
-				}
-			}}>
+			onScroll={handleScroll}>
 			{notifs.map(n => (
 				<Notification key={n.id} n={n} />
 			))}
@@ -63,7 +65,7 @@ const Notification = ({ n }: { n: Entity.Notification }) => {
 					<Status
 						showInteraction={n.type == "mention"}
 						status={n.status}
-						type="notification"
+						type={StatusType.Notification}
 					/>
 				</li>
 			)}

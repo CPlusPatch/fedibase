@@ -8,7 +8,20 @@ import Link from "next/link";
 import { Fragment, useContext, useEffect, useState } from "react";
 import { classNames } from "utils/functions";
 
-const navigation = [
+type NavigationItem = {
+	name: string;
+	icon: any;
+	href: string;
+	type: string;
+};
+
+type NavElementProps = {
+	item: NavigationItem;
+};
+
+type NavProps = {};
+
+const navigation: NavigationItem[] = [
 	{
 		name: "Home",
 		icon: IconHome,
@@ -29,13 +42,26 @@ const navigation = [
 	},
 ];
 
-export default function Nav() {
+export default function Nav(props: NavProps): JSX.Element {
 	const client = useContext(AuthContext);
 	const [state, setState]: any = useContext(StateContext);
-
-	const [account, setAccount] = useState<Entity.Account>();
-	const [instance, setInstance] = useState<Entity.Instance>();
+	const [account, setAccount] = useState<Entity.Account | undefined>();
+	const [instance, setInstance] = useState<Entity.Instance | undefined>();
 	const [theme, setTheme] = useState<string>("light");
+
+	const toggleTheme = () => {
+		const html = document.getElementsByTagName("html")[0];
+		const themeCookie = (getCookie("theme") ?? "light").toString();
+		if (themeCookie === "dark") {
+			setCookie("theme", "light");
+			html.className = html.className.replaceAll("dark", "");
+			setTheme("light");
+		} else if (themeCookie === "light") {
+			setCookie("theme", "dark");
+			html.className = html.className + " dark";
+			setTheme("dark");
+		}
+	};
 
 	useEffect(() => {
 		if (window) {
@@ -71,7 +97,7 @@ export default function Nav() {
 						e.preventDefault();
 						setState(s => ({
 							...s,
-							params: {},
+							path: "/"
 						}));
 						history.pushState(null, null, "/");
 					}}
@@ -86,19 +112,7 @@ export default function Nav() {
 				<button
 					onClick={e => {
 						e.preventDefault();
-						const html = document.getElementsByTagName("html")[0];
-
-						const theme = (getCookie("theme") ?? "light").toString()
-
-						if (theme === "dark") {
-							setCookie("theme", "light");
-							html.className = html.className.replaceAll("dark", "");
-							setTheme("light");
-						} else if (theme === "light") {
-							setCookie("theme", "dark");
-							html.className = html.className + " dark";
-							setTheme("dark");
-						}
+						toggleTheme();
 					}}
 					className="flex justify-center items-center p-2 mb-3 text-sm font-medium rounded-md duration-200 dark:text-gray-300 hover:bg-gray-300/40 hover:dark:bg-gray-700/40 hover:bg-opacity-75 group">
 					{theme === "light" && (
@@ -126,30 +140,27 @@ export default function Nav() {
 	);
 }
 
-function NavElement({ item }: { item: any }) {
+function NavElement(props: NavElementProps) {
 	const [current, setCurrent] = useState<boolean>(false);
-	const [state, setState]: any = useContext(StateContext);
+	const [state, setState] = useContext(StateContext);
 	let [showTooltip, setShowTooltip] = useState<boolean>(false);
 
 	useEffect(() => {
-		setCurrent(typeof window !== "undefined" ? window.location.pathname === item.href : false);
-	}, [item.href]);
+		setCurrent(typeof window !== "undefined" ? window.location.pathname === props.item.href : false);
+	}, [props.item.href]);
 
 	return (
 		<div className="flex flex-row items-center">
 			<Link
-				href={item.href}
+				href={props.item.href}
 				onClick={e => {
 					if (!e.ctrlKey && !e.metaKey) {
 						e.preventDefault();
 						setState(s => ({
 							...s,
-							params: {
-								...s.params,
-								type: item.type,
-							},
+							path: props.item.href
 						}));
-						history.pushState(null, null, item.href);
+						history.pushState(null, null, props.item.href);
 					}
 				}}
 				className={classNames(
@@ -164,7 +175,7 @@ function NavElement({ item }: { item: any }) {
 				onMouseLeave={() => {
 					setShowTooltip(false);
 				}}>
-				<item.icon
+				<props.item.icon
 					className="flex-shrink-0 w-5 h-5 text-gray-600 dark:text-gray-300"
 					aria-hidden="true"
 				/>
@@ -181,7 +192,7 @@ function NavElement({ item }: { item: any }) {
 				<div
 					role="tooltip"
 					className="inline-block absolute z-10 px-3 py-2 ml-14 text-sm font-medium text-gray-900 bg-white rounded-lg border border-gray-200 shadow-sm dark:text-gray-100 bg-dark dark:border-gray-700 font-inter">
-					{item.name}
+					{props.item.name}
 				</div>
 			</Transition>
 		</div>
