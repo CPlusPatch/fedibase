@@ -5,7 +5,8 @@ import { AppProps } from 'next/app';
 import { AuthContext } from 'components/context/AuthContext';
 import generator from 'megalodon';
 import { StateContext } from 'components/context/StateContext';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { getCookie } from 'cookies-next';
 
 function App({ Component, pageProps }: AppProps) {
 	const [state, setState] = useState<{
@@ -17,6 +18,18 @@ function App({ Component, pageProps }: AppProps) {
 		mobileEditorOpened: false,
 		notificationsOpened: false,
 	});
+
+	useEffect(() => {
+		const theme = (getCookie("theme") ?? "light").toString();
+		const html = document.getElementsByTagName("html")[0];
+
+		if (theme === "light") {
+			html.className = html.className.replace(" dark", "");
+		} else if (theme === "dark") {
+			html.className = html.className + " dark";
+		}
+	}, [])
+
 	return (
 		<>
 			<StateContext.Provider value={[state, setState] as any}>

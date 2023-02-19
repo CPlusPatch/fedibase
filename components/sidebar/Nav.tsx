@@ -1,8 +1,9 @@
 /* eslint-disable @next/next/no-img-element */
 import { Transition } from "@headlessui/react";
-import { IconHome, IconUsers, IconWorld } from "@tabler/icons-react";
+import { IconHome, IconMoon, IconSun, IconUsers, IconWorld } from "@tabler/icons-react";
 import { AuthContext } from "components/context/AuthContext";
 import { StateContext } from "components/context/StateContext";
+import { getCookie, setCookie } from "cookies-next";
 import Link from "next/link";
 import { Fragment, useContext, useEffect, useState } from "react";
 import { classNames } from "utils/functions";
@@ -24,16 +25,17 @@ const navigation = [
 		name: "Federated",
 		icon: IconWorld,
 		href: "/federated",
-		type: "federated"
+		type: "federated",
 	},
 ];
 
 export default function Nav() {
 	const client = useContext(AuthContext);
 	const [state, setState]: any = useContext(StateContext);
-	
+
 	const [account, setAccount] = useState<Entity.Account>();
 	const [instance, setInstance] = useState<Entity.Instance>();
+	const [theme, setTheme] = useState<string>("light");
 
 	useEffect(() => {
 		if (window) {
@@ -55,12 +57,14 @@ export default function Nav() {
 					setInstance(data.data);
 				});
 			}
+
+			setTheme((getCookie("theme") ?? "light").toString());
 		}
-	}, [client])
+	}, [client]);
 
 	return (
 		<div className="hidden fixed top-0 bottom-0 left-0 z-50 flex-col flex-1 col-span-1 min-h-0 bg-gradient-to-b border-r dark:border-gray-700 bg-light dark:bg-dark lg:flex">
-			<div className="flex overflow-y-auto flex-col flex-1 pt-5 pb-4">
+			<div className="flex overflow-y-auto flex-col flex-1 items-center pt-5 pb-4">
 				<Link
 					href="/"
 					onClick={e => {
@@ -79,6 +83,37 @@ export default function Nav() {
 						<NavElement item={item} key={item.name} />
 					))}
 				</nav>
+				<button
+					onClick={e => {
+						e.preventDefault();
+						const html = document.getElementsByTagName("html")[0];
+
+						const theme = (getCookie("theme") ?? "light").toString()
+
+						if (theme === "dark") {
+							setCookie("theme", "light");
+							html.className = html.className.replaceAll("dark", "");
+							setTheme("light");
+						} else if (theme === "light") {
+							setCookie("theme", "dark");
+							html.className = html.className + " dark";
+							setTheme("dark");
+						}
+					}}
+					className="flex justify-center items-center p-2 mb-3 text-sm font-medium rounded-md duration-200 dark:text-gray-300 hover:bg-gray-300/40 hover:dark:bg-gray-700/40 hover:bg-opacity-75 group">
+					{theme === "light" && (
+						<>
+							<IconSun className="w-5 h-5" aria-hidden={true} />
+							<span className="sr-only">Enable dark mode</span>
+						</>
+					)}
+					{theme === "dark" && (
+						<>
+							<IconMoon className="w-5 h-5" aria-hidden={true} />
+							<span className="sr-only">Enable light mode</span>
+						</>
+					)}
+				</button>
 				<Link href={`/users/${account?.id}`} className="flex justify-center items-center">
 					<img
 						src={account?.avatar}
@@ -98,7 +133,7 @@ function NavElement({ item }: { item: any }) {
 
 	useEffect(() => {
 		setCurrent(typeof window !== "undefined" ? window.location.pathname === item.href : false);
-	}, [item.href])
+	}, [item.href]);
 
 	return (
 		<div className="flex flex-row items-center">
