@@ -5,6 +5,7 @@ import DummyStatus from "components/posts/DummyStatus";
 import InfiniteScrollPosts from "components/scroll/InfiniteScrollPosts";
 import { Entity, Response } from "megalodon";
 import { useContext, useEffect, useRef, useState } from "react";
+import { toast } from "react-hot-toast";
 
 export const HomeFeed = () => {
 	const [posts, setPosts] = useState<Entity.Status[]>([]);
@@ -22,6 +23,7 @@ export const HomeFeed = () => {
 			})
 			.catch(e => {
 				console.log(e);
+				toast.error("Couldn't load timeline :(");
 			});
 
 		const interval = setInterval(() => {

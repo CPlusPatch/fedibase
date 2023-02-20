@@ -6,6 +6,7 @@ import { StateContext } from "components/context/StateContext";
 import { getCookie, setCookie } from "cookies-next";
 import Link from "next/link";
 import { Fragment, useContext, useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import { classNames } from "utils/functions";
 
 type NavigationItem = {
@@ -72,6 +73,7 @@ export default function Nav(props: NavProps): JSX.Element {
 				})
 				.catch(e => {
 					console.log(e);
+					toast.error("Couldn't load account data :(");
 				});
 
 			if (localStorage.getItem("instanceData")) {

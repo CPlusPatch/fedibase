@@ -31,17 +31,21 @@ const Home = () => {
 		if (window) {
 			const paths = window.location.pathname.split("/");
 
-			if (paths[1] === "posts") {
-				setComponent(<Conversation id={paths[2]} />);
-			} else if (paths[1] === "local") {
-				setComponent(<LocalFeed />);
-			} else if (paths[1] === "") {
-				setComponent(<HomeFeed />);
-			} else if (paths[1] === "users") {
-				client.getAccount(paths[2].replace("@", "")).then((res) => {
-					setComponent(<UserFeed account={res.data} />);
-				});
-				
+			switch (paths[1]) {
+				case "posts":
+					setComponent(<Conversation id={paths[2]} />);
+					break;
+				case "local":
+					setComponent(<LocalFeed />);
+					break;
+				case "":
+					setComponent(<HomeFeed />);
+					break;
+				case "users":
+					client.getAccount(paths[2].replace("@", "")).then(res => {
+						setComponent(<UserFeed account={res.data} />);
+					});
+					break;
 			}
 
 			window.addEventListener("popstate", handlePopState);

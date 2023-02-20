@@ -4,6 +4,7 @@ import DummyStatus from "components/posts/DummyStatus";
 import InfiniteScrollNotifications from "components/scroll/InfiniteScrollNotifications";
 import { Entity, Response } from "megalodon";
 import { useContext, useEffect, useRef, useState } from "react";
+import toast from "react-hot-toast";
 
 export default function NotificationsFeed({ withTitle = true }: { withTitle?: boolean }) {
 	const [notifications, setNotifications] = useState<Entity.Notification[]>([]);
@@ -20,6 +21,7 @@ export default function NotificationsFeed({ withTitle = true }: { withTitle?: bo
 				notifsRef.current = res.data;
 			}).catch(e => {
 				console.log(e);
+				toast.error("Couldn't load notifications :(");
 			});
 
 		const interval = setInterval(() => {

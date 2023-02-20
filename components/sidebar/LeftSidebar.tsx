@@ -282,6 +282,7 @@ function SendForm() {
 										setFileIds(f => [...f, ...ids]);
 									} catch (error) {
 										console.error(error);
+										toast.error("Couldn't upload files :(");
 										// Handle error
 									}
 								}}
