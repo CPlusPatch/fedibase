@@ -5,6 +5,12 @@ interface SelectOptions {
 	items: SelectItem[];
 	selected: SelectItem;
 	setSelected: React.Dispatch<React.SetStateAction<SelectItem>>;
+	direction?: SelectDirection;
+}
+
+export enum SelectDirection {
+	Right = "right",
+	Left = "left"
 }
 
 interface SelectItem {
@@ -14,7 +20,7 @@ interface SelectItem {
 	description?: string;
 }
 
-export default function SmallSelect({ items, selected, setSelected }: SelectOptions) {
+export default function SmallSelect({ items, selected, setSelected, direction = SelectDirection.Right }: SelectOptions) {
 	return (
 		<Listbox
 			value={selected.value}
@@ -36,7 +42,10 @@ export default function SmallSelect({ items, selected, setSelected }: SelectOpti
 					leave="ease-in duration-200"
 					leaveFrom="opacity-100 translate-y-0 sm:scale-100"
 					leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95">
-					<Listbox.Options className="overflow-auto absolute z-30 mt-1 w-64 text-base bg-white rounded-md border dark:border-gray-700 bg-dark font-inter">
+					<Listbox.Options
+						className={`overflow-auto absolute z-30 mt-1 w-64 text-base bg-white rounded-md border dark:border-gray-700 bg-dark font-inter ${
+							direction == SelectDirection.Left && "right-0 origin-top-right"
+						}`}>
 						{items.map(item => (
 							<Listbox.Option
 								key={item.value}

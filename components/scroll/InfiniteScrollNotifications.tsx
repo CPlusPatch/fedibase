@@ -4,30 +4,77 @@ import Link from "next/link";
 import Status, { StatusType } from "components/posts/Status";
 import { withEmojis } from "utils/functions";
 import { IconStarFilled } from "@tabler/icons-react";
-import { useCallback } from "react";
+import { useCallback, useEffect, useState } from "react";
+import DummyStatus from "components/posts/DummyStatus";
 
-export default function InfiniteScrollNotifications({ notifs, loadNewNotifs }: {
+export default function InfiniteScrollNotifications({ notifs, loadNewNotifs, mode }: {
 	notifs: Entity.Notification[];
-	loadNewNotifs(): void
+	loadNewNotifs(): void;
+	mode: string;
 }) {
 
+	const [loading, setLoading] = useState<boolean>(false);
+
+	const filterNotifs = useCallback(n => {
+		return n.filter(n => {
+			if (mode === "all") {
+				return true;
+			} else if (mode === "favourites") {
+				return n.type === "favourite";
+			} else if (mode === "reblogs") {
+				return n.type === "reblog";
+			} else if (mode === "mention") {
+				return n.type === "mention";
+			}
+		});
+	}, [mode]);
+
 	const handleScroll = useCallback(
-		e => {
+		async e => {
 			const { scrollTop, scrollHeight, clientHeight } = e.currentTarget;
-			if (scrollTop + clientHeight >= scrollHeight) {
-				loadNewNotifs();
+			if (scrollTop + clientHeight >= scrollHeight && !loading) {
+				setLoading(true);
+				await loadNewNotifs();
+				setLoading(false);
 			}
 		},
-		[loadNewNotifs],
+		[loadNewNotifs, loading],
 	);
+
+	useEffect(() => {
+		async function load() {
+			if (filterNotifs(notifs).length < 10 && !loading) {
+				setLoading(true);
+				await loadNewNotifs();
+				setLoading(false);
+			}
+		}
+		load();
+	}, [filterNotifs, loadNewNotifs, loading, notifs]);	
 
 	return (
 		<div
 			className="flex overflow-y-auto flex-col gap-y-2 max-w-full divide-y-2 dark:divide-gray-700 no-scroll"
 			onScroll={handleScroll}>
-			{notifs.map(n => (
+			{filterNotifs(notifs).map(n => (
 				<Notification key={n.id} n={n} />
 			))}
+			{loading && (
+				<>
+					<div className="flex flex-col gap-y-2 p-2 max-w-full rounded">
+						<DummyStatus type="notification" />
+					</div>
+					<div className="flex flex-col gap-y-2 p-2 max-w-full rounded">
+						<DummyStatus type="notification" />
+					</div>
+					<div className="flex flex-col gap-y-2 p-2 max-w-full rounded">
+						<DummyStatus type="notification" />
+					</div>
+					<div className="flex flex-col gap-y-2 p-2 max-w-full rounded">
+						<DummyStatus type="notification" />
+					</div>
+				</>
+			)}
 		</div>
 	);
 }
@@ -36,12 +83,18 @@ const Notification = ({ n }: { n: Entity.Notification }) => {
 	return (
 		<>
 			{(n.type == "mention" || n.type == "favourite" || n.type == "reblog") && (
-				<li className="flex flex-col gap-y-2 p-2 max-w-full">
+				<li
+					className={`flex flex-col gap-y-2 p-2 max-w-full rounded ${
+						n.type == "favourite" && "bg-yellow-500/10"
+					} ${n.type == "reblog" && "bg-blue-500/10"}`}>
 					{n.type == "favourite" && (
 						<Link
 							href={`/users/@${n.account.id}`}
 							className="overflow-hidden gap-x-2 max-w-full text-sm italic text-gray-500 overflow-ellipsis dark:text-gray-400 hover:underline">
-							<IconStarFilled aria-hidden={true} className="inline mr-1 w-[1em] pb-0.5 text-yellow-500 hover:animate-spin" />
+							<IconStarFilled
+								aria-hidden={true}
+								className="inline mr-1 w-[1em] pb-0.5 text-yellow-500 hover:animate-spin"
+							/>
 							{withEmojis(n.account.display_name, n.account.emojis)} favourited your
 							post
 						</Link>
