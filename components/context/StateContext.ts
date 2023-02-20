@@ -8,6 +8,7 @@ export const StateContext = createContext<
 			mobileEditorOpened: boolean;
 			notificationsOpened: boolean;
 			path: string;
+			sidebarOpened: boolean;
 		},
 		Dispatch<
 			SetStateAction<{
@@ -15,6 +16,7 @@ export const StateContext = createContext<
 				mobileEditorOpened: boolean;
 				notificationsOpened: boolean;
 				path: string;
+				sidebarOpened: false;
 			}>
 		>,
 	] | null

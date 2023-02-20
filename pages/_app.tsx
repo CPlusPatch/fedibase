@@ -13,7 +13,8 @@ function App({ Component, pageProps }: AppProps) {
 		replyingTo: null,
 		mobileEditorOpened: false,
 		notificationsOpened: false,
-		path: ""
+		path: "",
+		sidebarOpened: false
 	});
 
 	useEffect(() => {
