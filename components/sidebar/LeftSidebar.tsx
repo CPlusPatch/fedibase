@@ -169,7 +169,7 @@ function SendForm() {
 			});
 	};
 	return (
-		<>
+		<div className="flex flex-col gap-y-4">
 			<form
 				action="#"
 				className="relative text-sm font-inter"
@@ -201,7 +201,7 @@ function SendForm() {
 					<textarea
 						ref={textareaRef}
 						id="comment"
-						rows={6}
+						rows={5}
 						onChange={async event => {
 							const { value } = event.target;
 							setCharacters(value);
@@ -223,6 +223,34 @@ function SendForm() {
 						placeholder="What's happening?"
 						defaultValue={characters}
 					/>
+
+					{files.length > 0 && (
+						<div className="overflow-hidden bottom-0 px-4 w-full">
+							{files.map((file: File, index: number) => {
+								return (
+									<div
+										key={index}
+										className="overflow-hidden relative w-24 h-24 rounded-lg border-2">
+										<img
+											alt=""
+											src={window.URL.createObjectURL(file)}
+											className="object-cover w-full h-full"
+										/>
+										<Button
+											onClick={(e) => {
+												e.preventDefault();
+												setFiles(f => f.splice(index, 1));
+												setFileIds(f => f.splice(index, 1));
+											}}
+											style="gray"
+											className="!absolute top-2 right-2 !p-2">
+											<IconX className="w-4 h-4" />
+										</Button>
+									</div>
+								);
+							})}
+						</div>
+					)}
 
 					<Transition
 						as={Fragment}
@@ -337,12 +365,7 @@ function SendForm() {
 					</div>
 				</div>
 			</form>
-
-			{files.length > 0 &&
-				files.map((file: File, index: number) => {
-					return <img key={index} alt="" src={window.URL.createObjectURL(file)} />;
-				})}
-		</>
+		</div>
 	);
 }
 
