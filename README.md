@@ -28,12 +28,31 @@
 - Clientside only (stores all data in browser)
 
 ### Planned features (coming soon™️):
+
 - Quote posting
 - Emoji reactions
 - More timelines
 - Placing CWs on posts
 - File upload UI rework
 - Drag and drop or paste files to upload
+
+## Running your own instance
+
+First, clone the Codeberg repository:
+
+```sh
+git clone https://codeberg.org/CPlusPatch/fedibase.git
+cd fedibase
+```
+
+Then, [install PNPM](https://pnpm.io/installation) and Node.js 18.
+
+To build and start:
+
+```sh
+pnpm build
+pnpm start
+```
 
 ## Collaborators
 
