@@ -131,7 +131,19 @@ function SendForm() {
 
 	useEffect(() => {
 		if (state.replyingTo) {
-			const mentions = state.replyingTo.mentions.map(m => "@" + m.acct + " ").join(" ");
+			const id = localStorage.getItem("accountId");
+			// Gets array of mentions, removes mentions of self, deduplicates resulting array
+			// and turns the output into "@gay@gay.com" format seperated by spaces
+			const mentions = [
+				...new Map(
+					(state.replyingTo as Entity.Status).mentions
+						.filter(m => m.id !== id)
+						.concat([(state.replyingTo as Entity.Status).account])
+						.map(v => [v.id, v]),
+				).values(),
+			]
+				.map(m => "@" + m.acct + " ")
+				.join(" ");;
 			setCharacters(mentions);
 		}
 
