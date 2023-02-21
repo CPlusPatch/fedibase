@@ -18,7 +18,7 @@ export default function DummyStatus({ type = "post" }: { type: "post" | "notific
 				</span>
 				<div className="flex flex-col min-w-0 grow">
 					<div className="justify-between gap-x-2 text-[0.95rem] flex flex-row">
-						<span className="flex overflow-hidden flex-col gap-y-1 whitespace-nowrap md:inline text-ellipsis">
+						<span className="flex overflow-hidden flex-col gap-y-1 whitespace-nowrap md:inline">
 							<h4
 								style={{
 									width: `${random * 100 + 100}px`,

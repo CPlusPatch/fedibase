@@ -86,3 +86,16 @@ export function fromNow(date, rft = new Intl.RelativeTimeFormat(undefined, { num
         }
     }
 }
+
+/**
+ * Deduplicates an array of objects based on the "id" property
+ * @param arr Array of objects to deduplicate
+ * @returns 
+ */
+export function dedupeById(arr) {
+	const deduped = {};
+	for (const obj of arr) {
+		deduped[obj.id] = obj;
+	}
+	return Object.values(deduped);
+}

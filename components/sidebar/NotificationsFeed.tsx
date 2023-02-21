@@ -7,6 +7,7 @@ import InfiniteScrollNotifications from "components/scroll/InfiniteScrollNotific
 import { Entity, Response } from "megalodon";
 import { useContext, useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
+import { dedupeById } from "utils/functions";
 
 const modes = [
 	{
@@ -40,35 +41,42 @@ export default function NotificationsFeed({ withTitle = true }: { withTitle?: bo
 	const client = useContext(AuthContext);
 	const notifsRef = useRef(notifications);
 	const [mode, setMode] = useState(modes[0]);
+	const loading = useRef<boolean>(false);
 
 	useEffect(() => {
-		client
-			?.getNotifications({
+		async function getInitialData() {
+			const res: Response<Entity.Notification[]> = await client?.getNotifications({
 				limit: 20,
-			})
-			.then((res: Response<Entity.Notification[]>) => {
-				setNotifications(res.data);
-				notifsRef.current = res.data;
-			})
-			.catch(e => {
-				console.log(e);
-				toast.error("Couldn't load notifications :(");
 			});
+			const dedupedData: Entity.Notification[] = dedupeById(res.data) as any;
+			setNotifications(dedupedData);
+			notifsRef.current = dedupedData;
+		}
 
+		// Periodically fetch new notifications and add them to the beginning of the list
 		const interval = setInterval(() => {
-			if (notifsRef.current.length > 0)
-				client
-					?.getNotifications({
-						since_id: notifsRef.current[0].id,
-					})
-					.then(res => {
-						setNotifications(n => [...res.data, ...n]);
-						notifsRef.current = [...res.data, ...notifsRef.current];
-					});
+			if (notifsRef.current.length > 0) {
+				console.log("[+] Fetching new notifications...");
+					client
+						?.getNotifications({
+							since_id: notifsRef.current[0].id,
+						})
+						.then(res => {
+							const deduped = dedupeById([
+								...res.data,
+								...notifsRef.current,
+							]) as any;
+							setNotifications(n => deduped);
+							notifsRef.current = deduped;
+						});
+			}
 		}, 15000);
+
+		getInitialData();
 
 		return () => clearInterval(interval);
 	}, [client]);
+
 
 	return (
 		<div className="flex flex-col gap-y-6 w-full max-w-full h-full font-inter">
@@ -83,31 +91,22 @@ export default function NotificationsFeed({ withTitle = true }: { withTitle?: bo
 					/>
 				</div>
 			)}
-			{notifications.length > 0 ? (
+			
 				<InfiniteScrollNotifications
 					notifs={notifications}
 					mode={mode.value}
 					loadNewNotifs={async () => {
-						console.log("loading more notifs...");
+						if (notifsRef.current.length > 0) {
+							console.log("[+] Loading more notifications...");
 
-						const res = await client?.getNotifications({
-							max_id: notifsRef.current[notifsRef.current.length - 1].id,
-						});
+							const res = await client?.getNotifications({
+								max_id: notifsRef.current[notifsRef.current.length - 1].id,
+							});
 
-						setNotifications(n => [...n, ...res.data]);
-						notifsRef.current = [...notifications, ...res.data];
+							setNotifications(n => dedupeById([...n, ...res.data]) as any);
+							notifsRef.current = dedupeById([...notifications, ...res.data]) as any;
+						}
 					}}></InfiniteScrollNotifications>
-			) : (
-				<div className="flex overflow-y-auto flex-col gap-y-4 max-w-full no-scroll">
-					<DummyStatus type="notification" />
-					<DummyStatus type="notification" />
-					<DummyStatus type="notification" />
-					<DummyStatus type="notification" />
-					<DummyStatus type="notification" />
-					<DummyStatus type="notification" />
-					<DummyStatus type="notification" />
-				</div>
-			)}
 		</div>
 	);
 }

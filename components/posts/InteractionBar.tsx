@@ -9,7 +9,6 @@ import {
 } from "@tabler/icons-react";
 import { AuthContext } from "components/context/AuthContext";
 import { StateContext } from "components/context/StateContext";
-import { stat } from "fs";
 import { Entity } from "megalodon";
 import { useContext, useState } from "react";
 

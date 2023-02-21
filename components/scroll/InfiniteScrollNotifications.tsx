@@ -4,8 +4,9 @@ import Link from "next/link";
 import Status, { StatusType } from "components/posts/Status";
 import { withEmojis } from "utils/functions";
 import { IconStarFilled } from "@tabler/icons-react";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import DummyStatus from "components/posts/DummyStatus";
+import { useIsVisible } from "react-is-visible";
 
 export default function InfiniteScrollNotifications({ notifs, loadNewNotifs, mode }: {
 	notifs: Entity.Notification[];
@@ -14,6 +15,8 @@ export default function InfiniteScrollNotifications({ notifs, loadNewNotifs, mod
 }) {
 
 	const [loading, setLoading] = useState<boolean>(false);
+	const nodeRef = useRef(null);
+	const visible = useIsVisible(nodeRef);
 
 	const filterNotifs = useCallback(n => {
 		return n.filter(n => {
@@ -29,55 +32,44 @@ export default function InfiniteScrollNotifications({ notifs, loadNewNotifs, mod
 		});
 	}, [mode]);
 
-	const handleScroll = useCallback(
-		async e => {
-			const { scrollTop, scrollHeight, clientHeight } = e.currentTarget;
-			if (scrollTop + clientHeight >= scrollHeight && !loading) {
-				setLoading(true);
-				await loadNewNotifs();
-				setLoading(false);
-			}
-		},
-		[loadNewNotifs, loading],
-	);
-
 	useEffect(() => {
 		async function load() {
-			if (filterNotifs(notifs).length < 10 && !loading) {
+			if ((filterNotifs(notifs).length < 10 || visible) && !loading) {
 				setLoading(true);
 				await loadNewNotifs();
 				setLoading(false);
 			}
 		}
 		load();
-	}, [filterNotifs, loadNewNotifs, loading, notifs]);	
+	}, [filterNotifs, loadNewNotifs, loading, notifs, visible]);	
 
 	return (
-		<div
-			className="flex overflow-y-auto flex-col gap-y-2 max-w-full divide-y-2 dark:divide-gray-700 no-scroll"
-			onScroll={handleScroll}>
+		<div className="flex overflow-y-auto flex-col gap-y-2 max-w-full divide-y-2 dark:divide-gray-700 no-scroll">
 			{filterNotifs(notifs).map(n => (
 				<Notification key={n.id} n={n} />
 			))}
-			{loading && (
-				<>
-					<div className="flex flex-col gap-y-2 p-2 max-w-full rounded">
-						<DummyStatus type="notification" />
-					</div>
-					<div className="flex flex-col gap-y-2 p-2 max-w-full rounded">
-						<DummyStatus type="notification" />
-					</div>
-					<div className="flex flex-col gap-y-2 p-2 max-w-full rounded">
-						<DummyStatus type="notification" />
-					</div>
-					<div className="flex flex-col gap-y-2 p-2 max-w-full rounded">
-						<DummyStatus type="notification" />
-					</div>
-				</>
-			)}
+			<span ref={nodeRef}>
+				<DummyNotification />
+			</span>
+			<DummyNotification />
+			<DummyNotification />
+			<DummyNotification />
 		</div>
 	);
 }
+
+const DummyNotification = () => {
+	return (
+		<>
+				<li
+					className={`flex flex-col gap-y-2 p-2 max-w-full rounded`}>
+					<DummyStatus
+						type={StatusType.Notification}
+					/>
+				</li>
+		</>
+	);
+};
 
 const Notification = ({ n }: { n: Entity.Notification }) => {
 	return (

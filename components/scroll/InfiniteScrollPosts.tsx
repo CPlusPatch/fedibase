@@ -3,7 +3,9 @@ import { Entity } from "megalodon";
 import Link from "next/link";
 import Status, { StatusType } from "components/posts/Status";
 import { withEmojis } from "utils/functions";
-import { useCallback } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import DummyStatus from "components/posts/DummyStatus";
+import { useIsVisible } from "react-is-visible";
 
 export default function InfiniteScrollPosts({
 	posts,
@@ -12,23 +14,32 @@ export default function InfiniteScrollPosts({
 	posts: Entity.Status[];
 	loadNewPosts(): void;
 }) {
-	const handleScroll = useCallback(
-		e => {
-			const { scrollTop, scrollHeight, clientHeight } = e.currentTarget;
-			if (scrollTop + clientHeight >= scrollHeight) {
-				loadNewPosts();
+	const [loading, setLoading] = useState<boolean>(false);
+	const nodeRef = useRef(null);
+	const visible = useIsVisible(nodeRef);
+
+	useEffect(() => {
+		async function load() {
+			if ((posts.length < 10 || visible) && !loading) {
+				setLoading(true);
+				await loadNewPosts();
+				setLoading(false);
 			}
-		},
-		[loadNewPosts],
-	);
+		}
+		load();
+	}, [loadNewPosts, loading, posts.length, visible]);	
 
 	return (
-		<div
-			className="flex overflow-y-auto flex-col gap-y-5 px-6 py-4 md:mt-10 no-scroll"
-			onScroll={handleScroll}>
+		<div className="flex overflow-y-auto flex-col gap-y-5 px-6 py-4 md:mt-10 no-scroll">
 			{posts.map(post => (
 				<Post key={post.id} post={post} />
 			))}
+			<span ref={nodeRef}>
+				<DummyStatus type="post" />
+			</span>
+			<DummyStatus type="post" />
+			<DummyStatus type="post" />
+			<DummyStatus type="post" />
 		</div>
 	);
 }

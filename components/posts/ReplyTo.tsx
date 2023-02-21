@@ -1,25 +1,30 @@
 import { Transition } from "@headlessui/react";
 import { IconMessage } from "@tabler/icons-react";
 import { AuthContext } from "components/context/AuthContext";
-import { useState, useContext, useEffect, Fragment } from "react";
+import { useState, useContext, useEffect, Fragment, useRef } from "react";
 import { withEmojis } from "utils/functions";
 import Status, { StatusType } from "./Status";
+import { useIsVisible } from "react-is-visible";
 
 export default function ReplyTo({ status }: { status: Entity.Status }) {
 	const [replyStatus, setReplyStatus] = useState<Entity.Status>();
 	const client = useContext(AuthContext);
 	const [open, setOpen] = useState<boolean>(false);
 
+	const nodeRef = useRef();
+	const visible = useIsVisible(nodeRef);
+
 	useEffect(() => {
 		// If the post is a reply, get the previous post's contents
-		if (status.in_reply_to_id && !replyStatus)
+		if (status.in_reply_to_id && !replyStatus && visible)
 			client?.getStatus(status.in_reply_to_id).then(data => {
 				setReplyStatus(data.data);
 			});
-	}, [client, replyStatus, status.in_reply_to_id]);
+	}, [client, replyStatus, status.in_reply_to_id, visible]);
 
 	return (
 		<div
+			ref={nodeRef}
 			className="inline relative bg-slate-300/0"
 			onMouseEnter={e => {
 				setOpen(true);
