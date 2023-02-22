@@ -20,6 +20,7 @@ interface FeedProps {
 	entityElement: any;
 	options?: {
 		id: string;
+		filter?: string;
 	};
 }
 
@@ -159,9 +160,25 @@ export default function Feed<T>(props: FeedProps) {
 
 	return (
 		<>
-			{entities.map((entity: any, index) => (
-				<props.entityElement key={entity.id} entity={entity} />
-			))}
+			{props.type !== FeedType.Notifications &&
+				entities.map((entity: any, index) => (
+					<props.entityElement key={entity.id} entity={entity} />
+				))}
+			{props.type === FeedType.Notifications &&
+				entities.filter(e=> {
+					switch (props.options.filter) {
+						case "all":
+							return true;
+						case "reblogs":
+							return (e as Entity.Notification).type === "reblog";
+						case "mention":
+							return (e as Entity.Notification).type === "mention";
+						case "favourites":
+							return (e as Entity.Notification).type === "favourite";
+					}
+				}).map((entity: any, index) => (
+					<props.entityElement key={entity.id} entity={entity} />
+				))}
 			{(props.type === FeedType.Home || props.type === FeedType.User) && (
 				<>
 					<div ref={loadNewRef}>
