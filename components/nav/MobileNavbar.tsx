@@ -104,7 +104,7 @@ export default function MobileNavbar() {
 									leaveFrom="translate-x-0"
 									leaveTo="translate-x-full">
 									<Dialog.Panel
-										className="relative w-screen max-w-md pointer-events-auto">
+										className="overflow-hidden relative w-screen max-w-md pointer-events-auto">
 										<Transition.Child
 											unmount={false}
 											as={Fragment}
@@ -116,7 +116,7 @@ export default function MobileNavbar() {
 											leaveTo="opacity-0">
 											<div className="flex absolute top-0 left-0 pt-4 pr-2 -ml-8 sm:-ml-10 sm:pr-4"></div>
 										</Transition.Child>
-										<div className="flex overflow-y-scroll flex-col py-6 h-full bg-white shadow-xl bg-dark">
+										<div className="flex overflow-y-hidden flex-col pt-6 h-full bg-white shadow-xl bg-dark">
 											<div className="flex justify-between px-4 sm:px-6">
 												<Dialog.Title className="text-lg font-medium text-gray-900 dark:text-gray-50">
 													Notifications
@@ -134,7 +134,7 @@ export default function MobileNavbar() {
 													<IconX className="w-6 h-6" aria-hidden="true" />
 												</button>
 											</div>
-											<div className="flex overflow-y-scroll relative px-4 mt-6 max-w-full h-full sm:px-6">
+											<div className="flex overflow-hidden relative px-4 mt-6 max-w-full grow sm:px-6">
 												<NotificationsFeed withTitle={false} />
 											</div>
 										</div>
@@ -178,7 +178,7 @@ export default function MobileNavbar() {
 									leave="transform transition ease-in-out duration-300 sm:duration-700"
 									leaveFrom="-translate-x-0"
 									leaveTo="translate-x-full">
-									<Dialog.Panel className="relative w-screen max-w-md pointer-events-auto">
+									<Dialog.Panel className="overflow-hidden relative w-screen max-w-md pointer-events-auto">
 										<Transition.Child
 											as={Fragment}
 											enter="ease-in-out duration-300"
@@ -189,7 +189,7 @@ export default function MobileNavbar() {
 											leaveTo="opacity-0">
 											<div className="flex absolute top-0 right-0 pt-4 pl-2 -mr-8 sm:-mr-10 sm:pl-4"></div>
 										</Transition.Child>
-										<div className="flex overflow-y-scroll flex-col py-6 max-w-xs h-full bg-white shadow-xl bg-dark">
+										<div className="flex overflow-y-hidden flex-col py-6 max-w-xs h-full bg-white shadow-xl bg-dark">
 											<div className="flex justify-between px-4 sm:px-6">
 												<Dialog.Title className="text-lg font-medium text-gray-900 dark:text-gray-50">
 													Fedibase
@@ -207,7 +207,7 @@ export default function MobileNavbar() {
 													<IconX className="w-6 h-6" aria-hidden="true" />
 												</button>
 											</div>
-											<div className="flex overflow-y-scroll relative px-4 mt-6 max-w-full h-full sm:px-6">
+											<div className="flex overflow-hidden relative px-4 mt-6 max-w-full h-full sm:px-6">
 												<MobileNav />
 											</div>
 										</div>

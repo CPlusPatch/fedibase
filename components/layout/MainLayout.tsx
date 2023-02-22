@@ -7,7 +7,7 @@ import { Toaster } from "react-hot-toast";
 
 export default function MainLayout({ children }) {
 	return (
-		<div className="flex flex-col w-full min-h-screen duration-200 bg-gradient-light">
+		<div className="flex overflow-hidden flex-col w-full min-h-screen duration-200 bg-gradient-light">
 			<Toaster />
 			<div className="flex relative mx-auto w-full max-w-full h-full grow md:pl-[4.3rem]">
 				<main className="grow">
