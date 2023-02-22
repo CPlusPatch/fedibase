@@ -41,12 +41,12 @@ export const Conversation = ({ id }) => {
 				<div className="flex overflow-y-auto flex-col gap-y-5 py-4 w-full h-full no-scroll">
 					<div className="flex flex-col gap-y-4 px-6">
 						{ancestors.map(post => (
-							<Post post={post} key={post.id} />
+							<Post entity={post} key={post.id} />
 						))}
 					</div>
 					<div className="px-6 py-4 border-y-2 dark:border-gray-700">
 						{posts.map(post => (
-							<Post post={post} key={post.id} />
+							<Post entity={post} key={post.id} />
 						))}
 					</div>
 					<div className="flex flex-col gap-y-4 px-6">
@@ -75,15 +75,15 @@ function PostWithChildren({ post }) {
 		<>
 			{post.children.length > 0 ? (
 				<>
-				<Post post={post} />
+					<Post entity={post} />
 					<div className="flex flex-col gap-y-4 pl-2 border-l-4 dark:border-gray-500">
 						{post.children.map(postChild => (
-							<PostWithChildren post={postChild} key={postChild.id}/>
+							<PostWithChildren post={postChild} key={postChild.id} />
 						))}
 					</div>
 				</>
 			) : (
-				<Post post={post} />
+				<Post entity={post} />
 			)}
 		</>
 	);
