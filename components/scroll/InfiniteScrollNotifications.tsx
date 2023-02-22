@@ -54,7 +54,10 @@ export const Notification = ({ entity }: { entity: Entity.Notification }) => {
 								className="inline mr-1 w-[1em] pb-0.5 text-yellow-500 hover:animate-spin"
 							/>
 							{withEmojis(entity.account.display_name, entity.account.emojis)} reacted
-							with {entity.emoji.includes(":") ? withEmojiReactions(entity.emoji, entity.status.emoji_reactions) : entity.emoji}
+							with{" "}
+							{entity.emoji.includes(":")
+								? withEmojiReactions(entity.emoji, entity.status.emoji_reactions)
+								: entity.emoji}
 						</Link>
 					)}
 					{entity.type == "reblog" && (
@@ -79,6 +82,17 @@ export const Notification = ({ entity }: { entity: Entity.Notification }) => {
 						status={entity.status}
 						type={StatusType.Notification}
 					/>
+				</li>
+			)}
+			{entity.type === "follow" && (
+				<li
+					className={`flex flex-col gap-y-2 p-2 max-w-full rounded bg-green-500/10`}>
+						<Link
+							href={`/users/@${entity.account.id}`}
+							className="overflow-hidden gap-x-2 max-w-full text-base text-gray-500 overflow-ellipsis dark:text-gray-400 hover:underline">
+							<img src={entity.account.avatar} alt="" className="h-[1em] w-[1em] inline mb-0.5 mr-1"/>
+							{withEmojis(entity.account.display_name, entity.account.emojis)} followed you
+						</Link>
 				</li>
 			)}
 		</>
