@@ -48,6 +48,25 @@ export function withEmojis(string: string, emojis: Entity.Emoji[]) {
 }
 
 /**
+ * Turns a string of HTML into a JSX element with emojis parsed as img tags
+ * @param string String of HTML to render
+ * @param emojis List of emojis in the text
+ * @returns JSX element of rendered HTML with the emoji
+ */
+export function withEmojiReactions(string: string, emojis: Entity.Reaction[]) {
+		emojis.forEach((emoji) => {
+			// img has .25em bottom margin to line up right
+			string = string.replaceAll(
+				`:${emoji.name}:`,
+				`<img src="${(emoji as any).url}" alt="Emoji (${emoji.name})" style="height: 1em; display: inline; margin-bottom: 0.25em"/>`,
+			);
+		})
+
+		return <span className="p-0 m-0" dangerouslySetInnerHTML={{ __html: string }}></span>;
+}
+
+
+/**
  * Human readable elapsed or remaining time (example: 3 minutes ago)
  * @param  {Date|Number|String} date A Date object, timestamp or string parsable with Date.parse()
  * @param  {Date|Number|String} [nowDate] A Date object, timestamp or string parsable with Date.parse()
