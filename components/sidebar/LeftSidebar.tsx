@@ -123,7 +123,8 @@ function SendForm() {
 	const [emojis, setEmojis] = useState<Entity.Emoji[]>([]);
 	const [emojisSuggestions, setEmojisSuggestions] = useState<Entity.Emoji[]>([]);
 
-	const max_chars = (JSON.parse(localStorage.getItem("instanceData")) as Entity.Instance).max_toot_chars;
+	const max_chars = (JSON.parse(localStorage.getItem("instanceData")) as Entity.Instance)
+		.max_toot_chars;
 
 	// Element refs
 	const fileInputRef = useRef<HTMLInputElement>(null);
@@ -143,7 +144,7 @@ function SendForm() {
 				).values(),
 			]
 				.map(m => "@" + m.acct + " ")
-				.join(" ");;
+				.join(" ");
 			setCharacters(mentions);
 
 			switch (state.replyingTo.visibility) {
@@ -162,10 +163,11 @@ function SendForm() {
 		client.getInstanceCustomEmojis().then(data => {
 			setEmojis(data.data);
 		});
-	}, [client, state.replyingTo])
+	}, [client, state.replyingTo]);
 
 	const submitForm = async (event: FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
+
 		setLoading(true);
 
 		client
@@ -180,7 +182,8 @@ function SendForm() {
 						icon: "👍",
 					});
 				}
-			}).catch(() => {
+			})
+			.catch(() => {
 				toast.error("There was an error sending your post. Maybe check the visibility?");
 			})
 			.finally(() => {
@@ -190,7 +193,7 @@ function SendForm() {
 				setState((s: any) => ({
 					...s,
 					replyingTo: null,
-					mobileEditorOpened: false
+					mobileEditorOpened: false,
 				}));
 			});
 	};
@@ -229,25 +232,26 @@ function SendForm() {
 						id="comment"
 						rows={5}
 						onPaste={async e => {
-							e.preventDefault();
-							const files = e.clipboardData.files;
+							if (e.clipboardData.files.length > 0) {
+								e.preventDefault();
+								const files = e.clipboardData.files;
 
-							try {
-								setFiles(f => [...f, ...files]);
-								setLoading(true);
-								const ids = await Promise.all(
-									[...files].map(async file => {
-										return (await client.uploadMedia(file)).data
-											.id;
-									}),
-								);
-								toast.success("Files uploaded!");
-								setLoading(false);
-								setFileIds(f => [...f, ...ids]);
-							} catch (error) {
-								console.error(error);
-								toast.error("Couldn't upload files :(");
-								// Handle error
+								try {
+									setFiles(f => [...f, ...files]);
+									setLoading(true);
+									const ids = await Promise.all(
+										[...files].map(async file => {
+											return (await client.uploadMedia(file)).data.id;
+										}),
+									);
+									toast.success("Files uploaded!");
+									setLoading(false);
+									setFileIds(f => [...f, ...ids]);
+								} catch (error) {
+									console.error(error);
+									toast.error("Couldn't upload files :(");
+									// Handle error
+								}
 							}
 						}}
 						onChange={async event => {
@@ -285,7 +289,7 @@ function SendForm() {
 											className="object-cover w-full h-full"
 										/>
 										<Button
-											onClick={(e) => {
+											onClick={e => {
 												e.preventDefault();
 												setFiles(f => f.splice(index, 1));
 												setFileIds(f => f.splice(index, 1));
