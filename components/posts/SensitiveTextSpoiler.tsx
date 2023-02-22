@@ -1,5 +1,6 @@
 import Button from "components/buttons/Button";
 import { Dispatch, SetStateAction } from "react";
+import { withEmojis } from "utils/functions";
 
 export default function SensitiveTextSpoiler({
 	status,
@@ -14,7 +15,7 @@ export default function SensitiveTextSpoiler({
 		<>
 			{status.sensitive && (
 				<div className="flex gap-x-2 items-center font-bold dark:text-gray-100">
-					{status.spoiler_text == "" ? "Marked as sensitive" : status.spoiler_text}
+					{status.spoiler_text == "" ? "Marked as sensitive" : withEmojis(status.spoiler_text, status.emojis)}
 
 					<Button
 						style="gray"
