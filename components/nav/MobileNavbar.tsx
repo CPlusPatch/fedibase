@@ -25,7 +25,7 @@ export default function MobileNavbar() {
 
 	return (
 		<>
-			<header className="flex fixed inset-x-0 top-0 z-30 justify-between items-center px-6 py-3 bg-white border-b dark:border-gray-700 bg-dark md:hidden">
+			<header className="flex fixed inset-x-0 top-0 z-30 justify-between items-center px-6 py-2 bg-white border-b dark:border-gray-700 bg-dark md:hidden">
 				<Button
 					style="gray"
 					className="!p-3 !border-none !shadow-none"
@@ -38,8 +38,9 @@ export default function MobileNavbar() {
 					<IconMenu2 aria-hidden={true} className="" />
 					<span className="sr-only">Open sidebar</span>
 				</Button>
-				<Link href="/">
-					<SmallLogo size="w-10 !h-10" />
+				<Link href="/" className="flex flex-row gap-x-3 text-lg dark:text-gray-50 font-poppin">
+					<SmallLogo size="w-7 !h-7" />
+					Fedibase
 				</Link>
 				<Button
 					style="gray"
