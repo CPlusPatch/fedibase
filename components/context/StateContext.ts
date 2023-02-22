@@ -9,6 +9,7 @@ export const StateContext = createContext<
 			notificationsOpened: boolean;
 			path: string;
 			sidebarOpened: boolean;
+			quotingTo: null | Entity.Status;
 		},
 		Dispatch<
 			SetStateAction<{
@@ -17,6 +18,7 @@ export const StateContext = createContext<
 				notificationsOpened: boolean;
 				path: string;
 				sidebarOpened: false;
+				quotingTo: null | Entity.Status;
 			}>
 		>,
 	] | null

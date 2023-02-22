@@ -14,7 +14,8 @@ function App({ Component, pageProps }: AppProps) {
 		mobileEditorOpened: false,
 		notificationsOpened: false,
 		path: "",
-		sidebarOpened: false
+		sidebarOpened: false,
+		quotingTo: null,
 	});
 
 	useEffect(() => {

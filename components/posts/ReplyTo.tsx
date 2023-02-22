@@ -5,6 +5,7 @@ import { useState, useContext, useEffect, Fragment, useRef } from "react";
 import { withEmojis } from "utils/functions";
 import Status, { StatusType } from "./Status";
 import { useIsVisible } from "react-is-visible";
+import { Entity } from "../../../megalodon/megalodon/lib/src";
 
 export default function ReplyTo({ status }: { status: Entity.Status }) {
 	const [replyStatus, setReplyStatus] = useState<Entity.Status>();

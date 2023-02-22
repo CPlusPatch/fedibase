@@ -21,7 +21,7 @@ specifiers:
   dompurify: ^3.0.0
   eslint: ^8.34.0
   eslint-config-next: ^13.1.6
-  megalodon: 5.2.0
+  megalodon: npm:@cpluspatch/megalodon
   next: ^13.1.6
   next-pwa: ^5.6.0
   nextjs-progressbar: ^0.0.16
@@ -45,7 +45,7 @@ dependencies:
   cookies-next: 2.1.1
   csstype: 3.1.1
   dompurify: 3.0.0
-  megalodon: 5.2.0_utf-8-validate@6.0.2
+  megalodon: /@cpluspatch/megalodon/5.2.0_utf-8-validate@6.0.2
   next: 13.1.6_biqbaboplfbrettd7655fr4n2y
   next-pwa: 5.6.0_next@13.1.6
   nextjs-progressbar: 0.0.16_next@13.1.6+react@18.2.0
@@ -1238,6 +1238,30 @@ packages:
       '@babel/helper-string-parser': 7.19.4
       '@babel/helper-validator-identifier': 7.19.1
       to-fast-properties: 2.0.0
+    dev: false
+
+  /@cpluspatch/megalodon/5.2.0_utf-8-validate@6.0.2:
+    resolution: {integrity: sha512-FwmXF8xkcdFigAZWV42Aah6X/hs8NijnT2WKPpZkicuhmYa4SeWn0bHWwpgrVQ1PU4/WDxOwyIbXY+rd5TR5jg==}
+    engines: {node: '>=15.0.0'}
+    dependencies:
+      '@types/oauth': 0.9.1
+      '@types/ws': 8.5.4
+      axios: 1.2.2
+      dayjs: 1.11.7
+      form-data: 4.0.0
+      https-proxy-agent: 5.0.1
+      oauth: 0.10.0
+      object-assign-deep: 0.4.0
+      parse-link-header: 2.0.0
+      socks-proxy-agent: 7.0.0
+      typescript: 4.9.5
+      uuid: 9.0.0
+      ws: 8.12.1_utf-8-validate@6.0.2
+    transitivePeerDependencies:
+      - bufferutil
+      - debug
+      - supports-color
+      - utf-8-validate
     dev: false
 
   /@eslint/eslintrc/1.4.1:
@@ -3579,30 +3603,6 @@ packages:
     engines: {node: '>=8'}
     dependencies:
       semver: 6.3.0
-    dev: false
-
-  /megalodon/5.2.0_utf-8-validate@6.0.2:
-    resolution: {integrity: sha512-xyuLgcV1hw58a6+tlSiiS0ZW2NAFIOOD302zyXUjscxrjGW/KQ2ue25gm/WECsgEzUJ1TtHJo42vsqUuw4NDNg==}
-    engines: {node: '>=15.0.0'}
-    dependencies:
-      '@types/oauth': 0.9.1
-      '@types/ws': 8.5.4
-      axios: 1.2.2
-      dayjs: 1.11.7
-      form-data: 4.0.0
-      https-proxy-agent: 5.0.1
-      oauth: 0.10.0
-      object-assign-deep: 0.4.0
-      parse-link-header: 2.0.0
-      socks-proxy-agent: 7.0.0
-      typescript: 4.9.5
-      uuid: 9.0.0
-      ws: 8.12.1_utf-8-validate@6.0.2
-    transitivePeerDependencies:
-      - bufferutil
-      - debug
-      - supports-color
-      - utf-8-validate
     dev: false
 
   /merge-stream/2.0.0:

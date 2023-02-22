@@ -103,9 +103,17 @@ export default function InteractionBar({ status }: { status: Entity.Status }) {
 				<span className="sr-only">Add reaction (not implemented)</span>
 			</InteractionBarIcon>
 
-			<InteractionBarIcon>
+			<InteractionBarIcon
+				onClick={() => {
+					setState(s => ({
+						...s,
+						quotingTo: status,
+						mobileEditorOpened: true,
+						notificationsOpened: false,
+					}));
+				}}>
 				<IconQuote className="w-5 h-5" aria-hidden={true} />
-				<span className="sr-only">Quote this post (not implemented)</span>
+				<span className="sr-only">Quote this post</span>
 			</InteractionBarIcon>
 		</div>
 	);

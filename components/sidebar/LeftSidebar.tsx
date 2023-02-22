@@ -17,6 +17,7 @@ import SmallSelect from "components/forms/SmallSelect";
 import { Entity, Response } from "megalodon";
 import { FormEvent, Fragment, useContext, useEffect, useRef, useState } from "react";
 import { toast } from "react-hot-toast";
+import { withEmojis } from "utils/functions";
 
 const modes = [
 	{
@@ -131,14 +132,22 @@ function SendForm() {
 	const textareaRef = useRef<HTMLTextAreaElement>(null);
 
 	useEffect(() => {
+		// YES, I KNOW YOU CAN SHORTEN THIS I JUST DONT CARE
+		let otherPost = null;
 		if (state.replyingTo) {
+			otherPost = state.replyingTo;
+		} else if (state.quotingTo) {
+			otherPost = state.quotingTo;
+		}
+
+		if (otherPost) {
 			const id = localStorage.getItem("accountId");
 			// Gets array of mentions, removes mentions of self, deduplicates resulting array
 			// and turns the output into "@gay@gay.com" format seperated by spaces
 			const mentions = [
 				...new Map(
-					(state.replyingTo as Entity.Status).mentions
-						.concat([(state.replyingTo as Entity.Status).account])
+					(otherPost as Entity.Status).mentions
+						.concat([(otherPost as Entity.Status).account])
 						.filter(m => m.id !== id)
 						.map(v => [v.id, v]),
 				).values(),
@@ -149,7 +158,7 @@ function SendForm() {
 				if (mentions.length > 0)
 					setCharacters(mentions + " ");
 
-			switch (state.replyingTo.visibility) {
+			switch (otherPost.visibility) {
 				case "unlisted":
 					setSelectedVis(visibilities[1]);
 					break;
@@ -161,13 +170,14 @@ function SendForm() {
 					break;
 			}
 
-			textareaRef.current.focus();
 		}
-
+		
+		textareaRef.current.focus();
+		
 		client.getInstanceCustomEmojis().then(data => {
 			setEmojis(data.data);
 		});
-	}, [client, state.replyingTo]);
+	}, [client, state.quotingTo, state.replyingTo]);
 
 	const submitForm = async (event: FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
@@ -179,6 +189,7 @@ function SendForm() {
 				in_reply_to_id: state?.replyingTo?.id ?? undefined,
 				visibility: selectedVis.value as any,
 				media_ids: fileIds,
+				quote_id: state.quotingTo?.id ?? undefined,
 			})
 			.then((res: Response<Entity.Status>) => {
 				if (res.status == 200) {
@@ -198,6 +209,7 @@ function SendForm() {
 					...s,
 					replyingTo: null,
 					mobileEditorOpened: false,
+					quotingTo: null
 				}));
 			});
 	};
@@ -217,7 +229,29 @@ function SendForm() {
 						loading ? "bg-gray-100 bg-dark" : "bg-white bg-dark"
 					}`}>
 					<div className="flex justify-between p-3 w-full">
-						<h1 className="text-xl font-bold dark:text-gray-50">Compose</h1>
+						<h1 className="text-xl font-bold dark:text-gray-50">
+							{state.replyingTo && (
+								<>
+									Replying to{" "}
+									{withEmojis(
+										state.replyingTo.account.display_name,
+										state.replyingTo.account.emojis,
+									)}
+								</>
+							)}
+							{state.quotingTo && (
+								<>
+									Quoting{" "}
+									{withEmojis(
+										state.quotingTo.account.display_name,
+										state.quotingTo.account.emojis,
+									)}
+								</>
+							)}
+							{
+								!(state.replyingTo || state.quotingTo) && <>Compose</>
+							}
+						</h1>
 						<button
 							onClick={e => {
 								e.preventDefault();
