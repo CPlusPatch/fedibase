@@ -143,9 +143,9 @@ function SendForm() {
 						.map(v => [v.id, v]),
 				).values(),
 			]
-				.map(m => "@" + m.acct + " ")
+				.map(m => "@" + m.acct)
 				.join(" ");
-			setCharacters(mentions);
+			setCharacters(mentions + " ");
 
 			switch (state.replyingTo.visibility) {
 				case "unlisted":
@@ -158,6 +158,8 @@ function SendForm() {
 					setSelectedVis(visibilities[3]);
 					break;
 			}
+
+			textareaRef.current.focus();
 		}
 
 		client.getInstanceCustomEmojis().then(data => {
