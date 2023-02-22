@@ -99,12 +99,13 @@ export default function Nav(props: NavProps): JSX.Element {
 						e.preventDefault();
 						setState(s => ({
 							...s,
-							path: "/"
+							path: "/",
 						}));
 						history.pushState(null, null, "/");
 					}}
 					className="flex flex-shrink-0 justify-center items-center px-2">
 					<img src={instance?.thumbnail} className="w-8 h-8 rounded" alt="" />
+					<span className="sr-only">{instance?.title}</span>
 				</Link>
 				<nav className="flex-1 px-2 mt-5 space-y-1" aria-label="Sidebar">
 					{navigation.map(item => (
@@ -136,6 +137,7 @@ export default function Nav(props: NavProps): JSX.Element {
 						className="w-9 h-9 rounded border dark:border-gray-700"
 						alt=""
 					/>
+					<span className="sr-only">Your avatar, click to visit your profile</span>
 				</Link>
 			</div>
 		</div>
@@ -236,6 +238,7 @@ export function MobileNav(props: NavProps): JSX.Element {
 						className="w-9 h-9 rounded border dark:border-gray-700"
 						alt=""
 					/>
+					<span className="sr-only">Your avatar, click to visit your profile</span>
 				</Link>
 			</div>
 		</div>
@@ -321,6 +324,7 @@ function NavElement(props: NavElementProps) {
 					className="flex-shrink-0 w-5 h-5 text-gray-600 dark:text-gray-300"
 					aria-hidden="true"
 				/>
+				<span className="sr-only">Visit the {props.item.name} feed</span>
 			</Link>
 			<Transition
 				as={Fragment}

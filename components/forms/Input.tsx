@@ -1,4 +1,4 @@
-import { DetailedHTMLProps, InputHTMLAttributes } from "react";
+import { DetailedHTMLProps, InputHTMLAttributes, LabelHTMLAttributes } from "react";
 import { classNames } from "utils/functions";
 
 interface InputOptions {
@@ -32,7 +32,9 @@ export function Input({
 	);
 }
 
-export function Label({ children }) {
+export function Label({ children }: {
+	children: any;
+} & DetailedHTMLProps<LabelHTMLAttributes<HTMLLabelElement>, HTMLLabelElement>) {
 	return (
 		<label htmlFor="name" className="block text-sm font-medium text-gray-600 dark:text-gray-300">
 			{children}

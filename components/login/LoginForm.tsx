@@ -131,10 +131,10 @@ export default function LoginForm({ code }) {
 									type="handle"
 									autoComplete="url"
 									required
-									placeholder="@cpluspatch@kitsunes.gay"
+									placeholder="@cpluspatch@fedi.cpluspatch.com"
 									isLoading={isLoading}
 									className="block px-3 py-2 w-full placeholder-gray-400 rounded-md border border-gray-300 shadow-sm duration-200 appearance-none dark:placeholder-gray-500 dark:border-gray-600 disabled:bg-gray-100 disabled:dark:bg-gray-800 focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm">
-									<Label>Fedi handle</Label>
+									<Label htmlFor="handle">Fedi handle</Label>
 								</Input>
 
 								<Select
