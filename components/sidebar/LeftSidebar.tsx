@@ -111,7 +111,7 @@ export default function LeftSidebar() {
 function SendForm() {
 	// Context stuff
 	const client = useContext(AuthContext);
-	const [state, setState] = useContext(StateContext) as any;
+	const [state, setState] = useContext(StateContext);
 
 	// State stuff
 	const [selectedMode, setSelectedMode] = useState(modes[0]);
@@ -145,6 +145,18 @@ function SendForm() {
 				.map(m => "@" + m.acct + " ")
 				.join(" ");;
 			setCharacters(mentions);
+
+			switch (state.replyingTo.visibility) {
+				case "unlisted":
+					setSelectedVis(visibilities[1]);
+					break;
+				case "private":
+					setSelectedVis(visibilities[2]);
+					break;
+				case "direct":
+					setSelectedVis(visibilities[3]);
+					break;
+			}
 		}
 
 		client.getInstanceCustomEmojis().then(data => {
@@ -168,6 +180,8 @@ function SendForm() {
 						icon: "👍",
 					});
 				}
+			}).catch(() => {
+				toast.error("There was an error sending your post. Maybe check the visibility?");
 			})
 			.finally(() => {
 				setLoading(false);
