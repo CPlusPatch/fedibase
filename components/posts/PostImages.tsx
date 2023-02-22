@@ -66,7 +66,7 @@ function PostImage({ status, image }: { status: Entity.Status; image: Entity.Att
 						onClick={() => {
 							setRevealed(false);
 						}}
-						className="px-1 py-1 mt-4 mr-4">
+						className="!px-1 !py-1 mt-4 mr-4">
 						<IconX aria-hidden={true} className="w-8 h-8" />
 						<span className="sr-only">Hide this image</span>
 					</Button>
