@@ -4,19 +4,17 @@ import Link from "next/link";
 import Status, { StatusType } from "components/posts/Status";
 import { withEmojis } from "utils/functions";
 import { IconStarFilled } from "@tabler/icons-react";
-import { useCallback, useEffect, useRef, useState } from "react";
 import DummyStatus from "components/posts/DummyStatus";
-import { useIsVisible } from "react-is-visible";
 
 export const DummyNotification = () => {
 	return (
 		<>
-				<li
-					className={`flex flex-col gap-y-2 p-2 max-w-full rounded`}>
-					<DummyStatus
-						type={StatusType.Notification}
-					/>
-				</li>
+			<li
+				className={`flex flex-col gap-y-2 p-2 max-w-full rounded`}>
+				<DummyStatus
+					type={StatusType.Notification}
+				/>
+			</li>
 		</>
 	);
 };
