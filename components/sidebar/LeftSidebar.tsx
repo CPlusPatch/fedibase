@@ -138,14 +138,16 @@ function SendForm() {
 			const mentions = [
 				...new Map(
 					(state.replyingTo as Entity.Status).mentions
-						.filter(m => m.id !== id)
 						.concat([(state.replyingTo as Entity.Status).account])
+						.filter(m => m.id !== id)
 						.map(v => [v.id, v]),
 				).values(),
 			]
 				.map(m => "@" + m.acct)
 				.join(" ");
-			setCharacters(mentions + " ");
+
+				if (mentions.length > 0)
+					setCharacters(mentions + " ");
 
 			switch (state.replyingTo.visibility) {
 				case "unlisted":
