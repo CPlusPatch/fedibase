@@ -3,11 +3,12 @@ import { IconList, IconListDetails, IconRocket, IconStarFilled } from "@tabler/i
 import { AuthContext } from "components/context/AuthContext";
 import SmallSelect, { SelectDirection } from "components/forms/SmallSelect";
 import DummyStatus from "components/posts/DummyStatus";
-import InfiniteScrollNotifications from "components/scroll/InfiniteScrollNotifications";
+import { Notification } from "components/scroll/InfiniteScrollNotifications";
 import { Entity, Response } from "megalodon";
 import { useContext, useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
 import { dedupeById } from "utils/functions";
+import Feed, { FeedType } from "./Feed";
 
 const modes = [
 	{
@@ -92,21 +93,11 @@ export default function NotificationsFeed({ withTitle = true }: { withTitle?: bo
 				</div>
 			)}
 			
-				<InfiniteScrollNotifications
-					notifs={notifications}
-					mode={mode.value}
-					loadNewNotifs={async () => {
-						if (notifsRef.current.length > 0) {
-							console.log("[+] Loading more notifications...");
-
-							const res = await client?.getNotifications({
-								max_id: notifsRef.current[notifsRef.current.length - 1].id,
-							});
-
-							setNotifications(n => dedupeById([...n, ...res.data]) as any);
-							notifsRef.current = dedupeById([...notifications, ...res.data]) as any;
-						}
-					}}></InfiniteScrollNotifications>
+				<div className="flex overflow-y-auto flex-col gap-y-2 max-w-full divide-y-2 dark:divide-gray-700 no-scroll">
+					<Feed<Entity.Notification> type={FeedType.Notifications} entityElement={Notification} options={{
+						id: ""
+					}}/>
+				</div>
 		</div>
 	);
 }

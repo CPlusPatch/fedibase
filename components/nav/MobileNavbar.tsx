@@ -13,7 +13,7 @@ import { StateContext } from "components/context/StateContext";
 import SmallSelect from "components/forms/SmallSelect";
 import { Response } from "megalodon";
 import SmallLogo from "components/logo/SmallLogo";
-import NotificationsFeed from "components/sidebar/NotificationsFeed";
+import NotificationsFeed from "components/feed/NotificationsFeed";
 import Link from "next/link";
 import { useState, Fragment, useContext, FormEvent, MutableRefObject, useRef } from "react";
 import toast from "react-hot-toast";

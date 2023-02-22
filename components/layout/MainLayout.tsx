@@ -2,7 +2,7 @@ import { IconMenu2 } from "@tabler/icons-react";
 import Button from "components/buttons/Button";
 import MobileNavbar from "components/nav/MobileNavbar";
 import LeftSidebar from "components/sidebar/LeftSidebar";
-import NotificationsFeed from "components/sidebar/NotificationsFeed";
+import NotificationsFeed from "components/feed/NotificationsFeed";
 
 export default function MainLayout({ children }) {
 	return (
