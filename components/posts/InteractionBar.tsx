@@ -20,7 +20,7 @@ export default function InteractionBar({ status }: { status: Entity.Status }) {
 	const client = useContext(AuthContext);
 	const [favourited, setFavourited] = useState<boolean>(status.favourited);
 	const [boosted, setBoosted] = useState<boolean>(status.reblogged);
-	const [state, setState] = useContext(StateContext) as any;
+	const [state, setState] = useContext(StateContext);
 
 	return (
 		<div className="grid grid-cols-5 justify-around px-5 mt-3 w-full text-gray-700 dark:text-gray-400">
@@ -30,6 +30,7 @@ export default function InteractionBar({ status }: { status: Entity.Status }) {
 						...s,
 						replyingTo: status,
 						mobileEditorOpened: true,
+						notificationsOpened: false,
 					}));
 				}}>
 				<IconMessage aria-hidden={true} className="w-5 h-5" />

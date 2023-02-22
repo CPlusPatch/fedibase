@@ -86,7 +86,7 @@ export default function LeftSidebar() {
 						<div className="fixed inset-0 backdrop-blur-lg transition-all bg-orange-500/30" />
 					</Transition.Child>
 
-					<div className="overflow-y-auto fixed inset-0 z-10">
+					<div className="overflow-y-auto fixed inset-0">
 						<div className="flex justify-center items-start p-4 min-h-full text-center md:items-center sm:p-0">
 							<Transition.Child
 								as={Fragment}
@@ -265,7 +265,7 @@ function SendForm() {
 								const matched = split[split.length - 1];
 
 								const matchedEmojis = emojis.filter(e =>
-									e.shortcode.startsWith(matched),
+									e.shortcode.includes(matched),
 								);
 								setEmojisSuggestions(matchedEmojis);
 							} else {
@@ -279,17 +279,26 @@ function SendForm() {
 					/>
 
 					{files.length > 0 && (
-						<div className="overflow-hidden bottom-0 px-4 w-full">
+						<div className="flex overflow-x-scroll bottom-0 flex-row gap-x-4 px-4 w-full">
 							{files.map((file: File, index: number) => {
 								return (
 									<div
 										key={index}
-										className="overflow-hidden relative w-24 h-24 rounded-lg border-2">
-										<img
-											alt=""
-											src={window.URL.createObjectURL(file)}
-											className="object-cover w-full h-full"
-										/>
+										className="overflow-hidden relative h-24 rounded-lg border-2">
+										{file.type.includes("image") && (
+											<img
+												alt=""
+												src={window.URL.createObjectURL(file)}
+												className="object-cover w-full h-full"
+											/>
+										)}
+										{file.type.includes("video") && (
+											<video
+												src={window.URL.createObjectURL(file)}
+												controls
+												className="w-full h-full"
+											/>
+										)}
 										<Button
 											onClick={e => {
 												e.preventDefault();
