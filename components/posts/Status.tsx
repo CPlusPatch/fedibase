@@ -94,41 +94,51 @@ export default function Status({ status, type, showInteraction = true }: StatusP
 							</a>
 						</div>
 					</div>
-					<div className="flex flex-col gap-y-1">
-						{status.in_reply_to_id && <ReplyTo status={status} />}
-						<SensitiveTextSpoiler
-							status={status}
-							showText={showText}
-							setShowText={setShowText}
-						/>
+					<div className={`${type === StatusType.Notification && "flex flex-row"}`}>
+						<div className="flex flex-col gap-y-1">
+							{status.in_reply_to_id && <ReplyTo status={status} />}
+							<SensitiveTextSpoiler
+								status={status}
+								showText={showText}
+								setShowText={setShowText}
+							/>
 
-						<div
-							className="relative w-full text-sm"
-							style={{
-								overflow: expand ? "" : "hidden",
-								maxHeight: expand ? "" : "8rem",
-							}}>
-							<p
-								ref={textElementRef}
-								className={`mt-1 rounded duration-200 status-text dark:text-gray-50 ${
-									status.sensitive && !showText && "filter blur-lg"
-								}`}>
-								{withEmojis(status.content, status.emojis)}
-							</p>
+							<div
+								className="relative w-full text-sm"
+								style={{
+									overflow: expand ? "" : "hidden",
+									maxHeight: expand ? "" : "8rem",
+								}}>
+								<p
+									ref={textElementRef}
+									className={`mt-1 rounded duration-200 status-text dark:text-gray-50 ${
+										status.sensitive && !showText && "filter blur-lg"
+									}`}>
+									{withEmojis(status.content, status.emojis)}
+								</p>
+							</div>
+
+							{textElementRef?.current?.offsetHeight > 128 && (
+								<>
+									<hr />
+									<button
+										className="mx-auto w-full text-sm text-blue-800 dark:text-blue-100 hover:underline"
+										onClick={toggleExpand}>
+										{expand === true ? "Less" : "More"}
+									</button>
+								</>
+							)}
 						</div>
-
-						{textElementRef?.current?.offsetHeight > 128 && (
-							<>
-								<hr />
-								<button
-									className="mx-auto w-full text-sm text-blue-800 dark:text-blue-100 hover:underline"
-									onClick={toggleExpand}>
-									{expand === true ? "Less" : "More"}
-								</button>
-							</>
+						{status.media_attachments.length > 0 && (
+							<div
+								className={`mt-2 ${
+									type === StatusType.Notification &&
+									"flex overflow-hidden justify-center w-28 ml-auto h-20 border dark:border-gray-700 rounded"
+								}`}>
+								<PostImages type={type} status={status} />
+							</div>
 						)}
 					</div>
-					<PostImages status={status} />
 				</div>
 			</div>
 

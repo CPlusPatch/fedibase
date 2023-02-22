@@ -3,17 +3,18 @@ import { IconX } from "@tabler/icons-react";
 import Button from "components/buttons/Button";
 import { Entity } from "megalodon";
 import { useState } from "react";
+import { StatusType } from "./Status";
 
 /**
  * Images of a Status (extracted for modularity)
  * @returns 
  */
-export default function PostImages({ status }: { status: Entity.Status }) {
+export default function PostImages({ status, type }: { status: Entity.Status; type: StatusType }) {
 	return (
 		<>
 			{status.media_attachments.length > 0 && (
 				<div
-					className={`grid gap-3 w-full mt-4 ${
+					className={`grid gap-3 w-full h-full${
 						status.media_attachments.length === 2 && "grid-cols-2"
 					} ${status.media_attachments.length > 2 && "grid-cols-3"}`}>
 					{status.media_attachments.map(attachment => (
@@ -29,7 +30,7 @@ function PostImage({ status, image }: { status: Entity.Status; image: Entity.Att
 	const [revealed, setRevealed] = useState<boolean>(!status.sensitive);
 
 	return (
-		<div className="overflow-hidden relative">
+		<div className="flex overflow-hidden relative items-center">
 			{image.type == "image" && (
 				<img
 					className={`filter duration-500 rounded ${revealed ? "":"filter blur-2xl"}`}
