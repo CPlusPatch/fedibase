@@ -12,6 +12,7 @@ export enum FeedType {
 	Home = "home",
 	User = "user",
 	Notifications = "notifications",
+	Local = "local"
 }
 
 interface FeedProps {
@@ -57,6 +58,13 @@ export default function Feed<T>(props: FeedProps) {
 					})) as any;
 					break;
 				}
+				case FeedType.Local: {
+					res = (await client?.getLocalTimeline({
+						limit: 30,
+						since_id: since_id,
+					})) as any;
+					break;
+				}
 			}
 			loading.current = false;
 			return dedupeById(res.data) as T[];
@@ -86,6 +94,13 @@ export default function Feed<T>(props: FeedProps) {
 				}
 				case FeedType.Notifications: {
 					res = (await client?.getNotifications({
+						limit: 30,
+						max_id: before_id,
+					})) as any;
+					break;
+				}
+				case FeedType.Local: {
+					res = (await client?.getLocalTimeline({
 						limit: 30,
 						max_id: before_id,
 					})) as any;
