@@ -47,7 +47,7 @@ export default function ReplyTo({ status }: { status: Entity.Status }) {
 				leave="transition ease-in duration-150"
 				leaveFrom="opacity-100 translate-y-0"
 				leaveTo="opacity-0 translate-y-1">
-				<div className="absolute left-0 z-10 px-4 py-3 max-w-sm bg-gray-50 bg-dark rounded dark:border-gray-700 border transform translate-x-[-5.55rem] lg:max-w-3xl">
+				<div className="absolute left-0 z-50 px-4 py-3 max-w-sm bg-gray-50 bg-dark rounded dark:border-gray-700 border transform translate-x-[-5.55rem] lg:max-w-3xl">
 					{replyStatus && <Status status={replyStatus} type={StatusType.Post} />}
 				</div>
 			</Transition>

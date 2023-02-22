@@ -1,8 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import { AuthContext } from "components/context/AuthContext";
 import DummyStatus from "components/posts/DummyStatus";
-import { Post } from "components/scroll/InfiniteScrollPosts";
-import { Entity, Response } from "megalodon";
+import { Response } from "megalodon";
 import { useCallback, useContext, useEffect, useRef, useState } from "react";
 import { dedupeById } from "utils/functions";
 import { useIsVisible } from "react-is-visible";
@@ -123,7 +122,7 @@ export default function Feed<T>(props: FeedProps) {
 				]) as T[];
 				setEntities(entitiesRef.current);
 			}
-		}, 10000);
+		}, 15000);
 
 		return () => clearInterval(interval);
 	}, [getNewEntities]);
@@ -148,7 +147,7 @@ export default function Feed<T>(props: FeedProps) {
 			{entities.map((entity: any, index) => (
 				<props.entityElement key={entity.id} entity={entity} />
 			))}
-			{props.type === FeedType.Home && (
+			{(props.type === FeedType.Home || props.type === FeedType.User) && (
 				<>
 					<div ref={loadNewRef}>
 						<DummyStatus type="post" />

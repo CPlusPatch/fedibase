@@ -38,46 +38,7 @@ const modes = [
 ];
 
 export default function NotificationsFeed({ withTitle = true }: { withTitle?: boolean }) {
-	const [notifications, setNotifications] = useState<Entity.Notification[]>([]);
-	const client = useContext(AuthContext);
-	const notifsRef = useRef(notifications);
 	const [mode, setMode] = useState(modes[0]);
-	const loading = useRef<boolean>(false);
-
-	useEffect(() => {
-		async function getInitialData() {
-			const res: Response<Entity.Notification[]> = await client?.getNotifications({
-				limit: 20,
-			});
-			const dedupedData: Entity.Notification[] = dedupeById(res.data) as any;
-			setNotifications(dedupedData);
-			notifsRef.current = dedupedData;
-		}
-
-		// Periodically fetch new notifications and add them to the beginning of the list
-		const interval = setInterval(() => {
-			if (notifsRef.current.length > 0) {
-				console.log("[+] Fetching new notifications...");
-					client
-						?.getNotifications({
-							since_id: notifsRef.current[0].id,
-						})
-						.then(res => {
-							const deduped = dedupeById([
-								...res.data,
-								...notifsRef.current,
-							]) as any;
-							setNotifications(n => deduped);
-							notifsRef.current = deduped;
-						});
-			}
-		}, 15000);
-
-		getInitialData();
-
-		return () => clearInterval(interval);
-	}, [client]);
-
 
 	return (
 		<div className="flex flex-col gap-y-6 w-full max-w-full h-full font-inter">

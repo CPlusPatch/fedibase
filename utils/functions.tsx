@@ -88,14 +88,11 @@ export function fromNow(date, rft = new Intl.RelativeTimeFormat(undefined, { num
 }
 
 /**
- * Deduplicates an array of objects based on the "id" property
+ * Deduplicates an array of objects based on the "id" property (keeping the order)
+ * https://stackoverflow.com/questions/2218999/how-to-remove-all-duplicates-from-an-array-of-objects
  * @param arr Array of objects to deduplicate
  * @returns 
  */
 export function dedupeById(arr) {
-	const deduped = {};
-	for (const obj of arr) {
-		deduped[obj.id] = obj;
-	}
-	return Object.values(deduped);
+	return arr.filter((v,i,a)=>a.findIndex(v2=>(v2.id===v.id))===i)
 }
