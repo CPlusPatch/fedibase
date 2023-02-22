@@ -20,7 +20,6 @@ export const DummyNotification = () => {
 };
 
 export const Notification = ({ entity }: { entity: Entity.Notification }) => {
-	console.log(entity)
 	return (
 		<>
 			{(entity.type == "mention" ||

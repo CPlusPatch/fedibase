@@ -214,6 +214,28 @@ function SendForm() {
 						ref={textareaRef}
 						id="comment"
 						rows={5}
+						onPaste={async e => {
+							e.preventDefault();
+							const files = e.clipboardData.files;
+
+							try {
+								setFiles(f => [...f, ...files]);
+								setLoading(true);
+								const ids = await Promise.all(
+									[...files].map(async file => {
+										return (await client.uploadMedia(file)).data
+											.id;
+									}),
+								);
+								toast.success("Files uploaded!");
+								setLoading(false);
+								setFileIds(f => [...f, ...ids]);
+							} catch (error) {
+								console.error(error);
+								toast.error("Couldn't upload files :(");
+								// Handle error
+							}
+						}}
 						onChange={async event => {
 							const { value } = event.target;
 							setCharacters(value);
