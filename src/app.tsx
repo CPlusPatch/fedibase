@@ -1,6 +1,6 @@
 import LoginForm from "components/login/LoginForm";
 import generator, { MegalodonInterface } from "megalodon";
-import { useCallback, useContext, useEffect, useState } from "preact/hooks";
+import { useContext, useEffect, useState } from "preact/hooks";
 import { AuthContext } from "./components/context/AuthContext";
 import { StateContext } from "./components/context/StateContext";
 import { Conversation } from "./components/feed/Conversation";
@@ -24,18 +24,6 @@ export function App() {
 	const [component, setComponent] = useState(<></>);
 	const [loginMode, setLoginMode] = useState<boolean>(false);
 
-	const handlePopState = useCallback(
-		(e: PopStateEvent) => {
-			e.preventDefault();
-			setState((s: any) => ({
-				...s,
-				params: {},
-			}));
-			history.pushState(null, "", "/");
-		},
-		[setState]
-	);
-
 	useEffect(() => {
 		if (window) {
 			const paths = window.location.pathname.split("/");
@@ -43,7 +31,6 @@ export function App() {
 			if ((!localStorage.getItem("accessToken") || !localStorage.getItem("instanceType")) && paths[1] !== "login") {
 				window.location.pathname = "/login";
 			}
-			
 
 			switch (paths[1]) {
 				case "posts":
@@ -63,12 +50,8 @@ export function App() {
 				case "login":
 					setLoginMode(true);
 			}
-
-			window.addEventListener("popstate", handlePopState);
-
-			return () => window.removeEventListener("popstate", handlePopState);
 		}
-	}, [client, handlePopState]);
+	}, [client, state.path]);
 
 	return (
 		<>
