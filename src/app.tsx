@@ -22,6 +22,7 @@ export function App() {
 	const client: MegalodonInterface = useContext(AuthContext);
 
 	const [component, setComponent] = useState(<></>);
+	const [loginMode, setLoginMode] = useState<boolean>(false);
 
 	const handlePopState = useCallback(
 		(e: PopStateEvent) => {
@@ -39,6 +40,11 @@ export function App() {
 		if (window) {
 			const paths = window.location.pathname.split("/");
 
+			if ((!localStorage.getItem("accessToken") || !localStorage.getItem("instanceType")) && paths[1] !== "login") {
+				window.location.pathname = "/login";
+			}
+			
+
 			switch (paths[1]) {
 				case "posts":
 					setComponent(<Conversation id={paths[2]} />);
@@ -55,7 +61,7 @@ export function App() {
 					});
 					break;
 				case "login":
-					setComponent(<LoginForm code={new URLSearchParams(document.location.search).get("code") ?? ""} />)
+					setLoginMode(true);
 			}
 
 			window.addEventListener("popstate", handlePopState);
@@ -65,25 +71,32 @@ export function App() {
 	}, [client, handlePopState]);
 
 	return (
-		<StateContext.Provider value={[state, setState]}>
-			<AuthContext.Provider
-				value={
-					typeof window !== "undefined" &&
-					localStorage.getItem("accessToken") &&
-					localStorage.getItem("instanceType")
-						? generator(
-								localStorage.getItem("instanceType") as any,
-								localStorage.getItem("instanceUrl"),
-								localStorage.getItem("accessToken")
-						  )
-						: null
-				}>
-				<div className="relative duration-200 bg-dark font-inter">
-					<Nav />
+		<>
+			{!loginMode && (
+				<StateContext.Provider value={[state, setState]}>
+					<AuthContext.Provider
+						value={
+							typeof window !== "undefined" &&
+							localStorage.getItem("accessToken") &&
+							localStorage.getItem("instanceType")
+								? generator(
+										localStorage.getItem("instanceType") as any,
+										localStorage.getItem("instanceUrl"),
+										localStorage.getItem("accessToken"),
+								  )
+								: null
+						}>
+						<div className="relative duration-200 bg-dark font-inter">
+							<Nav />
 
-					<MainLayout>{component}</MainLayout>
-				</div>
-			</AuthContext.Provider>
-		</StateContext.Provider>
+							<MainLayout>{component}</MainLayout>
+						</div>
+					</AuthContext.Provider>
+				</StateContext.Provider>
+			)}
+			{loginMode && (
+				<LoginForm code={new URLSearchParams(document.location.search).get("code") ?? ""} />
+			)}
+		</>
 	);
 }
