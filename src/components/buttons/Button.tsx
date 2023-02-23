@@ -37,10 +37,7 @@ export default function Button({
 				ringColor !== ""
 					? `focus:ring-2 focus:ring-offset-2 focus:ring-${ringColor}`
 					: "ring-0 focus:ring-0"
-			)}
-			onTouchStart={(e) => {
-				e.currentTarget.click();
-			}}>
+			)}>
 			{isLoading && (
 				<Spinner className={`absolute w-auto ${spinnerClasses}`} />
 			)}
