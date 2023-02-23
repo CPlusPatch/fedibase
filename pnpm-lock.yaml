@@ -10,16 +10,15 @@ specifiers:
   '@types/events': ^3.0.0
   '@types/node': ^18.14.0
   autoprefixer: ^10.4.13
-  cookies-next: ^2.1.1
   csstype: ^3.1.1
   eslint: ^8.34.0
   eslint-config-preact: ^1.3.0
   events: ^3.3.0
+  js-cookie: ^3.0.1
   megalodon: npm:@cpluspatch/megalodon@^5.2.0
   performant-array-to-tree: ^1.11.0
   postcss: ^8.4.21
   preact: ^10.11.3
-  preact-router: ^4.1.0
   querystring-es3: ^0.2.1
   react-hot-toast: ^2.4.0
   react-is-visible: ^1.2.0
@@ -31,13 +30,12 @@ specifiers:
 dependencies:
   '@headlessui/react': 1.7.11
   '@tabler/icons-preact': 2.5.0_preact@10.12.1
-  cookies-next: 2.1.1
   csstype: 3.1.1
   events: 3.3.0
+  js-cookie: 3.0.1
   megalodon: /@cpluspatch/megalodon/5.2.0
   performant-array-to-tree: 1.11.0
   preact: 10.12.1
-  preact-router: 4.1.0_preact@10.12.1
   querystring-es3: 0.2.1
   react-hot-toast: 2.4.0_csstype@3.1.1
   react-is-visible: 1.2.0
@@ -801,10 +799,6 @@ packages:
       tailwindcss: 3.2.7_postcss@8.4.21
     dev: true
 
-  /@types/cookie/0.4.1:
-    resolution: {integrity: sha512-XW/Aa8APYr6jSVVA1y/DEIZX0/GMKLEVekNG727R8cs56ahETkRAy/3DR7+fJyh7oUgGwNQaRfXCun0+KbWY7Q==}
-    dev: false
-
   /@types/events/3.0.0:
     resolution: {integrity: sha512-EaObqwIvayI5a8dCzhFrjKzVwKLxjoG9T6Ppd5CEo07LRKfQ8Yokw54r5+Wq7FaBQ+yXRvQAYPrHwya1/UFt9g==}
     dev: true
@@ -812,10 +806,6 @@ packages:
   /@types/json-schema/7.0.11:
     resolution: {integrity: sha512-wOuvG1SN4Us4rez+tylwwwCV1psiNVOkJeM3AUWUNWg/jDQY2+HE/444y5gc+jBmRqASOm2Oeh5c1axHobwRKQ==}
     dev: true
-
-  /@types/node/16.18.12:
-    resolution: {integrity: sha512-vzLe5NaNMjIE3mcddFVGlAXN1LEWueUsMsOJWaT6wWMJGyljHAWHznqfnKUQWGzu7TLPrGvWdNAsvQYW+C0xtw==}
-    dev: false
 
   /@types/node/18.14.0:
     resolution: {integrity: sha512-5EWrvLmglK+imbCJY0+INViFWUHg1AHel1sq4ZVSfdcNqGy9Edv3UB9IIzzg+xPaUcAgZYcfVs2fBcwDeZzU0A==}
@@ -1206,19 +1196,6 @@ packages:
   /convert-source-map/1.9.0:
     resolution: {integrity: sha512-ASFBup0Mz1uyiIjANan1jzLQami9z1PoYSZCiiYW2FczPbenXc45FZdBZLzOT+r6+iciuEModtmCti+hjaAk0A==}
     dev: true
-
-  /cookie/0.4.2:
-    resolution: {integrity: sha512-aSWTXFzaKWkvHO1Ny/s+ePFpvKsPnjc551iI41v3ny/ow6tBG5Vd+FuqGNhh1LxOmVzOlGUriIlOaokOvhaStA==}
-    engines: {node: '>= 0.6'}
-    dev: false
-
-  /cookies-next/2.1.1:
-    resolution: {integrity: sha512-AZGZPdL1hU3jCjN2UMJTGhLOYzNUN9Gm+v8BdptYIHUdwz397Et1p+sZRfvAl8pKnnmMdX2Pk9xDRKCGBum6GA==}
-    dependencies:
-      '@types/cookie': 0.4.1
-      '@types/node': 16.18.12
-      cookie: 0.4.2
-    dev: false
 
   /cross-spawn/7.0.3:
     resolution: {integrity: sha512-iRDPJKUPVEND7dHPO8rkbOnPpyDygcDFtWjpeWNCgy8WP2rXcxXL8TskReQl6OrB2G7+UJrags1q15Fudc7G6w==}
@@ -2101,6 +2078,11 @@ packages:
     resolution: {integrity: sha512-RHxMLp9lnKHGHRng9QFhRCMbYAcVpn69smSGcq3f36xjgVVWThj4qqLbTLlq7Ssj8B+fIQ1EuCEGI2lKsyQeIw==}
     dev: true
 
+  /js-cookie/3.0.1:
+    resolution: {integrity: sha512-+0rgsUXZu4ncpPxRL+lNEptWMOWl9etvPHc/koSRp6MPwpRYAhmk0dUG00J4bxVV3r9uUzfo24wW0knS07SKSw==}
+    engines: {node: '>=12'}
+    dev: false
+
   /js-sdsl/4.3.0:
     resolution: {integrity: sha512-mifzlm2+5nZ+lEcLJMoBK0/IH/bDg8XnJfd/Wq6IP+xoCjLZsTOnV2QpxlVbX9bMnkl5PdEjNtBJ9Cj1NjifhQ==}
     dev: true
@@ -2507,14 +2489,6 @@ packages:
       picocolors: 1.0.0
       source-map-js: 1.0.2
     dev: true
-
-  /preact-router/4.1.0_preact@10.12.1:
-    resolution: {integrity: sha512-y1w2YvVpKAju9FMV+fAVR1NpH4MW5q07BZrziMZeg6F/rGJ9KvLUZtjOqsy2I8fDYiX36AM1AQTXIIK3jigBhA==}
-    peerDependencies:
-      preact: '>=10'
-    dependencies:
-      preact: 10.12.1
-    dev: false
 
   /preact/10.12.1:
     resolution: {integrity: sha512-l8386ixSsBdbreOAkqtrwqHwdvR35ID8c3rKPa8lCWuO86dBi32QWHV4vfsZK1utLLFMvw+Z5Ad4XLkZzchscg==}

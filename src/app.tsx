@@ -9,6 +9,7 @@ import { LocalFeed } from "./components/feed/LocalFeed";
 import { UserFeed } from "./components/feed/UserFeed";
 import MainLayout from "./components/layout/MainLayout";
 import Nav from "./components/sidebar/Nav";
+import Cookies from "js-cookie";
 
 export function App() {
 	const [state, setState]: any = useContext(StateContext) ?? useState({
@@ -26,6 +27,10 @@ export function App() {
 
 	useEffect(() => {
 		if (window) {
+			if (Cookies.get("theme") === "dark") {
+				document.getElementsByTagName("html")[0].className += " dark"
+			}
+
 			const paths = window.location.pathname.split("/");
 
 			if ((!localStorage.getItem("accessToken") || !localStorage.getItem("instanceType")) && paths[1] !== "login") {

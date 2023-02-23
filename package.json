@@ -12,13 +12,12 @@
 	"dependencies": {
 		"@headlessui/react": "^1.7.11",
 		"@tabler/icons-preact": "^2.5.0",
-		"cookies-next": "^2.1.1",
 		"csstype": "^3.1.1",
 		"events": "^3.3.0",
+		"js-cookie": "^3.0.1",
 		"megalodon": "npm:@cpluspatch/megalodon@^5.2.0",
 		"performant-array-to-tree": "^1.11.0",
 		"preact": "^10.11.3",
-		"preact-router": "^4.1.0",
 		"querystring-es3": "^0.2.1",
 		"react-hot-toast": "^2.4.0",
 		"react-is-visible": "^1.2.0"
