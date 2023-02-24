@@ -29,12 +29,15 @@
 
 ### Planned features (coming soon™️):
 
-- Quote posting
 - Emoji reactions
 - More timelines
 - Placing CWs on posts
-- File upload UI rework
-- Drag and drop or paste files to upload
+- Drag and drop files to upload
+- More files support
+- Quote post rendering
+- Polls
+- Notifications
+- Settings page
 
 ## Running your own instance
 
