@@ -7,8 +7,6 @@ import Feed, { FeedType } from "./Feed";
 
 export const UserFeed = ({ account }: { account: Entity.Account }) => {
 	const [posts, setPosts] = useState<Entity.Status[]>([]);
-	const client = useContext(AuthContext);
-	const postsRef = useRef(posts);
 
 	return (
 		<>

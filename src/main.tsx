@@ -12,8 +12,16 @@
 * You should have received a copy of the GNU General Public License along with this program.  If not, see 
 * <http://www.gnu.org/licenses/>.
 */
+import "preact/debug";
 import { render } from "preact";
 import { App } from "./app";
 import "./index.css";
+import { Provider } from "react-redux";
+import store from "utils/store";
 
-render(<App />, document.getElementById("app") as HTMLElement);
+render(
+	<Provider store={store}>
+		<App />
+	</Provider>,
+	document.getElementById("app") as HTMLElement,
+);

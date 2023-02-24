@@ -8,9 +8,10 @@ import {
 	IconStarFilled,
 } from "@tabler/icons-preact";
 import { AuthContext } from "components/context/AuthContext";
-import { StateContext } from "components/context/StateContext";
 import { Entity } from "megalodon";
 import { useContext, useState } from "preact/hooks";
+import { useDispatch } from "react-redux";
+import { setMobileEditorState, setQuotingTo, setReplyingTo } from "utils/stateSlice";
 
 /**
  * Small bar containing all the buttons on a post, such as "favourite", "quote", "reply"...
@@ -20,18 +21,15 @@ export default function InteractionBar({ status }: { status: Entity.Status }) {
 	const client = useContext(AuthContext);
 	const [favourited, setFavourited] = useState<boolean>(status.favourited);
 	const [boosted, setBoosted] = useState<boolean>(status.reblogged);
-	const [state, setState] = useContext(StateContext);
+
+	const dispatch = useDispatch();
 
 	return (
 		<div className="grid grid-cols-5 justify-around px-5 mt-3 w-full text-gray-700 dark:text-gray-400">
 			<InteractionBarIcon
 				onClick={() => {
-					setState(s => ({
-						...s,
-						replyingTo: status,
-						mobileEditorOpened: true,
-						notificationsOpened: false,
-					}));
+					dispatch(setReplyingTo(status));
+					dispatch(setMobileEditorState(true),);
 				}}>
 				<IconMessage aria-hidden={true} className="w-5 h-5" />
 				<span className="sr-only">Reply to this post</span>
@@ -105,12 +103,8 @@ export default function InteractionBar({ status }: { status: Entity.Status }) {
 
 			<InteractionBarIcon
 				onClick={() => {
-					setState(s => ({
-						...s,
-						quotingTo: status,
-						mobileEditorOpened: true,
-						notificationsOpened: false,
-					}));
+					dispatch(setQuotingTo(status));
+					dispatch(setMobileEditorState(true));
 				}}>
 				<IconQuote className="w-5 h-5" aria-hidden={true} />
 				<span className="sr-only">Quote this post</span>

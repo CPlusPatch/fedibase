@@ -6,6 +6,8 @@ import { useIsVisible } from "react-is-visible";
 import { setInterval } from "timers";
 import { DummyNotification } from "components/scroll/InfiniteScrollNotifications";
 import { useState, useRef, useContext, useCallback, useEffect } from "preact/hooks";
+import { memo } from "preact/compat";
+
 
 export enum FeedType {
 	Home = "home",
@@ -23,7 +25,7 @@ interface FeedProps {
 	};
 }
 
-export default function Feed<T>(props: FeedProps) {
+function Feed<T>(props: FeedProps) {
 	const [entities, setEntities] = useState<T[]>([]);
 	const entitiesRef = useRef<T[]>([]);
 	const client = useContext(AuthContext);
@@ -207,3 +209,5 @@ export default function Feed<T>(props: FeedProps) {
 		</>
 	);
 }
+
+export default memo(Feed);

@@ -25,9 +25,10 @@ import MainLayout from "./components/layout/MainLayout";
 import Nav from "./components/sidebar/Nav";
 import Cookies from "js-cookie";
 import { StatusType } from "components/posts/Status";
+import { useTraceUpdate } from "utils/useTraceUpdate";
+import { memo } from "preact/compat";
 
-export function Index() {
-	const [state, setState] = useContext(StateContext)
+function Index(props) {
 	const client = useContext(AuthContext);
 
 	const [component, setComponent] = useState(<></>);
@@ -39,13 +40,13 @@ export function Index() {
 				document.getElementsByTagName("html")[0].className += " dark";
 			}
 
-			const paths = window.location.pathname.split("/");
+			const paths = props.pathname.split("/");
 
 			if (
 				(!localStorage.getItem("accessToken") || !localStorage.getItem("instanceType")) &&
 				paths[1] !== "login"
 			) {
-				window.location.pathname = "/login";
+				props.pathname.pathname = "/login";
 			}
 
 			switch (paths[1]) {
@@ -67,7 +68,8 @@ export function Index() {
 					setLoginMode(true);
 			}
 		}
-	}, [client, state.path]);
+		console.log("RENDERING!")
+	}, [client]);
 
 	return (
 		<>
@@ -84,3 +86,5 @@ export function Index() {
 		</>
 	);
 }
+
+export default memo(Index);

@@ -19,12 +19,14 @@ import { Input } from "components/forms/Input";
 import Select from "components/forms/Select";
 import SmallSelect from "components/forms/SmallSelect";
 import { StatusType } from "components/posts/Status";
-import { Entity, MegalodonInterface, Response } from "megalodon";
+import { Entity } from "megalodon";
 import { useContext, useEffect, useRef, useState } from "preact/hooks";
 import { Fragment } from "preact/jsx-runtime";
 import { JSXInternal } from "preact/src/jsx";
 import { toast } from "react-hot-toast";
+import { useDispatch, useSelector } from "react-redux";
 import { classNames, withEmojis } from "utils/functions";
+import { setMobileEditorState, StateType } from "utils/stateSlice";
 
 const modes = [
 	{
@@ -69,22 +71,22 @@ const visibilities = [
 ];
 
 export default function LeftSidebar() {
-	const [state, setState] = useContext(StateContext);
+	const state2 = useSelector((state) => (state as any).state as StateType);
+	const dispatch = useDispatch();
 
 	return (
 		<>
 			<div>
-				{state.viewingConversation && <Conversation id={state.viewingConversation} mode={StatusType.Notification}/>}
+				{state2.viewingConversation && (
+					<Conversation id={state2.viewingConversation} mode={StatusType.Notification} />
+				)}
 			</div>
-			<Transition.Root show={state.mobileEditorOpened} as={Fragment}>
+			<Transition.Root show={state2.postComposerOpened} as={Fragment}>
 				<Dialog
 					as="div"
 					className="block relative z-50"
 					onClose={() =>
-						setState((s: any) => ({
-							...s,
-							mobileEditorOpened: false,
-						}))
+						dispatch(setMobileEditorState(false))
 					}>
 					<Transition.Child
 						as={Fragment}
@@ -165,7 +167,9 @@ const pollDurations = [
 function SendForm() {
 	// Context stuff
 	const client = useContext(AuthContext);
-	const [state, setState]: any = useContext(StateContext);
+	
+	const state2 = useSelector(state => (state as any).state as StateType);
+	const dispatch = useDispatch();
 
 	// State stuff
 	const [selectedMode, setSelectedMode] = useState(modes[0]);
@@ -194,10 +198,10 @@ function SendForm() {
 	useEffect(() => {
 		// YES, I KNOW YOU CAN SHORTEN THIS I JUST DONT CARE
 		let otherPost = null;
-		if (state.replyingTo) {
-			otherPost = state.replyingTo;
-		} else if (state.quotingTo) {
-			otherPost = state.quotingTo;
+		if (state2.replyingTo) {
+			otherPost = state2.replyingTo;
+		} else if (state2.quotingTo) {
+			otherPost = state2.quotingTo;
 		}
 
 		if (otherPost) {
@@ -237,7 +241,7 @@ function SendForm() {
 		client?.getInstanceCustomEmojis().then(data => {
 			setEmojis(data.data);
 		});
-	}, [client, state.quotingTo, state.replyingTo]);
+	}, [client, state2.quotingTo, state2.replyingTo]);
 
 	const submitForm = async (
 		event: JSXInternal.TargetedEvent<HTMLFormElement, Event>
@@ -252,10 +256,10 @@ function SendForm() {
 
 		client
 			.postStatus((event.target as any)["comment"].value, {
-				in_reply_to_id: state?.replyingTo?.id ?? undefined,
+				in_reply_to_id: state2?.replyingTo?.id ?? undefined,
 				visibility: selectedVis.value as any,
 				media_ids: fileIds,
-				quote_id: state.quotingTo?.id ?? undefined,
+				quote_id: state2.quotingTo?.id ?? undefined,
 				poll: poll ? {
 					options: poll.choices,
 					expires_in: Number(pollDuration.value)
@@ -275,12 +279,7 @@ function SendForm() {
 				setLoading(false);
 				setFileIds([]);
 				setFiles([]);
-				setState((s: any) => ({
-					...s,
-					replyingTo: null,
-					mobileEditorOpened: false,
-					quotingTo: null,
-				}));
+				dispatch(setMobileEditorState(false));
 			});
 	};
 	return (
@@ -300,34 +299,30 @@ function SendForm() {
 					}`}>
 					<div className="flex justify-between p-3 w-full">
 						<h1 className="text-xl font-bold dark:text-gray-50">
-							{state.replyingTo && (
+							{state2.replyingTo && (
 								<>
 									Replying to{" "}
 									{withEmojis(
-										state.replyingTo.account.display_name,
-										state.replyingTo.account.emojis,
+										state2.replyingTo.account.display_name,
+										state2.replyingTo.account.emojis,
 									)}
 								</>
 							)}
-							{state.quotingTo && (
+							{state2.quotingTo && (
 								<>
 									Quoting{" "}
 									{withEmojis(
-										state.quotingTo.account.display_name,
-										state.quotingTo.account.emojis,
+										state2.quotingTo.account.display_name,
+										state2.quotingTo.account.emojis,
 									)}
 								</>
 							)}
-							{!(state.replyingTo || state.quotingTo) && <>Compose</>}
+							{!(state2.replyingTo || state2.quotingTo) && <>Compose</>}
 						</h1>
 						<button
 							onClick={e => {
 								e.preventDefault();
-								setState((s: any) => ({
-									...s,
-									mobileEditorOpened: false,
-									replyingTo: null,
-								}));
+								dispatch(setMobileEditorState(false));
 							}}>
 							<IconX />
 						</button>

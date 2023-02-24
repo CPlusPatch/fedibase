@@ -1,23 +1,22 @@
 import { Dialog, Transition } from "@headlessui/react";
-import {
-	IconBell,
-	IconMenu2,
-	IconPencilPlus,
-	IconX,
-} from "@tabler/icons-preact";
+import { IconBell, IconMenu2, IconPencilPlus, IconX } from "@tabler/icons-preact";
 import Button from "components/buttons/Button";
-import { AuthContext } from "components/context/AuthContext";
-import { StateContext } from "components/context/StateContext";
 import SmallLogo from "components/logo/SmallLogo";
 import NotificationsFeed from "components/feed/NotificationsFeed";
 import { MobileNav } from "components/sidebar/Nav";
-import { useContext } from "preact/hooks";
 import { Fragment } from "preact/jsx-runtime";
+import { useDispatch, useSelector } from "react-redux";
+import {
+	setMobileEditorState,
+	setNotificationsSidebarOpened,
+	setSidebarOpened,
+	StateType,
+} from "utils/stateSlice";
 
 export default function MobileNavbar() {
-	const [state, setState]: any = useContext(StateContext);
-	const client = useContext(AuthContext);
-
+	const state2 = useSelector(state => (state as any).state as StateType);
+	const dispatch = useDispatch();
+	
 	return (
 		<>
 			<header className="flex fixed inset-x-0 top-0 z-30 justify-between items-center px-6 py-2 bg-white border-b dark:border-gray-700 bg-dark md:hidden">
@@ -25,17 +24,12 @@ export default function MobileNavbar() {
 					style="gray"
 					className="!p-3 !border-none !shadow-none"
 					onClick={() => {
-						setState(s => ({
-							...s,
-							sidebarOpened: true,
-						}));
+						dispatch(setSidebarOpened(true));
 					}}>
 					<IconMenu2 aria-hidden={true} className="" />
 					<span className="sr-only">Open sidebar</span>
 				</Button>
-				<a
-					href="/"
-					className="flex flex-row gap-x-3 text-lg dark:text-gray-50 font-poppin">
+				<a href="/" className="flex flex-row gap-x-3 text-lg dark:text-gray-50 font-poppin">
 					<SmallLogo size="w-7 !h-7" />
 					Fedibase
 				</a>
@@ -43,22 +37,16 @@ export default function MobileNavbar() {
 					style="gray"
 					className="!p-3 !border-none !shadow-none"
 					onClick={() => {
-						setState(s => ({
-							...s,
-							notificationsOpened: true,
-						}));
+						dispatch(setNotificationsSidebarOpened(true));
 					}}>
-					<IconBell aria-hidden={true} className="" />
+					<IconBell aria-hidden={true} />
 					<span className="sr-only">Open notifications</span>
 				</Button>
 			</header>
 			<div className="fixed right-0 bottom-0 z-30 mx-7 my-7 md:hidden">
 				<Button
 					onClick={() => {
-						setState(s => ({
-							...s,
-							mobileEditorOpened: true,
-						}));
+						dispatch(setMobileEditorState(true));
 					}}
 					style="gray"
 					className="bg-gray-200 !p-3">
@@ -66,15 +54,12 @@ export default function MobileNavbar() {
 					<span className="sr-only">Compose new post</span>
 				</Button>
 			</div>
-			<Transition.Root unmount={false} show={state.notificationsOpened} as={Fragment}>
+			<Transition.Root unmount={false} show={state2.notificationsOpened} as={Fragment}>
 				<Dialog
 					as="div"
 					className="relative z-40"
 					onClose={() => {
-						setState(s => ({
-							...s,
-							notificationsOpened: false,
-						}));
+						dispatch(setMobileEditorState(false));
 					}}
 					unmount={false}>
 					<Transition.Child
@@ -121,12 +106,9 @@ export default function MobileNavbar() {
 												<button
 													type="button"
 													className="text-gray-300 rounded-md hover:text-white focus:outline-none"
-													onClick={() =>
-														setState(s => ({
-															...s,
-															notificationsOpened: false,
-														}))
-													}>
+													onClick={() => {
+														dispatch(setMobileEditorState(true));
+													}}>
 													<span className="sr-only">Close panel</span>
 													<IconX className="w-6 h-6" aria-hidden="true" />
 												</button>
@@ -142,15 +124,12 @@ export default function MobileNavbar() {
 					</div>
 				</Dialog>
 			</Transition.Root>
-			<Transition.Root show={state.sidebarOpened} as={Fragment}>
+			<Transition.Root show={state2.sidebarOpened} as={Fragment}>
 				<Dialog
 					as="div"
 					className="relative z-40"
 					onClose={() => {
-						setState(s => ({
-							...s,
-							notificationsOpened: false,
-						}));
+						dispatch(setSidebarOpened(false));
 					}}
 					unmount={false}>
 					<Transition.Child
@@ -194,12 +173,9 @@ export default function MobileNavbar() {
 												<button
 													type="button"
 													className="text-gray-300 rounded-md hover:text-white focus:outline-none"
-													onClick={() =>
-														setState(s => ({
-															...s,
-															sidebarOpened: false,
-														}))
-													}>
+													onClick={() => {
+														dispatch(setSidebarOpened(false));
+													}}>
 													<span className="sr-only">Close panel</span>
 													<IconX className="w-6 h-6" aria-hidden="true" />
 												</button>

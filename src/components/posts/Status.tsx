@@ -25,20 +25,19 @@ export default function Status({ status: statusProp, type, showInteraction = tru
 	const [status, setStatus] = useState(statusProp);
 	const [showText, setShowText] = useState(false);
 	const textElementRef = useRef<HTMLParagraphElement>(null);
-	const [state, setState] = useContext(StateContext);
 	const client = useContext(AuthContext);
 
 	const handleUserClick = (e) => {
 		if (!e.ctrlKey && !e.metaKey) {
 			e.preventDefault();
-			smoothNavigate(`/users/${status.account.id}`, setState);
+			smoothNavigate(`/users/${status.account.id}`);
 		}
 	};
 
 	const handlePostClick = (e) => {
 		if (!e.ctrlKey && !e.metaKey) {
 			e.preventDefault();
-			smoothNavigate(`/posts/${status.id}`, setState);
+			smoothNavigate(`/posts/${status.id}`);
 		}
 	};
 

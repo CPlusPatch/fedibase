@@ -1,8 +1,6 @@
 import { Entity } from "megalodon";
 import Status, { StatusType } from "components/posts/Status";
 import { withEmojis } from "utils/functions";
-import DummyStatus from "components/posts/DummyStatus";
-import { useIsVisible } from "react-is-visible";
 
 export const Post = ({ entity, mode = StatusType.Post }: { entity: Entity.Status; mode?: StatusType }) => {
 	return (

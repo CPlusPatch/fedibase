@@ -7,6 +7,8 @@ import { JSX, Fragment } from "preact/jsx-runtime";
 import toast from "react-hot-toast";
 import Cookies from "js-cookie";
 import { classNames, smoothNavigate } from "utils/functions";
+import { useDispatch, useSelector } from "react-redux";
+import { setMobileEditorState, StateType } from "utils/stateSlice";
 
 type NavigationItem = {
 	name: string;
@@ -44,7 +46,9 @@ const navigation: NavigationItem[] = [
 
 export default function Nav(props: NavProps): JSX.Element {
 	const client = useContext(AuthContext);
-	const [state, setState] = useContext(StateContext);
+
+	const dispatch = useDispatch();
+	
 	const [account, setAccount] = useState<Entity.Account | undefined>();
 	const [instance, setInstance] = useState<Entity.Instance | undefined>();
 	const [theme, setTheme] = useState<string>("light");
@@ -96,11 +100,7 @@ export default function Nav(props: NavProps): JSX.Element {
 					href="/"
 					onClick={e => {
 						e.preventDefault();
-						setState((s: any) => ({
-							...s,
-							path: "/",
-						}));
-						history.pushState(null, "", "/");
+						smoothNavigate("/")
 					}}
 					className="flex flex-shrink-0 justify-center items-center px-2">
 					<img src={instance?.thumbnail ?? ""} className="w-8 h-8 rounded" alt="" />
@@ -132,12 +132,7 @@ export default function Nav(props: NavProps): JSX.Element {
 				</button>
 				<button
 					onClick={() => {
-						setState(s => ({
-							...s,
-							mobileEditorOpened: true,
-							replyingTo: null,
-							quotingTo: null
-						}));
+						dispatch(setMobileEditorState(true));
 					}}
 					title="Compose new post"
 					className="flex justify-center items-center p-2 mb-3 text-sm font-medium rounded-md duration-200 dark:text-gray-300 bg-orange-300/20 hover:bg-orange-300/40 hover:bg-opacity-75 group">
@@ -159,7 +154,6 @@ export default function Nav(props: NavProps): JSX.Element {
 
 export function MobileNav(props: NavProps): JSX.Element {
 	const client = useContext(AuthContext);
-	const [state, setState]: any = useContext(StateContext);
 	const [account, setAccount] = useState<Entity.Account | undefined>();
 	const [instance, setInstance] = useState<Entity.Instance | undefined>();
 	const [theme, setTheme] = useState<string>("light");
@@ -211,7 +205,7 @@ export function MobileNav(props: NavProps): JSX.Element {
 					href="/"
 					onClick={e => {
 						e.preventDefault();
-						smoothNavigate("/", setState);
+						smoothNavigate("/");
 					}}
 					className="flex flex-shrink-0 gap-x-4 items-center text-lg font-poppins">
 					<img src={instance?.thumbnail ?? ""} className="w-12 h-12 rounded" alt="" />
@@ -256,7 +250,6 @@ export function MobileNav(props: NavProps): JSX.Element {
 
 function NavElementMobile(props: NavElementProps) {
 	const [current, setCurrent] = useState<boolean>(false);
-	const [state, setState]: any = useContext(StateContext);
 
 	useEffect(() => {
 		setCurrent(
@@ -271,7 +264,7 @@ function NavElementMobile(props: NavElementProps) {
 				onClick={e => {
 					if (!e.ctrlKey && !e.metaKey) {
 						e.preventDefault();
-						smoothNavigate(props.item.href, setState);
+						smoothNavigate(props.item.href);
 					}
 				}}
 				className={classNames(
@@ -292,7 +285,6 @@ function NavElementMobile(props: NavElementProps) {
 
 function NavElement(props: NavElementProps) {
 	const [current, setCurrent] = useState<boolean>(false);
-	const [state, setState]: any = useContext(StateContext);
 	let [showTooltip, setShowTooltip] = useState<boolean>(false);
 
 	useEffect(() => {
@@ -306,7 +298,7 @@ function NavElement(props: NavElementProps) {
 				onClick={e => {
 					if (!e.ctrlKey && !e.metaKey) {
 						e.preventDefault();
-						smoothNavigate(props.item.href, setState);
+						smoothNavigate(props.item.href);
 					}
 				}}
 				className={classNames(

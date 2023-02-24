@@ -1,13 +1,12 @@
-import { Transition } from "@headlessui/react";
 import { IconMessage } from "@tabler/icons-preact";
 import { AuthContext } from "components/context/AuthContext";
-import { classNames, withEmojis } from "utils/functions";
-import Status, { StatusType } from "./Status";
+import { withEmojis } from "utils/functions";
+import { StatusType } from "./Status";
 import { useIsVisible } from "react-is-visible";
 import { Entity } from "megalodon";
 import { useState, useContext, useRef, useEffect } from "preact/hooks";
-import { Fragment } from "preact/jsx-runtime";
-import { StateContext } from "components/context/StateContext";
+import { useDispatch } from "react-redux";
+import { setViewingConversation } from "utils/stateSlice";
 
 export default function ReplyTo({ status, statusType = StatusType.Post }: { status: Entity.Status; statusType: StatusType }) {
 	const [replyStatus, setReplyStatus] = useState<Entity.Status>();
@@ -16,7 +15,8 @@ export default function ReplyTo({ status, statusType = StatusType.Post }: { stat
 
 	const nodeRef = useRef();
 	const visible = useIsVisible(nodeRef);
-	const [state, setState] = useContext(StateContext);
+
+	const dispatch = useDispatch();
 
 	useEffect(() => {
 		// If the post is a reply, get the previous post's contents
@@ -36,10 +36,7 @@ export default function ReplyTo({ status, statusType = StatusType.Post }: { stat
 					setOpen(false);
 				}} */
 				onClick={() => {
-					setState(s => ({
-						...s,
-						viewingConversation: status.id
-					}));
+					dispatch(setViewingConversation(status.id))
 				}}
 				className="text-xs text-gray-600 hover:underline dark:text-gray-300">
 				<IconMessage className="inline mr-1 w-4 h-4" aria-hidden={true} />

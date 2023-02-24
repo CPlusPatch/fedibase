@@ -144,11 +144,6 @@ export function dedupeById(
  * @param url URL to navigate to
  * @param setState setState element
  */
-export function smoothNavigate(url: string, setState: any) {
-	setState((s: any) => ({
-		...s,
-		path: url,
-		notificationsOpened: false,
-	}));
+export function smoothNavigate(url: string) {
 	history.pushState(null, "", url);
 }
