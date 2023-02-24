@@ -4,13 +4,14 @@ import DummyStatus from "components/posts/DummyStatus";
 import { Post } from "components/scroll/InfiniteScrollPosts";
 import { Entity } from "megalodon";
 import { arrayToTree } from "performant-array-to-tree";
-import { useState, useContext, useEffect } from "preact/hooks";
+import { useState, useContext, useEffect, useRef } from "preact/hooks";
 
 export const Conversation = ({ id, mode }) => {
 	const [ancestors, setAncestors] = useState<Entity.Status[]>([]);
 	const [posts, setPosts] = useState<Entity.Status[]>([]);
 	const [descendants, setDescendants] = useState([]);
 	const client = useContext(AuthContext);
+	const mainPostRef = useRef<HTMLDivElement>(null);
 
 	function findParentElements(array, elementId) {
 		let parentElements = [];
@@ -32,7 +33,12 @@ export const Conversation = ({ id, mode }) => {
 			setPosts([data.data]);
 
 			client.getStatusContext(id).then(context => {
-				setAncestors(findParentElements([...context.data.ancestors, data.data], data.data.id).reverse());
+				setAncestors(
+					findParentElements(
+						[...context.data.ancestors, data.data],
+						data.data.id,
+					).reverse(),
+				);
 				setDescendants(
 					arrayToTree(context.data.descendants, {
 						id: "id",
@@ -51,25 +57,27 @@ export const Conversation = ({ id, mode }) => {
 
 	return (
 		<>
-			<h3 className="px-5 py-4 text-xl font-bold dark:text-gray-50">
-				Conversation
-			</h3>
+			<h3 className="px-5 py-4 text-xl font-bold dark:text-gray-50">Conversation</h3>
 			{posts.length > 0 ? (
 				<div className="flex overflow-y-scroll flex-col gap-y-5 py-4 w-full h-full no-scroll">
 					<div className="flex flex-col gap-y-4 px-6">
-						{ancestors.map(post => (
-							<Post entity={post} mode={mode} key={post.id} />
-						))}
+						{ancestors.map(post => {
+							mainPostRef.current?.scrollIntoView();
+							return <Post entity={post} mode={mode} key={post.id} />;
+						})}
 					</div>
-					<div className="px-6 py-4 border-y-2 dark:border-gray-700 bg-gray-300/10">
+					<div
+						className="px-6 py-4 border-y-2 dark:border-gray-700 bg-gray-300/10"
+						ref={mainPostRef}>
 						{posts.map(post => (
 							<Post entity={post} mode={mode} key={post.id} />
 						))}
 					</div>
 					<div className="flex flex-col gap-y-4 px-6 mb-20">
-						{descendants.map(post => (
-							<PostWithChildren mode={mode} post={post} key={post.id} />
-						))}
+						{descendants.map(post => {
+							mainPostRef.current?.scrollIntoView();
+							return <PostWithChildren mode={mode} post={post} key={post.id} />;
+						})}
 					</div>
 				</div>
 			) : (
