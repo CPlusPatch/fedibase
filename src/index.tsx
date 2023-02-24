@@ -13,10 +13,8 @@
 * <http://www.gnu.org/licenses/>.
 */
 import LoginForm from "components/login/LoginForm";
-import generator, { MegalodonInterface } from "megalodon";
 import { useContext, useEffect, useState } from "preact/hooks";
 import { AuthContext } from "./components/context/AuthContext";
-import { StateContext } from "./components/context/StateContext";
 import { Conversation } from "./components/feed/Conversation";
 import { HomeFeed } from "./components/feed/HomeFeed";
 import { LocalFeed } from "./components/feed/LocalFeed";

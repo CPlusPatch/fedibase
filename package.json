@@ -46,7 +46,10 @@
 	"eslintConfig": {
 		"extends": "preact"
 	},
-	"resolutions": {
-		"@types/react": "18.0.28"
+	"pnpm": {
+		"patchedDependencies": {
+			"@headlessui/react@1.7.11": "patches/@headlessui__react@1.7.11.patch",
+			"react-redux@8.0.5": "patches/react-redux@8.0.5.patch"
+		}
 	}
 }

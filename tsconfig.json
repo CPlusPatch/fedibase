@@ -1,5 +1,5 @@
 {
-  "compilerOptions": {
+	"compilerOptions": {
 		"target": "ESNext",
 		"useDefineForClassFields": true,
 		"lib": ["DOM", "DOM.Iterable", "ESNext"],
@@ -16,8 +16,11 @@
 		"isolatedModules": true,
 		"noEmit": true,
 		"jsx": "react-jsx",
-		"jsxImportSource": "preact"
-  },
-  "include": ["src"],
-  "references": [{ "path": "./tsconfig.node.json" }]
+		"jsxImportSource": "preact",
+		"paths": {
+			"react": ["./node_modules/@types/react"]
+		}
+	},
+	"include": ["src"],
+	"references": [{ "path": "./tsconfig.node.json" }],
 }

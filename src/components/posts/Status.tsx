@@ -1,6 +1,5 @@
 import Button from "components/buttons/Button";
 import { AuthContext } from "components/context/AuthContext";
-import { StateContext } from "components/context/StateContext";
 import { Entity } from "megalodon";
 import { useContext, useRef, useState } from "preact/hooks";
 import { fromNow, smoothNavigate, withEmojis } from "utils/functions";

@@ -1,7 +1,6 @@
 import { Transition } from "@headlessui/react";
 import { IconHome, IconMoon, IconPlus, IconSun, IconUsers, IconWorld } from "@tabler/icons-preact";
 import { AuthContext } from "components/context/AuthContext";
-import { StateContext } from "components/context/StateContext";
 import { useContext, useState, useEffect } from "preact/hooks";
 import { JSX, Fragment } from "preact/jsx-runtime";
 import toast from "react-hot-toast";

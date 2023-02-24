@@ -13,7 +13,6 @@ import {
 } from "@tabler/icons-preact";
 import Button from "components/buttons/Button";
 import { AuthContext } from "components/context/AuthContext";
-import { StateContext } from "components/context/StateContext";
 import { Conversation } from "components/feed/Conversation";
 import { Input } from "components/forms/Input";
 import Select from "components/forms/Select";
@@ -167,7 +166,7 @@ const pollDurations = [
 function SendForm() {
 	// Context stuff
 	const client = useContext(AuthContext);
-	
+
 	const state2 = useSelector(state => (state as any).state as StateType);
 	const dispatch = useDispatch();
 
