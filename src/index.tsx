@@ -24,10 +24,13 @@ import Nav from "./components/sidebar/Nav";
 import Cookies from "js-cookie";
 import { StatusType } from "components/posts/Status";
 import { useTraceUpdate } from "utils/useTraceUpdate";
-import { memo } from "preact/compat";
+import { useSelector } from "react-redux";
+import { StateType } from "utils/stateSlice";
 
-function Index(props) {
+export default function Index(props) {
 	const client = useContext(AuthContext);
+
+	const state2 = useSelector(state => (state as any).state as StateType);
 
 	const [component, setComponent] = useState(<></>);
 	const [loginMode, setLoginMode] = useState<boolean>(false);
@@ -38,7 +41,7 @@ function Index(props) {
 				document.getElementsByTagName("html")[0].className += " dark";
 			}
 
-			const paths = props.pathname.split("/");
+			const paths = state2.path.split("/");
 
 			if (
 				(!localStorage.getItem("accessToken") || !localStorage.getItem("instanceType")) &&
@@ -67,7 +70,7 @@ function Index(props) {
 			}
 		}
 		console.log("RENDERING!")
-	}, [client]);
+	}, [client, state2.path]);
 
 	return (
 		<>
@@ -84,5 +87,3 @@ function Index(props) {
 		</>
 	);
 }
-
-export default memo(Index);

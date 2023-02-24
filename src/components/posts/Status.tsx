@@ -2,6 +2,7 @@ import Button from "components/buttons/Button";
 import { AuthContext } from "components/context/AuthContext";
 import { Entity } from "megalodon";
 import { useContext, useRef, useState } from "preact/hooks";
+import { useDispatch } from "react-redux";
 import { fromNow, smoothNavigate, withEmojis } from "utils/functions";
 import InteractionBar from "./InteractionBar";
 import PostImages from "./PostImages";
@@ -25,18 +26,19 @@ export default function Status({ status: statusProp, type, showInteraction = tru
 	const [showText, setShowText] = useState(false);
 	const textElementRef = useRef<HTMLParagraphElement>(null);
 	const client = useContext(AuthContext);
+	const dispatch = useDispatch();
 
 	const handleUserClick = (e) => {
 		if (!e.ctrlKey && !e.metaKey) {
 			e.preventDefault();
-			smoothNavigate(`/users/${status.account.id}`);
+			smoothNavigate(`/users/${status.account.id}`, dispatch);
 		}
 	};
 
 	const handlePostClick = (e) => {
 		if (!e.ctrlKey && !e.metaKey) {
 			e.preventDefault();
-			smoothNavigate(`/posts/${status.id}`);
+			smoothNavigate(`/posts/${status.id}`, dispatch);
 		}
 	};
 

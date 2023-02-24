@@ -99,7 +99,7 @@ export default function Nav(props: NavProps): JSX.Element {
 					href="/"
 					onClick={e => {
 						e.preventDefault();
-						smoothNavigate("/")
+						smoothNavigate("/", dispatch)
 					}}
 					className="flex flex-shrink-0 justify-center items-center px-2">
 					<img src={instance?.thumbnail ?? ""} className="w-8 h-8 rounded" alt="" />
@@ -156,6 +156,7 @@ export function MobileNav(props: NavProps): JSX.Element {
 	const [account, setAccount] = useState<Entity.Account | undefined>();
 	const [instance, setInstance] = useState<Entity.Instance | undefined>();
 	const [theme, setTheme] = useState<string>("light");
+	const dispatch = useDispatch();
 
 	const toggleTheme = () => {
 		const html = document.getElementsByTagName("html")[0];
@@ -204,7 +205,7 @@ export function MobileNav(props: NavProps): JSX.Element {
 					href="/"
 					onClick={e => {
 						e.preventDefault();
-						smoothNavigate("/");
+						smoothNavigate("/", dispatch);
 					}}
 					className="flex flex-shrink-0 gap-x-4 items-center text-lg font-poppins">
 					<img src={instance?.thumbnail ?? ""} className="w-12 h-12 rounded" alt="" />
@@ -249,6 +250,7 @@ export function MobileNav(props: NavProps): JSX.Element {
 
 function NavElementMobile(props: NavElementProps) {
 	const [current, setCurrent] = useState<boolean>(false);
+	const dispatch = useDispatch();
 
 	useEffect(() => {
 		setCurrent(
@@ -263,7 +265,7 @@ function NavElementMobile(props: NavElementProps) {
 				onClick={e => {
 					if (!e.ctrlKey && !e.metaKey) {
 						e.preventDefault();
-						smoothNavigate(props.item.href);
+						smoothNavigate(props.item.href, dispatch);
 					}
 				}}
 				className={classNames(
@@ -285,6 +287,7 @@ function NavElementMobile(props: NavElementProps) {
 function NavElement(props: NavElementProps) {
 	const [current, setCurrent] = useState<boolean>(false);
 	let [showTooltip, setShowTooltip] = useState<boolean>(false);
+	const dispatch = useDispatch();
 
 	useEffect(() => {
 		setCurrent(typeof window !== "undefined" ? window.location.pathname === props.item.href : false);
@@ -297,7 +300,7 @@ function NavElement(props: NavElementProps) {
 				onClick={e => {
 					if (!e.ctrlKey && !e.metaKey) {
 						e.preventDefault();
-						smoothNavigate(props.item.href);
+						smoothNavigate(props.item.href, dispatch);
 					}
 				}}
 				className={classNames(

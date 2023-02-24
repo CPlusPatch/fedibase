@@ -47,10 +47,13 @@ const stateSlice = createSlice({
 		},
 		setViewingConversation: (state, action) => {
 			state.viewingConversation = action.payload;
+		},
+		setPath: (state, action) => {
+			state.path = action.payload;
 		}
 	},
 });
 
-export const { setMobileEditorState, setReplyingTo, setQuotingTo, setViewingConversation, setSidebarOpened, setNotificationsSidebarOpened } = stateSlice.actions;
+export const { setMobileEditorState, setReplyingTo, setPath, setQuotingTo, setViewingConversation, setSidebarOpened, setNotificationsSidebarOpened } = stateSlice.actions;
 
 export default stateSlice.reducer;

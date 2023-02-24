@@ -13,6 +13,8 @@
 * <http://www.gnu.org/licenses/>.
 */
 import { Entity } from "megalodon";
+import { useDispatch, useSelector } from "react-redux";
+import { setPath, StateType } from "./stateSlice";
 
 /**
  * Checks if an object is empty (= to {})
@@ -144,6 +146,8 @@ export function dedupeById(
  * @param url URL to navigate to
  * @param setState setState element
  */
-export function smoothNavigate(url: string) {
+export function smoothNavigate(url: string, dispatch: any) {
+	dispatch(setPath(url));
+
 	history.pushState(null, "", url);
 }
