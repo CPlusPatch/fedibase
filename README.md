@@ -35,7 +35,6 @@
 - Drag and drop files to upload
 - More files support
 - Quote post rendering
-- Polls
 - Notifications
 - Settings page
 
