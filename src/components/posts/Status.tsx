@@ -126,13 +126,14 @@ export default function Status({ status: statusProp, type, showInteraction = tru
 									onSubmit={e => {
 										e.preventDefault();
 										const value = e.target["poll"].value;
-										client?.votePoll(status.poll.id, [value], status.id).then(res => {
-											setStatus(s => ({
-												...s,
-												poll: res.data
-											}));
-										});
-
+										client
+											?.votePoll(status.poll.id, [value], status.id)
+											.then(res => {
+												setStatus(s => ({
+													...s,
+													poll: res.data,
+												}));
+											});
 									}}
 									action="#"
 									className="list-inside flex-col gap-y-2 flex">
@@ -140,7 +141,16 @@ export default function Status({ status: statusProp, type, showInteraction = tru
 										<li
 											key={index}
 											className="flex flex-row gap-x-1 items-center relative dark:text-gray-100">
-											<span className="w-10">
+											<div
+												style={{
+													width: `${Math.round(
+														(option.votes_count /
+															status.poll.votes_count) *
+															100,
+													)}%`,
+												}}
+												className="absolute bg-orange-200 dark:bg-orange-800 rounded h-full z-0"></div>
+											<span className="w-10 z-10">
 												{Number.isNaN(
 													Math.round(
 														(option.votes_count /
@@ -160,21 +170,12 @@ export default function Status({ status: statusProp, type, showInteraction = tru
 												<input
 													type="radio"
 													name="poll"
-													className="focus:outline-none focus:ring-0"
+													className="z-10 focus:outline-none focus:ring-0"
 													value={index}
 													multiple={false}
 												/>
 											)}
-											{option.title}
-											<div
-												style={{
-													width: `${Math.round(
-														(option.votes_count /
-															status.poll.votes_count) *
-															100,
-													)}%`,
-												}}
-												className="absolute bg-orange-200 -z-10 dark:bg-orange-800 rounded h-full"></div>
+											<span className="z-10">{option.title}</span>
 										</li>
 									))}
 									<div className="text-sm text-gray-500 dark:text-gray-400">
