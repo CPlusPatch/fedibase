@@ -1,4 +1,3 @@
-/* eslint-disable @next/next/no-img-element */
 import { Transition } from "@headlessui/react";
 import { IconHome, IconMoon, IconPlus, IconSun, IconUsers, IconWorld } from "@tabler/icons-preact";
 import { AuthContext } from "components/context/AuthContext";

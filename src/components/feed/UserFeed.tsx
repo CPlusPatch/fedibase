@@ -1,4 +1,3 @@
-/* eslint-disable @next/next/no-img-element */
 import { AuthContext } from "components/context/AuthContext";
 import UserProfile from "components/profile/UserProfile";
 import { Post } from "components/scroll/InfiniteScrollPosts";

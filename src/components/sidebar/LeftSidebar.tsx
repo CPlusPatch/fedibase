@@ -1,4 +1,3 @@
-/* eslint-disable @next/next/no-img-element */
 import { Transition, Dialog, Switch } from "@headlessui/react";
 import {
 	IconAlignLeft,

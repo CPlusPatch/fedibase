@@ -1,4 +1,3 @@
-/* eslint-disable @next/next/no-img-element */
 import { Post } from "components/scroll/InfiniteScrollPosts";
 import { Entity } from "megalodon";
 import Feed, { FeedType } from "./Feed";

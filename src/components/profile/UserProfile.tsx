@@ -1,6 +1,5 @@
 import { withEmojis } from "utils/functions";
 
-/* eslint-disable @next/next/no-img-element */
 export default function UserProfile({ user }: { user: Entity.Account }) {
 	return (
 		<div className="flex flex-col gap-y-4 py-3 w-full">

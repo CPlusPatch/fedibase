@@ -1,4 +1,3 @@
-/* eslint-disable @next/next/no-img-element */
 import { IconX } from "@tabler/icons-preact";
 import Button from "components/buttons/Button";
 import { Entity } from "megalodon";

@@ -1,4 +1,3 @@
-/* eslint-disable @next/next/no-img-element */
 import Button from "components/buttons/Button";
 import { AuthContext } from "components/context/AuthContext";
 import { StateContext } from "components/context/StateContext";

@@ -1,4 +1,3 @@
-/* eslint-disable @next/next/no-img-element */
 import { Entity } from "megalodon";
 
 export default function EmojiRenderer({ string, emojis }: {

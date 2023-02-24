@@ -1,4 +1,3 @@
-/* eslint-disable @next/next/no-img-element */
 import { AuthContext } from "components/context/AuthContext";
 import DummyStatus from "components/posts/DummyStatus";
 import { Response } from "megalodon";

@@ -1,4 +1,3 @@
-/* eslint-disable @next/next/no-img-element */
 import { IconList, IconListDetails, IconRocket, IconStarFilled } from "@tabler/icons-preact";
 import SmallSelect, { SelectDirection } from "components/forms/SmallSelect";
 import { Notification } from "components/scroll/InfiniteScrollNotifications";

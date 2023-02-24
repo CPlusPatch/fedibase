@@ -1,4 +1,3 @@
-/* eslint-disable @next/next/no-img-element */
 import { Entity } from "megalodon";
 import Status, { StatusType } from "components/posts/Status";
 import { withEmojis } from "utils/functions";
