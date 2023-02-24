@@ -13,9 +13,7 @@
 * <http://www.gnu.org/licenses/>.
 */
 import generator from "megalodon";
-import { useContext, useState } from "preact/hooks";
 import { AuthContext } from "./components/context/AuthContext";
-import { StateContext } from "./components/context/StateContext";
 import Index from "index";
 
 export function App() {

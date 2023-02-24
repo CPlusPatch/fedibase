@@ -45,5 +45,8 @@
 	},
 	"eslintConfig": {
 		"extends": "preact"
+	},
+	"resolutions": {
+		"@types/react": "18.0.28"
 	}
 }

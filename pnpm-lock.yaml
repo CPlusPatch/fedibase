@@ -1,5 +1,8 @@
 lockfileVersion: 5.4
 
+overrides:
+  '@types/react': 18.0.28
+
 specifiers:
   '@headlessui/react': ^1.7.11
   '@preact/preset-vite': ^2.5.0
