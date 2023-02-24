@@ -24,16 +24,21 @@ import Nav from "./components/sidebar/Nav";
 import Cookies from "js-cookie";
 import { StatusType } from "components/posts/Status";
 import { useTraceUpdate } from "utils/useTraceUpdate";
-import { useSelector } from "react-redux";
-import { StateType } from "utils/stateSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { setPath, StateType } from "utils/stateSlice";
 
 export default function Index(props) {
 	const client = useContext(AuthContext);
 
 	const state2 = useSelector(state => (state as any).state as StateType);
+	const dispatch = useDispatch();
 
 	const [component, setComponent] = useState(<></>);
 	const [loginMode, setLoginMode] = useState<boolean>(false);
+
+	const handlePopState = (e: PopStateEvent) => {
+				dispatch(setPath((e.target as Window).location.pathname));
+			}
 
 	useEffect(() => {
 		if (window) {
@@ -68,8 +73,11 @@ export default function Index(props) {
 				case "login":
 					setLoginMode(true);
 			}
+
+			window.addEventListener("popstate", handlePopState)
+
+			return () => window.removeEventListener("popstate", handlePopState);
 		}
-		console.log("RENDERING!")
 	}, [client, state2.path]);
 
 	return (
