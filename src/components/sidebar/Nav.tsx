@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import { Transition } from "@headlessui/react";
-import { IconHome, IconMoon, IconSun, IconUsers, IconWorld } from "@tabler/icons-preact";
+import { IconHome, IconMoon, IconPlus, IconSun, IconUsers, IconWorld } from "@tabler/icons-preact";
 import { AuthContext } from "components/context/AuthContext";
 import { StateContext } from "components/context/StateContext";
 import { useContext, useState, useEffect } from "preact/hooks";
@@ -130,6 +130,18 @@ export default function Nav(props: NavProps): JSX.Element {
 							<span className="sr-only">Enable light mode</span>
 						</>
 					)}
+				</button>
+				<button
+					onClick={() => {
+						setState(s => ({
+							...s,
+							mobileEditorOpened: true,
+						}));
+					}}
+					title="Compose new post"
+					className="flex justify-center items-center p-2 mb-3 text-sm font-medium rounded-md duration-200 dark:text-gray-300 bg-orange-300/20 hover:bg-orange-300/40 hover:bg-opacity-75 group">
+					<IconPlus className="w-5 h-5" aria-hidden={true} />
+					<span className="sr-only">Compose new post</span>
 				</button>
 				<a href={`/users/${account?.id}`} className="flex justify-center items-center">
 					<img

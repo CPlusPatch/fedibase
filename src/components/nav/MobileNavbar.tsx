@@ -52,7 +52,7 @@ export default function MobileNavbar() {
 					<span className="sr-only">Open notifications</span>
 				</Button>
 			</header>
-			<div className="fixed right-0 bottom-0 z-30 mx-7 my-7">
+			<div className="fixed right-0 bottom-0 z-30 mx-7 my-7 md:hidden">
 				<Button
 					onClick={() => {
 						setState(s => ({
