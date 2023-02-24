@@ -51,11 +51,11 @@ export const Notification = ({ entity }: { entity: Entity.Notification }) => {
 					{entity.type == "emoji_reaction" && (
 						<a
 							href={`/users/@${entity.account.id}`}
-							className="overflow-hidden gap-x-1 items-center flex max-w-full font-semibold text-gray-500 overflow-ellipsis dark:text-gray-400 hover:underline">
+							className="overflow-hidden gap-x-1 max-w-full font-semibold text-gray-500 overflow-ellipsis dark:text-gray-400 hover:underline">
 							<img
 								src={entity.account.avatar}
 								alt=""
-								className="h-[1em] w-[1em] inline rounded mb-0.5 mr-1"
+								className="h-[1em] w-[1em] inline rounded mb-0.5 mr-2"
 							/>
 							{withEmojis(entity.account.display_name, entity.account.emojis)} reacted
 							with{" "}

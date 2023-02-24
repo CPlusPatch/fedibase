@@ -1,5 +1,5 @@
 import { Listbox, Transition } from "@headlessui/react";
-import { IconChevronsUp } from "@tabler/icons-preact";
+import { IconChevronsUp, IconSeparatorHorizontal, IconSeparatorVertical } from "@tabler/icons-preact";
 import { Fragment } from "preact/jsx-runtime";
 
 interface SelectOptions {
@@ -30,7 +30,7 @@ export default function Select({ items, selected, setSelected }: SelectOptions) 
 					<Listbox.Button className="relative py-2 pr-10 pl-3 w-full text-left bg-white rounded border shadow-sm cursor-default bg-dark dark:border-gray-700 dark:text-gray-100 focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm">
 						<span className="block truncate">{selected.text}</span>
 						<span className="flex absolute inset-y-0 right-0 items-center pr-2 pointer-events-none">
-							<IconChevronsUp className="w-5 h-5 text-gray-400" aria-hidden="true" />
+							<IconSeparatorHorizontal className="w-5 h-5 text-gray-400" aria-hidden="true" />
 						</span>
 					</Listbox.Button>
 					<Transition

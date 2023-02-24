@@ -125,9 +125,14 @@ export default function Status({ status: statusProp, type, showInteraction = tru
 								<form
 									onSubmit={e => {
 										e.preventDefault();
-										const value = e.target["poll"].value;
+										let value = [];
+
+										for (let i = 0; i < e.target["poll"].length; i++) {
+											if (e.target["poll"][i].checked)
+												value.push(e.target["poll"][i].value);
+										}
 										client
-											?.votePoll(status.poll.id, [value], status.id)
+											?.votePoll(status.poll.id, value, status.id)
 											.then(res => {
 												setStatus(s => ({
 													...s,
@@ -137,47 +142,48 @@ export default function Status({ status: statusProp, type, showInteraction = tru
 									}}
 									action="#"
 									className="list-inside flex-col gap-y-2 flex">
-									{status.poll.options.map((option, index) => (
-										<li
-											key={index}
-											className="flex flex-row gap-x-1 items-center relative dark:text-gray-100">
-											<div
-												style={{
-													width: `${Math.round(
-														(option.votes_count /
-															status.poll.votes_count) *
-															100,
-													)}%`,
-												}}
-												className="absolute bg-orange-200 dark:bg-orange-800 rounded h-full z-0"></div>
-											<span className="w-10 z-10">
-												{Number.isNaN(
-													Math.round(
-														(option.votes_count /
-															status.poll.votes_count) *
-															100,
-													),
-												)
-													? 0
-													: Math.round(
+									<fieldset>
+										{status.poll.options.map((option, index) => (
+											<li
+												key={index}
+												className="flex flex-row gap-x-1 items-center relative dark:text-gray-100">
+												<div
+													style={{
+														width: `${Math.round(
 															(option.votes_count /
 																status.poll.votes_count) *
 																100,
-													  )}
-												%
-											</span>
-											{!status.poll.voted && (
-												<input
-													type="radio"
-													name="poll"
-													className="z-10 focus:outline-none focus:ring-0"
-													value={index}
-													multiple={false}
-												/>
-											)}
-											<span className="z-10">{option.title}</span>
-										</li>
-									))}
+														)}%`,
+													}}
+													className="absolute bg-orange-200 dark:bg-orange-800 rounded h-full z-0"></div>
+												<span className="w-10 z-10">
+													{Number.isNaN(
+														Math.round(
+															(option.votes_count /
+																status.poll.votes_count) *
+																100,
+														),
+													)
+														? 0
+														: Math.round(
+																(option.votes_count /
+																	status.poll.votes_count) *
+																	100,
+														  )}
+													%
+												</span>
+												{!status.poll.voted && (
+													<input
+														type={status.poll.multiple ? "checkbox" : "radio"}
+														name="poll"
+														className="z-10 focus:outline-none focus:ring-0 rounded outline-none m-0 p-0"
+														value={index}
+													/>
+												)}
+												<span className="z-10">{option.title}</span>
+											</li>
+										))}
+									</fieldset>
 									<div className="text-sm text-gray-500 dark:text-gray-400">
 										{!status.poll.voted && (
 											<Button
@@ -187,8 +193,9 @@ export default function Status({ status: statusProp, type, showInteraction = tru
 												Vote
 											</Button>
 										)}
-										{status.poll.votes_count} people voted &middot; Poll ends in
-										10m
+										{status.poll.votes_count} people voted &middot;{" "}
+										{status.poll.expired ? <>Poll ended</> : <>Poll ends</>}{" "}
+										{fromNow(new Date(status.poll.expires_at))}
 									</div>
 								</form>
 							)}
