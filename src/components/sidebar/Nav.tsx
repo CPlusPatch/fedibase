@@ -45,7 +45,7 @@ const navigation: NavigationItem[] = [
 
 export default function Nav(props: NavProps): JSX.Element {
 	const client = useContext(AuthContext);
-	const [state, setState]: any = useContext(StateContext);
+	const [state, setState] = useContext(StateContext);
 	const [account, setAccount] = useState<Entity.Account | undefined>();
 	const [instance, setInstance] = useState<Entity.Instance | undefined>();
 	const [theme, setTheme] = useState<string>("light");
@@ -136,6 +136,8 @@ export default function Nav(props: NavProps): JSX.Element {
 						setState(s => ({
 							...s,
 							mobileEditorOpened: true,
+							replyingTo: null,
+							quotingTo: null
 						}));
 					}}
 					title="Compose new post"

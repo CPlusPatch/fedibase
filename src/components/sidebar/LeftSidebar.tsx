@@ -481,7 +481,7 @@ function SendForm() {
 						<div className="flex flex-row flex-shrink-0 gap-x-4 items-center">
 							<div className="flex flex-row gap-x-2 items-center">
 								<span className="text-gray-600 dark:text-gray-300">
-									{max_chars ?? 500 - characters.length}
+									{(max_chars ?? 500) - characters.length}
 								</span>
 								<svg
 									width="27"
