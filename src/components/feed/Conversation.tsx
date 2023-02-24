@@ -1,24 +1,38 @@
 /* eslint-disable @next/next/no-img-element */
 import { AuthContext } from "components/context/AuthContext";
-import WithLoader from "components/loaders/WithLoader";
 import DummyStatus from "components/posts/DummyStatus";
 import { Post } from "components/scroll/InfiniteScrollPosts";
 import { Entity } from "megalodon";
 import { arrayToTree } from "performant-array-to-tree";
 import { useState, useContext, useEffect } from "preact/hooks";
 
-export const Conversation = ({ id }) => {
+export const Conversation = ({ id, mode }) => {
 	const [ancestors, setAncestors] = useState<Entity.Status[]>([]);
 	const [posts, setPosts] = useState<Entity.Status[]>([]);
 	const [descendants, setDescendants] = useState([]);
 	const client = useContext(AuthContext);
+
+	function findParentElements(array, elementId) {
+		let parentElements = [];
+		let currentElement = array.find(element => element.id === elementId);
+		while (currentElement && currentElement.in_reply_to_id !== false) {
+			let parentElement = array.find(element => element.id === currentElement.in_reply_to_id);
+			if (parentElement) {
+				parentElements.push(parentElement);
+				currentElement = parentElement;
+			} else {
+				currentElement = null;
+			}
+		}
+		return parentElements;
+	}
 
 	useEffect(() => {
 		client.getStatus(id).then(data => {
 			setPosts([data.data]);
 
 			client.getStatusContext(id).then(context => {
-				setAncestors(context.data.ancestors);
+				setAncestors(findParentElements([...context.data.ancestors, data.data], data.data.id).reverse());
 				setDescendants(
 					arrayToTree(context.data.descendants, {
 						id: "id",
@@ -37,21 +51,24 @@ export const Conversation = ({ id }) => {
 
 	return (
 		<>
+			<h3 className="px-5 py-4 text-xl font-bold dark:text-gray-50">
+				Conversation
+			</h3>
 			{posts.length > 0 ? (
-				<div className="flex overflow-y-auto flex-col gap-y-5 py-4 w-full h-full no-scroll">
+				<div className="flex overflow-y-scroll flex-col gap-y-5 py-4 w-full h-full no-scroll">
 					<div className="flex flex-col gap-y-4 px-6">
 						{ancestors.map(post => (
-							<Post entity={post} key={post.id} />
+							<Post entity={post} mode={mode} key={post.id} />
 						))}
 					</div>
-					<div className="px-6 py-4 border-y-2 dark:border-gray-700">
+					<div className="px-6 py-4 border-y-2 dark:border-gray-700 bg-gray-300/10">
 						{posts.map(post => (
-							<Post entity={post} key={post.id} />
+							<Post entity={post} mode={mode} key={post.id} />
 						))}
 					</div>
-					<div className="flex flex-col gap-y-4 px-6">
+					<div className="flex flex-col gap-y-4 px-6 mb-20">
 						{descendants.map(post => (
-							<PostWithChildren post={post} key={post.id} />
+							<PostWithChildren mode={mode} post={post} key={post.id} />
 						))}
 					</div>
 				</div>
@@ -70,7 +87,7 @@ export const Conversation = ({ id }) => {
 	);
 };
 
-function PostWithChildren({ post }) {
+function PostWithChildren({ post, mode }) {
 	return (
 		<>
 			{post.children.length > 0 ? (
@@ -78,12 +95,12 @@ function PostWithChildren({ post }) {
 					<Post entity={post} />
 					<div className="flex flex-col gap-y-4 pl-2 border-l-4 dark:border-gray-500">
 						{post.children.map(postChild => (
-							<PostWithChildren post={postChild} key={postChild.id} />
+							<PostWithChildren post={postChild} key={postChild.id} mode={mode} />
 						))}
 					</div>
 				</>
 			) : (
-				<Post entity={post} />
+				<Post mode={mode} entity={post} />
 			)}
 		</>
 	);

@@ -10,18 +10,10 @@ import { UserFeed } from "./components/feed/UserFeed";
 import MainLayout from "./components/layout/MainLayout";
 import Nav from "./components/sidebar/Nav";
 import Cookies from "js-cookie";
+import { StatusType } from "components/posts/Status";
 
 export function Index() {
-	const [state, setState]: any =
-		useContext(StateContext) ??
-		useState({
-			replyingTo: null,
-			mobileEditorOpened: false,
-			notificationsOpened: false,
-			path: "/",
-			sidebarOpened: false,
-			quotingTo: null,
-		});
+	const [state, setState] = useContext(StateContext)
 	const client = useContext(AuthContext);
 
 	const [component, setComponent] = useState(<></>);
@@ -44,7 +36,7 @@ export function Index() {
 
 			switch (paths[1]) {
 				case "posts":
-					setComponent(<Conversation id={paths[2]} />);
+					setComponent(<Conversation id={paths[2]} mode={StatusType.Post} />);
 					break;
 				case "local":
 					setComponent(<LocalFeed />);
@@ -66,11 +58,11 @@ export function Index() {
 	return (
 		<>
 			{!loginMode && (
-						<div className="relative duration-200 bg-dark font-inter">
-							<Nav />
+				<div className="relative duration-200 bg-dark font-inter">
+					<Nav />
 
-							<MainLayout>{component}</MainLayout>
-						</div>
+					<MainLayout>{component}</MainLayout>
+				</div>
 			)}
 			{loginMode && (
 				<LoginForm code={new URLSearchParams(document.location.search).get("code") ?? ""} />

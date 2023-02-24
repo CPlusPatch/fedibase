@@ -84,7 +84,7 @@ export default function Status({ status, type, showInteraction = true }: StatusP
 					</div>
 					<div className={`${type === StatusType.Notification && "flex flex-row"}`}>
 						<div className="flex flex-col gap-y-1">
-							{status.in_reply_to_id && <ReplyTo status={status} />}
+							{status.in_reply_to_id && <ReplyTo status={status} statusType={type}/>}
 							<SensitiveTextSpoiler
 								status={status}
 								showText={showText}

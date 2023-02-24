@@ -5,7 +5,7 @@ import { withEmojis } from "utils/functions";
 import DummyStatus from "components/posts/DummyStatus";
 import { useIsVisible } from "react-is-visible";
 
-export const Post = ({ entity }: { entity: Entity.Status; }) => {
+export const Post = ({ entity, mode = StatusType.Post }: { entity: Entity.Status; mode?: StatusType }) => {
 	return (
 		<div className={`flex flex-col gap-y-2`}>
 			{entity.reblog && (
@@ -25,7 +25,7 @@ export const Post = ({ entity }: { entity: Entity.Status; }) => {
 					{withEmojis(entity.account.display_name, entity.account.emojis)} boosted
 				</a>
 			)}
-			<Status status={entity.reblog !== null ? entity.reblog : entity} type={StatusType.Post} />
+			<Status status={entity.reblog !== null ? entity.reblog : entity} type={mode} />
 		</div>
 	);
 };

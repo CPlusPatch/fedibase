@@ -1,20 +1,22 @@
 import { Transition } from "@headlessui/react";
 import { IconMessage } from "@tabler/icons-preact";
 import { AuthContext } from "components/context/AuthContext";
-import { withEmojis } from "utils/functions";
+import { classNames, withEmojis } from "utils/functions";
 import Status, { StatusType } from "./Status";
 import { useIsVisible } from "react-is-visible";
 import { Entity } from "megalodon";
 import { useState, useContext, useRef, useEffect } from "preact/hooks";
 import { Fragment } from "preact/jsx-runtime";
+import { StateContext } from "components/context/StateContext";
 
-export default function ReplyTo({ status }: { status: Entity.Status }) {
+export default function ReplyTo({ status, statusType = StatusType.Post }: { status: Entity.Status; statusType: StatusType }) {
 	const [replyStatus, setReplyStatus] = useState<Entity.Status>();
 	const client = useContext(AuthContext);
 	const [open, setOpen] = useState<boolean>(false);
 
 	const nodeRef = useRef();
 	const visible = useIsVisible(nodeRef);
+	const [state, setState] = useContext(StateContext);
 
 	useEffect(() => {
 		// If the post is a reply, get the previous post's contents
@@ -27,18 +29,24 @@ export default function ReplyTo({ status }: { status: Entity.Status }) {
 	return (
 		<div className="inline relative bg-slate-300/0" ref={nodeRef}>
 			<span
-				onMouseEnter={e => {
+				/* onMouseEnter={e => {
 					setOpen(true);
 				}}
 				onMouseLeave={e => {
 					setOpen(false);
+				}} */
+				onClick={() => {
+					setState(s => ({
+						...s,
+						viewingConversation: status.id
+					}));
 				}}
 				className="text-xs text-gray-600 hover:underline dark:text-gray-300">
 				<IconMessage className="inline mr-1 w-4 h-4" aria-hidden={true} />
 				Replying to{" "}
 				{replyStatus &&
 					withEmojis(replyStatus.account.display_name, replyStatus.account.emojis)}
-				<Transition
+				{/* <Transition
 					as={Fragment}
 					show={open}
 					enter="transition ease-out duration-200"
@@ -47,10 +55,16 @@ export default function ReplyTo({ status }: { status: Entity.Status }) {
 					leave="transition ease-in duration-150"
 					leaveFrom="opacity-100 translate-y-0"
 					leaveTo="opacity-0 translate-y-1">
-					<div className="absolute left-0 z-50 px-4 py-3 max-w-sm bg-gray-50 bg-dark rounded dark:border-gray-700 border transform translate-x-[-5.55rem] lg:max-w-3xl">
-						{replyStatus && <Status status={replyStatus} type={StatusType.Post} />}
+					<div
+						className={classNames(
+							`absolute left-0 px-4 py-3 bg-gray-50 bg-dark w-full rounded dark:border-gray-700 border transform z-[9999]`,
+							statusType === StatusType.Post
+								? "translate-x-[-5.55rem]"
+								: "translate-x-[-4rem]",
+						)}>
+						{replyStatus && <Status status={replyStatus} type={statusType} />}
 					</div>
-				</Transition>
+				</Transition> */}
 			</span>
 		</div>
 	);

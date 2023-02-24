@@ -13,7 +13,9 @@ import {
 import Button from "components/buttons/Button";
 import { AuthContext } from "components/context/AuthContext";
 import { StateContext } from "components/context/StateContext";
+import { Conversation } from "components/feed/Conversation";
 import SmallSelect from "components/forms/SmallSelect";
+import { StatusType } from "components/posts/Status";
 import { Entity, MegalodonInterface, Response } from "megalodon";
 import { useContext, useEffect, useRef, useState } from "preact/hooks";
 import { Fragment } from "preact/jsx-runtime";
@@ -64,10 +66,13 @@ const visibilities = [
 ];
 
 export default function LeftSidebar() {
-	const [state, setState]: any = useContext(StateContext);
+	const [state, setState] = useContext(StateContext);
 
 	return (
 		<>
+			<div>
+				{state.viewingConversation && <Conversation id={state.viewingConversation} mode={StatusType.Notification}/>}
+			</div>
 			<Transition.Root show={state.mobileEditorOpened} as={Fragment}>
 				<Dialog
 					as="div"

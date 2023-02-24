@@ -11,10 +11,10 @@ export default function MainLayout({ children }) {
 				<main className="grow">
 					<MobileNavbar />
 					<div className="grid relative grid-cols-6 mx-auto max-w-full h-full md:grid-cols-11">
-						<div className="hidden overflow-y-scroll p-4 max-h-screen md:col-span-2 md:block no-scroll">
+						<div className="hidden overflow-y-scroll max-h-screen md:col-span-3 md:block no-scroll">
 							<LeftSidebar />
 						</div>
-						<div className="overflow-x-hidden overflow-y-hidden col-span-6 pt-20 max-h-screen md:border-x dark:border-gray-700 md:pt-0">
+						<div className="overflow-x-hidden overflow-y-hidden md:col-span-5 col-span-6 pt-20 max-h-screen md:border-x dark:border-gray-700 md:pt-0">
 							{children}
 						</div>
 						<div className="hidden overflow-x-hidden p-4 min-w-0 max-h-screen md:col-span-3 md:flex">
