@@ -1,4 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
+import Button from "components/buttons/Button";
+import { AuthContext } from "components/context/AuthContext";
 import { StateContext } from "components/context/StateContext";
 import { Entity } from "megalodon";
 import { useContext, useRef, useState } from "preact/hooks";
@@ -19,11 +21,13 @@ interface StatusProps {
 	showInteraction?: boolean;
 }
 
-export default function Status({ status, type, showInteraction = true }: StatusProps) {
+export default function Status({ status: statusProp, type, showInteraction = true }: StatusProps) {
 	const [expand, setExpand] = useState(false);
+	const [status, setStatus] = useState(statusProp);
 	const [showText, setShowText] = useState(false);
 	const textElementRef = useRef<HTMLParagraphElement>(null);
 	const [state, setState] = useContext(StateContext);
+	const client = useContext(AuthContext);
 
 	const handleUserClick = (e) => {
 		if (!e.ctrlKey && !e.metaKey) {
@@ -84,7 +88,7 @@ export default function Status({ status, type, showInteraction = true }: StatusP
 					</div>
 					<div className={`${type === StatusType.Notification && "flex flex-row"}`}>
 						<div className="flex flex-col gap-y-1">
-							{status.in_reply_to_id && <ReplyTo status={status} statusType={type}/>}
+							{status.in_reply_to_id && <ReplyTo status={status} statusType={type} />}
 							<SensitiveTextSpoiler
 								status={status}
 								showText={showText}
@@ -115,6 +119,77 @@ export default function Status({ status, type, showInteraction = true }: StatusP
 										{expand === true ? "Less" : "More"}
 									</button>
 								</>
+							)}
+
+							{status.poll && (
+								<form
+									onSubmit={e => {
+										e.preventDefault();
+										const value = e.target["poll"].value;
+										client?.votePoll(status.poll.id, [value], status.id).then(res => {
+											setStatus(s => ({
+												...s,
+												poll: res.data
+											}));
+										});
+
+									}}
+									action="#"
+									className="list-inside flex-col gap-y-2 flex">
+									{status.poll.options.map((option, index) => (
+										<li
+											key={index}
+											className="flex flex-row gap-x-1 items-center relative dark:text-gray-100">
+											<span className="w-10">
+												{Number.isNaN(
+													Math.round(
+														(option.votes_count /
+															status.poll.votes_count) *
+															100,
+													),
+												)
+													? 0
+													: Math.round(
+															(option.votes_count /
+																status.poll.votes_count) *
+																100,
+													  )}
+												%
+											</span>
+											{!status.poll.voted && (
+												<input
+													type="radio"
+													name="poll"
+													className="focus:outline-none focus:ring-0"
+													value={index}
+													multiple={false}
+												/>
+											)}
+											{option.title}
+											<div
+												style={{
+													width: `${Math.round(
+														(option.votes_count /
+															status.poll.votes_count) *
+															100,
+													)}%`,
+												}}
+												className="absolute bg-orange-200 -z-10 dark:bg-orange-800 rounded h-full"></div>
+										</li>
+									))}
+									<div className="text-sm text-gray-500 dark:text-gray-400">
+										{!status.poll.voted && (
+											<Button
+												style="gray"
+												type="submit"
+												className="!px-2 !py-1 mr-2">
+												Vote
+											</Button>
+										)}
+										{status.poll.votes_count} people voted &middot; Poll ends in
+										10m
+									</div>
+								</form>
 							)}
 						</div>
 						{status.media_attachments.length > 0 && (
