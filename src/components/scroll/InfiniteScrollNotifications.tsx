@@ -33,7 +33,7 @@ export const Notification = ({ entity }: { entity: Entity.Notification }) => {
 					{entity.type == "favourite" && (
 						<a
 							href={`/users/@${entity.account.id}`}
-							className="overflow-hidden gap-x-1 flex max-w-full items-center font-semibold text-sm text-gray-500 overflow-ellipsis dark:text-gray-400 hover:underline">
+							className="overflow-hidden gap-x-1 max-w-full font-semibold text-gray-500 overflow-ellipsis dark:text-gray-400 hover:underline">
 							<IconStarFilled
 								aria-hidden={true}
 								className="inline mr-1 w-[1em] pb-0.5 text-yellow-500 hover:animate-spin"
@@ -41,7 +41,7 @@ export const Notification = ({ entity }: { entity: Entity.Notification }) => {
 							<img
 								src={entity.account.avatar}
 								alt=""
-								className="h-[1em] w-[1em] inline mb-0.5 mr-2 rounded"
+								className="h-[1em] w-[1em] inline rounded mb-0.5 mr-2"
 							/>
 							{withEmojis(entity.account.display_name, entity.account.emojis)}{" "}
 							favourited your post
@@ -66,7 +66,7 @@ export const Notification = ({ entity }: { entity: Entity.Notification }) => {
 					{entity.type == "reblog" && (
 						<a
 							href={`/users/@${entity.account.id}`}
-							className="overflow-hidden gap-x-1 flex max-w-full items-center font-semibold text-gray-500 overflow-ellipsis dark:text-gray-400 hover:underline">
+							className="overflow-hidden gap-x-1 max-w-full font-semibold text-gray-500 overflow-ellipsis dark:text-gray-400 hover:underline">
 							<svg
 								aria-hidden={true}
 								xmlns="http://www.w3.org/2000/svg"
@@ -79,7 +79,7 @@ export const Notification = ({ entity }: { entity: Entity.Notification }) => {
 							<img
 								src={entity.account.avatar}
 								alt=""
-								className="h-[1em] w-[1em] inline mb-0.5 mr-2 rounded"
+								className="h-[1em] w-[1em] inline rounded mb-0.5 mr-2"
 							/>
 							{withEmojis(entity.account.display_name, entity.account.emojis)} boosted
 							your post

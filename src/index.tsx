@@ -49,10 +49,9 @@ export default function Index(props) {
 			const paths = state2.path.split("/");
 
 			if (
-				(!localStorage.getItem("accessToken") || !localStorage.getItem("instanceType")) &&
-				paths[1] !== "login"
+				(!localStorage.getItem("accessToken") || !localStorage.getItem("instanceType"))
 			) {
-				props.pathname.pathname = "/login";
+				setLoginMode(true);
 			}
 
 			switch (paths[1]) {
