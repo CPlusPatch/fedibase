@@ -3,6 +3,7 @@ import {
 	IconAlignLeft,
 	IconChartBar,
 	IconClock,
+	IconFile,
 	IconLock,
 	IconLockOpen,
 	IconMail,
@@ -193,6 +194,32 @@ function SendForm() {
 	// Element refs
 	const fileInputRef = useRef<HTMLInputElement>(null);
 	const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+	const renderFilePreview = (file) => {
+		if (file.type.includes("image")) {
+			return (
+				<img
+					alt=""
+					src={window.URL.createObjectURL(file)}
+					className="object-cover w-full h-full"
+				/>
+			);
+		} else if (file.type.includes("video")) {
+			return (
+				<video src={window.URL.createObjectURL(file)} controls className="w-full h-full" />
+			);
+		} else if (file.type.includes("audio")) {
+			return (
+				<audio src={window.URL.createObjectURL(file)} controls className="w-full h-full" />
+			);
+		} else {
+			return (
+				<div className="w-20 h-full flex items-center justify-center">
+					<IconFile className="w-6 h-6" />
+				</div>
+			)
+		}
+	};
 
 	useEffect(() => {
 		// YES, I KNOW YOU CAN SHORTEN THIS I JUST DONT CARE
@@ -469,26 +496,13 @@ function SendForm() {
 					)}
 
 					{files.length > 0 && (
-						<div className="flex overflow-x-scroll bottom-0 flex-row gap-x-4 px-4 w-full">
+						<div className="flex flex-wrap gap-4 bottom-0 flex-row px-4 w-full">
 							{files.map((file: File, index: number) => {
 								return (
 									<div
 										key={index}
 										className="overflow-hidden relative h-24 rounded-lg border-2">
-										{file.type.includes("image") && (
-											<img
-												alt=""
-												src={window.URL.createObjectURL(file)}
-												className="object-cover w-full h-full"
-											/>
-										)}
-										{file.type.includes("video") && (
-											<video
-												src={window.URL.createObjectURL(file)}
-												controls
-												className="w-full h-full"
-											/>
-										)}
+										{renderFilePreview(file)}
 										<Button
 											onClick={(e: any) => {
 												e.preventDefault();
