@@ -29,8 +29,9 @@ export default function Button({
 	return (
 		<button
 			{...props}
+			
 			className={classNames(
-				"inline-flex  justify-center relative items-center px-4 py-2 text-base font-medium rounded-md border shadow-sm duration-200 font-inter focus:outline-none sm:text-sm",
+				"inline-flex md:active:scale-95 active:scale-75 no-bad-scale justify-center relative items-center px-4 py-2 text-base font-medium rounded-md border shadow-sm duration-200 font-inter focus:outline-none sm:text-sm",
 				style && styles[style],
 				className,
 				isLoading && "!text-transparent",

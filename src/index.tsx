@@ -21,13 +21,11 @@ import { LocalFeed } from "./components/feed/LocalFeed";
 import { UserFeed } from "./components/feed/UserFeed";
 import MainLayout from "./components/layout/MainLayout";
 import Nav from "./components/sidebar/Nav";
-import Cookies from "js-cookie";
 import { StatusType } from "components/posts/Status";
-import { useTraceUpdate } from "utils/useTraceUpdate";
 import { useDispatch, useSelector } from "react-redux";
 import { setPath, StateType } from "utils/stateSlice";
 
-export default function Index(props) {
+export default function Index() {
 	const client = useContext(AuthContext);
 
 	const state2 = useSelector(state => (state as any).state as StateType);
@@ -42,7 +40,7 @@ export default function Index(props) {
 
 	useEffect(() => {
 		if (window) {
-			if (Cookies.get("theme") === "dark") {
+			if (localStorage.getItem("theme") === "dark") {
 				document.getElementsByTagName("html")[0].className += " dark";
 			}
 

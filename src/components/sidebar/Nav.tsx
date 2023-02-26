@@ -4,7 +4,6 @@ import { AuthContext } from "components/context/AuthContext";
 import { useContext, useState, useEffect } from "preact/hooks";
 import { JSX, Fragment } from "preact/jsx-runtime";
 import toast from "react-hot-toast";
-import Cookies from "js-cookie";
 import { classNames, smoothNavigate } from "utils/functions";
 import { useDispatch, useSelector } from "react-redux";
 import { setMobileEditorState, StateType } from "utils/stateSlice";
@@ -54,13 +53,13 @@ export default function Nav(props: NavProps): JSX.Element {
 
 	const toggleTheme = () => {
 		const html = document.getElementsByTagName("html")[0];
-		const themeCookie = (Cookies.get("theme") ?? "light").toString();
+		const themeCookie = (localStorage.getItem("theme") ?? "light").toString();
 		if (themeCookie === "dark") {
-			Cookies.set("theme", "light");
+			localStorage.setItem("theme", "light");
 			html.className = html.className.replaceAll("dark", "");
 			setTheme("light");
 		} else if (themeCookie === "light") {
-			Cookies.set("theme", "dark");
+			localStorage.setItem("theme", "dark");
 			html.className = html.className + " dark";
 			setTheme("dark");
 		}
@@ -88,7 +87,7 @@ export default function Nav(props: NavProps): JSX.Element {
 				});
 			}
 
-			setTheme((Cookies.get("theme") ?? "light").toString());
+			setTheme((localStorage.getItem("theme") ?? "light").toString());
 		}
 	}, [client]);
 
@@ -160,13 +159,13 @@ export function MobileNav(props: NavProps): JSX.Element {
 
 	const toggleTheme = () => {
 		const html = document.getElementsByTagName("html")[0];
-		const themeCookie = (Cookies.get("theme") ?? "light").toString();
+		const themeCookie = (localStorage.getItem("theme") ?? "light").toString();
 		if (themeCookie === "dark") {
-			Cookies.set("theme", "light");
+			localStorage.setItem("theme", "light");
 			html.className = html.className.replaceAll("dark", "");
 			setTheme("light");
 		} else if (themeCookie === "light") {
-			Cookies.set("theme", "dark");
+			localStorage.setItem("theme", "dark");
 			html.className = html.className + " dark";
 			setTheme("dark");
 		}
@@ -194,7 +193,7 @@ export function MobileNav(props: NavProps): JSX.Element {
 				});
 			}
 
-			setTheme((Cookies.get("theme") ?? "light").toString());
+			setTheme((localStorage.getItem("theme") ?? "light").toString());
 		}
 	}, [client]);
 

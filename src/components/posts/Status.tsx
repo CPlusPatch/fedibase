@@ -51,7 +51,7 @@ export default function Status({ status: statusProp, type, showInteraction = tru
 			<div className="flex flex-row max-w-full">
 				<div className="flex flex-col min-w-0 grow gap-y-1">
 					<div className="gap-x-2 text-[0.95rem] flex flex-row justify-between">
-						<div className="flex flex-row">
+						<div className="flex flex-row overflow-hidden text-ellipsis">
 							<a
 								href={`/users/${status.account.id}`}
 								onClick={handleUserClick}
@@ -67,7 +67,7 @@ export default function Status({ status: statusProp, type, showInteraction = tru
 							</a>
 							<span
 								className={classNames(
-									"flex overflow-hidden flex-col whitespace-nowrap md:inline text-ellipsis",
+									"flex flex-col whitespace-nowrap md:inline",
 									type === StatusType.Notification && "text-sm",
 								)}>
 								<h4
