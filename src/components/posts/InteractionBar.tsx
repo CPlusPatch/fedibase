@@ -1,4 +1,5 @@
 import {
+	IconDots,
 	IconLock,
 	IconMessage,
 	IconMoodHappy,
@@ -25,17 +26,19 @@ export default function InteractionBar({ status }: { status: Entity.Status }) {
 	const dispatch = useDispatch();
 
 	return (
-		<div className="grid grid-cols-5 justify-around px-5 mt-3 w-full text-gray-700 dark:text-gray-400">
+		<div className="flex justify-between px-5 mt-3 w-full text-gray-700 dark:text-gray-400">
 			<InteractionBarIcon
+				title="Reply to this post"
 				onClick={() => {
 					dispatch(setReplyingTo(status));
-					dispatch(setMobileEditorState(true),);
+					dispatch(setMobileEditorState(true));
 				}}>
 				<IconMessage aria-hidden={true} className="w-5 h-5" />
 				<span className="sr-only">Reply to this post</span>
 			</InteractionBarIcon>
 
 			<InteractionBarIcon
+				title="Favourite this post"
 				onClick={() => {
 					if (favourited) {
 						client.unfavouriteStatus(status.id);
@@ -62,6 +65,7 @@ export default function InteractionBar({ status }: { status: Entity.Status }) {
 			</InteractionBarIcon>
 
 			<InteractionBarIcon
+				title="Boost this post"
 				onClick={() => {
 					if (boosted) {
 						client.unreblogStatus(status.id);
@@ -96,12 +100,13 @@ export default function InteractionBar({ status }: { status: Entity.Status }) {
 				)}
 			</InteractionBarIcon>
 
-			<InteractionBarIcon>
+			<InteractionBarIcon title="Add reaction (not implemented)">
 				<IconMoodHappy className="w-5 h-5" aria-hidden={true} />
 				<span className="sr-only">Add reaction (not implemented)</span>
 			</InteractionBarIcon>
 
 			<InteractionBarIcon
+				title="Quote this post"
 				onClick={() => {
 					dispatch(setQuotingTo(status));
 					dispatch(setMobileEditorState(true));
@@ -109,13 +114,18 @@ export default function InteractionBar({ status }: { status: Entity.Status }) {
 				<IconQuote className="w-5 h-5" aria-hidden={true} />
 				<span className="sr-only">Quote this post</span>
 			</InteractionBarIcon>
+
+			<InteractionBarIcon title="Open options menu (not implemented)">
+				<IconDots className="w-5 h-5" />
+				<span className="sr-only">Open options menu (not implemented)</span>
+			</InteractionBarIcon>
 		</div>
 	);
 }
 
-function InteractionBarIcon({ children, onClick = () => {} }) {
+function InteractionBarIcon({ children, onClick = () => {}, title = "" }) {
 	return (
-		<button className="flex justify-center" onClick={onClick}>
+		<button title={title} className="flex justify-center" onClick={onClick}>
 			{children}
 		</button>
 	);
