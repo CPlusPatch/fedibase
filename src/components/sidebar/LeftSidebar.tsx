@@ -71,17 +71,17 @@ const visibilities = [
 ];
 
 export default function LeftSidebar() {
-	const state2 = useSelector((state) => (state as any).state as StateType);
+	const state = useSelector((state) => (state as any).state as StateType);
 	const dispatch = useDispatch();
 
 	return (
 		<>
 			<div>
-				{state2.viewingConversation && (
-					<Conversation id={state2.viewingConversation} mode={StatusType.Notification} />
+				{state.viewingConversation && (
+					<Conversation id={state.viewingConversation} mode={StatusType.Notification} />
 				)}
 			</div>
-			<Transition.Root show={state2.postComposerOpened} as={Fragment}>
+			<Transition.Root show={state.postComposerOpened} as={Fragment}>
 				<Dialog
 					as="div"
 					className="block relative z-50"
@@ -218,22 +218,15 @@ function SendForm() {
 	const textareaRef = useRef<HTMLTextAreaElement>(null);
 
 	useEffect(() => {
-		// YES, I KNOW YOU CAN SHORTEN THIS I JUST DONT CARE
-		let otherPost = null;
-		if (state2.replyingTo) {
-			otherPost = state2.replyingTo;
-		} else if (state2.quotingTo) {
-			otherPost = state2.quotingTo;
-		}
+		const { replyingTo, quotingTo } = state2;
+		let otherPost = replyingTo ?? quotingTo ?? null;
 
 		if (otherPost) {
 			const id = localStorage.getItem("accountId");
-			// Gets array of mentions, removes mentions of self, deduplicates resulting array
-			// and turns the output into "@gay@gay.com" format seperated by spaces
 			const mentions = [
 				...new Map(
-					(otherPost as Entity.Status).mentions
-						.concat([(otherPost as Entity.Status).account])
+					otherPost.mentions
+						.concat([otherPost.account])
 						.filter(m => m.id !== id)
 						.map(v => [v.id, v]),
 				).values(),
@@ -241,68 +234,59 @@ function SendForm() {
 				.map(m => "@" + m.acct)
 				.join(" ");
 
-				if (mentions.length > 0)
-					setCharacters(mentions + " ");
-
-			switch (otherPost.visibility) {
-				case "unlisted":
-					setSelectedVis(visibilities[1]);
-					break;
-				case "private":
-					setSelectedVis(visibilities[2]);
-					break;
-				case "direct":
-					setSelectedVis(visibilities[3]);
-					break;
+			if (mentions) {
+				setCharacters(`${mentions} `);
 			}
 
+			setSelectedVis(
+				visibilities.find(v => v.value === otherPost.visibility) ?? visibilities[0]
+			);
+
 		}
-		
+
 		textareaRef.current?.focus();
-		
+
 		client?.getInstanceCustomEmojis().then(data => {
 			setEmojis(data.data);
 		});
-	}, [client, state2.quotingTo, state2.replyingTo]);
+	}, [client, state2.replyingTo, state2.quotingTo]);
 
-	const submitForm = async (
-		event: JSXInternal.TargetedEvent<HTMLFormElement, Event>
-	) => {
+	const submitForm = async event => {
 		event.preventDefault();
-
 		setLoading(true);
 
-		if (!event.target) {
-			return;
-		}
+		const { value: visibilityValue } = selectedVis;
+		const { comment, pollDuration } = event.target.elements;
+		const visibility: any = visibilityValue || "public";
+		const text = comment.value;
+		const inReplyToId = state2.replyingTo?.id;
+		const quoteId = state2.quotingTo?.id;
 
-		client
-			.postStatus((event.target as any)["comment"].value, {
-				in_reply_to_id: state2?.replyingTo?.id ?? undefined,
-				visibility: selectedVis.value as any,
+		try {
+			await client.postStatus(text, {
+				in_reply_to_id: inReplyToId,
+				visibility,
 				media_ids: fileIds,
-				quote_id: state2.quotingTo?.id ?? undefined,
-				poll: poll ? {
-					options: poll.choices,
-					expires_in: Number(pollDuration.value)
-				} : undefined
-			})
-			.then(() => {
-				toast("Post sent!", {
-					icon: "👍",
-				});
-			})
-			.catch(() => {
-				toast.error(
-					"There was an error sending your post. Maybe check the visibility?"
-				);
-			})
-			.finally(() => {
-				setLoading(false);
-				setFileIds([]);
-				setFiles([]);
-				dispatch(setMobileEditorState(false));
+				quote_id: quoteId,
+				poll:
+					poll && poll.choices.length > 0
+						? {
+								options: poll.choices,
+								expires_in: Number(pollDuration.value),
+						  }
+						: undefined,
 			});
+			toast("Post sent!", {
+				icon: "👍",
+			});
+			setFileIds([]);
+			setFiles([]);
+			dispatch(setMobileEditorState(false));
+		} catch (err) {
+			toast.error("There was an error sending your post. Maybe check the visibility?");
+		} finally {
+			setLoading(false);
+		}
 	};
 	return (
 		<div className="flex flex-col gap-y-4">
