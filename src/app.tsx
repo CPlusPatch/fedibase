@@ -32,7 +32,7 @@ export function App() {
 							)
 						: null
 				}>
-				<Index pathname={window.location.pathname} currentPath={window.location.pathname} />
+				<Index />
 			</AuthContext.Provider>
 		</>
 	);
