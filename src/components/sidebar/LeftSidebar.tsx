@@ -17,10 +17,13 @@ import { AuthContext } from "components/context/AuthContext";
 import { Conversation } from "components/feed/Conversation";
 import { Input } from "components/forms/Input";
 import Select from "components/forms/Select";
+import Select2, { SelectItem } from "components/forms/Select2";
 import SmallSelect from "components/forms/SmallSelect";
+import SmallSelect2 from "components/forms/SmallSelect2";
 import { StatusType } from "components/posts/Status";
+import { stat } from "fs";
 import { Entity } from "megalodon";
-import { useContext, useEffect, useRef, useState } from "preact/hooks";
+import { StateUpdater, useContext, useEffect, useRef, useState } from "preact/hooks";
 import { Fragment } from "preact/jsx-runtime";
 import { JSXInternal } from "preact/src/jsx";
 import { toast } from "react-hot-toast";
@@ -186,6 +189,18 @@ const renderFilePreview = file => {
 	}
 };
 
+interface SendFormState {
+	mode: SelectItem;
+	visibility: SelectItem;
+	files: File[];
+	fileIds: string[];
+	loading: boolean;
+	characters: string;
+	emojis: Entity.Emoji[];
+	emojisSuggestions: Entity.Emoji[];
+	poll: any;
+}
+
 function SendForm() {
 	// Context stuff
 	const client = useContext(AuthContext);
@@ -193,22 +208,23 @@ function SendForm() {
 	const state2 = useSelector(state => (state as any).state as StateType);
 	const dispatch = useDispatch();
 
+	const [currentState, setCurrentState] = useState<SendFormState>({
+		mode: modes[0],
+		visibility: visibilities[0],
+		files: [],
+		fileIds: [],
+		loading: false,
+		characters: "",
+		emojis: [],
+		emojisSuggestions: [],
+		poll: null
+	})
+
 	// State stuff
-	const [selectedMode, setSelectedMode] = useState(modes[0]);
-	const [selectedVis, setSelectedVis] = useState(visibilities[0]);
-	const [files, setFiles] = useState<File[] | []>([]);
 	const [fileIds, setFileIds] = useState<string[]>([]);
-	const [loading, setLoading] = useState<boolean>(false);
 	const [characters, setCharacters] = useState<string>("");
 	const [emojis, setEmojis] = useState<Entity.Emoji[]>([]);
 	const [emojisSuggestions, setEmojisSuggestions] = useState<Entity.Emoji[]>([]);
-
-	const [poll, setPoll] = useState<{
-		choices: string[],
-		duration: number,
-		multiple: boolean
-	} | null>(null);
-	const [pollDuration, setPollDuration] = useState(pollDurations[0]);
 
 	const max_chars = (JSON.parse(localStorage.getItem("instanceData") ?? "{}") as Entity.Instance)
 		.max_toot_chars;
@@ -238,9 +254,10 @@ function SendForm() {
 				setCharacters(`${mentions} `);
 			}
 
-			setSelectedVis(
-				visibilities.find(v => v.value === otherPost.visibility) ?? visibilities[0]
-			);
+			setCurrentState(s => ({
+				...s,
+				visibility: visibilities.find(v => v.value === otherPost.visibility) ?? visibilities[0]
+			}))
 
 		}
 
@@ -253,11 +270,12 @@ function SendForm() {
 
 	const submitForm = async event => {
 		event.preventDefault();
-		setLoading(true);
+		setCurrentState(s => ({
+			...s,
+			loading: true
+		}));
 
-		const { value: visibilityValue } = selectedVis;
-		const { comment, pollDuration } = event.target.elements;
-		const visibility: any = visibilityValue || "public";
+		const { comment } = event.target.elements;
 		const text = comment.value;
 		const inReplyToId = state2.replyingTo?.id;
 		const quoteId = state2.quotingTo?.id;
@@ -265,27 +283,35 @@ function SendForm() {
 		try {
 			await client.postStatus(text, {
 				in_reply_to_id: inReplyToId,
-				visibility,
+				visibility: currentState.visibility.value as any,
 				media_ids: fileIds,
 				quote_id: quoteId,
 				poll:
-					poll && poll.choices.length > 0
+					currentState.poll && currentState.poll.choices.length > 0
 						? {
-								options: poll.choices,
-								expires_in: Number(pollDuration.value),
+								options: currentState.poll.choices,
+								expires_in: Number(currentState.poll.duration),
 						  }
 						: undefined,
 			});
 			toast("Post sent!", {
 				icon: "👍",
 			});
-			setFileIds([]);
-			setFiles([]);
-			dispatch(setMobileEditorState(false));
 		} catch (err) {
 			toast.error("There was an error sending your post. Maybe check the visibility?");
 		} finally {
-			setLoading(false);
+			setCurrentState(s => ({
+				mode: modes[0],
+				visibility: visibilities[0],
+				files: [],
+				fileIds: [],
+				loading: false,
+				characters: "",
+				emojis: [],
+				emojisSuggestions: [],
+				poll: null,
+			}));
+			dispatch(setMobileEditorState(false));
 		}
 	};
 	return (
@@ -301,7 +327,7 @@ function SendForm() {
 				}}>
 				<div
 					className={`px-3 py-2 w-full rounded-2xl border dark:text-gray-100 border-gray-300 dark:border-gray-700 shadow-sm ${
-						loading ? "bg-gray-100 bg-dark" : "bg-white bg-dark"
+						currentState.loading ? "bg-gray-100 bg-dark" : "bg-white bg-dark"
 					}`}>
 					<div className="flex justify-between p-3 w-full">
 						<h1 className="text-xl font-bold dark:text-gray-50">
@@ -344,15 +370,21 @@ function SendForm() {
 								const files = e.clipboardData?.files;
 
 								try {
-									setFiles(f => [...f, ...files]);
-									setLoading(true);
+									setCurrentState(s => ({
+										files: [...s.files, ...files],
+										...s,
+										loading: true,
+									}));
 									const ids = await Promise.all(
 										[...files].map(async file => {
 											return (await client.uploadMedia(file)).data.id;
 										}),
 									);
 									toast.success("Files uploaded!");
-									setLoading(false);
+									setCurrentState(s => ({
+										...s,
+										loading: false,
+									}));
 									setFileIds(f => [...f, ...ids]);
 								} catch (error) {
 									console.error(error);
@@ -377,17 +409,17 @@ function SendForm() {
 								setEmojisSuggestions([]);
 							}
 						}}
-						disabled={loading}
+						disabled={currentState.loading}
 						className="block py-3 w-full bg-transparent border-0 resize-none disabled:text-gray-400 focus:ring-0 dark:placeholder:text-gray-400"
 						placeholder="What's happening?"
 						defaultValue={characters}
 					/>
 
-					{poll && (
-						<PollCreator poll={poll} pollDuration={pollDuration} setPoll={setPoll} setPollDuration={setPollDuration} />
+					{currentState.poll && (
+						<PollCreator currentState={currentState} setCurrentState={setCurrentState}/>
 					)}
 
-					<Files files={files} setFileIds={setFileIds} setFiles={setFiles} />
+					<Files currentState={currentState} setFileIds={setFileIds} setCurrentState={setCurrentState}/>
 
 					<Transition
 						as={Fragment}
@@ -420,18 +452,18 @@ function SendForm() {
 						</div>
 					</Transition>
 
-					<ButtonRow characters={characters} fileInputRef={fileInputRef} setFileIds={setFileIds} client={client} loading={loading} max_chars={max_chars} poll={poll} selectedMode={selectedMode} selectedVis={selectedVis} setFiles={setFiles} setLoading={setLoading} setPoll={setPoll} setSelectedMode={setSelectedMode} setSelectedVis={setSelectedVis} />
+					<ButtonRow currentState={currentState} setCurrentState={setCurrentState} characters={characters} fileInputRef={fileInputRef} setFileIds={setFileIds} client={client} max_chars={max_chars} />
 				</div>
 			</form>
 		</div>
 	);
 }
 
-function PollCreator({ poll, setPoll, pollDuration, setPollDuration }) {
+function PollCreator({ currentState, setCurrentState }) {
 	return (
 		<div className="flex w-full px-4 flex-col gap-y-2">
 			<ol className="flex-col w-full gap-y-4 flex">
-				{poll.choices.map((choice, index) => (
+				{currentState.poll?.choices.map((choice, index) => (
 					<li
 						key={index}
 						className="inline-flex w-full justify-between items-center gap-x-3">
@@ -440,13 +472,16 @@ function PollCreator({ poll, setPoll, pollDuration, setPollDuration }) {
 							<div className="grow">
 								<Input
 									onChange={(e: any) => {
-										setPoll(p => ({
-											...p,
-											choices: [
-												...p.choices.slice(0, index),
-												e.target.value,
-												...p.choices.slice(index + 1),
-											],
+										setCurrentState(s => ({
+											...s,
+											poll: {
+												...s.poll,
+												choices: [
+													...s.poll.choices.slice(0, index),
+													e.target.value,
+													...s.poll.choices.slice(index + 1),
+												],
+											},
 										}));
 									}}
 									isLoading={false}
@@ -457,18 +492,16 @@ function PollCreator({ poll, setPoll, pollDuration, setPollDuration }) {
 								</Input>
 							</div>
 						</div>
-						{index === poll.choices.length - 1 && (
+						{index === currentState.poll.choices.length - 1 && (
 							<button
 								onClick={e => {
 									e.preventDefault();
-									let pollCopy = poll;
+									let pollCopy = currentState.poll;
 									pollCopy.choices.splice(index, 1);
 
-									console.log(poll.choices);
-
-									setPoll(p => ({
-										...p,
-										choices: pollCopy.choices,
+									setCurrentState(s => ({
+										...s,
+										poll: pollCopy
 									}));
 								}}>
 								<IconX className="w-5 h-5" />
@@ -480,9 +513,12 @@ function PollCreator({ poll, setPoll, pollDuration, setPollDuration }) {
 					onClick={e => {
 						e.preventDefault();
 
-						setPoll(p => ({
-							...p,
-							choices: [...p.choices, ""],
+						setCurrentState(s => ({
+							...s,
+							poll: {
+								...s.poll,
+								choices: [...s.poll.choices, ""],
+							},
 						}));
 					}}
 					style="orangeLight"
@@ -493,31 +529,42 @@ function PollCreator({ poll, setPoll, pollDuration, setPollDuration }) {
 			</ol>
 			<div className="z-[99] flex items-center gap-x-3 flex-col md:flex-row gap-y-2">
 				<div className="md:w-1/3 w-full">
-					<Select
+					<Select2
 						items={pollDurations}
-						selected={pollDuration}
-						setSelected={setPollDuration}
+						defaultValue={0}
+						onChange={i => {
+							setCurrentState(s => ({
+								...s,
+								poll: {
+									...s.poll,
+									duration: i.value
+								}
+							}))
+						}}
 					/>
 				</div>
 				<div className="md:w-2/3 w-full flex items-center justify-between">
 					<p className="ml-2">Allow multiple answers</p>
 					<Switch
-						checked={poll.multiple}
+						checked={currentState.poll.multiple}
 						onChange={checked => {
-							setPoll(p => ({
-								...p,
-								multiple: checked,
+							setCurrentState(s => ({
+								...s,
+								poll: {
+									...s.poll,
+									multiple: checked,
+								},
 							}));
 						}}
 						className={classNames(
-							poll.multiple ? "bg-orange-600" : "bg-gray-200",
+							currentState.poll.multiple ? "bg-orange-600" : "bg-gray-200",
 							"relative inline-flex flex-shrink-0 h-6 w-11 border-2 border-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:outline-none",
 						)}>
 						<span className="sr-only">Use setting</span>
 						<span
 							aria-hidden="true"
 							className={classNames(
-								poll.multiple ? "translate-x-5" : "translate-x-0",
+								currentState.poll.multiple ? "translate-x-5" : "translate-x-0",
 								"pointer-events-none inline-block h-5 w-5 rounded-full bg-white shadow transform ring-0 transition ease-in-out duration-200",
 							)}
 						/>
@@ -529,12 +576,16 @@ function PollCreator({ poll, setPoll, pollDuration, setPollDuration }) {
 }
 
 
-function Files({ files, setFiles, setFileIds }) {
+function Files({ currentState, setCurrentState, setFileIds }: {
+	currentState: SendFormState,
+	setCurrentState: StateUpdater<SendFormState>,
+	setFileIds: any
+}) {
 	return (
 		<>
-			{files.length > 0 && (
+			{currentState.files.length > 0 && (
 				<div className="flex flex-wrap gap-4 bottom-0 flex-row px-4 w-full">
-					{files.map((file: File, index: number) => {
+					{currentState.files.map((file: File, index: number) => {
 						return (
 							<div
 								key={index}
@@ -543,7 +594,15 @@ function Files({ files, setFiles, setFileIds }) {
 								<Button
 									onClick={(e: any) => {
 										e.preventDefault();
-										setFiles(f => f.splice(index, 1));
+
+										let newFiles = currentState.files;
+
+										newFiles.splice(index, 1);
+										
+										setCurrentState(s => ({
+											...s,
+											files: newFiles,
+										}));
 										setFileIds(f => f.splice(index, 1));
 									}}
 									style="gray"
@@ -561,19 +620,20 @@ function Files({ files, setFiles, setFileIds }) {
 
 function ButtonRow({
 	fileInputRef,
-	setFiles,
-	setLoading,
 	setFileIds,
-	selectedVis,
-	setSelectedVis,
 	client,
-	selectedMode,
-	setSelectedMode,
-	setPoll,
-	poll,
+	setCurrentState,
+	currentState,
 	max_chars,
 	characters,
-	loading,
+}: {
+	fileInputRef: any;
+	setFileIds: any;
+	client: any;
+	setCurrentState: StateUpdater<SendFormState>;
+	currentState: SendFormState;
+	max_chars: any;
+	characters: any;
 }) {
 	return (
 		<div className="flex inset-x-0 bottom-0 justify-between py-2 pr-2 pl-3">
@@ -595,15 +655,21 @@ function ButtonRow({
 					multiple
 					onChange={async (e: JSXInternal.TargetedEvent<HTMLInputElement, Event>) => {
 						try {
-							setFiles(f => [...f, ...(e.target as any).files]);
-							setLoading(true);
+							setCurrentState(s => ({
+								...s,
+								loading: true,
+								files: [...s.files, ...(e.target as any).files],
+							}));
 							const ids = await Promise.all(
 								[...(e.target as any).files].map(async file => {
 									return (await client.uploadMedia((e.target as any).files[0]))
 										.data.id;
 								}),
 							);
-							setLoading(false);
+							setCurrentState(s => ({
+								...s,
+								loading: false,
+							}));
 							setFileIds(f => [...f, ...ids]);
 						} catch (error) {
 							console.error(error);
@@ -612,25 +678,41 @@ function ButtonRow({
 						}
 					}}
 				/>
-				<SmallSelect items={modes} selected={selectedMode} setSelected={setSelectedMode} />
-				<SmallSelect
+				<SmallSelect2 items={modes} defaultValue={0} onChange={(i) => {
+					setCurrentState(s => ({
+						...s,
+						mode: i
+					}))
+				}} />
+				<SmallSelect2
 					items={visibilities}
-					selected={selectedVis}
-					setSelected={setSelectedVis}
+					defaultValue={0}
+					onChange={i => {
+						setCurrentState(s => ({
+							...s,
+							visibility: i
+						}))
+					}}
 				/>
 				<button
 					type="button"
 					title="Create poll"
 					onClick={e => {
 						e.preventDefault();
-						if (poll) {
-							setPoll(null);
+						if (currentState.poll) {
+							setCurrentState(s => ({
+								...s,
+								poll: null,
+							}));
 						} else {
-							setPoll({
-								choices: [""],
-								duration: 1000,
-								multiple: false,
-							});
+							setCurrentState(s => ({
+								...s,
+								poll: {
+									choices: [""],
+									duration: 1000,
+									multiple: false,
+								},
+							}));
 						}
 					}}
 					className="flex relative flex-row gap-x-1 items-center p-2 text-gray-600 rounded duration-200 cursor-default dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">
@@ -664,8 +746,8 @@ function ButtonRow({
 					</svg>
 				</div>
 				<Button
-					isLoading={loading}
-					disabled={loading}
+					isLoading={currentState.loading}
+					disabled={currentState.loading}
 					style="orangeLight"
 					type="submit"
 					className="!px-4 !py-2 !text-base">
