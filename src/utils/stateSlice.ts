@@ -17,7 +17,7 @@ const stateSlice = createSlice({
 		replyingTo: null,
 		postComposerOpened: false,
 		notificationsOpened: false,
-		path: "/",
+		path: "",
 		sidebarOpened: false,
 		quotingTo: null,
 		viewingConversation: "",

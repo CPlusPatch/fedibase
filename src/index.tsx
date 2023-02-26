@@ -35,8 +35,8 @@ export default function Index() {
 	const [loginMode, setLoginMode] = useState<boolean>(false);
 
 	const handlePopState = (e: PopStateEvent) => {
-				dispatch(setPath((e.target as Window).location.pathname));
-			}
+		dispatch(setPath((e.target as Window).location.pathname));
+	}
 
 	useEffect(() => {
 		if (window) {
@@ -44,7 +44,12 @@ export default function Index() {
 				document.getElementsByTagName("html")[0].className += " dark";
 			}
 
-			const paths = state2.path.split("/");
+			let paths;
+			if (state2.path) {
+				paths = state2.path.split("/");
+			} else {
+				paths = window.location.pathname.split("/");
+			}
 
 			if (
 				(!localStorage.getItem("accessToken") || !localStorage.getItem("instanceType"))

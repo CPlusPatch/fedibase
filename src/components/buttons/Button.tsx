@@ -10,7 +10,7 @@ const styles = {
 
 interface ButtonProps {
 	children: any;
-	style?: any;
+	style?: "gray" | "orange" | "orangeLight" | "";
 	isLoading?: boolean;
 	spinnerClasses?: string;
 	ringColor?: string;
