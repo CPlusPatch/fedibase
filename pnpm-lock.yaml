@@ -1,12 +1,15 @@
 lockfileVersion: 5.4
 
 patchedDependencies:
-  react-redux@8.0.5:
-    hash: hvufui4hhf7sccsxfqzoxelhje
-    path: patches/react-redux@8.0.5.patch
   '@headlessui/react@1.7.11':
     hash: s3khnhj44qp6jhnkix4dxzv7mu
     path: patches/@headlessui__react@1.7.11.patch
+  react-redux@8.0.5:
+    hash: hvufui4hhf7sccsxfqzoxelhje
+    path: patches/react-redux@8.0.5.patch
+  '@types/react@18.0.28':
+    hash: iunzm7uxsm7gxbkhfmg7whmwnm
+    path: patches/@types__react@18.0.28.patch
 
 specifiers:
   '@headlessui/react': ^1.7.11
@@ -18,6 +21,7 @@ specifiers:
   '@tailwindcss/typography': ^0.5.9
   '@types/events': ^3.0.0
   '@types/node': ^18.14.0
+  '@types/react': ^18.0.28
   autoprefixer: ^10.4.13
   csstype: ^3.1.1
   eslint: ^8.34.0
@@ -29,6 +33,7 @@ specifiers:
   postcss: ^8.4.21
   preact: ^10.11.3
   querystring-es3: ^0.2.1
+  react-flip-move: ^3.0.5
   react-hot-toast: ^2.4.0
   react-is-visible: ^1.2.0
   react-redux: ^8.0.5
@@ -48,9 +53,10 @@ dependencies:
   performant-array-to-tree: 1.11.0
   preact: 10.12.1
   querystring-es3: 0.2.1
+  react-flip-move: 3.0.5
   react-hot-toast: 2.4.0_csstype@3.1.1
   react-is-visible: 1.2.0
-  react-redux: 8.0.5_hvufui4hhf7sccsxfqzoxelhje
+  react-redux: 8.0.5_hvufui4hhf7sccsxfqzoxelhje_@types+react@18.0.28
 
 devDependencies:
   '@preact/preset-vite': 2.5.0_preact@10.12.1+vite@4.1.4
@@ -59,6 +65,7 @@ devDependencies:
   '@tailwindcss/typography': 0.5.9_tailwindcss@3.2.7
   '@types/events': 3.0.0
   '@types/node': 18.14.1
+  '@types/react': 18.0.28_iunzm7uxsm7gxbkhfmg7whmwnm
   autoprefixer: 10.4.13_postcss@8.4.21
   eslint: 8.34.0
   eslint-config-preact: 1.3.0_7kw3g6rralp5ps6mg3uyzz6azm
@@ -774,7 +781,7 @@ packages:
         optional: true
     dependencies:
       immer: 9.0.19
-      react-redux: 8.0.5_hvufui4hhf7sccsxfqzoxelhje
+      react-redux: 8.0.5_hvufui4hhf7sccsxfqzoxelhje_@types+react@18.0.28
       redux: 4.2.1
       redux-thunk: 2.4.2_redux@4.2.1
       reselect: 4.1.7
@@ -837,7 +844,7 @@ packages:
   /@types/hoist-non-react-statics/3.3.1:
     resolution: {integrity: sha512-iMIqiko6ooLrTh1joXodJK5X9xeEALT1kM5G3ZLhD3hszxBdIEd5C75U834D9mLcINgD4OyZf5uQXjkuYydWvA==}
     dependencies:
-      '@types/react': 18.0.28
+      '@types/react': 18.0.28_iunzm7uxsm7gxbkhfmg7whmwnm
       hoist-non-react-statics: 3.3.2
     dev: false
 
@@ -856,19 +863,17 @@ packages:
 
   /@types/prop-types/15.7.5:
     resolution: {integrity: sha512-JCB8C6SnDoQf0cNycqd/35A7MjcnK+ZTqE7judS6o7utxUCg6imJg3QK2qzHKszlTjcj2cn+NwMB2i96ubpj7w==}
-    dev: false
 
-  /@types/react/18.0.28:
+  /@types/react/18.0.28_iunzm7uxsm7gxbkhfmg7whmwnm:
     resolution: {integrity: sha512-RD0ivG1kEztNBdoAK7lekI9M+azSnitIn85h4iOiaLjaTrMjzslhaqCGaI4IyCJ1RljWiLCEu4jyrLLgqxBTew==}
     dependencies:
       '@types/prop-types': 15.7.5
       '@types/scheduler': 0.16.2
       csstype: 3.1.1
-    dev: false
+    patched: true
 
   /@types/scheduler/0.16.2:
     resolution: {integrity: sha512-hppQEBDmlwhFAXKJX2KnWLYu5yMfi91yazPb2l+lbJiwW+wdo1gNeRA+3RgNSO39WYX2euey41KEwnqesU2Jew==}
-    dev: false
 
   /@types/semver/7.3.13:
     resolution: {integrity: sha512-21cFJr9z3g5dW8B0CVI9g2O9beqaThGQ6ZFBqHfwhzLDKUxaqTIy3vnfah/UPkfOiF2pLq+tGz+W8RyCskuslw==}
@@ -1272,7 +1277,6 @@ packages:
 
   /csstype/3.1.1:
     resolution: {integrity: sha512-DJR/VvkAvSZW9bTouZue2sSxDwdTN92uHjqeKVm+0dAqdfNykRzQ95tay8aXMBAAPpUiq4Qcug2L7neoRh2Egw==}
-    dev: false
 
   /dayjs/1.11.7:
     resolution: {integrity: sha512-+Yw9U6YO5TQohxLcIkrXBeY73WP3ejHWVvx8XCk3gxvQDCTEmS48ZrSZCKciI7Bhl/uCMyxYtE9UqRILmFphkQ==}
@@ -2591,6 +2595,13 @@ packages:
     engines: {node: '>=10'}
     dev: true
 
+  /react-flip-move/3.0.5:
+    resolution: {integrity: sha512-Mf4XpbkUNZy9eu80iXXFIjToDvw+bnHxmKHVoositbMpV87O/EQswnXUqVovRHoTx/F+4dE+p//PyJnAT7OtPA==}
+    peerDependencies:
+      react: '>=16.3.x'
+      react-dom: '>=16.3.x'
+    dev: false
+
   /react-hot-toast/2.4.0_csstype@3.1.1:
     resolution: {integrity: sha512-qnnVbXropKuwUpriVVosgo8QrB+IaPJCpL8oBI6Ov84uvHZ5QQcTp2qg6ku2wNfgJl6rlQXJIQU5q+5lmPOutA==}
     engines: {node: '>=10'}
@@ -2620,7 +2631,7 @@ packages:
     resolution: {integrity: sha512-xWGDIW6x921xtzPkhiULtthJHoJvBbF3q26fzloPCK0hsvxtPVelvftw3zjbHWSkR2km9Z+4uxbDDK/6Zw9B8w==}
     dev: false
 
-  /react-redux/8.0.5_hvufui4hhf7sccsxfqzoxelhje:
+  /react-redux/8.0.5_hvufui4hhf7sccsxfqzoxelhje_@types+react@18.0.28:
     resolution: {integrity: sha512-Q2f6fCKxPFpkXt1qNRZdEDLlScsDWyrgSj0mliK59qU6W5gvBiKkdMEG2lJzhd1rCctf0hb6EtePPLZ2e0m1uw==}
     peerDependencies:
       '@types/react': ^16.8 || ^17.0 || ^18.0
@@ -2643,6 +2654,7 @@ packages:
     dependencies:
       '@babel/runtime': 7.21.0
       '@types/hoist-non-react-statics': 3.3.1
+      '@types/react': 18.0.28_iunzm7uxsm7gxbkhfmg7whmwnm
       '@types/use-sync-external-store': 0.0.3
       hoist-non-react-statics: 3.3.2
       react-is: 18.2.0

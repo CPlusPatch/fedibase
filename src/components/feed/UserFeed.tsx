@@ -12,12 +12,16 @@ export const UserFeed = ({ account }: { account: Entity.Account }) => {
 		<>
 			{account && (
 				<div className="flex flex-col w-full h-full">
-					<div
-						className="flex overflow-y-scroll flex-col gap-y-5 px-6 py-4 no-scroll">
+					<div className="flex overflow-y-scroll flex-col gap-y-5 px-6 py-4 no-scroll">
 						<UserProfile user={account} />
-						<Feed<Entity.Status> type={FeedType.User} entityElement={Post} options={{
-							id: account.id
-						}}/>
+						<Feed<Entity.Status>
+							type={FeedType.User}
+							onChange={() => {}}
+							entityElement={Post}
+							options={{
+								id: account.id,
+							}}
+						/>
 					</div>
 				</div>
 			)}

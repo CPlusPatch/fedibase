@@ -3,22 +3,21 @@ import DummyStatus from "components/posts/DummyStatus";
 import { Response } from "megalodon";
 import { dedupeById } from "utils/functions";
 import { useIsVisible } from "react-is-visible";
-import { setInterval } from "timers";
 import { DummyNotification } from "components/scroll/InfiniteScrollNotifications";
 import { useState, useRef, useContext, useCallback, useEffect } from "preact/hooks";
 import { memo } from "preact/compat";
-
 
 export enum FeedType {
 	Home = "home",
 	User = "user",
 	Notifications = "notifications",
-	Local = "local"
+	Local = "local",
 }
 
 interface FeedProps {
 	type: FeedType;
 	entityElement: any;
+	onChange: (entities: any) => void;
 	options?: {
 		id: string;
 		filter?: string;
@@ -121,6 +120,8 @@ function Feed<T>(props: FeedProps) {
 				const latestEntities = await getNewEntities("");
 
 				entitiesRef.current = dedupeById(latestEntities as any) as T[];
+
+				props.onChange(latestEntities);
 				setEntities(entitiesRef.current);
 			}
 		}
@@ -137,6 +138,7 @@ function Feed<T>(props: FeedProps) {
 					...latestEntities,
 					...entitiesRef.current,
 				] as any) as T[];
+				props.onChange(latestEntities);
 				setEntities(entitiesRef.current);
 			}
 		}, 15000);
@@ -145,41 +147,48 @@ function Feed<T>(props: FeedProps) {
 	}, [getNewEntities]);
 
 	useEffect(() => {
-		async function loadNewEntities() {
+		async function loadMoreEntities() {
 			if (doLoadNewEntities && !loading.current) {
 				const latestPosts = await loadEntitiesBefore(
 					(entitiesRef.current[entitiesRef.current.length - 1] as any).id,
 				);
 
-				entitiesRef.current = dedupeById([...entitiesRef.current, ...latestPosts] as any) as T[];
+				entitiesRef.current = dedupeById([
+					...entitiesRef.current,
+					...latestPosts,
+				] as any) as T[];
+				props.onChange(latestPosts);
 				setEntities(entitiesRef.current);
 			}
 		}
 
-		loadNewEntities();
+		loadMoreEntities();
 	}, [doLoadNewEntities, loadEntitiesBefore]);
 
 	return (
 		<>
 			{props.type !== FeedType.Notifications &&
-				entities.map((entity: any, index) => (
+				entities.map((entity: any) => (
 					<props.entityElement key={entity.id} entity={entity} />
 				))}
+
 			{props.type === FeedType.Notifications &&
-				entities.filter(e=> {
-					switch (props.options.filter) {
-						case "all":
-							return true;
-						case "reblogs":
-							return (e as Entity.Notification).type === "reblog";
-						case "mention":
-							return (e as Entity.Notification).type === "mention";
-						case "favourites":
-							return (e as Entity.Notification).type === "favourite";
-					}
-				}).map((entity: any, index) => (
-					<props.entityElement key={entity.id} entity={entity} />
-				))}
+				entities
+					.filter(e => {
+						switch (props.options.filter) {
+							case "all":
+								return true;
+							case "reblogs":
+								return (e as Entity.Notification).type === "reblog";
+							case "mention":
+								return (e as Entity.Notification).type === "mention";
+							case "favourites":
+								return (e as Entity.Notification).type === "favourite";
+						}
+					})
+					.map((entity: any, index) => (
+						<props.entityElement key={entity.id} entity={entity} />
+					))}
 			{(props.type === FeedType.Home || props.type === FeedType.User) && (
 				<>
 					<div ref={loadNewRef}>

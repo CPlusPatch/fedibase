@@ -1,0 +1,13 @@
+diff --git a/index.d.ts b/index.d.ts
+index b18b5bbcaaa93209c81584ad5d5552a2a93c3f6d..aed1e367ec552ad01eb9d061bba26814f1e86731 100755
+--- a/index.d.ts
++++ b/index.d.ts
+@@ -179,7 +179,7 @@ declare namespace React {
+ 
+     interface ReactPortal extends ReactElement {
+         key: Key | null;
+-        children: ReactNode;
++        children: any;
+     }
+ 
+     //
