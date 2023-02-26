@@ -164,6 +164,28 @@ const pollDurations = [
 	},
 ];
 
+const renderFilePreview = file => {
+	if (file.type.includes("image")) {
+		return (
+			<img
+				alt=""
+				src={window.URL.createObjectURL(file)}
+				className="object-cover w-full h-full"
+			/>
+		);
+	} else if (file.type.includes("video")) {
+		return <video src={window.URL.createObjectURL(file)} controls className="w-full h-full" />;
+	} else if (file.type.includes("audio")) {
+		return <audio src={window.URL.createObjectURL(file)} controls className="w-full h-full" />;
+	} else {
+		return (
+			<div className="w-20 h-full flex items-center justify-center">
+				<IconFile className="w-6 h-6" />
+			</div>
+		);
+	}
+};
+
 function SendForm() {
 	// Context stuff
 	const client = useContext(AuthContext);
@@ -194,32 +216,6 @@ function SendForm() {
 	// Element refs
 	const fileInputRef = useRef<HTMLInputElement>(null);
 	const textareaRef = useRef<HTMLTextAreaElement>(null);
-
-	const renderFilePreview = (file) => {
-		if (file.type.includes("image")) {
-			return (
-				<img
-					alt=""
-					src={window.URL.createObjectURL(file)}
-					className="object-cover w-full h-full"
-				/>
-			);
-		} else if (file.type.includes("video")) {
-			return (
-				<video src={window.URL.createObjectURL(file)} controls className="w-full h-full" />
-			);
-		} else if (file.type.includes("audio")) {
-			return (
-				<audio src={window.URL.createObjectURL(file)} controls className="w-full h-full" />
-			);
-		} else {
-			return (
-				<div className="w-20 h-full flex items-center justify-center">
-					<IconFile className="w-6 h-6" />
-				</div>
-			)
-		}
-	};
 
 	useEffect(() => {
 		// YES, I KNOW YOU CAN SHORTEN THIS I JUST DONT CARE
@@ -404,120 +400,10 @@ function SendForm() {
 					/>
 
 					{poll && (
-						<div className="flex w-full px-4 flex-col gap-y-2">
-							<ol className="flex-col w-full gap-y-4 flex">
-								{poll.choices.map((choice, index) => (
-									<li
-										key={index}
-										className="inline-flex w-full justify-between items-center gap-x-3">
-										<div className="flex items-center gap-x-2 grow">
-											{index + 1}.
-											<div className="grow">
-												<Input
-													onChange={(e: any) => {
-														let pollCopy = poll;
-
-														pollCopy.choices[index] = e.target.value;
-
-														setPoll(p => pollCopy);
-													}}
-													isLoading={false}
-													className="!w-full"
-													placeholder="Poll choice here"
-													name={"test"}>
-													{""}
-												</Input>
-											</div>
-										</div>
-										<button
-											onClick={e => {
-												e.preventDefault();
-												let pollCopy = poll;
-												pollCopy.choices.splice(index);
-
-												setPoll(p => ({
-													...p,
-													choices: pollCopy.choices,
-												}));
-											}}>
-											<IconX className="w-5 h-5" />
-										</button>
-									</li>
-								))}
-								<Button
-									onClick={e => {
-										e.preventDefault();
-
-										setPoll(p => ({
-											...p,
-											choices: [...p.choices, ""],
-										}));
-									}}
-									style="orangeLight"
-									type=""
-									className="w-full">
-									Add answer
-								</Button>
-							</ol>
-							<div className="z-[99] flex items-center gap-x-3 flex-col md:flex-row gap-y-2">
-								<div className="md:w-1/3 w-full">
-									<Select
-										items={pollDurations}
-										selected={pollDuration}
-										setSelected={setPollDuration}
-									/>
-								</div>
-								<div className="md:w-2/3 w-full flex items-center justify-between">
-									<p className="ml-2">Allow multiple answers</p>
-									<Switch
-										checked={poll.multiple}
-										onChange={checked => {
-											setPoll(p => ({
-												...p,
-												multiple: checked,
-											}));
-										}}
-										className={classNames(
-											poll.multiple ? "bg-orange-600" : "bg-gray-200",
-											"relative inline-flex flex-shrink-0 h-6 w-11 border-2 border-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:outline-none",
-										)}>
-										<span className="sr-only">Use setting</span>
-										<span
-											aria-hidden="true"
-											className={classNames(
-												poll.multiple ? "translate-x-5" : "translate-x-0",
-												"pointer-events-none inline-block h-5 w-5 rounded-full bg-white shadow transform ring-0 transition ease-in-out duration-200",
-											)}
-										/>
-									</Switch>
-								</div>
-							</div>
-						</div>
+						<PollCreator poll={poll} pollDuration={pollDuration} setPoll={setPoll} setPollDuration={setPollDuration} />
 					)}
 
-					{files.length > 0 && (
-						<div className="flex flex-wrap gap-4 bottom-0 flex-row px-4 w-full">
-							{files.map((file: File, index: number) => {
-								return (
-									<div
-										key={index}
-										className="overflow-hidden relative h-24 rounded-lg border-2">
-										{renderFilePreview(file)}
-										<Button
-											onClick={(e: any) => {
-												e.preventDefault();
-												setFiles(f => f.splice(index, 1));
-												setFileIds(f => f.splice(index, 1));
-											}}
-											style="gray"
-											className="!absolute top-2 right-2 !p-2">
-											<IconX className="w-4 h-4" />
-										</Button>
-									</div>
-								);
-							})}
-						</div>
-					)}
+					<Files files={files} setFileIds={setFileIds} setFiles={setFiles} />
 
 					<Transition
 						as={Fragment}
@@ -550,120 +436,261 @@ function SendForm() {
 						</div>
 					</Transition>
 
-					<div className="flex inset-x-0 bottom-0 justify-between py-2 pr-2 pl-3">
-						<div className="flex items-center space-x-1">
-							<button
-								type="button"
-								onClick={() => {
-									if (fileInputRef.current) fileInputRef.current.click();
-								}}
-								title="Attach a file"
-								className="flex relative flex-row gap-x-1 items-center p-2 text-gray-600 rounded duration-200 cursor-default dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">
-								<IconPaperclip className="w-6 h-6" aria-hidden="true" />
-								<span className="sr-only">Attach a file</span>
-							</button>
-							<input
-								type="file"
-								className="hidden"
-								ref={fileInputRef}
-								multiple
-								onChange={async (
-									e: JSXInternal.TargetedEvent<HTMLInputElement, Event>,
-								) => {
-									try {
-										setFiles(f => [...f, ...(e.target as any).files]);
-										setLoading(true);
-										const ids = await Promise.all(
-											[...(e.target as any).files].map(async file => {
-												return (
-													await client.uploadMedia(
-														(e.target as any).files[0],
-													)
-												).data.id;
-											}),
-										);
-										setLoading(false);
-										setFileIds(f => [...f, ...ids]);
-									} catch (error) {
-										console.error(error);
-										toast.error("Couldn't upload files :(");
-										// Handle error
-									}
-								}}
-							/>
-							<SmallSelect
-								items={modes}
-								selected={selectedMode}
-								setSelected={setSelectedMode}
-							/>
-							<SmallSelect
-								items={visibilities}
-								selected={selectedVis}
-								setSelected={setSelectedVis}
-							/>
-							<button
-								type="button"
-								title="Create poll"
-								onClick={e => {
-									e.preventDefault();
-									if (poll) {
-										setPoll(null);
-									} else {
-										setPoll({
-											choices: [""],
-											duration: 1000,
-											multiple: false,
-										});
-									}
-								}}
-								className="flex relative flex-row gap-x-1 items-center p-2 text-gray-600 rounded duration-200 cursor-default dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">
-								<IconChartBar className="w-6 h-6" aria-hidden="true" />
-								<span className="sr-only">Create a poll</span>
-							</button>
-						</div>
-						<div className="flex flex-row flex-shrink-0 gap-x-4 items-center">
-							<div className="flex flex-row gap-x-2 items-center">
-								<span className="text-gray-600 dark:text-gray-300">
-									{(max_chars ?? 500) - characters.length}
-								</span>
-								<svg width="27" height="27" viewBox="0 0 27 27" aria-hidden={true}>
-									<circle
-										cx="13.5"
-										cy="13.5"
-										r="10"
-										fill="none"
-										strokeWidth="3"
-										className="stroke-gray-500 dark:stroke-white/80"></circle>
-									<circle
-										cx="13.5"
-										cy="13.5"
-										r="10"
-										fill="none"
-										strokeDasharray={
-											(1 - characters.length / (max_chars ?? 500)) * 62.832
-										}
-										strokeDashoffset="62.832"
-										strokeLinecap="round"
-										strokeWidth="3.5"
-										className="stroke-orange-500"></circle>
-								</svg>
-							</div>
-							<Button
-								isLoading={loading}
-								disabled={loading}
-								style="orangeLight"
-								type="submit"
-								className="!px-4 !py-2 !text-base">
-								Post
-							</Button>
-						</div>
-					</div>
+					<ButtonRow characters={characters} fileInputRef={fileInputRef} setFileIds={setFileIds} client={client} loading={loading} max_chars={max_chars} poll={poll} selectedMode={selectedMode} selectedVis={selectedVis} setFiles={setFiles} setLoading={setLoading} setPoll={setPoll} setSelectedMode={setSelectedMode} setSelectedVis={setSelectedVis} />
 				</div>
 			</form>
 		</div>
 	);
 }
 
+function PollCreator({ poll, setPoll, pollDuration, setPollDuration }) {
+	return (
+		<div className="flex w-full px-4 flex-col gap-y-2">
+			<ol className="flex-col w-full gap-y-4 flex">
+				{poll.choices.map((choice, index) => (
+					<li
+						key={index}
+						className="inline-flex w-full justify-between items-center gap-x-3">
+						<div className="flex items-center gap-x-2 grow">
+							{index + 1}.
+							<div className="grow">
+								<Input
+									onChange={(e: any) => {
+										setPoll(p => ({
+											...p,
+											choices: [
+												...p.choices.slice(0, index),
+												e.target.value,
+												...p.choices.slice(index + 1),
+											],
+										}));
+									}}
+									isLoading={false}
+									className="!w-full"
+									placeholder="Poll choice here"
+									name={"test"}>
+									{""}
+								</Input>
+							</div>
+						</div>
+						{index === poll.choices.length - 1 && (
+							<button
+								onClick={e => {
+									e.preventDefault();
+									let pollCopy = poll;
+									pollCopy.choices.splice(index, 1);
+
+									console.log(poll.choices);
+
+									setPoll(p => ({
+										...p,
+										choices: pollCopy.choices,
+									}));
+								}}>
+								<IconX className="w-5 h-5" />
+							</button>
+						)}
+					</li>
+				))}
+				<Button
+					onClick={e => {
+						e.preventDefault();
+
+						setPoll(p => ({
+							...p,
+							choices: [...p.choices, ""],
+						}));
+					}}
+					style="orangeLight"
+					type=""
+					className="w-full">
+					Add answer
+				</Button>
+			</ol>
+			<div className="z-[99] flex items-center gap-x-3 flex-col md:flex-row gap-y-2">
+				<div className="md:w-1/3 w-full">
+					<Select
+						items={pollDurations}
+						selected={pollDuration}
+						setSelected={setPollDuration}
+					/>
+				</div>
+				<div className="md:w-2/3 w-full flex items-center justify-between">
+					<p className="ml-2">Allow multiple answers</p>
+					<Switch
+						checked={poll.multiple}
+						onChange={checked => {
+							setPoll(p => ({
+								...p,
+								multiple: checked,
+							}));
+						}}
+						className={classNames(
+							poll.multiple ? "bg-orange-600" : "bg-gray-200",
+							"relative inline-flex flex-shrink-0 h-6 w-11 border-2 border-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:outline-none",
+						)}>
+						<span className="sr-only">Use setting</span>
+						<span
+							aria-hidden="true"
+							className={classNames(
+								poll.multiple ? "translate-x-5" : "translate-x-0",
+								"pointer-events-none inline-block h-5 w-5 rounded-full bg-white shadow transform ring-0 transition ease-in-out duration-200",
+							)}
+						/>
+					</Switch>
+				</div>
+			</div>
+		</div>
+	);
+}
+
+
+function Files({ files, setFiles, setFileIds }) {
+	return (
+		<>
+			{files.length > 0 && (
+				<div className="flex flex-wrap gap-4 bottom-0 flex-row px-4 w-full">
+					{files.map((file: File, index: number) => {
+						return (
+							<div
+								key={index}
+								className="overflow-hidden relative h-24 rounded-lg border-2">
+								{renderFilePreview(file)}
+								<Button
+									onClick={(e: any) => {
+										e.preventDefault();
+										setFiles(f => f.splice(index, 1));
+										setFileIds(f => f.splice(index, 1));
+									}}
+									style="gray"
+									className="!absolute top-2 right-2 !p-2">
+									<IconX className="w-4 h-4" />
+								</Button>
+							</div>
+						);
+					})}
+				</div>
+			)}
+		</>
+	);
+}
+
+function ButtonRow({
+	fileInputRef,
+	setFiles,
+	setLoading,
+	setFileIds,
+	selectedVis,
+	setSelectedVis,
+	client,
+	selectedMode,
+	setSelectedMode,
+	setPoll,
+	poll,
+	max_chars,
+	characters,
+	loading,
+}) {
+	return (
+		<div className="flex inset-x-0 bottom-0 justify-between py-2 pr-2 pl-3">
+			<div className="flex items-center space-x-1">
+				<button
+					type="button"
+					onClick={() => {
+						if (fileInputRef.current) fileInputRef.current.click();
+					}}
+					title="Attach a file"
+					className="flex relative flex-row gap-x-1 items-center p-2 text-gray-600 rounded duration-200 cursor-default dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">
+					<IconPaperclip className="w-6 h-6" aria-hidden="true" />
+					<span className="sr-only">Attach a file</span>
+				</button>
+				<input
+					type="file"
+					className="hidden"
+					ref={fileInputRef}
+					multiple
+					onChange={async (e: JSXInternal.TargetedEvent<HTMLInputElement, Event>) => {
+						try {
+							setFiles(f => [...f, ...(e.target as any).files]);
+							setLoading(true);
+							const ids = await Promise.all(
+								[...(e.target as any).files].map(async file => {
+									return (await client.uploadMedia((e.target as any).files[0]))
+										.data.id;
+								}),
+							);
+							setLoading(false);
+							setFileIds(f => [...f, ...ids]);
+						} catch (error) {
+							console.error(error);
+							toast.error("Couldn't upload files :(");
+							// Handle error
+						}
+					}}
+				/>
+				<SmallSelect items={modes} selected={selectedMode} setSelected={setSelectedMode} />
+				<SmallSelect
+					items={visibilities}
+					selected={selectedVis}
+					setSelected={setSelectedVis}
+				/>
+				<button
+					type="button"
+					title="Create poll"
+					onClick={e => {
+						e.preventDefault();
+						if (poll) {
+							setPoll(null);
+						} else {
+							setPoll({
+								choices: [""],
+								duration: 1000,
+								multiple: false,
+							});
+						}
+					}}
+					className="flex relative flex-row gap-x-1 items-center p-2 text-gray-600 rounded duration-200 cursor-default dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">
+					<IconChartBar className="w-6 h-6" aria-hidden="true" />
+					<span className="sr-only">Create a poll</span>
+				</button>
+			</div>
+			<div className="flex flex-row flex-shrink-0 gap-x-4 items-center">
+				<div className="flex flex-row gap-x-2 items-center">
+					<span className="text-gray-600 dark:text-gray-300">
+						{(max_chars ?? 500) - characters.length}
+					</span>
+					<svg width="27" height="27" viewBox="0 0 27 27" aria-hidden={true}>
+						<circle
+							cx="13.5"
+							cy="13.5"
+							r="10"
+							fill="none"
+							strokeWidth="3"
+							className="stroke-gray-500 dark:stroke-white/80"></circle>
+						<circle
+							cx="13.5"
+							cy="13.5"
+							r="10"
+							fill="none"
+							strokeDasharray={(1 - characters.length / (max_chars ?? 500)) * 62.832}
+							strokeDashoffset="62.832"
+							strokeLinecap="round"
+							strokeWidth="3.5"
+							className="stroke-orange-500"></circle>
+					</svg>
+				</div>
+				<Button
+					isLoading={loading}
+					disabled={loading}
+					style="orangeLight"
+					type="submit"
+					className="!px-4 !py-2 !text-base">
+					Post
+				</Button>
+			</div>
+		</div>
+	);
+}
 function EmojiItem({ emoji, onClick }: any) {
 	return (
 		<div
