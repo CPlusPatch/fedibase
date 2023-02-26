@@ -3,7 +3,7 @@ import { AuthContext } from "components/context/AuthContext";
 import { Entity } from "megalodon";
 import { useContext, useRef, useState } from "preact/hooks";
 import { useDispatch } from "react-redux";
-import { fromNow, smoothNavigate, withEmojis } from "utils/functions";
+import { classNames, fromNow, smoothNavigate, withEmojis } from "utils/functions";
 import InteractionBar from "./InteractionBar";
 import PostImages from "./PostImages";
 import ReplyTo from "./ReplyTo";
@@ -47,35 +47,41 @@ export default function Status({ status: statusProp, type, showInteraction = tru
 	};
 
 	return (
-		<div className="flex flex-col max-w-full">
+		<div className="flex flex-col max-w-full font-inter">
 			<div className="flex flex-row max-w-full">
-				<a
-					href={`/users/${status.account.id}`}
-					onClick={handleUserClick}
-					className="flex-shrink-0 mr-4">
-					<img
-						loading="lazy"
-						alt={`${status.account.acct}'s avatar`}
-						src={status.account.avatar}
-						className={`${
-							type == StatusType.Post ? "w-14 h-14" : "w-8 h-8"
-						} bg-white bg-dark rounded border border-gray-300 dark:border-gray-700 `}
-					/>
-				</a>
-				<div className="flex flex-col min-w-0 grow">
-					<div className="justify-between gap-x-2 text-[0.95rem] flex flex-row">
-						<span className="flex overflow-hidden flex-col whitespace-nowrap md:inline text-ellipsis">
-							<h4
-								className="inline font-bold dark:text-gray-200"
-								title={status.account.display_name}>
-								{withEmojis(status.account.display_name, status.account.emojis)}
-							</h4>
-							<h6
-								title={status.account.acct}
-								className="inline overflow-hidden ml-0 text-gray-500 overflow-ellipsis dark:text-gray-400 md:ml-2">
-								@{status.account.acct}
-							</h6>
-						</span>
+				<div className="flex flex-col min-w-0 grow gap-y-1">
+					<div className="gap-x-2 text-[0.95rem] flex flex-row justify-between">
+						<div className="flex flex-row">
+							<a
+								href={`/users/${status.account.id}`}
+								onClick={handleUserClick}
+								className="flex-shrink-0 mr-2">
+								<img
+									loading="lazy"
+									alt={`${status.account.acct}'s avatar`}
+									src={status.account.avatar}
+									className={`${
+										type == StatusType.Post ? "w-12 h-12" : "w-10 h-10"
+									} bg-white overflow-hidden bg-dark rounded border border-gray-300 dark:border-gray-700 `}
+								/>
+							</a>
+							<span
+								className={classNames(
+									"flex overflow-hidden flex-col whitespace-nowrap md:inline text-ellipsis",
+									type === StatusType.Notification && "text-sm",
+								)}>
+								<h4
+									className="font-bold dark:text-gray-200"
+									title={status.account.display_name}>
+									{withEmojis(status.account.display_name, status.account.emojis)}
+								</h4>
+								<h6
+									title={status.account.acct}
+									className="overflow-hidden ml-0 text-gray-500 overflow-ellipsis dark:text-gray-400">
+									@{status.account.acct}
+								</h6>
+							</span>
+						</div>
 						<div className="whitespace-nowrap">
 							<a
 								href={`/posts/${status.id}`}
@@ -173,7 +179,11 @@ export default function Status({ status: statusProp, type, showInteraction = tru
 												</span>
 												{!status.poll.voted && (
 													<input
-														type={status.poll.multiple ? "checkbox" : "radio"}
+														type={
+															status.poll.multiple
+																? "checkbox"
+																: "radio"
+														}
 														name="poll"
 														className="z-10 focus:outline-none focus:ring-0 rounded outline-none m-0 p-0"
 														value={index}

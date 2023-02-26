@@ -1,4 +1,5 @@
 import { useEffect, useState } from "preact/hooks";
+import { StatusType } from "./Status";
 
 export default function DummyStatus({ type = "post" }: { type: "post" | "notification" }) {
 	const [random, setRandom] = useState<number>(0);
@@ -9,29 +10,31 @@ export default function DummyStatus({ type = "post" }: { type: "post" | "notific
 	return (
 		<div className="flex flex-col max-w-full" aria-hidden={true}>
 			<div className="flex flex-row max-w-full">
-				<span className="flex-shrink-0 mr-4">
-					<div
-						className={`${
-							type == "post" ? "w-14 h-14" : "w-8 h-8"
-						} bg-gray-300 dark:bg-gray-500/40 animate-pulse rounded border border-gray-300 dark:border-gray-700 `}
-					/>
-				</span>
-				<div className="flex flex-col min-w-0 grow">
-					<div className="justify-between gap-x-2 text-[0.95rem] flex flex-row">
-						<span className="flex overflow-hidden flex-col gap-y-1 whitespace-nowrap md:inline">
-							<h4
-								style={{
-									width: `${random * 100 + 100}px`,
-								}}
-								className="inline-block h-4 font-bold bg-gray-300 rounded animate-pulse dark:text-gray-200 dark:bg-gray-500/40"></h4>
-							<h6
-								style={{
-									width: `${random * 150 + 100}px`,
-								}}
-								className="inline-block overflow-hidden ml-0 w-12 h-4 text-gray-500 overflow-ellipsis rounded animate-pulse bg-gray-v dark:text-gray-400 md:ml-2 dark:bg-gray-500/40"></h6>
-						</span>
+				<div className="flex flex-col min-w-0 grow gap-y-2">
+					<div className="gap-x-2 text-[0.95rem] flex flex-row justify-between">
+						<div className="flex flex-row">
+							<div className="flex-shrink-0 mr-2">
+								<div
+									className={`${
+										type == StatusType.Post ? "w-12 h-12" : "w-10 h-10"
+									} overflow-hidden rounded border border-gray-300 dark:border-gray-700 bg-gray-300 animate-pulse dark:text-gray-200 dark:bg-gray-500/40 `}
+								/>
+							</div>
+							<span className="flex overflow-hidden flex-col whitespace-nowrap md:inline text-ellipsis justif-between">
+								<h4
+									style={{
+										width: `${random * 100 + 100}px`,
+									}}
+									className="mt-0.5 h-4 font-bold bg-gray-300 rounded animate-pulse dark:text-gray-200 dark:bg-gray-500/40"></h4>
+								<h6
+									style={{
+										width: `${random * 150 + 100}px`,
+									}}
+									className="mt-2 overflow-hidden ml-0 w-12 h-4 text-gray-500 overflow-ellipsis rounded animate-pulse bg-gray-300 dark:text-gray-400 dark:bg-gray-500/40"></h6>
+							</span>
+						</div>
 						<div className="whitespace-nowrap">
-							<span className="inline-block w-12 h-4 text-sm text-gray-700 bg-gray-300 rounded animate-pulse dark:text-gray-300 hover:underline dark:bg-gray-500/40"></span>
+							<span className="text-sm text-gray-700 bg-gray-300 rounded inline-block w-12 h-4 dark:bg-gray-500/40 animate-pulse dark:text-gray-300 hover:underline"></span>
 						</div>
 					</div>
 					<div className="flex flex-col gap-y-1">
