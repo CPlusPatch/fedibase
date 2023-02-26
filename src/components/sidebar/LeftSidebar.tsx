@@ -205,7 +205,7 @@ function SendForm() {
 	// Context stuff
 	const client = useContext(AuthContext);
 
-	const state2 = useSelector(state => (state as any).state as StateType);
+	const state = useSelector(state => (state as any).state as StateType);
 	const dispatch = useDispatch();
 
 	const [currentState, setCurrentState] = useState<SendFormState>({
@@ -218,13 +218,7 @@ function SendForm() {
 		emojis: [],
 		emojisSuggestions: [],
 		poll: null
-	})
-
-	// State stuff
-	const [fileIds, setFileIds] = useState<string[]>([]);
-	const [characters, setCharacters] = useState<string>("");
-	const [emojis, setEmojis] = useState<Entity.Emoji[]>([]);
-	const [emojisSuggestions, setEmojisSuggestions] = useState<Entity.Emoji[]>([]);
+	});
 
 	const max_chars = (JSON.parse(localStorage.getItem("instanceData") ?? "{}") as Entity.Instance)
 		.max_toot_chars;
@@ -234,7 +228,7 @@ function SendForm() {
 	const textareaRef = useRef<HTMLTextAreaElement>(null);
 
 	useEffect(() => {
-		const { replyingTo, quotingTo } = state2;
+		const { replyingTo, quotingTo } = state;
 		let otherPost = replyingTo ?? quotingTo ?? null;
 
 		if (otherPost) {
@@ -251,7 +245,10 @@ function SendForm() {
 				.join(" ");
 
 			if (mentions) {
-				setCharacters(`${mentions} `);
+				setCurrentState(s => ({
+					...s,
+					characters: `${mentions} `,
+				}));
 			}
 
 			setCurrentState(s => ({
@@ -264,9 +261,12 @@ function SendForm() {
 		textareaRef.current?.focus();
 
 		client?.getInstanceCustomEmojis().then(data => {
-			setEmojis(data.data);
+			setCurrentState(s => ({
+				emojis: data.data,
+				...s
+			}));
 		});
-	}, [client, state2.replyingTo, state2.quotingTo]);
+	}, [client, state.replyingTo, state.quotingTo]);
 
 	const submitForm = async event => {
 		event.preventDefault();
@@ -277,14 +277,14 @@ function SendForm() {
 
 		const { comment } = event.target.elements;
 		const text = comment.value;
-		const inReplyToId = state2.replyingTo?.id;
-		const quoteId = state2.quotingTo?.id;
+		const inReplyToId = state.replyingTo?.id;
+		const quoteId = state.quotingTo?.id;
 
 		try {
 			await client.postStatus(text, {
 				in_reply_to_id: inReplyToId,
 				visibility: currentState.visibility.value as any,
-				media_ids: fileIds,
+				media_ids: currentState.fileIds,
 				quote_id: quoteId,
 				poll:
 					currentState.poll && currentState.poll.choices.length > 0
@@ -331,25 +331,25 @@ function SendForm() {
 					}`}>
 					<div className="flex justify-between p-3 w-full">
 						<h1 className="text-xl font-bold dark:text-gray-50">
-							{state2.replyingTo && (
+							{state.replyingTo && (
 								<>
 									Replying to{" "}
 									{withEmojis(
-										state2.replyingTo.account.display_name,
-										state2.replyingTo.account.emojis,
+										state.replyingTo.account.display_name,
+										state.replyingTo.account.emojis,
 									)}
 								</>
 							)}
-							{state2.quotingTo && (
+							{state.quotingTo && (
 								<>
 									Quoting{" "}
 									{withEmojis(
-										state2.quotingTo.account.display_name,
-										state2.quotingTo.account.emojis,
+										state.quotingTo.account.display_name,
+										state.quotingTo.account.emojis,
 									)}
 								</>
 							)}
-							{!(state2.replyingTo || state2.quotingTo) && <>Compose</>}
+							{!(state.replyingTo || state.quotingTo) && <>Compose</>}
 						</h1>
 						<button
 							onClick={e => {
@@ -384,8 +384,8 @@ function SendForm() {
 									setCurrentState(s => ({
 										...s,
 										loading: false,
+										fileIds: [...s.fileIds, ...ids],
 									}));
-									setFileIds(f => [...f, ...ids]);
 								} catch (error) {
 									console.error(error);
 									toast.error("Couldn't upload files :(");
@@ -395,31 +395,40 @@ function SendForm() {
 						}}
 						onChange={async event => {
 							const { value }: any = event.target;
-							setCharacters(value);
+							setCurrentState(s => ({
+								...s,
+								characters: value,
+							}));
 
 							const split = value.split(":");
 							if (split.length > 1 && /^\w+$/.test(split[split.length - 1])) {
 								const matched = split[split.length - 1];
 
-								const matchedEmojis = emojis.filter(e =>
+								const matchedEmojis = currentState.emojis.filter(e =>
 									e.shortcode.includes(matched),
 								);
-								setEmojisSuggestions(matchedEmojis);
+								setCurrentState(s => ({
+									emojisSuggestions: matchedEmojis,
+									...s,
+								}));
 							} else {
-								setEmojisSuggestions([]);
+								setCurrentState(s => ({
+									emojisSuggestions: [],
+									...s,
+								}));
 							}
 						}}
 						disabled={currentState.loading}
 						className="block py-3 w-full bg-transparent border-0 resize-none disabled:text-gray-400 focus:ring-0 dark:placeholder:text-gray-400"
 						placeholder="What's happening?"
-						defaultValue={characters}
+						defaultValue={currentState.characters}
 					/>
 
 					{currentState.poll && (
 						<PollCreator currentState={currentState} setCurrentState={setCurrentState}/>
 					)}
 
-					<Files currentState={currentState} setFileIds={setFileIds} setCurrentState={setCurrentState}/>
+					<Files currentState={currentState} setCurrentState={setCurrentState}/>
 
 					<Transition
 						as={Fragment}
@@ -429,9 +438,9 @@ function SendForm() {
 						leave="ease-in duration-200"
 						leaveFrom="opacity-100 translate-y-0 sm:scale-100"
 						leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-						show={emojisSuggestions.length > 0}>
+						show={currentState.emojisSuggestions.length > 0}>
 						<div className="flex absolute z-[60] flex-col rounded border bg-dark bg-white dark:border-gray-700">
-							{emojisSuggestions.slice(0, 5).map(emoji => (
+							{currentState.emojisSuggestions.slice(0, 5).map(emoji => (
 								<EmojiItem
 									key={emoji.shortcode}
 									emoji={emoji}
@@ -445,14 +454,17 @@ function SendForm() {
 											val.split(":")[val.split(":").length - 1],
 											`${emoji.shortcode}: `,
 										);
-										setEmojis([]);
+										setCurrentState(s => ({
+											emojis: [],
+											...s,
+										}));
 									}}
 								/>
 							))}
 						</div>
 					</Transition>
 
-					<ButtonRow currentState={currentState} setCurrentState={setCurrentState} characters={characters} fileInputRef={fileInputRef} setFileIds={setFileIds} client={client} max_chars={max_chars} />
+					<ButtonRow currentState={currentState} setCurrentState={setCurrentState} fileInputRef={fileInputRef} client={client} max_chars={max_chars} />
 				</div>
 			</form>
 		</div>
@@ -576,10 +588,9 @@ function PollCreator({ currentState, setCurrentState }) {
 }
 
 
-function Files({ currentState, setCurrentState, setFileIds }: {
+function Files({ currentState, setCurrentState }: {
 	currentState: SendFormState,
 	setCurrentState: StateUpdater<SendFormState>,
-	setFileIds: any
 }) {
 	return (
 		<>
@@ -596,14 +607,16 @@ function Files({ currentState, setCurrentState, setFileIds }: {
 										e.preventDefault();
 
 										let newFiles = currentState.files;
+										let newFileIds = currentState.fileIds;
 
 										newFiles.splice(index, 1);
-										
+										newFileIds.splice(index, 1);
+
 										setCurrentState(s => ({
 											...s,
 											files: newFiles,
+											fileIds: newFileIds
 										}));
-										setFileIds(f => f.splice(index, 1));
 									}}
 									style="gray"
 									className="!absolute top-2 right-2 !p-2">
@@ -620,20 +633,16 @@ function Files({ currentState, setCurrentState, setFileIds }: {
 
 function ButtonRow({
 	fileInputRef,
-	setFileIds,
 	client,
 	setCurrentState,
 	currentState,
 	max_chars,
-	characters,
 }: {
 	fileInputRef: any;
-	setFileIds: any;
 	client: any;
 	setCurrentState: StateUpdater<SendFormState>;
 	currentState: SendFormState;
 	max_chars: any;
-	characters: any;
 }) {
 	return (
 		<div className="flex inset-x-0 bottom-0 justify-between py-2 pr-2 pl-3">
@@ -669,8 +678,8 @@ function ButtonRow({
 							setCurrentState(s => ({
 								...s,
 								loading: false,
+								fileIds: [...s.fileIds, ...ids],
 							}));
-							setFileIds(f => [...f, ...ids]);
 						} catch (error) {
 							console.error(error);
 							toast.error("Couldn't upload files :(");
@@ -723,7 +732,7 @@ function ButtonRow({
 			<div className="flex flex-row flex-shrink-0 gap-x-4 items-center">
 				<div className="flex flex-row gap-x-2 items-center">
 					<span className="text-gray-600 dark:text-gray-300">
-						{(max_chars ?? 500) - characters.length}
+						{(max_chars ?? 500) - currentState.characters.length}
 					</span>
 					<svg width="27" height="27" viewBox="0 0 27 27" aria-hidden={true}>
 						<circle
@@ -738,7 +747,7 @@ function ButtonRow({
 							cy="13.5"
 							r="10"
 							fill="none"
-							strokeDasharray={(1 - characters.length / (max_chars ?? 500)) * 62.832}
+							strokeDasharray={(1 - currentState.characters.length / (max_chars ?? 500)) * 62.832}
 							strokeDashoffset="62.832"
 							strokeLinecap="round"
 							strokeWidth="3.5"
