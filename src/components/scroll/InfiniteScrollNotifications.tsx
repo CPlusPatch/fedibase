@@ -58,9 +58,7 @@ export const Notification = ({ entity }: { entity: Entity.Notification }) => {
 							/>
 							{withEmojis(entity.account.display_name, entity.account.emojis)} reacted
 							with{" "}
-							{entity.emoji.includes(":")
-								? withEmojiReactions(entity.emoji, entity.status.emoji_reactions)
-								: entity.emoji}
+							{withEmojiReactions(entity.emoji, entity.status.emoji_reactions)}
 						</a>
 					)}
 					{entity.type == "reblog" && (
@@ -96,14 +94,13 @@ export const Notification = ({ entity }: { entity: Entity.Notification }) => {
 				<li className={`flex flex-col gap-y-2 p-2 max-w-full rounded bg-green-500/10`}>
 					<a
 						href={`/users/@${entity.account.id}`}
-						className="overflow-hidden gap-x-2 max-w-full text-base text-gray-800 overflow-ellipsis dark:text-gray-100 hover:underline">
+						className="overflow-hidden gap-x-2 max-w-full text-base text-gray-800 dark:text-gray-100 hover:underline">
 						<img
 							src={entity.account.avatar}
 							alt=""
 							className="h-[1em] w-[1em] inline mb-0.5 mr-2"
 						/>
-						{withEmojis(entity.account.display_name, entity.account.emojis)} followed
-						you
+						{withEmojis(entity.account.display_name, entity.account.emojis)} followed you
 					</a>
 				</li>
 			)}

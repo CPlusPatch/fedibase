@@ -59,7 +59,7 @@ export function withEmojis(string: string, emojis: Entity.Emoji[]) {
 		);
 	});
 
-	return <span className="p-0 m-0" dangerouslySetInnerHTML={{ __html: string }}></span>;
+	return <p className="p-0 m-0 inline" dangerouslySetInnerHTML={{ __html: string }}></p>;
 }
 
 /**
@@ -68,11 +68,11 @@ export function withEmojis(string: string, emojis: Entity.Emoji[]) {
  * @param emojis List of emojis in the text
  * @returns JSX element of rendered HTML with the emoji
  */
-export function withEmojiReactions(string: string, emojis: Entity.Reaction[]) {
+export function withEmojiReactions(string: string, emojis) {
 	emojis.forEach(emoji => {
 		// img has .25em bottom margin to line up right
 		string = string.replaceAll(
-			`:${emoji.name}:`,
+			`:${emoji.name.split("@")[0]}:`,
 			`<img src="${(emoji as any).url}" alt="Emoji (${
 				emoji.name
 			})" style="height: 1em; display: inline; margin-bottom: 0.25em"/>`,
