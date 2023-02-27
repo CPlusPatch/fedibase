@@ -7,8 +7,8 @@
 ⚠️ No promises will be made on ETA for missing features
 ```
 
-![Dark mode for Desktop](assets/desktop-dark.png)
-![Dark mode for Desktop](assets/desktop-light.png)
+![Dark mode for Desktop](assets/desktop-dark.webp)
+![Dark mode for Desktop](assets/desktop-light.webp)
 
 ## Technologies used
 
