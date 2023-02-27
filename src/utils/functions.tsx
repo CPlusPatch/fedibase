@@ -59,7 +59,7 @@ export function withEmojis(string: string, emojis: Entity.Emoji[]) {
 		);
 	});
 
-	return <p className="p-0 m-0 inline" dangerouslySetInnerHTML={{ __html: string }}></p>;
+	return <div className="p-0 m-0 inline" dangerouslySetInnerHTML={{ __html: string }}></div>;
 }
 
 /**

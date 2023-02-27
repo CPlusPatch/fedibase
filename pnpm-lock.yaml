@@ -18,6 +18,7 @@ specifiers:
   '@tabler/icons-preact': ^2.5.0
   '@tailwindcss/aspect-ratio': ^0.4.2
   '@tailwindcss/forms': ^0.5.3
+  '@tailwindcss/line-clamp': ^0.4.2
   '@tailwindcss/typography': ^0.5.9
   '@types/events': ^3.0.0
   '@types/node': ^18.14.0
@@ -39,6 +40,7 @@ specifiers:
   react-redux: ^8.0.5
   tailwindcss: ^3.2.7
   typescript: ^4.9.3
+  use-line-clamp: ^1.0.2
   vite: ^4.1.0
   vite-plugin-pwa: ^0.14.4
   vite-tsconfig-paths: ^4.0.5
@@ -58,11 +60,13 @@ dependencies:
   react-hot-toast: 2.4.0_csstype@3.1.1
   react-is-visible: 1.2.0
   react-redux: 8.0.5_hvufui4hhf7sccsxfqzoxelhje_@types+react@18.0.28
+  use-line-clamp: 1.0.2
 
 devDependencies:
   '@preact/preset-vite': 2.5.0_preact@10.12.1+vite@4.1.4
   '@tailwindcss/aspect-ratio': 0.4.2_tailwindcss@3.2.7
   '@tailwindcss/forms': 0.5.3_tailwindcss@3.2.7
+  '@tailwindcss/line-clamp': 0.4.2_tailwindcss@3.2.7
   '@tailwindcss/typography': 0.5.9_tailwindcss@3.2.7
   '@types/events': 3.0.0
   '@types/node': 18.14.1
@@ -1860,6 +1864,14 @@ packages:
       tailwindcss: 3.2.7_postcss@8.4.21
     dev: true
 
+  /@tailwindcss/line-clamp/0.4.2_tailwindcss@3.2.7:
+    resolution: {integrity: sha512-HFzAQuqYCjyy/SX9sLGB1lroPzmcnWv1FHkIpmypte10hptf4oPUfucryMKovZh2u0uiS9U5Ty3GghWfEJGwVw==}
+    peerDependencies:
+      tailwindcss: '>=2.0.0 || >=3.0.0 || >=3.0.0-alpha.1'
+    dependencies:
+      tailwindcss: 3.2.7_postcss@8.4.21
+    dev: true
+
   /@tailwindcss/typography/0.5.9_tailwindcss@3.2.7:
     resolution: {integrity: sha512-t8Sg3DyynFysV9f4JDOVISGsjazNb48AeIYQwcL+Bsq5uf4RYL75C1giZ43KISjeDGBaTN3Kxh7Xj/vRSMJUUg==}
     peerDependencies:
@@ -3381,7 +3393,6 @@ packages:
 
   /js-tokens/4.0.0:
     resolution: {integrity: sha512-RdJUflcE3cUzKiMqQgsCu06FPu9UdIJO0beYbPhHN4k6apgJtifcoCtT9bcxOpYBtpD2kCM6Sbzg4CausW/PKQ==}
-    dev: true
 
   /js-yaml/4.1.0:
     resolution: {integrity: sha512-wpxZs9NoxZaJESJGIZTyDEaYpl0FKSA+FB9aJiyemKhMwkxQg63h4T1KJgUGHpTqPDNRcmmYLugrRjJlBtWvRA==}
@@ -3479,7 +3490,6 @@ packages:
 
   /lodash.debounce/4.0.8:
     resolution: {integrity: sha512-FT1yDzDYEoYWhnSGnpE/4Kj1fLZkDFyqRb7fNt6FdYOSxlUWAtp42Eh6Wb0rGIv/m9Bgo7x4GhQbm5Ys4SG5ow==}
-    dev: true
 
   /lodash.isplainobject/4.0.6:
     resolution: {integrity: sha512-oSXzaWypCMHkPC3NvBEaPHf0KsA5mvPrOPgQWDsbg8n7orZ290M0BmC/jgRZ4vcJ6DTAhjrsSYgdsW/F+MFOBA==}
@@ -3506,7 +3516,6 @@ packages:
     hasBin: true
     dependencies:
       js-tokens: 4.0.0
-    dev: true
 
   /lru-cache/5.1.1:
     resolution: {integrity: sha512-KpNARQA3Iwv+jTA0utUVVbrh+Jlrr1Fv0e56GGzAFOXN7dk/FviaDW8LHmK52DlcH4WP2n6gI8vN1aesBFgo9w==}
@@ -3970,6 +3979,13 @@ packages:
       use-sync-external-store: 1.2.0
     dev: false
     patched: true
+
+  /react/18.2.0:
+    resolution: {integrity: sha512-/3IjMdb2L9QbBdWiW5e3P2/npwMBaU9mHCSCUzNln0ZCYbcfTsGbTJrU/kGemdH2IWmB2ioZ+zkxtmq6g09fGQ==}
+    engines: {node: '>=0.10.0'}
+    dependencies:
+      loose-envify: 1.4.0
+    dev: false
 
   /read-cache/1.0.0:
     resolution: {integrity: sha512-Owdv/Ft7IjOgm/i0xvNDZ1LrRANRfew4b2prF3OWMQLxLfu3bS8FVhCsrSCMK4lR56Y9ya+AThoTpDCTxCmpRA==}
@@ -4517,6 +4533,25 @@ packages:
     dependencies:
       punycode: 2.3.0
     dev: true
+
+  /use-line-clamp/0.1.0:
+    resolution: {integrity: sha512-UDrjOivgGXeaHzcxAjRDL3nVbE2uNQ7BwL05S9fYk2X6SJJwumOUUvU3MP8MRJkdR1W9I6TeyAabqL2D81tZiQ==}
+    peerDependencies:
+      react-dom: ^16.8.0  || ^17.0.0 || ^18.0.0
+    dependencies:
+      lodash.debounce: 4.0.8
+      react: 18.2.0
+    dev: false
+
+  /use-line-clamp/1.0.2:
+    resolution: {integrity: sha512-Uyh7072M/faPYAvioI0KGR9JdD07Lnr4jyCR+0GvjhwJ7urqKKMFM7fuMki18fZZU2PJOOXLZznT9Eow87LBjw==}
+    peerDependencies:
+      react-dom: ^16.8.0  || ^17.0.0 || ^18.0.0
+    dependencies:
+      lodash.debounce: 4.0.8
+      react: 18.2.0
+      use-line-clamp: 0.1.0
+    dev: false
 
   /use-sync-external-store/1.2.0:
     resolution: {integrity: sha512-eEgnFxGQ1Ife9bzYs6VLi8/4X6CObHMw9Qr9tPY43iKwsPw8xE8+EFsf/2cFZ5S3esXgpWgtSCtLNS41F+sKPA==}

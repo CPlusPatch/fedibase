@@ -8,6 +8,7 @@ import InteractionBar from "./InteractionBar";
 import PostImages from "./PostImages";
 import ReplyTo from "./ReplyTo";
 import SensitiveTextSpoiler from "./SensitiveTextSpoiler";
+import useLineClamp from "use-line-clamp";
 
 export enum StatusType {
 	Notification = "notification",
@@ -25,6 +26,9 @@ export default function Status({ status: statusProp, type, showInteraction = tru
 	const [status, setStatus] = useState(statusProp);
 	const [showText, setShowText] = useState(false);
 	const textElementRef = useRef<HTMLParagraphElement>(null);
+	const clamps = useLineClamp(textElementRef, {
+		lines: 6
+	})
 	const client = useContext(AuthContext);
 	const dispatch = useDispatch();
 
@@ -101,21 +105,17 @@ export default function Status({ status: statusProp, type, showInteraction = tru
 							/>
 
 							<div
-								className="relative w-full text-sm"
-								style={{
-									overflow: expand ? "" : "hidden",
-									maxHeight: expand ? "" : "8rem",
-								}}>
+								className="relative w-full text-sm">
 								<p
 									ref={textElementRef}
-									className={`mt-1 rounded duration-200 status-text dark:text-gray-50 ${
+									className={`mt-1 rounded duration-200 status-text dark:text-gray-50 break-all ${
 										status.sensitive && !showText && "filter blur-lg"
-									}`}>
+									} ${clamps && !expand && "line-clamp-6"}`}>
 									{withEmojis(status.content, status.emojis)}
 								</p>
 							</div>
 
-							{textElementRef?.current?.offsetHeight > 128 && (
+							{clamps && textElementRef?.current?.textContent.length > 0 && (
 								<>
 									<hr />
 									<button
