@@ -61,7 +61,6 @@ export const Conversation = ({ id, mode }) => {
 				<div className="flex overflow-y-scroll flex-col gap-y-5 py-4 w-full h-full no-scroll">
 					<div className="flex flex-col gap-y-4 px-6">
 						{ancestors.map(post => {
-							mainPostRef.current?.scrollIntoView();
 							return <Post entity={post} mode={mode} key={post.id} />;
 						})}
 					</div>
@@ -74,7 +73,6 @@ export const Conversation = ({ id, mode }) => {
 					</div>
 					<div className="flex flex-col gap-y-4 px-6 mb-20">
 						{descendants.map(post => {
-							mainPostRef.current?.scrollIntoView();
 							return <PostWithChildren mode={mode} post={post} key={post.id} />;
 						})}
 					</div>

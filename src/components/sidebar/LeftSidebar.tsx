@@ -79,11 +79,9 @@ export default function LeftSidebar() {
 
 	return (
 		<>
-			<div>
-				{state.viewingConversation && (
-					<Conversation id={state.viewingConversation} mode={StatusType.Notification} />
-				)}
-			</div>
+			{state.viewingConversation && (
+				<Conversation id={state.viewingConversation} mode={StatusType.Notification} />
+			)}
 			<Transition.Root show={state.postComposerOpened} as={Fragment}>
 				<Dialog
 					as="div"
