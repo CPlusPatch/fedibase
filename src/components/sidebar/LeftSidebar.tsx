@@ -475,7 +475,7 @@ function SendForm() {
 
 function PollCreator({ currentState, setCurrentState }) {
 	return (
-		<div className="flex w-full px-4 flex-col gap-y-2">
+		<div className="flex w-full px-4 flex-col gap-y-2"> 
 			<ol className="flex-col w-full gap-y-4 flex">
 				{currentState.poll?.choices.map((choice, index) => (
 					<li
