@@ -16,7 +16,7 @@ html {
 	width: 100%;
 	min-height: 100vh;
 }
-body, #__next {
+body, #app {
 	width: inherit;
 	min-height: inherit;
 	margin: 0;

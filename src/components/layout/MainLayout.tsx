@@ -4,9 +4,12 @@ import NotificationsFeed from "components/feed/NotificationsFeed";
 import toast, { Toaster } from "react-hot-toast";
 import { Fragment, useEffect } from "react";
 import { Transition } from "@headlessui/react";
-import { IconX } from "@tabler/icons-preact";
+import { IconCloudOff, IconX } from "@tabler/icons-preact";
+import { useNavigatorOnLine } from "utils/useNavigatorOnline";
 
 export default function MainLayout({ children }: any) {
+	const online = useNavigatorOnLine();
+
 	useEffect(() => {
 		const timeout = window.setTimeout(() => {
 			if (Notification.permission === "default" && localStorage.getItem("notificationsDenied") !== "true") {
@@ -80,10 +83,18 @@ export default function MainLayout({ children }: any) {
 		return () => window.clearTimeout(timeout);
 	}, [])
 	return (
-		<div className="flex overflow-hidden w-full h-screen duration-200 bg-gradient-light grow">
+		<div className="flex overflow-hidden w-full h-screen duration-200 grow flex-col">
+			{!online && (
+				<div className="w-full py-1 text-white font-poppins text-base flex justify-center bg-red-700">
+					<div className="flex gap-x-3 items-center">
+						<IconCloudOff className="w-4 h-4" />
+						You're offline
+					</div>
+				</div>
+			)}
 			<Toaster />
 			<MobileNavbar />
-			<div className="grid relative grid-cols-6 mx-auto max-w-full min-h-screen grow md:grid-cols-11 md:pl-[4.3rem]">
+			<div className="grid relative grid-cols-6 bg-gradient-light mx-auto grow md:grid-cols-11 md:pl-[4.3rem] rounded-t-lg">
 				<div className="hidden overflow-y-scroll h-full md:col-span-3 md:block no-scroll">
 					<LeftSidebar />
 				</div>
