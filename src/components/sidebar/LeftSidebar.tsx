@@ -371,10 +371,12 @@ function SendForm() {
 
 								try {
 									setCurrentState(s => ({
-										files: [...s.files, ...files],
 										...s,
+										files: [...s.files, ...files],
 										loading: true,
 									}));
+
+									console.log(files);
 									const ids = await Promise.all(
 										[...files].map(async file => {
 											return (await client.uploadMedia(file)).data.id;
@@ -408,13 +410,13 @@ function SendForm() {
 									e.shortcode.includes(matched),
 								);
 								setCurrentState(s => ({
-									emojisSuggestions: matchedEmojis,
 									...s,
+									emojisSuggestions: matchedEmojis,
 								}));
 							} else {
 								setCurrentState(s => ({
-									emojisSuggestions: [],
 									...s,
+									emojisSuggestions: [],
 								}));
 							}
 						}}
@@ -455,8 +457,8 @@ function SendForm() {
 											`${emoji.shortcode}: `,
 										);
 										setCurrentState(s => ({
-											emojis: [],
 											...s,
+											emojis: [],
 										}));
 									}}
 								/>
