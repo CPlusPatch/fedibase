@@ -6,7 +6,10 @@ import { isEmpty } from "utils/functions";
  * @param variable Variable to check if empty
  * @returns 
  */
-export default function WithLoader({ variable, children }) {
+export default function WithLoader({ variable, children }: {
+	variable: any;
+	children: any;
+}) {
 	return (
 		<>
 			{isEmpty(variable) ? (

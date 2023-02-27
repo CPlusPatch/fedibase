@@ -2,7 +2,7 @@ import Spinner from "components/spinners/Spinner";
 import { JSXInternal } from "preact/src/jsx";
 import { classNames } from "utils/functions";
 
-const styles = {
+const styles: any = {
 	gray: "text-gray-700 bg-white bg-dark border-gray-300 outline-none hover:bg-gray-50 dark:border-gray-600 dark:text-gray-200",
 	orange: "bg-orange-600 hover:bg-orange-700 text-white border-transparent",
 	orangeLight: "text-orange-700 dark:text-orange-200 bg-orange-100 dark:bg-orange-800 hover:bg-orange-200 border-transparent",
@@ -32,7 +32,7 @@ export default function Button({
 			
 			className={classNames(
 				"inline-flex md:active:scale-95 active:scale-75 no-bad-scale justify-center relative items-center px-4 py-2 text-base font-medium rounded-md border shadow-sm duration-200 font-inter focus:outline-none sm:text-sm",
-				style && styles[style],
+				style && (styles[style]),
 				className,
 				isLoading && "!text-transparent",
 				ringColor !== ""

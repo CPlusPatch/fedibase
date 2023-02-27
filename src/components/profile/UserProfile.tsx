@@ -4,6 +4,7 @@ import { useContext } from "preact/hooks";
 import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import { withEmojis } from "utils/functions";
+import ProfileActionsDropdown from "./ProfileActionsDropdown";
 
 export default function UserProfile({ user }: { user: Entity.Account }) {
 	const client = useContext(AuthContext);
@@ -38,10 +39,10 @@ export default function UserProfile({ user }: { user: Entity.Account }) {
 						@{user.acct}
 					</h6>
 				</div>
-				<div>
+				<div className="flex items-center gap-x-1">
 					<Button
 						style="gray"
-						className=""
+						className="!px-3 !py-2"
 						onClick={() => {
 							if (relationship?.requested) {
 								toast.error("Follow request already pending");
@@ -73,6 +74,9 @@ export default function UserProfile({ user }: { user: Entity.Account }) {
 						{!relationship?.requested &&
 							(relationship?.following ? "Unfollow" : "Follow")}
 					</Button>
+					{relationship && (
+						<ProfileActionsDropdown user={user} initialRelationship={relationship} />
+					)}
 				</div>
 			</div>
 			<div className="p-3 w-full text-sm rounded-md border dark:border-gray-700 dark:text-gray-50 font-inter">
@@ -82,7 +86,7 @@ export default function UserProfile({ user }: { user: Entity.Account }) {
 				{user.fields.map(field => (
 					<div className="flex px-3 md:flex-row gap-x-3 flex-col py-2">
 						<div className="w-1/3 font-bold text-xs md:text-sm">{field.name}</div>
-						<div dangerouslySetInnerHTML={{__html: field.value}}></div>
+						<div dangerouslySetInnerHTML={{ __html: field.value }}></div>
 					</div>
 				))}
 			</div>

@@ -11,9 +11,8 @@ import { setViewingConversation } from "utils/stateSlice";
 export default function ReplyTo({ status, statusType = StatusType.Post }: { status: Entity.Status; statusType: StatusType }) {
 	const [replyStatus, setReplyStatus] = useState<Entity.Status>();
 	const client = useContext(AuthContext);
-	const [open, setOpen] = useState<boolean>(false);
 
-	const nodeRef = useRef();
+	const nodeRef = useRef<HTMLDivElement>();
 	const visible = useIsVisible(nodeRef);
 
 	const dispatch = useDispatch();
@@ -27,7 +26,7 @@ export default function ReplyTo({ status, statusType = StatusType.Post }: { stat
 	}, [client, replyStatus, status.in_reply_to_id, visible]);
 
 	return (
-		<div className="inline relative bg-slate-300/0" ref={nodeRef}>
+		<div className="inline relative bg-slate-300/0" ref={nodeRef as any}>
 			<span
 				/* onMouseEnter={e => {
 					setOpen(true);

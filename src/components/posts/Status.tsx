@@ -9,6 +9,7 @@ import PostImages from "./PostImages";
 import ReplyTo from "./ReplyTo";
 import SensitiveTextSpoiler from "./SensitiveTextSpoiler";
 import useLineClamp from "use-line-clamp";
+import { JSXInternal } from "preact/src/jsx";
 
 export enum StatusType {
 	Notification = "notification",
@@ -32,14 +33,14 @@ export default function Status({ status: statusProp, type, showInteraction = tru
 	const client = useContext(AuthContext);
 	const dispatch = useDispatch();
 
-	const handleUserClick = (e) => {
+	const handleUserClick = (e: JSXInternal.TargetedMouseEvent<HTMLAnchorElement>) => {
 		if (!e.ctrlKey && !e.metaKey) {
 			e.preventDefault();
 			smoothNavigate(`/users/${status.account.id}`, dispatch);
 		}
 	};
 
-	const handlePostClick = (e) => {
+	const handlePostClick = (e: JSXInternal.TargetedMouseEvent<HTMLAnchorElement>) => {
 		if (!e.ctrlKey && !e.metaKey) {
 			e.preventDefault();
 			smoothNavigate(`/posts/${status.id}`, dispatch);
@@ -104,8 +105,7 @@ export default function Status({ status: statusProp, type, showInteraction = tru
 								setShowText={setShowText}
 							/>
 
-							<div
-								className="relative w-full text-sm">
+							<div className="relative w-full text-sm">
 								<p
 									ref={textElementRef}
 									className={`mt-1 rounded duration-200 status-text dark:text-gray-50 break-all ${
@@ -115,7 +115,7 @@ export default function Status({ status: statusProp, type, showInteraction = tru
 								</p>
 							</div>
 
-							{clamps && textElementRef?.current?.textContent.length > 0 && (
+							{clamps && (textElementRef?.current?.textContent?.length ?? 0) > 0 && (
 								<>
 									<hr />
 									<button
@@ -132,12 +132,14 @@ export default function Status({ status: statusProp, type, showInteraction = tru
 										e.preventDefault();
 										let value = [];
 
-										for (let i = 0; i < e.target["poll"].length; i++) {
-											if (e.target["poll"][i].checked)
-												value.push(e.target["poll"][i].value);
+										if (!status.poll) return false;
+
+										for (let i = 0; i < (e.target as any)["poll"].length; i++) {
+											if ((e.target as any)["poll"][i].checked)
+												value.push((e.target as any)["poll"][i].value);
 										}
 										client
-											?.votePoll(status.poll.id, value, status.id)
+											?.votePoll(status.poll?.id, value, status.id)
 											.then(res => {
 												setStatus(s => ({
 													...s,
@@ -155,32 +157,35 @@ export default function Status({ status: statusProp, type, showInteraction = tru
 												<div
 													style={{
 														width: `${Math.round(
-															(option.votes_count /
-																status.poll.votes_count) *
-																100,
+															(option.votes_count ??
+																0 /
+																	(status.poll?.votes_count ??
+																		0)) * 100,
 														)}%`,
 													}}
 													className="absolute bg-orange-200 dark:bg-orange-800 rounded h-full z-0"></div>
 												<span className="w-10 z-10">
 													{Number.isNaN(
 														Math.round(
-															(option.votes_count /
-																status.poll.votes_count) *
-																100,
+															(option.votes_count ??
+																0 /
+																	(status.poll?.votes_count ??
+																		0)) * 100,
 														),
 													)
 														? 0
 														: Math.round(
-																(option.votes_count /
-																	status.poll.votes_count) *
-																	100,
+																(option.votes_count ??
+																	0 /
+																		(status.poll?.votes_count ??
+																			0)) * 100,
 														  )}
 													%
 												</span>
-												{!status.poll.voted && (
+												{!status.poll?.voted && (
 													<input
 														type={
-															status.poll.multiple
+															status.poll?.multiple
 																? "checkbox"
 																: "radio"
 														}
@@ -204,7 +209,7 @@ export default function Status({ status: statusProp, type, showInteraction = tru
 										)}
 										{status.poll.votes_count} people voted &middot;{" "}
 										{status.poll.expired ? <>Poll ended</> : <>Poll ends</>}{" "}
-										{fromNow(new Date(status.poll.expires_at))}
+										{fromNow(new Date(status.poll.expires_at ?? ""))}
 									</div>
 								</form>
 							)}

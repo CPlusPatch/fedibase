@@ -22,6 +22,8 @@ interface FeedProps {
 		id: string;
 		filter?: string;
 	};
+	onLoadStart?: () => void;
+	onLoadEnd?: () => void
 }
 
 function Feed<T>(props: FeedProps) {
@@ -33,9 +35,9 @@ function Feed<T>(props: FeedProps) {
 	const doLoadNewEntities = useIsVisible(loadNewRef);
 
 	const getNewEntities = useCallback(
-		async since_id => {
+		async (since_id: string) => {
 			loading.current = true;
-
+			props.onLoadStart && props.onLoadStart();
 			let res: Response<T[]>;
 			switch (props.type) {
 				case FeedType.Home: {
@@ -46,6 +48,7 @@ function Feed<T>(props: FeedProps) {
 					break;
 				}
 				case FeedType.User: {
+					if (!props.options?.id) throw Error("Feed needs a user ID to work in user mode!");
 					res = (await client?.getAccountStatuses(props.options.id, {
 						limit: 30,
 						since_id: since_id,
@@ -68,15 +71,17 @@ function Feed<T>(props: FeedProps) {
 				}
 			}
 			loading.current = false;
+			props.onLoadEnd && props.onLoadEnd();
 			return dedupeById(res.data as any) as T[];
 		},
-		[client, props.options.id, props.type],
+		[client, props.options?.id, props.type],
 	);
 
 	const loadEntitiesBefore = useCallback(
-		async before_id => {
+		async (before_id: string) => {
 			if (loading.current) return [];
 			loading.current = true;
+			props.onLoadStart && props.onLoadStart();
 			let res: Response<T[]>;
 			switch (props.type) {
 				case FeedType.Home: {
@@ -87,6 +92,7 @@ function Feed<T>(props: FeedProps) {
 					break;
 				}
 				case FeedType.User: {
+					if (!props.options?.id) throw Error("Feed needs a user ID to work in user mode!");
 					res = (await client?.getAccountStatuses(props.options.id, {
 						limit: 30,
 						max_id: before_id,
@@ -109,9 +115,10 @@ function Feed<T>(props: FeedProps) {
 				}
 			}
 			loading.current = false;
+			props.onLoadEnd && props.onLoadEnd();
 			return dedupeById(res.data as any) as T[];
 		},
-		[client, props.options.id, props.type],
+		[client, props.options?.id, props.type],
 	);
 
 	useEffect(() => {
@@ -175,7 +182,7 @@ function Feed<T>(props: FeedProps) {
 			{props.type === FeedType.Notifications &&
 				entities
 					.filter(e => {
-						switch (props.options.filter) {
+						switch (props.options?.filter) {
 							case "all":
 								return true;
 							case "reblogs":

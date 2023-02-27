@@ -1,34 +1,40 @@
 import { AuthContext } from "components/context/AuthContext";
 import DummyStatus from "components/posts/DummyStatus";
+import { StatusType } from "components/posts/Status";
 import { Post } from "components/scroll/InfiniteScrollPosts";
 import { Entity } from "megalodon";
 import { arrayToTree } from "performant-array-to-tree";
 import { useState, useContext, useEffect, useRef } from "preact/hooks";
 
-export const Conversation = ({ id, mode }) => {
+interface ConversationProps {
+	id: string;
+	mode: StatusType;
+}
+
+export const Conversation = ({ id, mode }: ConversationProps) => {
 	const [ancestors, setAncestors] = useState<Entity.Status[]>([]);
 	const [posts, setPosts] = useState<Entity.Status[]>([]);
-	const [descendants, setDescendants] = useState([]);
+	const [descendants, setDescendants] = useState<Entity.Status[]>([]);
 	const client = useContext(AuthContext);
 	const mainPostRef = useRef<HTMLDivElement>(null);
 
-	function findParentElements(array, elementId) {
+	function findParentElements(array: Entity.Status[], elementId: string) {
 		let parentElements = [];
 		let currentElement = array.find(element => element.id === elementId);
-		while (currentElement && currentElement.in_reply_to_id !== false) {
-			let parentElement = array.find(element => element.id === currentElement.in_reply_to_id);
+		while (currentElement && currentElement.in_reply_to_id !== "") {
+			let parentElement = array.find(element => element.id === currentElement?.in_reply_to_id);
 			if (parentElement) {
 				parentElements.push(parentElement);
 				currentElement = parentElement;
 			} else {
-				currentElement = null;
+				currentElement = undefined;
 			}
 		}
 		return parentElements;
 	}
 
 	useEffect(() => {
-		client.getStatus(id).then(data => {
+		client?.getStatus(id).then(data => {
 			setPosts([data.data]);
 
 			client.getStatusContext(id).then(context => {
@@ -92,10 +98,17 @@ export const Conversation = ({ id, mode }) => {
 	);
 };
 
-function PostWithChildren({ post, mode }) {
+type PostWithChild = Entity.Status & {
+	children?: PostWithChild[]
+}
+
+function PostWithChildren({ post, mode }: {
+	post: PostWithChild,
+	mode: StatusType
+}) {
 	return (
 		<>
-			{post.children.length > 0 ? (
+			{post.children && post.children.length > 0 ? (
 				<>
 					<Post entity={post} />
 					<div className="flex flex-col gap-y-4 pl-2 border-l-4 dark:border-gray-500">

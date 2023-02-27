@@ -20,8 +20,8 @@ import { setMobileEditorState, setQuotingTo, setReplyingTo } from "utils/stateSl
  */
 export default function InteractionBar({ status }: { status: Entity.Status }) {
 	const client = useContext(AuthContext);
-	const [favourited, setFavourited] = useState<boolean>(status.favourited);
-	const [boosted, setBoosted] = useState<boolean>(status.reblogged);
+	const [favourited, setFavourited] = useState<boolean>(status.favourited ?? false);
+	const [boosted, setBoosted] = useState<boolean>(status.reblogged ?? false);
 
 	const dispatch = useDispatch();
 
@@ -41,9 +41,9 @@ export default function InteractionBar({ status }: { status: Entity.Status }) {
 				title="Favourite this post"
 				onClick={() => {
 					if (favourited) {
-						client.unfavouriteStatus(status.id);
+						client?.unfavouriteStatus(status.id);
 					} else if (!favourited) {
-						client.favouriteStatus(status.id);
+						client?.favouriteStatus(status.id);
 					}
 
 					setFavourited(f => !f);
@@ -68,9 +68,9 @@ export default function InteractionBar({ status }: { status: Entity.Status }) {
 				title="Boost this post"
 				onClick={() => {
 					if (boosted) {
-						client.unreblogStatus(status.id);
+						client?.unreblogStatus(status.id);
 					} else if (!boosted) {
-						client.reblogStatus(status.id);
+						client?.reblogStatus(status.id);
 					}
 
 					setBoosted(b => !b);
@@ -123,7 +123,11 @@ export default function InteractionBar({ status }: { status: Entity.Status }) {
 	);
 }
 
-function InteractionBarIcon({ children, onClick = () => {}, title = "" }) {
+function InteractionBarIcon({ children, onClick = () => {}, title = "" }: {
+	children: any;
+	onClick?: () => void;
+	title: string;
+}) {
 	return (
 		<button title={title} className="flex justify-center" onClick={onClick}>
 			{children}

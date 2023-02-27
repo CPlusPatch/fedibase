@@ -165,7 +165,7 @@ const pollDurations = [
 	},
 ];
 
-const renderFilePreview = file => {
+const renderFilePreview = (file: File) => {
 	if (file.type.includes("image")) {
 		return (
 			<img
@@ -196,7 +196,11 @@ interface SendFormState {
 	characters: string;
 	emojis: Entity.Emoji[];
 	emojisSuggestions: Entity.Emoji[];
-	poll: any;
+	poll: null | {
+		choices: string[];
+		duration: number;
+		multiple: boolean;
+	};
 }
 
 function SendForm() {
@@ -251,7 +255,7 @@ function SendForm() {
 
 			setCurrentState(s => ({
 				...s,
-				visibility: visibilities.find(v => v.value === otherPost.visibility) ?? visibilities[0]
+				visibility: visibilities.find(v => v.value === otherPost?.visibility) ?? visibilities[0]
 			}))
 
 		}
@@ -260,26 +264,26 @@ function SendForm() {
 
 		client?.getInstanceCustomEmojis().then(data => {
 			setCurrentState(s => ({
+				...s,
 				emojis: data.data,
-				...s
 			}));
 		});
 	}, [client, state.replyingTo, state.quotingTo]);
 
-	const submitForm = async event => {
+	const submitForm = async (event: JSXInternal.TargetedEvent<HTMLFormElement, Event>) => {
 		event.preventDefault();
 		setCurrentState(s => ({
 			...s,
-			loading: true
+			loading: true,
 		}));
 
-		const { comment } = event.target.elements;
+		const { comment } = (event.target as any).elements;
 		const text = comment.value;
 		const inReplyToId = state.replyingTo?.id;
 		const quoteId = state.quotingTo?.id;
 
 		try {
-			await client.postStatus(text, {
+			await client?.postStatus(text, {
 				in_reply_to_id: inReplyToId,
 				visibility: currentState.visibility.value as any,
 				media_ids: currentState.fileIds,
@@ -363,6 +367,7 @@ function SendForm() {
 						id="comment"
 						rows={5}
 						onPaste={async e => {
+							if (!client) return;
 							if (e.clipboardData && e.clipboardData.files.length > 0) {
 								e.preventDefault();
 								const files = e.clipboardData?.files;
@@ -471,7 +476,10 @@ function SendForm() {
 	);
 }
 
-function PollCreator({ currentState, setCurrentState }) {
+function PollCreator({ currentState, setCurrentState }: {
+	currentState: SendFormState;
+	setCurrentState: StateUpdater<SendFormState>
+}) {
 	return (
 		<div className="flex w-full px-4 flex-col gap-y-2"> 
 			<ol className="flex-col w-full gap-y-4 flex">
@@ -484,16 +492,12 @@ function PollCreator({ currentState, setCurrentState }) {
 							<div className="grow">
 								<Input
 									onChange={(e: any) => {
+										let pollCopy = currentState.poll;
+
+										pollCopy?.choices.splice(index, 1);
 										setCurrentState(s => ({
 											...s,
-											poll: {
-												...s.poll,
-												choices: [
-													...s.poll.choices.slice(0, index),
-													e.target.value,
-													...s.poll.choices.slice(index + 1),
-												],
-											},
+											poll: pollCopy,
 										}));
 									}}
 									isLoading={false}
@@ -504,12 +508,12 @@ function PollCreator({ currentState, setCurrentState }) {
 								</Input>
 							</div>
 						</div>
-						{index === currentState.poll.choices.length - 1 && (
+						{currentState?.poll?.choices && index === currentState.poll?.choices.length - 1 && (
 							<button
 								onClick={e => {
 									e.preventDefault();
 									let pollCopy = currentState.poll;
-									pollCopy.choices.splice(index, 1);
+									pollCopy?.choices.splice(index, 1);
 
 									setCurrentState(s => ({
 										...s,
@@ -525,12 +529,13 @@ function PollCreator({ currentState, setCurrentState }) {
 					onClick={e => {
 						e.preventDefault();
 
+						let pollCopy = currentState.poll;
+
+						pollCopy?.choices.push("");
+
 						setCurrentState(s => ({
 							...s,
-							poll: {
-								...s.poll,
-								choices: [...s.poll.choices, ""],
-							},
+							poll: pollCopy,
 						}));
 					}}
 					style="orangeLight"
@@ -548,8 +553,9 @@ function PollCreator({ currentState, setCurrentState }) {
 							setCurrentState(s => ({
 								...s,
 								poll: {
-									...s.poll,
-									duration: i.value
+									choices: s.poll?.choices ?? [""],
+									duration: Number(i.value),
+									multiple: s.poll?.multiple ?? false
 								}
 							}))
 						}}
@@ -558,25 +564,26 @@ function PollCreator({ currentState, setCurrentState }) {
 				<div className="md:w-2/3 w-full flex items-center justify-between">
 					<p className="ml-2">Allow multiple answers</p>
 					<Switch
-						checked={currentState.poll.multiple}
-						onChange={checked => {
+						checked={currentState.poll?.multiple}
+						onChange={(checked: boolean) => {
 							setCurrentState(s => ({
 								...s,
 								poll: {
-									...s.poll,
+									choices: s.poll?.choices ?? [""],
+									duration: s.poll?.duration ?? 600,
 									multiple: checked,
 								},
 							}));
 						}}
 						className={classNames(
-							currentState.poll.multiple ? "bg-orange-600" : "bg-gray-200",
+							currentState.poll?.multiple ? "bg-orange-600" : "bg-gray-200",
 							"relative inline-flex flex-shrink-0 h-6 w-11 border-2 border-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:outline-none",
 						)}>
 						<span className="sr-only">Use setting</span>
 						<span
 							aria-hidden="true"
 							className={classNames(
-								currentState.poll.multiple ? "translate-x-5" : "translate-x-0",
+								currentState.poll?.multiple ? "translate-x-5" : "translate-x-0",
 								"pointer-events-none inline-block h-5 w-5 rounded-full bg-white shadow transform ring-0 transition ease-in-out duration-200",
 							)}
 						/>

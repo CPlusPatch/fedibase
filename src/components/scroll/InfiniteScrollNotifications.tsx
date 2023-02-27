@@ -58,7 +58,10 @@ export const Notification = ({ entity }: { entity: Entity.Notification }) => {
 							/>
 							{withEmojis(entity.account.display_name, entity.account.emojis)} reacted
 							with{" "}
-							{withEmojiReactions(entity.emoji, entity.status.emoji_reactions)}
+							{entity.status?.emoji_reactions && withEmojiReactions(
+								entity.emoji ?? "",
+								entity.status?.emoji_reactions,
+							)}
 						</a>
 					)}
 					{entity.type == "reblog" && (
@@ -83,11 +86,13 @@ export const Notification = ({ entity }: { entity: Entity.Notification }) => {
 							your post
 						</a>
 					)}
-					<Status
-						showInteraction={entity.type == "mention"}
-						status={entity.status}
-						type={StatusType.Notification}
-					/>
+					{entity.status && (
+						<Status
+							showInteraction={entity.type == "mention"}
+							status={entity.status}
+							type={StatusType.Notification}
+						/>
+					)}
 				</li>
 			)}
 			{entity.type === "follow" && (
@@ -100,7 +105,8 @@ export const Notification = ({ entity }: { entity: Entity.Notification }) => {
 							alt=""
 							className="h-[1em] w-[1em] inline mb-0.5 mr-2"
 						/>
-						{withEmojis(entity.account.display_name, entity.account.emojis)} followed you
+						{withEmojis(entity.account.display_name, entity.account.emojis)} followed
+						you
 					</a>
 				</li>
 			)}

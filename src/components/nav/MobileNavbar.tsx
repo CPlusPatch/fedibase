@@ -19,7 +19,7 @@ import { smoothNavigate } from "utils/functions";
 
 export default function MobileNavbar() {
 	const state2 = useSelector(state => (state as any).state as StateType);
-	const [account, setAccount] = useState<Entity.Account>(null);
+	const [account, setAccount] = useState<Entity.Account | null>(null);
 	const dispatch = useDispatch();
 	const client = useContext(AuthContext);
 

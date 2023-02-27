@@ -24,7 +24,9 @@ const instanceTypes = [
 	},
 ];
 
-export default function LoginForm({ code }) {
+export default function LoginForm({ code }: {
+	code: string;
+}) {
 	const [isLoading, setIsLoading] = useState<boolean>(false);
 
 	const [mode, setMode] = useState<"login" | "code">(code ? "code" : "login");
@@ -67,7 +69,7 @@ export default function LoginForm({ code }) {
 		localStorage.setItem("handle", handle);
 		localStorage.setItem("instanceType", instanceType);
 
-		window.location.replace(url);
+		url && window.location.replace(url);
 	};
 
 	useEffect(() => {
@@ -76,6 +78,8 @@ export default function LoginForm({ code }) {
 			const instanceUrl = localStorage.getItem("instanceUrl");
 			const clientId = localStorage.getItem("clientId");
 			const clientSecret = localStorage.getItem("clientSecret");
+
+			if (!instanceType || !instanceUrl || !clientId || !clientSecret) return;
 
 			const client = generator(instanceType as any, instanceUrl);
 

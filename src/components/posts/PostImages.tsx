@@ -33,8 +33,8 @@ function PostImage({ status, image }: { status: Entity.Status; image: Entity.Att
 			{image.type == "image" && (
 				<img
 					className={`filter duration-500 rounded ${revealed ? "":"filter blur-2xl"}`}
-					src={image.remote_url}
-					alt={image.description}
+					src={image.remote_url ?? ""}
+					alt={image.description ?? ""}
 					loading="lazy"
 				/>
 			)}
@@ -42,7 +42,7 @@ function PostImage({ status, image }: { status: Entity.Status; image: Entity.Att
 				<video
 					className={`filter duration-500 rounded ${revealed ? "":"filter blur-2xl"}`}
 					controls={true}
-					src={image.remote_url}
+					src={image.remote_url ?? ""}
 				/>
 			)}
 			{status.sensitive && !revealed && (

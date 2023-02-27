@@ -68,7 +68,7 @@ export function withEmojis(string: string, emojis: Entity.Emoji[]) {
  * @param emojis List of emojis in the text
  * @returns JSX element of rendered HTML with the emoji
  */
-export function withEmojiReactions(string: string, emojis) {
+export function withEmojiReactions(string: string, emojis: Entity.Status["emoji_reactions"]) {
 	emojis.forEach(emoji => {
 		// img has .25em bottom margin to line up right
 		string = string.replaceAll(

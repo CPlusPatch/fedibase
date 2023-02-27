@@ -1,7 +1,7 @@
 const PrimaryContainer = ({
 	size = "7xl",
 	children,
-	id = null,
+	id = undefined,
 	className = "",
 }: {
 	size?: "7xl" | "6xl" | "5xl" | "4xl" | "3xl" | "2xl" | "xl";

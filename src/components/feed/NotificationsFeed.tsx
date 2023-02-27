@@ -1,11 +1,12 @@
 import { IconList, IconListDetails, IconRocket, IconStarFilled } from "@tabler/icons-preact";
+import { SelectItem } from "components/forms/Select2";
 import SmallSelect, { SelectDirection } from "components/forms/SmallSelect";
 import { Notification as NotificationElement } from "components/scroll/InfiniteScrollNotifications";
 import { Entity } from "megalodon";
 import { useState } from "preact/hooks";
 import Feed, { FeedType } from "./Feed";
 
-const modes = [
+const modes: SelectItem[] = [
 	{
 		icon: IconList,
 		text: "All posts",
@@ -68,10 +69,14 @@ export default function NotificationsFeed({ withTitle = true }: { withTitle?: bo
 									case "reblog":
 										title = `${entity.account.display_name} boosted your post`;
 										break;
+									case "mention":
+									default:
+										title = `${entity.account.display_name}`;
+										break
 								}
 
 								let notif = new Notification(title, {
-									body: entity.status.plain_content,
+									body: entity.status?.plain_content ?? "",
 									icon: entity.account.avatar_static
 								});
 

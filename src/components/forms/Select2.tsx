@@ -13,6 +13,7 @@ export interface SelectItem {
 	text: string;
 	value: string;
 	icon: any;
+	description?: string;
 }
 
 export default function Select2({ items, defaultValue, onChange = (item) => {} }: SelectOptions) {
@@ -50,15 +51,13 @@ export default function Select2({ items, defaultValue, onChange = (item) => {} }
 									key={item.text}
 									className={`flex relative flex-row gap-x-3 items-center px-4 py-2 duration-200 hover:bg-gray-200 hover:dark:bg-gray-700 dark:text-gray-100`}
 									value={item.value}>
-									{({ selected }) => (
-										<>
-											<item.icon className="w-4 h-4"/>
-											<span
-												className={`block truncate`}>
-												{item.text}
-											</span>
-										</>
-									)}
+									<>
+										<item.icon className="w-4 h-4"/>
+										<span
+											className={`block truncate`}>
+											{item.text}
+										</span>
+									</>
 								</Listbox.Option>
 							))}
 						</Listbox.Options>

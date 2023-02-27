@@ -6,7 +6,7 @@ import { Fragment, useEffect } from "react";
 import { Transition } from "@headlessui/react";
 import { IconX } from "@tabler/icons-preact";
 
-export default function MainLayout({ children }) {
+export default function MainLayout({ children }: any) {
 	useEffect(() => {
 		const timeout = window.setTimeout(() => {
 			if (Notification.permission === "default" && localStorage.getItem("notificationsDenied") !== "true") {
