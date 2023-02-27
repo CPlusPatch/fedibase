@@ -424,7 +424,7 @@ function SendForm() {
 							}
 						}}
 						disabled={currentState.loading}
-						className="block py-3 w-full bg-transparent border-0 resize-none disabled:text-gray-400 focus:ring-0 dark:placeholder:text-gray-400"
+						className="block py-3 no-scroll w-full bg-transparent border-0 resize-none disabled:text-gray-400 focus:ring-0 dark:placeholder:text-gray-400"
 						placeholder="What's happening?"
 						defaultValue={currentState.characters}
 					/>
