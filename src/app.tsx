@@ -23,11 +23,12 @@ export function App() {
 			<AuthContext.Provider
 				value={
 					typeof window !== "undefined" &&
+					localStorage.getItem("instanceUrl") &&
 					localStorage.getItem("accessToken") &&
 					localStorage.getItem("instanceType")
 						? generator(
 								localStorage.getItem("instanceType") as any,
-								localStorage.getItem("instanceUrl"),
+								localStorage.getItem("instanceUrl") as any,
 								localStorage.getItem("accessToken"),
 							)
 						: null
