@@ -85,7 +85,7 @@ export default function MainLayout({ children }: any) {
 	return (
 		<div className="flex overflow-hidden w-full h-screen duration-200 grow flex-col">
 			{!online && (
-				<div className="w-full py-1 text-white font-poppins text-base flex justify-center bg-red-700">
+				<div className="fixed inset-x-0 top-0 w-full py-1 text-white font-poppins text-base flex justify-center rounded-b shadow bg-red-700/40 backdrop-blur-lg z-[99999]">
 					<div className="flex gap-x-3 items-center">
 						<IconCloudOff className="w-4 h-4" />
 						You're offline
@@ -94,8 +94,8 @@ export default function MainLayout({ children }: any) {
 			)}
 			<Toaster />
 			<MobileNavbar />
-			<div className="grid relative grid-cols-6 bg-gradient-light mx-auto grow md:grid-cols-11 md:pl-[4.3rem] rounded-t-lg">
-				<div className="hidden overflow-y-scroll h-full md:col-span-3 md:block no-scroll">
+			<div className="grid relative grid-cols-6 bg-gradient-light mx-auto h-full md:grid-cols-11 md:pl-[4.3rem] rounded-t-lg">
+				<div className="hidden h-full md:col-span-3 md:block overflow-hidden no-scroll">
 					<LeftSidebar />
 				</div>
 				<div className="overflow-x-hidden overflow-y-hidden md:col-span-5 col-span-6 max-h-screen md:border-x dark:border-gray-700 md:pt-0">

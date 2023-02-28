@@ -11,6 +11,9 @@ import {
 import { AuthContext } from "components/context/AuthContext";
 import { Entity } from "megalodon";
 import { useContext, useState } from "preact/hooks";
+import { JSXInternal } from "preact/src/jsx";
+import { useEffect } from "react";
+import { toast } from "react-hot-toast";
 import { useStore } from "utils/store";
 
 /**
@@ -22,6 +25,23 @@ export default function InteractionBar({ status }: { status: Entity.Status }) {
 	const [favourited, setFavourited] = useState<boolean>(status.favourited ?? false);
 	const [boosted, setBoosted] = useState<boolean>(status.reblogged ?? false);
 
+	const [showEmojiPicker, setShowEmojiPicker] = useState<boolean>(false);
+	const [instanceEmojis, setInstanceEmojis] = useState<Entity.Emoji[]>([]);
+
+	const [emojiFilter, setEmojiFilter] = useState<string>("");
+
+	useEffect(() => {
+		if (!localStorage.getItem("customEmojis")) {
+			client?.getInstanceCustomEmojis().then(res => {
+				localStorage.setItem("customEmojis", JSON.stringify(res.data));
+				setInstanceEmojis(res.data);
+
+			})
+		} else {
+			setInstanceEmojis(JSON.parse(localStorage.getItem("customEmojis") as any))
+		}
+	}, [])
+
 	const [state, setState] = useStore();
 
 	return (
@@ -32,7 +52,7 @@ export default function InteractionBar({ status }: { status: Entity.Status }) {
 					setState(prev => ({
 						...prev,
 						replyingTo: status,
-						postComposerOpened: true
+						postComposerOpened: true,
 					}));
 				}}>
 				<IconMessage aria-hidden={true} className="w-5 h-5" />
@@ -102,9 +122,42 @@ export default function InteractionBar({ status }: { status: Entity.Status }) {
 				)}
 			</InteractionBarIcon>
 
-			<InteractionBarIcon title="Add reaction (not implemented)">
+			<InteractionBarIcon
+				title="Add reaction (not implemented)"
+				onClick={(e) => {
+					setShowEmojiPicker(s => !s);
+				}}>
 				<IconMoodHappy className="w-5 h-5" aria-hidden={true} />
 				<span className="sr-only">Add reaction (not implemented)</span>
+
+				<div className="absolute left-0 -translate-x-[55%] top-7 z-[99]" onClick={e => {
+					e.stopPropagation();
+				}}>
+					{showEmojiPicker && instanceEmojis && (
+						<div className="w-96 h-96 bg-dark border dark:border-gray-700 bg-white p-3 no-scroll rounded-lg overflow-hidden gap-y-2 flex-col flex">
+							<input className="w-full rounded px-2 py-1 border" placeholder="Emoji (alpha)" onChange={(e: any) => {
+								setEmojiFilter(e.target.value);
+							}}/>
+							<div className="gap-3 rounded-lg grid grid-cols-5 justify-between overflow-y-scroll no-scroll max-h-[85%]">
+								{instanceEmojis.filter(f => f.shortcode.includes(emojiFilter)).map(emoji => {
+									return (
+										<button className="items-center flex justify-center" title={emoji.shortcode} onClick={(e) => {
+											client?.createEmojiReaction(status.id, emoji.shortcode).then(res => {
+												toast.success("Added reaction!");
+												setShowEmojiPicker(false);
+											}).catch(err => {
+												console.error(err);
+												toast.error("Couldn't add reaction :(")
+											})
+										}}>
+											<img src={emoji.url} className="w-7 h-7" />
+										</button>
+									);
+								})}
+							</div>
+						</div>
+					)}
+				</div>
 			</InteractionBarIcon>
 
 			<InteractionBarIcon
@@ -113,7 +166,7 @@ export default function InteractionBar({ status }: { status: Entity.Status }) {
 					setState(prev => ({
 						...prev,
 						quotingTo: status,
-						postComposerOpened: true
+						postComposerOpened: true,
 					}));
 				}}>
 				<IconQuote className="w-5 h-5" aria-hidden={true} />
@@ -128,13 +181,17 @@ export default function InteractionBar({ status }: { status: Entity.Status }) {
 	);
 }
 
-function InteractionBarIcon({ children, onClick = () => {}, title = "" }: {
+function InteractionBarIcon({
+	children,
+	onClick = e => {},
+	title = "",
+}: {
 	children: any;
-	onClick?: () => void;
+	onClick?: (e: JSXInternal.TargetedMouseEvent<HTMLButtonElement>) => void;
 	title: string;
 }) {
 	return (
-		<button title={title} className="flex justify-center" onClick={onClick}>
+		<button title={title} className="flex justify-center relative" onClick={onClick}>
 			{children}
 		</button>
 	);

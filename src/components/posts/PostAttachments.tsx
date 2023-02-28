@@ -29,10 +29,10 @@ function PostAttachment({ status, image }: { status: Entity.Status; image: Entit
 	const [revealed, setRevealed] = useState<boolean>(!status.sensitive);
 
 	return (
-		<div className="flex overflow-hidden relative items-center">
+		<div className="flex overflow-hidden relative items-center max-h-[80vh]">
 			{image.type == "image" && (
 				<img
-					className={`filter duration-500 rounded ${revealed ? "":"filter blur-2xl"}`}
+					className={`filter duration-500 rounded h-full ${revealed ? "":"filter blur-2xl"}`}
 					src={image.remote_url ?? ""}
 					alt={image.description ?? ""}
 					loading="lazy"
@@ -40,7 +40,7 @@ function PostAttachment({ status, image }: { status: Entity.Status; image: Entit
 			)}
 			{image.type == "video" && (
 				<video
-					className={`filter duration-500 rounded ${revealed ? "":"filter blur-2xl"}`}
+					className={`filter duration-500 object-contain h-full rounded ${revealed ? "":"filter blur-2xl"}`}
 					controls={true}
 					src={image.remote_url ?? ""}
 				/>

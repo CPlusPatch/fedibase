@@ -30,6 +30,7 @@ export default function ReplyTo({ status, statusType = StatusType.Post }: { stat
 					setState(prev => ({
 						...prev,
 						viewingConversation: status.id,
+						mobilePostViewer: true
 					}));
 				}}
 				className="text-xs text-gray-600 hover:underline dark:text-gray-300">

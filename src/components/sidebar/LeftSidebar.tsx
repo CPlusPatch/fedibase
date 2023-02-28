@@ -77,6 +77,57 @@ export default function LeftSidebar() {
 			{state.viewingConversation && (
 				<Conversation id={state.viewingConversation} mode={StatusType.Notification} />
 			)}
+
+			{/* Only show on mobile */}
+			<Transition.Root show={state.mobilePostViewer && window.innerWidth < 768} as={Fragment}>
+				<Dialog
+					as="div"
+					className="relative z-40 md:hidden"
+					onClose={() => {
+						setState(prev => ({
+							...prev,
+							mobilePostViewer: false,
+						}));
+					}}
+					unmount={false}>
+					<div className="flex fixed inset-y-0 right-0 ml-10 max-w-full pointer-events-none">
+						<Transition.Child
+							unmount={false}
+							as={Fragment}
+							enter="ease-out duration-100"
+							enterFrom="opacity-0 translate-y-4 translate-y-0 scale-95"
+							enterTo="opacity-100 translate-y-0 scale-100"
+							leave="ease-in duration-100"
+							leaveFrom="opacity-100 translate-y-0 scale-100"
+							leaveTo="opacity-0 translate-y-4 translate-y-0 scale-95">
+							<Dialog.Panel className="overflow-hidden relative w-screen max-w-md pointer-events-auto">
+								<div className="flex overflow-y-hidden flex-col pt-6 h-full bg-white shadow-xl bg-dark">
+									<div className="flex justify-between px-4 sm:px-6">
+										<Dialog.Title className="text-lg font-medium text-gray-900 dark:text-gray-50">
+											Conversation
+										</Dialog.Title>
+										<button
+											type="button"
+											className="text-gray-300 rounded-md hover:text-white dark:hover:text-black focus:outline-none"
+											onClick={() => {
+												setState(prev => ({
+													...prev,
+													mobilePostViewer: false,
+												}));
+											}}>
+											<span className="sr-only">Close panel</span>
+											<IconX className="w-6 h-6" aria-hidden="true" />
+										</button>
+									</div>
+									<div className="flex overflow-hidden relative mt-6 max-w-full grow sm:px-6">
+										<Conversation showTitle={false} id={state.viewingConversation} mode={StatusType.Post} />
+									</div>
+								</div>
+							</Dialog.Panel>
+						</Transition.Child>
+					</div>
+				</Dialog>
+			</Transition.Root>
 			<Transition.Root show={state.postComposerOpened} as={Fragment}>
 				<Dialog
 					as="div"
@@ -84,7 +135,7 @@ export default function LeftSidebar() {
 					onClose={() =>
 						setState(prev => ({
 							...prev,
-							postComposerOpened: false
+							postComposerOpened: false,
 						}))
 					}>
 					<Transition.Child
@@ -250,14 +301,22 @@ function SendForm() {
 				}));
 			}
 
+			setTimeout(() => {
+				// Move the cursor to the end of the textarea
+				textareaRef.current?.setSelectionRange(
+					textareaRef.current?.value.length,
+					textareaRef.current?.value.length,
+				);
+
+				textareaRef.current?.focus();
+			}, 500)
+
 			setCurrentState(s => ({
 				...s,
 				visibility: visibilities.find(v => v.value === otherPost?.visibility) ?? visibilities[0]
 			}))
 
 		}
-
-		textareaRef.current?.focus();
 
 		client?.getInstanceCustomEmojis().then(data => {
 			setCurrentState(s => ({
@@ -436,7 +495,7 @@ function SendForm() {
 						<PollCreator currentState={currentState} setCurrentState={setCurrentState}/>
 					)}
 
-					<Files currentState={currentState} setCurrentState={setCurrentState}/>
+					<Files fileIds={currentState.fileIds} files={currentState.files} setCurrentState={setCurrentState}/>
 
 					<Transition
 						as={Fragment}
@@ -598,15 +657,16 @@ function PollCreator({ currentState, setCurrentState }: {
 }
 
 
-function Files({ currentState, setCurrentState }: {
-	currentState: SendFormState,
-	setCurrentState: StateUpdater<SendFormState>,
+function Files({ files, fileIds, setCurrentState }: {
+	files: SendFormState["files"];
+	fileIds: SendFormState["fileIds"];
+	setCurrentState: StateUpdater<SendFormState>;
 }) {
 	return (
 		<>
-			{currentState.files.length > 0 && (
+			{files.length > 0 && (
 				<div className="flex flex-wrap gap-4 bottom-0 flex-row px-4 w-full">
-					{currentState.files.map((file: File, index: number) => {
+					{files.map((file: File, index: number) => {
 						return (
 							<div
 								key={index}
@@ -616,8 +676,8 @@ function Files({ currentState, setCurrentState }: {
 									onClick={(e: any) => {
 										e.preventDefault();
 
-										let newFiles = currentState.files;
-										let newFileIds = currentState.fileIds;
+										let newFiles = files;
+										let newFileIds = fileIds;
 
 										newFiles.splice(index, 1);
 										newFileIds.splice(index, 1);

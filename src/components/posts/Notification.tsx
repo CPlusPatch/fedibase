@@ -40,10 +40,10 @@ export const Notification = ({ entity }: { entity: Entity.Notification }) => {
 							<img
 								src={entity.account.avatar}
 								alt=""
-								className="h-[1em] w-[1em] inline rounded mb-0.5 mr-2"
+								className="h-[1em] w-[1em] align-middle inline rounded mb-0.5 mr-2"
 							/>
-							{withEmojis(entity.account.display_name, entity.account.emojis)} reacted
-							with{" "}
+							{withEmojis(entity.account.display_name, entity.account.emojis)}
+							{" reacted with"}{" "}
 							{entity.status?.emoji_reactions &&
 								withEmojiReactions(
 									entity.emoji ?? "",

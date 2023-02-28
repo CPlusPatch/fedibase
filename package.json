@@ -10,10 +10,13 @@
 		"preview": "vite preview"
 	},
 	"dependencies": {
+		"@emoji-mart/react": "^1.1.1",
 		"@headlessui/react": "^1.7.11",
 		"@tabler/icons-preact": "^2.5.0",
 		"csstype": "^3.1.1",
+		"emoji-mart": "^5.5.2",
 		"events": "^3.3.0",
+		"html-react-parser": "^3.0.9",
 		"js-cookie": "^3.0.1",
 		"megalodon": "npm:@cpluspatch/megalodon@^5.2.0",
 		"performant-array-to-tree": "^1.11.0",

@@ -9,9 +9,10 @@ import { useState, useContext, useEffect, useRef } from "preact/hooks";
 interface ConversationProps {
 	id: string;
 	mode: StatusType;
+	showTitle?: boolean
 }
 
-export const Conversation = ({ id, mode }: ConversationProps) => {
+export const Conversation = ({ id, mode, showTitle = true}: ConversationProps) => {
 	const [ancestors, setAncestors] = useState<Entity.Status[]>([]);
 	const [posts, setPosts] = useState<Entity.Status[]>([]);
 	const [descendants, setDescendants] = useState<Entity.Status[]>([]);
@@ -62,7 +63,9 @@ export const Conversation = ({ id, mode }: ConversationProps) => {
 
 	return (
 		<>
-			<h3 className="px-5 py-4 text-xl font-bold dark:text-gray-50">Conversation</h3>
+			{showTitle && (
+				<h3 className="px-5 py-4 text-xl font-bold dark:text-gray-50">Conversation</h3>
+			)}
 			{posts.length > 0 ? (
 				<div className="flex overflow-y-scroll flex-col gap-y-5 py-4 w-full h-full no-scroll">
 					<div className="flex flex-col gap-y-4 px-6">

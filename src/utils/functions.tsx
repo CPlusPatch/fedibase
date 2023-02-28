@@ -12,6 +12,7 @@
 * You should have received a copy of the GNU General Public License along with this program.  If not, see 
 * <http://www.gnu.org/licenses/>.
 */
+import parse from "html-react-parser";
 import { Entity } from "megalodon";
 
 /**
@@ -49,15 +50,18 @@ export function setToLocalStorage(key: string, value: string) {
  * @returns JSX element of rendered HTML with the emoji
  */
 export function withEmojis(string: string, emojis: Entity.Emoji[]) {
+	string = stripNonPrintableAndNormalize(string);
 	emojis.forEach(emoji => {
-		// img has .25em bottom margin to line up right
+		const re = new RegExp(`:${emoji.shortcode}:`, "g");
 		string = string.replaceAll(
-			`:${emoji.shortcode}:`,
-			`<img src="${emoji.url}" alt="Emoji (${emoji.shortcode})" style="height: 1em; display: inline; margin-bottom: 0.25em"/>`,
+			re,
+			`<img src="${emoji.url}" alt="Emoji (${emoji.shortcode})" style="height: 1em; display: inline; vertical-align: middle;" />`,
 		);
 	});
 
-	return <div className="p-0 m-0 inline" dangerouslySetInnerHTML={{ __html: string }}></div>;
+	return parse(string, {
+		trim: true
+	});
 }
 
 /**
@@ -67,6 +71,7 @@ export function withEmojis(string: string, emojis: Entity.Emoji[]) {
  * @returns JSX element of rendered HTML with the emoji
  */
 export function withEmojiReactions(string: string, emojis: Entity.Status["emoji_reactions"]) {
+	string = stripNonPrintableAndNormalize(string);
 	emojis.forEach(emoji => {
 		// img has .25em bottom margin to line up right
 		string = string.replaceAll(
@@ -77,7 +82,7 @@ export function withEmojiReactions(string: string, emojis: Entity.Status["emoji_
 		);
 	});
 
-	return <span className="p-0 m-0" dangerouslySetInnerHTML={{ __html: string }}></span>;
+	return parse(string);
 }
 
 /**
@@ -151,4 +156,26 @@ export function smoothNavigate(url: string, setState: any) {
 	}))
 
 	history.pushState(null, "", url);
+}
+
+/**
+ * Strips Unicode control characters from strings and normalizes newlines
+ * @param text Text to strip
+ * @returns Stripped text
+ */
+export function stripNonPrintableAndNormalize(text: string) {
+    // strip control chars
+    text = text.replace(/\p{C}/gu, '');
+
+    // other common tasks are to normalize newlines and other whitespace
+
+    // normalize newline
+    text = text.replace(/\n\r/g, '\n');
+    text = text.replace(/\p{Zl}/gu, '\n');
+    text = text.replace(/\p{Zp}/gu, '\n');
+
+    // normalize space
+    text = text.replace(/\p{Zs}/gu, ' ');
+
+    return text;
 }
