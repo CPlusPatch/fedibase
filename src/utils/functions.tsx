@@ -144,8 +144,11 @@ export function dedupeById(
  * @param url URL to navigate to
  * @param setState setState element
  */
-export function smoothNavigate(url: string, setPath: any) {
-	setPath(url);
+export function smoothNavigate(url: string, setState: any) {
+	setState((prev: any) => ({
+		...prev,
+		path: url
+	}))
 
 	history.pushState(null, "", url);
 }

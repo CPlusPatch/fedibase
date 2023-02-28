@@ -27,24 +27,28 @@ import { useStore } from "utils/store";
 export default function Index() {
 	const client = useContext(AuthContext);
 
-	const [path, setPath] = useStore.path();
+	const [state, setState] = useStore();
 
 	const [component, setComponent] = useState(<></>);
 	const [loginMode, setLoginMode] = useState<boolean>(false);
 
 	const handlePopState = (e: PopStateEvent) => {
-		setPath((e.target as Window).location.pathname);
+		setState(prev => ({
+			...prev,
+			path: (e.target as Window).location.pathname,
+		}));
 	}
 
 	useEffect(() => {
+		console.log(state.path);
 		if (window) {
 			if (localStorage.getItem("theme") === "dark") {
 				document.getElementsByTagName("html")[0].className += " dark";
 			}
 
 			let paths;
-			if (path) {
-				paths = path.split("/");
+			if (state.path) {
+				paths = state.path.split("/");
 			} else {
 				paths = window.location.pathname.split("/");
 			}
@@ -78,7 +82,7 @@ export default function Index() {
 
 			return () => window.removeEventListener("popstate", handlePopState);
 		}
-	}, [client, path]);
+	}, [client, state.path]);
 
 	return (
 		<>
