@@ -16,20 +16,16 @@ import Button from "components/buttons/Button";
 import { AuthContext } from "components/context/AuthContext";
 import { Conversation } from "components/feed/Conversation";
 import { Input } from "components/forms/Input";
-import Select from "components/forms/Select";
 import Select2, { SelectItem } from "components/forms/Select2";
-import SmallSelect from "components/forms/SmallSelect";
 import SmallSelect2 from "components/forms/SmallSelect2";
 import { StatusType } from "components/posts/Status";
-import { stat } from "fs";
 import { Entity } from "megalodon";
 import { StateUpdater, useContext, useEffect, useRef, useState } from "preact/hooks";
 import { Fragment } from "preact/jsx-runtime";
 import { JSXInternal } from "preact/src/jsx";
 import { toast } from "react-hot-toast";
-import { useDispatch, useSelector } from "react-redux";
 import { classNames, withEmojis } from "utils/functions";
-import { setMobileEditorState, StateType } from "utils/stateSlice";
+import { useStore } from "utils/store";
 
 const modes = [
 	{
@@ -74,8 +70,7 @@ const visibilities = [
 ];
 
 export default function LeftSidebar() {
-	const state = useSelector((state) => (state as any).state as StateType);
-	const dispatch = useDispatch();
+	const [state, setState] = useStore();
 
 	return (
 		<>
@@ -87,7 +82,10 @@ export default function LeftSidebar() {
 					as="div"
 					className="block relative z-50"
 					onClose={() =>
-						dispatch(setMobileEditorState(false))
+						setState(prev => ({
+							...prev,
+							postComposerOpened: false
+						}))
 					}>
 					<Transition.Child
 						as={Fragment}
@@ -207,8 +205,7 @@ function SendForm() {
 	// Context stuff
 	const client = useContext(AuthContext);
 
-	const state = useSelector(state => (state as any).state as StateType);
-	const dispatch = useDispatch();
+	const [state, setState] = useStore();
 
 	const [currentState, setCurrentState] = useState<SendFormState>({
 		mode: modes[0],
@@ -313,7 +310,10 @@ function SendForm() {
 				emojisSuggestions: [],
 				poll: null,
 			}));
-			dispatch(setMobileEditorState(false));
+			setState(prev => ({
+				...prev,
+				postComposerOpened: false,
+			}));
 		}
 	};
 	return (
@@ -356,7 +356,10 @@ function SendForm() {
 						<button
 							onClick={e => {
 								e.preventDefault();
-								dispatch(setMobileEditorState(false));
+								setState(prev => ({
+									...prev,
+									postComposerOpened: false,
+								}));
 							}}>
 							<IconX />
 						</button>

@@ -1,7 +1,7 @@
 import { IconList, IconListDetails, IconRocket, IconStarFilled } from "@tabler/icons-preact";
 import { SelectItem } from "components/forms/Select2";
 import SmallSelect, { SelectDirection } from "components/forms/SmallSelect";
-import { Notification as NotificationElement } from "components/scroll/InfiniteScrollNotifications";
+import { Notification as NotificationElement } from "components/posts/Notification";
 import { Entity } from "megalodon";
 import { useState } from "preact/hooks";
 import Feed, { FeedType } from "./Feed";

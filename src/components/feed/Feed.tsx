@@ -3,9 +3,9 @@ import DummyStatus from "components/posts/DummyStatus";
 import { Response } from "megalodon";
 import { dedupeById } from "utils/functions";
 import { useIsVisible } from "react-is-visible";
-import { DummyNotification } from "components/scroll/InfiniteScrollNotifications";
 import { useState, useRef, useContext, useCallback, useEffect } from "preact/hooks";
 import { memo } from "preact/compat";
+import { DummyNotification } from "components/posts/Notification";
 
 export enum FeedType {
 	Home = "home",

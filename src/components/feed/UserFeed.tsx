@@ -1,13 +1,9 @@
-import { AuthContext } from "components/context/AuthContext";
 import UserProfile from "components/profile/UserProfile";
 import { Post } from "components/scroll/InfiniteScrollPosts";
-import { Entity, Response } from "megalodon";
-import { useContext, useEffect, useRef, useState } from "preact/hooks";
+import { Entity } from "megalodon";
 import Feed, { FeedType } from "./Feed";
 
 export const UserFeed = ({ account }: { account: Entity.Account }) => {
-	const [posts, setPosts] = useState<Entity.Status[]>([]);
-
 	return (
 		<>
 			{account && (

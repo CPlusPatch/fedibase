@@ -11,7 +11,6 @@
 	},
 	"dependencies": {
 		"@headlessui/react": "^1.7.11",
-		"@reduxjs/toolkit": "^1.9.3",
 		"@tabler/icons-preact": "^2.5.0",
 		"csstype": "^3.1.1",
 		"events": "^3.3.0",
@@ -23,7 +22,7 @@
 		"react-flip-move": "^3.0.5",
 		"react-hot-toast": "^2.4.0",
 		"react-is-visible": "^1.2.0",
-		"react-redux": "^8.0.5",
+		"teaful": "^0.11.1",
 		"use-line-clamp": "^1.0.2"
 	},
 	"devDependencies": {
@@ -54,7 +53,6 @@
 	"pnpm": {
 		"patchedDependencies": {
 			"@headlessui/react@1.7.11": "patches/@headlessui__react@1.7.11.patch",
-			"react-redux@8.0.5": "patches/react-redux@8.0.5.patch",
 			"@types/react@18.0.28": "patches/@types__react@18.0.28.patch"
 		}
 	}

@@ -1,21 +1,7 @@
-import { Entity } from "megalodon";
-import Status, { StatusType } from "components/posts/Status";
-import { withEmojiReactions, withEmojis } from "utils/functions";
 import { IconStarFilled } from "@tabler/icons-preact";
-import DummyStatus from "components/posts/DummyStatus";
-
-export const DummyNotification = () => {
-	return (
-		<>
-			<li
-				className={`flex flex-col gap-y-2 p-2 max-w-full rounded`}>
-				<DummyStatus
-					type={StatusType.Notification}
-				/>
-			</li>
-		</>
-	);
-};
+import { withEmojis, withEmojiReactions } from "utils/functions";
+import DummyStatus from "./DummyStatus";
+import Status, { StatusType } from "./Status";
 
 export const Notification = ({ entity }: { entity: Entity.Notification }) => {
 	return (
@@ -58,10 +44,11 @@ export const Notification = ({ entity }: { entity: Entity.Notification }) => {
 							/>
 							{withEmojis(entity.account.display_name, entity.account.emojis)} reacted
 							with{" "}
-							{entity.status?.emoji_reactions && withEmojiReactions(
-								entity.emoji ?? "",
-								entity.status?.emoji_reactions,
-							)}
+							{entity.status?.emoji_reactions &&
+								withEmojiReactions(
+									entity.emoji ?? "",
+									entity.status?.emoji_reactions,
+								)}
 						</a>
 					)}
 					{entity.type == "reblog" && (
@@ -110,6 +97,16 @@ export const Notification = ({ entity }: { entity: Entity.Notification }) => {
 					</a>
 				</li>
 			)}
+		</>
+	);
+};
+
+export const DummyNotification = () => {
+	return (
+		<>
+			<li className={`flex flex-col gap-y-2 p-2 max-w-full rounded`}>
+				<DummyStatus type={StatusType.Notification} />
+			</li>
 		</>
 	);
 };

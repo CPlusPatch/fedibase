@@ -22,20 +22,18 @@ import { UserFeed } from "./components/feed/UserFeed";
 import MainLayout from "./components/layout/MainLayout";
 import Nav from "./components/sidebar/Nav";
 import { StatusType } from "components/posts/Status";
-import { useDispatch, useSelector } from "react-redux";
-import { setPath, StateType } from "utils/stateSlice";
+import { useStore } from "utils/store";
 
 export default function Index() {
 	const client = useContext(AuthContext);
 
-	const state2 = useSelector(state => (state as any).state as StateType);
-	const dispatch = useDispatch();
+	const [path, setPath] = useStore.path();
 
 	const [component, setComponent] = useState(<></>);
 	const [loginMode, setLoginMode] = useState<boolean>(false);
 
 	const handlePopState = (e: PopStateEvent) => {
-		dispatch(setPath((e.target as Window).location.pathname));
+		setPath((e.target as Window).location.pathname);
 	}
 
 	useEffect(() => {
@@ -45,8 +43,8 @@ export default function Index() {
 			}
 
 			let paths;
-			if (state2.path) {
-				paths = state2.path.split("/");
+			if (path) {
+				paths = path.split("/");
 			} else {
 				paths = window.location.pathname.split("/");
 			}
@@ -80,7 +78,7 @@ export default function Index() {
 
 			return () => window.removeEventListener("popstate", handlePopState);
 		}
-	}, [client, state2.path]);
+	}, [client, path]);
 
 	return (
 		<>

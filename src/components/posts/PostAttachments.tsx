@@ -8,7 +8,7 @@ import { StatusType } from "./Status";
  * Images of a Status (extracted for modularity)
  * @returns 
  */
-export default function PostImages({ status, type }: { status: Entity.Status; type: StatusType }) {
+export default function PostAttachments({ status, type }: { status: Entity.Status; type: StatusType }) {
 	return (
 		<>
 			{status.media_attachments.length > 0 && (
@@ -17,7 +17,7 @@ export default function PostImages({ status, type }: { status: Entity.Status; ty
 						status.media_attachments.length === 2 && "grid-cols-2"
 					} ${status.media_attachments.length > 2 && "grid-cols-3"}`}>
 					{status.media_attachments.map(attachment => (
-						<PostImage status={status} image={attachment} key={attachment.id} />
+						<PostAttachment status={status} image={attachment} key={attachment.id} />
 					))}
 				</div>
 			)}
@@ -25,7 +25,7 @@ export default function PostImages({ status, type }: { status: Entity.Status; ty
 	);
 }
 
-function PostImage({ status, image }: { status: Entity.Status; image: Entity.Attachment }) {
+function PostAttachment({ status, image }: { status: Entity.Status; image: Entity.Attachment }) {
 	const [revealed, setRevealed] = useState<boolean>(!status.sensitive);
 
 	return (

@@ -5,8 +5,7 @@ import { StatusType } from "./Status";
 import { useIsVisible } from "react-is-visible";
 import { Entity } from "megalodon";
 import { useState, useContext, useRef, useEffect } from "preact/hooks";
-import { useDispatch } from "react-redux";
-import { setViewingConversation } from "utils/stateSlice";
+import { useStore } from "utils/store";
 
 export default function ReplyTo({ status, statusType = StatusType.Post }: { status: Entity.Status; statusType: StatusType }) {
 	const [replyStatus, setReplyStatus] = useState<Entity.Status>();
@@ -14,8 +13,7 @@ export default function ReplyTo({ status, statusType = StatusType.Post }: { stat
 
 	const nodeRef = useRef<HTMLDivElement>();
 	const visible = useIsVisible(nodeRef);
-
-	const dispatch = useDispatch();
+	const [state, setState] = useStore();
 
 	useEffect(() => {
 		// If the post is a reply, get the previous post's contents
@@ -28,14 +26,11 @@ export default function ReplyTo({ status, statusType = StatusType.Post }: { stat
 	return (
 		<div className="inline relative bg-slate-300/0" ref={nodeRef as any}>
 			<span
-				/* onMouseEnter={e => {
-					setOpen(true);
-				}}
-				onMouseLeave={e => {
-					setOpen(false);
-				}} */
 				onClick={() => {
-					dispatch(setViewingConversation(status.id))
+					setState(prev => ({
+						...prev,
+						viewingConversation: status.id,
+					}));
 				}}
 				className="text-xs text-gray-600 hover:underline dark:text-gray-300">
 				<IconMessage className="inline mr-1 w-4 h-4" aria-hidden={true} />

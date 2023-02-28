@@ -16,12 +16,8 @@ import "preact/debug";
 import { render } from "preact";
 import { App } from "./app";
 import "./index.css";
-import { Provider } from "react-redux";
-import store from "utils/store";
 
 render(
-	<Provider store={store}>
-		<App />
-	</Provider>,
+	<App />,
 	document.getElementById("app") as HTMLElement,
 );

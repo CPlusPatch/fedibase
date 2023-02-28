@@ -1,15 +1,14 @@
-import Button from "components/buttons/Button";
-import { AuthContext } from "components/context/AuthContext";
 import { Entity } from "megalodon";
-import { useContext, useRef, useState } from "preact/hooks";
-import { useDispatch } from "react-redux";
+import { useRef, useState } from "preact/hooks";
 import { classNames, fromNow, smoothNavigate, withEmojis } from "utils/functions";
 import InteractionBar from "./InteractionBar";
-import PostImages from "./PostImages";
+import PostAttachments from "./PostAttachments";
 import ReplyTo from "./ReplyTo";
 import SensitiveTextSpoiler from "./SensitiveTextSpoiler";
 import useLineClamp from "use-line-clamp";
 import { JSXInternal } from "preact/src/jsx";
+import { StatusPoll } from "./StatusPoll";
+import { useStore } from "utils/store";
 
 export enum StatusType {
 	Notification = "notification",
@@ -28,22 +27,22 @@ export default function Status({ status: statusProp, type, showInteraction = tru
 	const [showText, setShowText] = useState(false);
 	const textElementRef = useRef<HTMLParagraphElement>(null);
 	const clamps = useLineClamp(textElementRef, {
-		lines: 6
-	})
-	const client = useContext(AuthContext);
-	const dispatch = useDispatch();
+		lines: 6,
+	});
+
+	const [state, setState] = useStore();
 
 	const handleUserClick = (e: JSXInternal.TargetedMouseEvent<HTMLAnchorElement>) => {
 		if (!e.ctrlKey && !e.metaKey) {
 			e.preventDefault();
-			smoothNavigate(`/users/${status.account.id}`, dispatch);
+			smoothNavigate(`/users/${status.account.id}`, setState);
 		}
 	};
 
 	const handlePostClick = (e: JSXInternal.TargetedMouseEvent<HTMLAnchorElement>) => {
 		if (!e.ctrlKey && !e.metaKey) {
 			e.preventDefault();
-			smoothNavigate(`/posts/${status.id}`, dispatch);
+			smoothNavigate(`/posts/${status.id}`, setState);
 		}
 	};
 
@@ -99,22 +98,27 @@ export default function Status({ status: statusProp, type, showInteraction = tru
 					<div className={`${type === StatusType.Notification && "flex flex-row"}`}>
 						<div className="flex flex-col gap-y-1">
 							{status.in_reply_to_id && <ReplyTo status={status} statusType={type} />}
-							<SensitiveTextSpoiler
-								status={status}
-								showText={showText}
-								setShowText={setShowText}
-							/>
 
+							{status.sensitive && (
+								<SensitiveTextSpoiler
+									status={status}
+									showText={showText}
+									setShowText={setShowText}
+								/>
+							)}
+
+							{/* Actual text */}
 							<div className="relative w-full text-sm">
 								<p
 									ref={textElementRef}
-									className={`mt-1 rounded duration-200 status-text dark:text-gray-50 break-all ${
+									className={`mt-1 rounded duration-200 status-text dark:text-gray-50 break-word ${
 										status.sensitive && !showText && "filter blur-lg"
 									} ${clamps && !expand && "line-clamp-6"}`}>
 									{withEmojis(status.content, status.emojis)}
 								</p>
 							</div>
 
+							{/* Show More / Show Less button */}
 							{clamps && (textElementRef?.current?.textContent?.length ?? 0) > 0 && (
 								<>
 									<hr />
@@ -126,93 +130,7 @@ export default function Status({ status: statusProp, type, showInteraction = tru
 								</>
 							)}
 
-							{status.poll && (
-								<form
-									onSubmit={e => {
-										e.preventDefault();
-										let value = [];
-
-										if (!status.poll) return false;
-
-										for (let i = 0; i < (e.target as any)["poll"].length; i++) {
-											if ((e.target as any)["poll"][i].checked)
-												value.push((e.target as any)["poll"][i].value);
-										}
-										client
-											?.votePoll(status.poll?.id, value, status.id)
-											.then(res => {
-												setStatus(s => ({
-													...s,
-													poll: res.data,
-												}));
-											});
-									}}
-									action="#"
-									className="list-inside flex-col gap-y-2 flex">
-									<fieldset>
-										{status.poll.options.map((option, index) => (
-											<li
-												key={index}
-												className="flex flex-row gap-x-1 items-center relative dark:text-gray-100">
-												<div
-													style={{
-														width: `${Math.round(
-															(option.votes_count ??
-																0 /
-																	(status.poll?.votes_count ??
-																		0)) * 100,
-														)}%`,
-													}}
-													className="absolute bg-orange-200 dark:bg-orange-800 rounded h-full z-0"></div>
-												<span className="w-10 z-10">
-													{Number.isNaN(
-														Math.round(
-															(option.votes_count ??
-																0 /
-																	(status.poll?.votes_count ??
-																		0)) * 100,
-														),
-													)
-														? 0
-														: Math.round(
-																(option.votes_count ??
-																	0 /
-																		(status.poll?.votes_count ??
-																			0)) * 100,
-														  )}
-													%
-												</span>
-												{!status.poll?.voted && (
-													<input
-														type={
-															status.poll?.multiple
-																? "checkbox"
-																: "radio"
-														}
-														name="poll"
-														className="z-10 focus:outline-none focus:ring-0 rounded outline-none m-0 p-0"
-														value={index}
-													/>
-												)}
-												<span className="z-10">{option.title}</span>
-											</li>
-										))}
-									</fieldset>
-									<div className="text-sm text-gray-500 dark:text-gray-400">
-										{!status.poll.voted && (
-											<Button
-												style="gray"
-												type="submit"
-												className="!px-2 !py-1 mr-2">
-												Vote
-											</Button>
-										)}
-										{status.poll.votes_count} people voted &middot;{" "}
-										{status.poll.expired ? <>Poll ended</> : <>Poll ends</>}{" "}
-										{fromNow(new Date(status.poll.expires_at ?? ""))}
-									</div>
-								</form>
-							)}
+							{status.poll && <StatusPoll status={status} setStatus={setStatus} />}
 						</div>
 						{status.media_attachments.length > 0 && (
 							<div
@@ -220,7 +138,7 @@ export default function Status({ status: statusProp, type, showInteraction = tru
 									type === StatusType.Notification &&
 									"flex overflow-hidden justify-center w-28 ml-auto h-20 border dark:border-gray-700 rounded"
 								}`}>
-								<PostImages type={type} status={status} />
+								<PostAttachments type={type} status={status} />
 							</div>
 						)}
 					</div>
