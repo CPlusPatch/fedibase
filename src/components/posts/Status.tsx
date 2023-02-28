@@ -84,11 +84,11 @@ export default function Status({ status: statusProp, type, showInteraction = tru
 									title={status.account.display_name}>
 									{withEmojis(status.account.display_name, status.account.emojis)}
 								</h4>
-								<h6
+								<h5
 									title={status.account.acct}
 									className="overflow-hidden ml-0 text-gray-500 overflow-ellipsis dark:text-gray-400">
 									@{status.account.acct}
-								</h6>
+								</h5>
 							</span>
 						</div>
 						<div className="whitespace-nowrap">
@@ -158,14 +158,17 @@ export default function Status({ status: statusProp, type, showInteraction = tru
 											}}
 											className={classNames(
 												"text-2xl flex items-center dark:text-gray-200 gap-x-2 justify-center bg-blue-100 dark:bg-blue-800 px-3 py-1",
-												reaction.me && "bg-blue-300 dark:bg-blue-600 rounded",
+												reaction.me &&
+													"bg-blue-300 dark:bg-blue-600 rounded",
 												!reaction.me &&
 													"no-bad-scale hover:scale-95 duration-200 rounded-2xl",
 											)}>
 											{(reaction as any).url ? (
 												<img
+													loading="lazy"
 													src={(reaction as any).url}
 													className="w-[1em] h-[1em]"
+													alt={`Emoji reaction ${reaction.name}`}
 												/>
 											) : (
 												<span>{reaction.name}</span>

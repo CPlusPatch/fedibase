@@ -1,14 +1,20 @@
-import { useEffect, useState } from "preact/hooks";
+import { MutableRef, useEffect, useState } from "preact/hooks";
 import { StatusType } from "./Status";
 
-export default function DummyStatus({ type = "post" }: { type: "post" | "notification" }) {
+export default function DummyStatus({
+	type = "post",
+	reference = undefined,
+}: {
+	type: "post" | "notification";
+	reference?: MutableRef<any>;
+}) {
 	const [random, setRandom] = useState<number>(0);
 
 	useEffect(() => {
 		setRandom(Math.random());
 	}, []);
 	return (
-		<div className="flex flex-col max-w-full" aria-hidden={true}>
+		<li className="flex flex-col max-w-full" aria-hidden={true} ref={reference}>
 			<div className="flex flex-row max-w-full">
 				<div className="flex flex-col min-w-0 grow gap-y-2">
 					<div className="gap-x-2 text-[0.95rem] flex flex-row justify-between">
@@ -52,6 +58,6 @@ export default function DummyStatus({ type = "post" }: { type: "post" | "notific
 					</div>
 				</div>
 			</div>
-		</div>
+		</li>
 	);
 }

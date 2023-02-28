@@ -102,7 +102,7 @@ export default function MainLayout({ children }: any) {
 					{children}
 				</div>
 				<div className="hidden overflow-x-hidden p-4 min-w-0 max-h-screen md:col-span-3 md:flex">
-					<NotificationsFeed />
+					{window.innerWidth > 768 && <NotificationsFeed />}
 				</div>
 			</div>
 		</div>

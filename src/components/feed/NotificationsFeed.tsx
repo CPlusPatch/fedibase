@@ -1,10 +1,11 @@
 import { IconList, IconListDetails, IconRocket, IconStarFilled } from "@tabler/icons-preact";
 import { SelectItem } from "components/forms/Select2";
-import SmallSelect, { SelectDirection } from "components/forms/SmallSelect";
 import { Notification as NotificationElement } from "components/posts/Notification";
 import { Entity } from "megalodon";
 import { useState } from "preact/hooks";
 import Feed, { FeedType } from "./Feed";
+import { memo } from "preact/compat";
+import SmallSelect2, { SelectDirection } from "components/forms/SmallSelect2";
 
 const modes: SelectItem[] = [
 	{
@@ -33,7 +34,7 @@ const modes: SelectItem[] = [
 	},
 ];
 
-export default function NotificationsFeed({ withTitle = true }: { withTitle?: boolean }) {
+function NotificationsFeed({ withTitle = true }: { withTitle?: boolean }) {
 	const [mode, setMode] = useState(modes[0]);
 
 	return (
@@ -41,16 +42,18 @@ export default function NotificationsFeed({ withTitle = true }: { withTitle?: bo
 			{withTitle && (
 				<div className="flex flex-row justify-between items-center">
 					<h3 className="text-lg font-bold dark:text-gray-50">Notifications</h3>
-					<SmallSelect
+					<SmallSelect2
 						items={modes}
-						selected={mode}
-						setSelected={setMode}
+						defaultValue={0}
+						onChange={(item) => {
+							setMode(item);
+						}}
 						direction={SelectDirection.Left}
 					/>
 				</div>
 			)}
 			
-				<div className="flex overflow-y-scroll flex-col overflow-x-hidden gap-y-2 max-w-full h-full divide-y-2 dark:divide-gray-700 no-scroll">
+				<ul className="flex overflow-y-scroll flex-col overflow-x-hidden gap-y-2 max-w-full h-full divide-y-2 dark:divide-gray-700 no-scroll">
 					<Feed<Entity.Notification> type={FeedType.Notifications}
 						onChange={(entities: Entity.Notification[]) => {
 							if (!localStorage.getItem("lastReadNotification")) localStorage.setItem("lastReadNotification", Math.max(...entities.map(entity => {
@@ -94,7 +97,9 @@ export default function NotificationsFeed({ withTitle = true }: { withTitle?: bo
 							id: "",
 							filter: mode.value
 						}}/>
-				</div>
+				</ul>
 		</div>
 	);
 }
+
+export default memo(NotificationsFeed);

@@ -55,7 +55,7 @@ export function withEmojis(string: string, emojis: Entity.Emoji[]) {
 		const re = new RegExp(`:${emoji.shortcode}:`, "g");
 		string = string.replaceAll(
 			re,
-			`<img src="${emoji.url}" alt="Emoji (${emoji.shortcode})" style="height: 1em; display: inline; vertical-align: middle;" />`,
+			`<img src="${emoji.url}" loading="lazy" alt="Emoji (${emoji.shortcode})" style="height: 1em; display: inline; vertical-align: middle;" />`,
 		);
 	});
 
@@ -76,7 +76,7 @@ export function withEmojiReactions(string: string, emojis: Entity.Status["emoji_
 		// img has .25em bottom margin to line up right
 		string = string.replaceAll(
 			`:${emoji.name.split("@")[0]}:`,
-			`<img src="${(emoji as any).url}" alt="Emoji (${
+			`<img src="${(emoji as any).url}" loading="lazy" alt="Emoji (${
 				emoji.name
 			})" style="height: 1em; display: inline; margin-bottom: 0.25em"/>`,
 		);

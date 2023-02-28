@@ -31,16 +31,18 @@ export default function InteractionBar({ status }: { status: Entity.Status }) {
 	const [emojiFilter, setEmojiFilter] = useState<string>("");
 
 	useEffect(() => {
-		if (!localStorage.getItem("customEmojis")) {
-			client?.getInstanceCustomEmojis().then(res => {
-				localStorage.setItem("customEmojis", JSON.stringify(res.data));
-				setInstanceEmojis(res.data);
+		if (showEmojiPicker) {
+			if (!localStorage.getItem("customEmojis")) {
+				client?.getInstanceCustomEmojis().then(res => {
+					localStorage.setItem("customEmojis", JSON.stringify(res.data));
+					setInstanceEmojis(res.data);
 
-			})
-		} else {
-			setInstanceEmojis(JSON.parse(localStorage.getItem("customEmojis") as any))
+				})
+			} else {
+				setInstanceEmojis(JSON.parse(localStorage.getItem("customEmojis") as any))
+			}
 		}
-	}, [])
+	}, [showEmojiPicker])
 
 	const [state, setState] = useStore();
 
@@ -133,7 +135,7 @@ export default function InteractionBar({ status }: { status: Entity.Status }) {
 				<div className="absolute left-0 -translate-x-[55%] top-7 z-[99]" onClick={e => {
 					e.stopPropagation();
 				}}>
-					{showEmojiPicker && instanceEmojis && (
+					{showEmojiPicker && (
 						<div className="w-96 h-96 bg-dark border dark:border-gray-700 bg-white p-3 no-scroll rounded-lg overflow-hidden gap-y-2 flex-col flex">
 							<input className="w-full rounded px-2 py-1 border" placeholder="Emoji (alpha)" onChange={(e: any) => {
 								setEmojiFilter(e.target.value);
@@ -150,7 +152,7 @@ export default function InteractionBar({ status }: { status: Entity.Status }) {
 												toast.error("Couldn't add reaction :(")
 											})
 										}}>
-											<img src={emoji.url} className="w-7 h-7" />
+											<img src={emoji.url} loading="lazy" className="w-7 h-7" />
 										</button>
 									);
 								})}

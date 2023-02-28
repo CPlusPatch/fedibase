@@ -81,11 +81,18 @@ export default function MobileNavbar() {
 					<span className="sr-only">Open notifications</span>
 				</Button>
 				<Button style="gray" className="!p-0 !border-none !shadow-none">
-					<img src={account?.avatar} className="w-9 h-9 rounded border-2" />
+					<img
+						src={account?.avatar}
+						className="w-9 h-9 rounded border-2"
+						alt="Your avatar"
+					/>
 					<span className="sr-only">Your avatar</span>
 				</Button>
 			</header>
-			<Transition.Root unmount={false} show={state.notificationsOpened} as={Fragment}>
+			<Transition.Root
+				unmount={window.innerWidth > 768}
+				show={state.notificationsOpened && window.innerWidth < 768}
+				as={Fragment}>
 				<Dialog
 					as="div"
 					className="relative z-40"

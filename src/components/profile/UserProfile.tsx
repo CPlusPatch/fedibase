@@ -20,9 +20,10 @@ export default function UserProfile({ user }: { user: Entity.Account }) {
 		<div className="flex flex-col gap-y-4 w-full">
 			<div className="relative w-full">
 				<div className="flex overflow-hidden justify-center items-center w-full h-44 bg-gray-200 rounded border bg-dark dark:border-gray-700">
-					<img src={user.header} className="w-full" alt="" />
+					<img src={user.header} className="w-full" alt="" loading="lazy" />
 				</div>
 				<img
+					loading="lazy"
 					className="absolute -bottom-5 left-5 w-20 h-20 rounded border dark:border-gray-700"
 					src={user.avatar}
 					alt={user.acct}

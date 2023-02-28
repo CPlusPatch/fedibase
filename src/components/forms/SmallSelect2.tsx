@@ -36,7 +36,7 @@ export default function SmallSelect2({ items, defaultValue, onChange = (item) =>
 				}
 			}}>
 			<div className="relative z-50 mt-1 font-inter">
-				<Listbox.Button className="flex relative flex-row gap-x-1 items-center p-2 text-gray-600 rounded duration-200 cursor-default dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">
+				<Listbox.Button title="Open select menu" className="flex relative flex-row gap-x-1 items-center p-2 text-gray-600 rounded duration-200 cursor-default dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">
 					<selected.icon strokeWidth={2} className="w-6 h-6" aria-hidden="true" />
 				</Listbox.Button>
 				<Transition
@@ -54,6 +54,7 @@ export default function SmallSelect2({ items, defaultValue, onChange = (item) =>
 						{items.map(item => (
 							<Listbox.Option
 								key={item.value}
+								title={item.description}
 								className={`${
 									item.value === selected.value &&
 									"bg-orange-100 dark:bg-gray-800"

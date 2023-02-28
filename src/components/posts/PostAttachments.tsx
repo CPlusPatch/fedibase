@@ -32,15 +32,20 @@ function PostAttachment({ status, image }: { status: Entity.Status; image: Entit
 		<div className="flex overflow-hidden relative items-center max-h-[80vh]">
 			{image.type == "image" && (
 				<img
-					className={`filter duration-500 rounded h-full ${revealed ? "":"filter blur-2xl"}`}
+					loading="lazy"
+					className={`filter duration-500 rounded h-full object-contain ${
+						revealed ? "" : "filter blur-2xl"
+					}`}
 					src={image.remote_url ?? ""}
 					alt={image.description ?? ""}
-					loading="lazy"
 				/>
 			)}
 			{image.type == "video" && (
 				<video
-					className={`filter duration-500 object-contain h-full rounded ${revealed ? "":"filter blur-2xl"}`}
+					loading="lazy"
+					className={`filter duration-500 object-contain h-full rounded ${
+						revealed ? "" : "filter blur-2xl"
+					}`}
 					controls={true}
 					src={image.remote_url ?? ""}
 				/>

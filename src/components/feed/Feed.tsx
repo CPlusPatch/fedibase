@@ -3,9 +3,9 @@ import DummyStatus from "components/posts/DummyStatus";
 import { Response } from "megalodon";
 import { dedupeById } from "utils/functions";
 import { useIsVisible } from "react-is-visible";
-import { useState, useRef, useContext, useCallback, useEffect } from "preact/hooks";
+import { useState, useRef, useContext, useCallback, useEffect, MutableRef } from "preact/hooks";
 import { memo } from "preact/compat";
-import { DummyNotification } from "components/posts/Notification";
+import { StatusType } from "components/posts/Status";
 
 export enum FeedType {
 	Home = "home",
@@ -13,6 +13,8 @@ export enum FeedType {
 	Notifications = "notifications",
 	Local = "local",
 }
+
+const DEFAULT_LOAD = 20;
 
 interface FeedProps {
 	type: FeedType;
@@ -23,7 +25,7 @@ interface FeedProps {
 		filter?: string;
 	};
 	onLoadStart?: () => void;
-	onLoadEnd?: () => void
+	onLoadEnd?: () => void;
 }
 
 function Feed<T>(props: FeedProps) {
@@ -33,38 +35,41 @@ function Feed<T>(props: FeedProps) {
 	const loading = useRef<boolean>(false);
 	const loadNewRef = useRef(null);
 	const doLoadNewEntities = useIsVisible(loadNewRef);
+	const [initialLoadDone, setInitialLoadDone] = useState<boolean>(false);
 
 	const getNewEntities = useCallback(
 		async (since_id: string) => {
+			if (loading.current) return;
 			loading.current = true;
 			props.onLoadStart && props.onLoadStart();
 			let res: Response<T[]>;
 			switch (props.type) {
 				case FeedType.Home: {
 					res = (await client?.getHomeTimeline({
-						limit: 30,
+						limit: DEFAULT_LOAD,
 						since_id: since_id,
 					})) as any;
 					break;
 				}
 				case FeedType.User: {
-					if (!props.options?.id) throw Error("Feed needs a user ID to work in user mode!");
+					if (!props.options?.id)
+						throw Error("Feed needs a user ID to work in user mode!");
 					res = (await client?.getAccountStatuses(props.options.id, {
-						limit: 30,
+						limit: DEFAULT_LOAD,
 						since_id: since_id,
 					})) as any;
 					break;
 				}
 				case FeedType.Notifications: {
 					res = (await client?.getNotifications({
-						limit: 30,
+						limit: DEFAULT_LOAD,
 						since_id: since_id,
 					})) as any;
 					break;
 				}
 				case FeedType.Local: {
 					res = (await client?.getLocalTimeline({
-						limit: 30,
+						limit: DEFAULT_LOAD,
 						since_id: since_id,
 					})) as any;
 					break;
@@ -86,29 +91,30 @@ function Feed<T>(props: FeedProps) {
 			switch (props.type) {
 				case FeedType.Home: {
 					res = (await client?.getHomeTimeline({
-						limit: 30,
+						limit: DEFAULT_LOAD,
 						max_id: before_id,
 					})) as any;
 					break;
 				}
 				case FeedType.User: {
-					if (!props.options?.id) throw Error("Feed needs a user ID to work in user mode!");
+					if (!props.options?.id)
+						throw Error("Feed needs a user ID to work in user mode!");
 					res = (await client?.getAccountStatuses(props.options.id, {
-						limit: 30,
+						limit: DEFAULT_LOAD,
 						max_id: before_id,
 					})) as any;
 					break;
 				}
 				case FeedType.Notifications: {
 					res = (await client?.getNotifications({
-						limit: 30,
+						limit: DEFAULT_LOAD,
 						max_id: before_id,
 					})) as any;
 					break;
 				}
 				case FeedType.Local: {
 					res = (await client?.getLocalTimeline({
-						limit: 30,
+						limit: DEFAULT_LOAD,
 						max_id: before_id,
 					})) as any;
 					break;
@@ -122,24 +128,29 @@ function Feed<T>(props: FeedProps) {
 	);
 
 	useEffect(() => {
-		async function fetchInitialData() {
-			if (!loading.current) {
-				const latestEntities = await getNewEntities("");
+		const timeout = setTimeout(() => {
+			async function fetchInitialData() {
+				if (!loading.current) {
+					const latestEntities = await getNewEntities("") ?? [];
 
-				entitiesRef.current = dedupeById(latestEntities as any) as T[];
+					entitiesRef.current = dedupeById(latestEntities as any) as T[];
 
-				props.onChange(latestEntities);
-				setEntities(entitiesRef.current);
+					props.onChange(latestEntities);
+					setEntities(entitiesRef.current);
+					setInitialLoadDone(true);
+				}
 			}
-		}
 
-		fetchInitialData();
+			fetchInitialData();
+		}, 300);
+
+		return () => clearTimeout(timeout);
 	}, [client, getNewEntities]);
 
 	useEffect(() => {
 		const interval = window.setInterval(async () => {
 			if (!loading.current) {
-				const latestEntities = await getNewEntities((entitiesRef.current[0] as any).id);
+				const latestEntities = await getNewEntities((entitiesRef.current[0] as any).id) ?? [];
 
 				entitiesRef.current = dedupeById([
 					...latestEntities,
@@ -198,9 +209,7 @@ function Feed<T>(props: FeedProps) {
 					))}
 			{(props.type === FeedType.Home || props.type === FeedType.User) && (
 				<>
-					<div ref={loadNewRef}>
-						<DummyStatus type="post" />
-					</div>
+					{entities.length > 0 && <DummyStatus type="post" reference={loadNewRef} />}
 					<DummyStatus type="post" />
 					<DummyStatus type="post" />
 					<DummyStatus type="post" />
@@ -211,9 +220,7 @@ function Feed<T>(props: FeedProps) {
 			)}
 			{props.type === FeedType.Notifications && (
 				<>
-					<div ref={loadNewRef}>
-						<DummyNotification />
-					</div>
+					<DummyNotification reference={loadNewRef} />
 					<DummyNotification />
 					<DummyNotification />
 					<DummyNotification />
@@ -225,5 +232,17 @@ function Feed<T>(props: FeedProps) {
 		</>
 	);
 }
+
+const DummyNotification = ({ reference }: { reference?: MutableRef<any> | null }) => {
+	return (
+		<>
+			<li
+				ref={reference ?? undefined}
+				className={`flex flex-col gap-y-2 p-2 max-w-full rounded`}>
+				<DummyStatus type={StatusType.Notification} />
+			</li>
+		</>
+	);
+};
 
 export default memo(Feed);

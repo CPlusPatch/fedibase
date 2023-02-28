@@ -45,6 +45,7 @@ export default function Select({ items, selected, setSelected }: SelectOptions) 
 							{items.map(item => (
 								<Listbox.Option
 									key={item.text}
+									title={item.text}
 									className={`flex relative flex-row gap-x-3 items-center px-4 py-2 duration-200 hover:bg-gray-200 hover:dark:bg-gray-700 dark:text-gray-100`}
 									value={item.value}>
 									<>
