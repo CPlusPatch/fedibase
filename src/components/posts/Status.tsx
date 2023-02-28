@@ -147,6 +147,7 @@ export default function Status({ status: statusProp, type, showInteraction = tru
 													?.createEmojiReaction(status.id, reaction.name)
 													.then(res => {
 														toast.success("Added reaction!");
+														reaction.me = true;
 													})
 													.catch(err => {
 														console.error(err);
