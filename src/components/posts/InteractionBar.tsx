@@ -1,3 +1,4 @@
+import { Transition } from "@headlessui/react";
 import {
 	IconDots,
 	IconLock,
@@ -9,10 +10,11 @@ import {
 	IconStarFilled,
 } from "@tabler/icons-preact";
 import { AuthContext } from "components/context/AuthContext";
+import { Input } from "components/forms/Input";
 import { Entity } from "megalodon";
 import { useContext, useState } from "preact/hooks";
 import { JSXInternal } from "preact/src/jsx";
-import { useEffect } from "react";
+import { Fragment, useEffect } from "react";
 import { toast } from "react-hot-toast";
 import { useStore } from "utils/store";
 
@@ -36,13 +38,12 @@ export default function InteractionBar({ status }: { status: Entity.Status }) {
 				client?.getInstanceCustomEmojis().then(res => {
 					localStorage.setItem("customEmojis", JSON.stringify(res.data));
 					setInstanceEmojis(res.data);
-
-				})
+				});
 			} else {
-				setInstanceEmojis(JSON.parse(localStorage.getItem("customEmojis") as any))
+				setInstanceEmojis(JSON.parse(localStorage.getItem("customEmojis") as any));
 			}
 		}
-	}, [showEmojiPicker])
+	}, [showEmojiPicker]);
 
 	const [state, setState] = useStore();
 
@@ -126,39 +127,71 @@ export default function InteractionBar({ status }: { status: Entity.Status }) {
 
 			<InteractionBarIcon
 				title="Add reaction"
-				onClick={(e) => {
+				onClick={e => {
 					setShowEmojiPicker(s => !s);
 				}}>
 				<IconMoodHappy className="w-5 h-5" aria-hidden={true} />
 				<span className="sr-only">Add reaction</span>
 
-				<div className="absolute left-0 -translate-x-[55%] top-7 z-[99]" onClick={e => {
-					e.stopPropagation();
-				}}>
-					{showEmojiPicker && (
-						<div className="w-96 h-96 bg-dark border dark:border-gray-700 bg-white p-3 no-scroll rounded-lg overflow-hidden gap-y-2 flex-col flex">
-							<input className="w-full rounded px-2 py-1 border" placeholder="Emoji (alpha)" onChange={(e: any) => {
-								setEmojiFilter(e.target.value);
-							}}/>
+				<div
+					className="absolute left-0 -translate-x-[55%] top-7 z-[99]"
+					onClick={e => {
+						e.stopPropagation();
+					}}>
+					<Transition
+						as={Fragment}
+						show={showEmojiPicker}
+						enter="ease-out duration-200"
+						enterFrom="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+						enterTo="opacity-100 translate-y-0 sm:scale-100"
+						leave="ease-in duration-200"
+						leaveFrom="opacity-100 translate-y-0 sm:scale-100"
+						leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95">
+						<div className="w-72 h-80 bg-dark border dark:border-gray-700 bg-white p-3 no-scroll rounded-lg overflow-hidden gap-y-4 flex-col flex">
+							<Input
+								isLoading={false}
+								name="emoji"
+								className="w-full rounded px-2 py-1 dark:border-gray-700"
+								placeholder="Emoji (alpha)"
+								onChange={(e: any) => {
+									setEmojiFilter(e.target.value);
+								}}>
+								<span className="sr-only">Type to filter emojis</span>
+							</Input>
 							<div className="gap-3 rounded-lg grid grid-cols-5 justify-between overflow-y-scroll no-scroll max-h-[85%]">
-								{instanceEmojis.filter(f => f.shortcode.includes(emojiFilter)).map(emoji => {
-									return (
-										<button className="items-center flex justify-center" title={emoji.shortcode} onClick={(e) => {
-											client?.createEmojiReaction(status.id, emoji.shortcode).then(res => {
-												toast.success("Added reaction!");
-												setShowEmojiPicker(false);
-											}).catch(err => {
-												console.error(err);
-												toast.error("Couldn't add reaction :(")
-											})
-										}}>
-											<img src={emoji.url} loading="lazy" className="w-7 h-7" />
-										</button>
-									);
-								})}
+								{instanceEmojis
+									.filter(f => f.shortcode.includes(emojiFilter))
+									.map(emoji => {
+										return (
+											<button
+												className="items-center flex justify-center"
+												title={emoji.shortcode}
+												onClick={e => {
+													client
+														?.createEmojiReaction(
+															status.id,
+															emoji.shortcode,
+														)
+														.then(res => {
+															toast.success("Added reaction!");
+															setShowEmojiPicker(false);
+														})
+														.catch(err => {
+															console.error(err);
+															toast.error("Couldn't add reaction :(");
+														});
+												}}>
+												<img
+													src={emoji.url}
+													loading="lazy"
+													className="w-7 h-7"
+												/>
+											</button>
+										);
+									})}
 							</div>
 						</div>
-					)}
+					</Transition>
 				</div>
 			</InteractionBarIcon>
 
