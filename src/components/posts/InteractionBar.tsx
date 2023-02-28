@@ -123,12 +123,12 @@ export default function InteractionBar({ status }: { status: Entity.Status }) {
 			</InteractionBarIcon>
 
 			<InteractionBarIcon
-				title="Add reaction (not implemented)"
+				title="Add reaction"
 				onClick={(e) => {
 					setShowEmojiPicker(s => !s);
 				}}>
 				<IconMoodHappy className="w-5 h-5" aria-hidden={true} />
-				<span className="sr-only">Add reaction (not implemented)</span>
+				<span className="sr-only">Add reaction</span>
 
 				<div className="absolute left-0 -translate-x-[55%] top-7 z-[99]" onClick={e => {
 					e.stopPropagation();
