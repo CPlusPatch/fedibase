@@ -11,6 +11,7 @@ import { StatusPoll } from "./StatusPoll";
 import { useStore } from "utils/store";
 import { AuthContext } from "components/context/AuthContext";
 import { toast } from "react-hot-toast";
+import { Reactions } from "./Reaction";
 
 export enum StatusType {
 	Notification = "notification",
@@ -136,47 +137,7 @@ export default function Status({ status: statusProp, type, showInteraction = tru
 							)}
 
 							{status.emoji_reactions && (
-								<div className="w-full flex flex-row gap-3">
-									{status.emoji_reactions.map(reaction => (
-										<button
-											onClick={e => {
-												if (reaction.me)
-													return toast.error("Already reacted to this!");
-
-												client
-													?.createEmojiReaction(status.id, reaction.name)
-													.then(res => {
-														toast.success("Added reaction!");
-														reaction.me = true;
-													})
-													.catch(err => {
-														console.error(err);
-														toast.error(
-															"Couldn't add that reaction :(",
-														);
-													});
-											}}
-											className={classNames(
-												"text-2xl flex items-center dark:text-gray-200 gap-x-2 justify-center bg-blue-100 dark:bg-blue-800 px-3 py-1",
-												reaction.me &&
-													"bg-blue-300 dark:bg-blue-600 rounded",
-												!reaction.me &&
-													"no-bad-scale hover:scale-95 duration-200 rounded-2xl",
-											)}>
-											{(reaction as any).url ? (
-												<img
-													loading="lazy"
-													src={(reaction as any).url}
-													className="w-[1em] h-[1em]"
-													alt={`Emoji reaction ${reaction.name}`}
-												/>
-											) : (
-												<span>{reaction.name}</span>
-											)}
-											{reaction.count}
-										</button>
-									))}
-								</div>
+								<Reactions status={status} />
 							)}
 
 							{status.poll && <StatusPoll status={status} setStatus={setStatus} />}
