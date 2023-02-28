@@ -11,6 +11,7 @@ import {
 } from "@tabler/icons-preact";
 import { AuthContext } from "components/context/AuthContext";
 import { Input } from "components/forms/Input";
+import { ScaleFadeSlide } from "components/transitions/ScaleFadeSlide";
 import { Entity } from "megalodon";
 import { useContext, useState } from "preact/hooks";
 import { JSXInternal } from "preact/src/jsx";
@@ -138,15 +139,7 @@ export default function InteractionBar({ status }: { status: Entity.Status }) {
 					onClick={e => {
 						e.stopPropagation();
 					}}>
-					<Transition
-						as={Fragment}
-						show={showEmojiPicker}
-						enter="ease-out duration-200"
-						enterFrom="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-						enterTo="opacity-100 translate-y-0 sm:scale-100"
-						leave="ease-in duration-200"
-						leaveFrom="opacity-100 translate-y-0 sm:scale-100"
-						leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95">
+					<ScaleFadeSlide show={showEmojiPicker}>
 						<div className="w-72 h-80 bg-dark border dark:border-gray-700 bg-white p-3 no-scroll rounded-lg overflow-hidden gap-y-4 flex-col flex">
 							<Input
 								isLoading={false}
@@ -191,7 +184,7 @@ export default function InteractionBar({ status }: { status: Entity.Status }) {
 									})}
 							</div>
 						</div>
-					</Transition>
+					</ScaleFadeSlide>
 				</div>
 			</InteractionBarIcon>
 
