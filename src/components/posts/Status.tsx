@@ -1,5 +1,5 @@
 import { Entity } from "megalodon";
-import { useRef, useState } from "preact/hooks";
+import { useContext, useRef, useState } from "preact/hooks";
 import { classNames, fromNow, smoothNavigate, withEmojis } from "utils/functions";
 import InteractionBar from "./InteractionBar";
 import PostAttachments from "./PostAttachments";
@@ -9,6 +9,8 @@ import useLineClamp from "use-line-clamp";
 import { JSXInternal } from "preact/src/jsx";
 import { StatusPoll } from "./StatusPoll";
 import { useStore } from "utils/store";
+import { AuthContext } from "components/context/AuthContext";
+import { toast } from "react-hot-toast";
 
 export enum StatusType {
 	Notification = "notification",
@@ -26,9 +28,12 @@ export default function Status({ status: statusProp, type, showInteraction = tru
 	const [status, setStatus] = useState(statusProp);
 	const [showText, setShowText] = useState(false);
 	const textElementRef = useRef<HTMLParagraphElement>(null);
+	const client = useContext(AuthContext);
 	const clamps = useLineClamp(textElementRef, {
 		lines: 6,
 	});
+
+	const ownId = localStorage.getItem("accountId");
 
 	const [state, setState] = useStore();
 
@@ -128,6 +133,46 @@ export default function Status({ status: statusProp, type, showInteraction = tru
 										{expand === true ? "Less" : "More"}
 									</button>
 								</>
+							)}
+
+							{status.emoji_reactions && (
+								<div className="w-full flex flex-row gap-3">
+									{status.emoji_reactions.map(reaction => (
+										<button
+											onClick={e => {
+												if (reaction.me)
+													return toast.error("Already reacted to this!");
+
+												client
+													?.createEmojiReaction(status.id, reaction.name)
+													.then(res => {
+														toast.success("Added reaction!");
+													})
+													.catch(err => {
+														console.error(err);
+														toast.error(
+															"Couldn't add that reaction :(",
+														);
+													});
+											}}
+											className={classNames(
+												"text-2xl flex items-center dark:text-gray-200 gap-x-2 justify-center bg-blue-100 dark:bg-blue-800 px-3 py-1",
+												reaction.me && "bg-blue-300 dark:bg-blue-600 rounded",
+												!reaction.me &&
+													"no-bad-scale hover:scale-95 duration-200 rounded-2xl",
+											)}>
+											{(reaction as any).url ? (
+												<img
+													src={(reaction as any).url}
+													className="w-[1em] h-[1em]"
+												/>
+											) : (
+												<span>{reaction.name}</span>
+											)}
+											{reaction.count}
+										</button>
+									))}
+								</div>
 							)}
 
 							{status.poll && <StatusPoll status={status} setStatus={setStatus} />}

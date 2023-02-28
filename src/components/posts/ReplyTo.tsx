@@ -16,11 +16,18 @@ export default function ReplyTo({ status, statusType = StatusType.Post }: { stat
 	const [state, setState] = useStore();
 
 	useEffect(() => {
+		 let isMounted = true;
 		// If the post is a reply, get the previous post's contents
 		if (status.in_reply_to_id && !replyStatus && visible)
 			client?.getStatus(status.in_reply_to_id).then(data => {
-				setReplyStatus(data.data);
+				if (isMounted) {
+					setReplyStatus(data.data);
+				}
 			});
+		
+			return () => {
+				isMounted = false;
+			};
 	}, [client, replyStatus, status.in_reply_to_id, visible]);
 
 	return (
