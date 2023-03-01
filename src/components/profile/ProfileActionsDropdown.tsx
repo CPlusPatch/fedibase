@@ -23,7 +23,7 @@ export default function ProfileActionsDropdown({
 			<div>
 				<Menu.Button className="" as="div">
 					<Button style="gray" className="!p-2">
-						<IconDots className="h-5 w-5" aria-hidden="true" />
+						<IconDots className="h-6 w-6 md:h-5 md:w-5" aria-hidden="true" />
 						<span className="sr-only">Open advanced settings</span>
 					</Button>
 				</Menu.Button>

@@ -79,10 +79,10 @@ export default function UserProfile({ user }: { user: Entity.Account }) {
 					)}
 				</div>
 			</div>
-			<div className="p-3 w-full text-sm rounded-md border dark:border-gray-700 dark:text-gray-50 font-inter">
+			<div className="p-3 w-full text-sm rounded-md border dark:border-gray-700 dark:text-gray-50 font-inter break-all">
 				{withEmojis(user.note, user.emojis)}
 			</div>
-			<div className="w-full gap-y-4 md:gap-y-0 flex flex-col md:divide-y dark:divide-gray-700 text-sm rounded-md border dark:border-gray-700 dark:text-gray-50 font-inter">
+			<div className="w-full gap-y-2 md:gap-y-0 flex flex-col md:divide-y dark:divide-gray-700 text-sm rounded-md border dark:border-gray-700 dark:text-gray-50 font-inter">
 				{user.fields.map(field => (
 					<div className="flex px-3 md:flex-row gap-x-3 flex-col py-2">
 						<div className="w-1/3 font-bold text-xs md:text-sm">{field.name}</div>

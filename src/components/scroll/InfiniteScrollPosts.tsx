@@ -9,11 +9,11 @@ export const Post = ({ entity, mode = StatusType.Post }: { entity: Entity.Status
 			{entity.reblog && (
 				<Link
 					href={`/users/@${entity.account.id}`}
-					className="flex overflow-hidden flex-row gap-x-2 items-center max-w-full italic text-gray-500 overflow-ellipsis dark:text-gray-400 hover:underline">
+					className="overflow-hidden gap-x-1 max-w-full font-semibold text-gray-500 overflow-ellipsis dark:text-gray-400 hover:underline">
 					<svg
 						aria-hidden={true}
 						xmlns="http://www.w3.org/2000/svg"
-						className="w-4 h-4 text-blue-500 hover:animate-spin"
+						className="text-blue-500 hover:animate-spin w-[1em] inline pb-0.5 mr-1"
 						viewBox="0 0 576 512">
 						<path
 							fill="currentColor"
@@ -22,8 +22,8 @@ export const Post = ({ entity, mode = StatusType.Post }: { entity: Entity.Status
 					<img
 						loading="lazy"
 						src={entity.account.avatar}
-						className="w-5 h-5 rounded"
 						alt=""
+						className="h-[1em] w-[1em] inline rounded mb-0.5 mr-2"
 					/>
 					{withEmojis(entity.account.display_name, entity.account.emojis)} boosted
 				</Link>
