@@ -3,6 +3,7 @@ import { withEmojis, withEmojiReactions } from "utils/functions";
 import DummyStatus from "./DummyStatus";
 import Status, { StatusType } from "./Status";
 import { MutableRef } from "preact/hooks";
+import { Link } from "components/transitions/Link";
 
 export const Notification = ({ entity }: { entity: Entity.Notification }) => {
 	return (
@@ -18,7 +19,7 @@ export const Notification = ({ entity }: { entity: Entity.Notification }) => {
 						entity.type == "emoji_reaction" && "bg-red-500/10"
 					}`}>
 					{entity.type == "favourite" && (
-						<a
+						<Link
 							href={`/users/@${entity.account.id}`}
 							className="overflow-hidden gap-x-1 max-w-full font-semibold text-gray-500 overflow-ellipsis dark:text-gray-400 hover:underline">
 							<IconStarFilled
@@ -33,10 +34,10 @@ export const Notification = ({ entity }: { entity: Entity.Notification }) => {
 							/>
 							{withEmojis(entity.account.display_name, entity.account.emojis)}{" "}
 							favourited your post
-						</a>
+						</Link>
 					)}
 					{entity.type == "emoji_reaction" && (
-						<a
+						<Link
 							href={`/users/@${entity.account.id}`}
 							className="overflow-hidden gap-x-1 max-w-full font-semibold text-gray-500 overflow-ellipsis dark:text-gray-400 hover:underline">
 							<img
@@ -52,10 +53,10 @@ export const Notification = ({ entity }: { entity: Entity.Notification }) => {
 									entity.emoji ?? "",
 									entity.status?.emoji_reactions,
 								)}
-						</a>
+						</Link>
 					)}
 					{entity.type == "reblog" && (
-						<a
+						<Link
 							href={`/users/@${entity.account.id}`}
 							className="overflow-hidden gap-x-1 max-w-full font-semibold text-gray-500 overflow-ellipsis dark:text-gray-400 hover:underline">
 							<svg
@@ -75,7 +76,7 @@ export const Notification = ({ entity }: { entity: Entity.Notification }) => {
 							/>
 							{withEmojis(entity.account.display_name, entity.account.emojis)} boosted
 							your post
-						</a>
+						</Link>
 					)}
 					{entity.status && (
 						<Status
@@ -88,7 +89,7 @@ export const Notification = ({ entity }: { entity: Entity.Notification }) => {
 			)}
 			{entity.type === "follow" && (
 				<li className={`flex flex-col gap-y-2 p-2 max-w-full rounded bg-green-500/10`}>
-					<a
+					<Link
 						href={`/users/@${entity.account.id}`}
 						className="overflow-hidden gap-x-2 max-w-full text-base text-gray-800 dark:text-gray-100 hover:underline">
 						<img
@@ -99,7 +100,7 @@ export const Notification = ({ entity }: { entity: Entity.Notification }) => {
 						/>
 						{withEmojis(entity.account.display_name, entity.account.emojis)} followed
 						you
-					</a>
+					</Link>
 				</li>
 			)}
 		</>

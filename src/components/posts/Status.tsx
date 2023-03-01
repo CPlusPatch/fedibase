@@ -12,6 +12,7 @@ import { useStore } from "utils/store";
 import { AuthContext } from "components/context/AuthContext";
 import { toast } from "react-hot-toast";
 import { Reactions } from "./Reaction";
+import { Link } from "components/transitions/Link";
 
 export enum StatusType {
 	Notification = "notification",
@@ -38,20 +39,6 @@ export default function Status({ status: statusProp, type, showInteraction = tru
 
 	const [state, setState] = useStore();
 
-	const handleUserClick = (e: JSXInternal.TargetedMouseEvent<HTMLAnchorElement>) => {
-		if (!e.ctrlKey && !e.metaKey) {
-			e.preventDefault();
-			smoothNavigate(`/users/${status.account.id}`, setState);
-		}
-	};
-
-	const handlePostClick = (e: JSXInternal.TargetedMouseEvent<HTMLAnchorElement>) => {
-		if (!e.ctrlKey && !e.metaKey) {
-			e.preventDefault();
-			smoothNavigate(`/posts/${status.id}`, setState);
-		}
-	};
-
 	const toggleExpand = () => {
 		setExpand(prev => !prev);
 	};
@@ -62,9 +49,8 @@ export default function Status({ status: statusProp, type, showInteraction = tru
 				<div className="flex flex-col min-w-0 grow gap-y-1">
 					<div className="gap-x-2 text-[0.95rem] flex flex-row justify-between">
 						<div className="flex flex-row overflow-hidden text-ellipsis">
-							<a
+							<Link
 								href={`/users/${status.account.id}`}
-								onClick={handleUserClick}
 								className="flex-shrink-0 mr-2">
 								<img
 									loading="lazy"
@@ -74,7 +60,7 @@ export default function Status({ status: statusProp, type, showInteraction = tru
 										type == StatusType.Post ? "w-12 h-12" : "w-10 h-10"
 									} bg-white overflow-hidden bg-dark rounded border border-gray-300 dark:border-gray-700 `}
 								/>
-							</a>
+							</Link>
 							<span
 								className={classNames(
 									"flex flex-col whitespace-nowrap md:inline",
@@ -93,12 +79,11 @@ export default function Status({ status: statusProp, type, showInteraction = tru
 							</span>
 						</div>
 						<div className="whitespace-nowrap">
-							<a
+							<Link
 								href={`/posts/${status.id}`}
-								onClick={handlePostClick}
 								className="text-sm text-gray-700 dark:text-gray-300 hover:underline">
 								{fromNow(new Date(status.created_at))}
-							</a>
+							</Link>
 						</div>
 					</div>
 					<div className={`${type === StatusType.Notification && "flex flex-row"}`}>

@@ -19,6 +19,7 @@ import { Input } from "components/forms/Input";
 import Select2, { SelectItem } from "components/forms/Select2";
 import SmallSelect2 from "components/forms/SmallSelect2";
 import { StatusType } from "components/posts/Status";
+import { ScaleFadeSlide } from "components/transitions/ScaleFadeSlide";
 import { Entity } from "megalodon";
 import { StateUpdater, useContext, useEffect, useRef, useState } from "preact/hooks";
 import { Fragment } from "preact/jsx-runtime";
@@ -79,10 +80,15 @@ export default function LeftSidebar() {
 			)}
 
 			{/* Only show on mobile */}
-			<Transition.Root show={state.mobilePostViewer && window.innerWidth < 768} as={Fragment}>
+			<Transition.Root
+				unmount={window.innerWidth > 768}
+				show={
+					state.mobilePostViewer && window.innerWidth < 768 && !state.postComposerOpened
+				}
+				as={Fragment}>
 				<Dialog
 					as="div"
-					className="relative z-40 md:hidden"
+					className="relative md:hidden"
 					onClose={() => {
 						setState(prev => ({
 							...prev,
@@ -120,7 +126,11 @@ export default function LeftSidebar() {
 										</button>
 									</div>
 									<div className="flex overflow-hidden relative mt-6 max-w-full grow sm:px-6">
-										<Conversation showTitle={false} id={state.viewingConversation} mode={StatusType.Post} />
+										<Conversation
+											showTitle={false}
+											id={state.viewingConversation}
+											mode={StatusType.Post}
+										/>
 									</div>
 								</div>
 							</Dialog.Panel>
@@ -131,11 +141,13 @@ export default function LeftSidebar() {
 			<Transition.Root show={state.postComposerOpened} as={Fragment}>
 				<Dialog
 					as="div"
-					className="block relative z-50"
+					className="block relative"
 					onClose={() =>
 						setState(prev => ({
 							...prev,
 							postComposerOpened: false,
+							quotingTo: null,
+							replyingTo: null
 						}))
 					}>
 					<Transition.Child
@@ -146,7 +158,7 @@ export default function LeftSidebar() {
 						leave="ease-in duration-200"
 						leaveFrom="opacity-100"
 						leaveTo="opacity-0">
-						<div className="fixed inset-0 backdrop-blur-lg transition-all bg-orange-500/30" />
+						<div className="fixed inset-0 transition-all bg-orange-500/40" />
 					</Transition.Child>
 
 					<div className="overflow-y-auto fixed inset-0">
@@ -267,7 +279,7 @@ function SendForm() {
 		characters: "",
 		emojis: [],
 		emojisSuggestions: [],
-		poll: null
+		poll: null,
 	});
 
 	const max_chars = (JSON.parse(localStorage.getItem("instanceData") ?? "{}") as Entity.Instance)
@@ -301,29 +313,37 @@ function SendForm() {
 				}));
 			}
 
-			setTimeout(() => {
-				// Move the cursor to the end of the textarea
-				textareaRef.current?.setSelectionRange(
-					textareaRef.current?.value.length,
-					textareaRef.current?.value.length,
-				);
-
-				textareaRef.current?.focus();
-			}, 500)
-
 			setCurrentState(s => ({
 				...s,
-				visibility: visibilities.find(v => v.value === otherPost?.visibility) ?? visibilities[0]
-			}))
-
+				visibility:
+					visibilities.find(v => v.value === otherPost?.visibility) ?? visibilities[0],
+			}));
 		}
 
-		client?.getInstanceCustomEmojis().then(data => {
+		if (!localStorage.getItem("customEmojis")) {
+			client?.getInstanceCustomEmojis().then(res => {
+				localStorage.setItem("customEmojis", JSON.stringify(res.data));
+				setCurrentState(s => ({
+					...s,
+					emojis: res.data,
+				}));
+			});
+		} else {
 			setCurrentState(s => ({
 				...s,
-				emojis: data.data,
+				emojis: JSON.parse(localStorage.getItem("customEmojis") as any),
 			}));
-		});
+		}
+
+		setTimeout(() => {
+			// Move the cursor to the end of the textarea
+			textareaRef.current?.setSelectionRange(
+				textareaRef.current?.value.length,
+				textareaRef.current?.value.length,
+			);
+
+			textareaRef.current?.focus();
+		}, 500);
 	}, [client, state.replyingTo, state.quotingTo]);
 
 	const submitForm = async (event: JSXInternal.TargetedEvent<HTMLFormElement, Event>) => {
@@ -372,178 +392,183 @@ function SendForm() {
 			setState(prev => ({
 				...prev,
 				postComposerOpened: false,
+				quotingTo: null,
+				replyingTo: null
 			}));
 		}
 	};
 	return (
-		<div className="flex flex-col gap-y-4">
-			<form
-				action="#"
-				className="relative text-sm font-inter"
-				onSubmit={submitForm}
-				onKeyUp={e => {
-					if (e.key === "Enter" && (e.ctrlKey || e.metaKey)) {
-						e.currentTarget.requestSubmit();
-					}
-				}}>
-				<div
-					className={`px-3 py-2 w-full rounded-2xl border dark:text-gray-100 border-gray-300 dark:border-gray-700 shadow-sm ${
-						currentState.loading ? "bg-gray-100 bg-dark" : "bg-white bg-dark"
-					}`}>
-					<div className="flex justify-between p-3 w-full">
-						<h1 className="text-xl font-bold dark:text-gray-50">
-							{state.replyingTo && (
-								<>
-									Replying to{" "}
-									{withEmojis(
-										state.replyingTo.account.display_name,
-										state.replyingTo.account.emojis,
-									)}
-								</>
-							)}
-							{state.quotingTo && (
-								<>
-									Quoting{" "}
-									{withEmojis(
-										state.quotingTo.account.display_name,
-										state.quotingTo.account.emojis,
-									)}
-								</>
-							)}
-							{!(state.replyingTo || state.quotingTo) && <>Compose</>}
-						</h1>
-						<button
-							onClick={e => {
-								e.preventDefault();
-								setState(prev => ({
-									...prev,
-									postComposerOpened: false,
+		<form
+			action="#"
+			className="relative text-sm font-inter"
+			onSubmit={submitForm}
+			onKeyUp={e => {
+				if (e.key === "Enter" && (e.ctrlKey || e.metaKey)) {
+					e.currentTarget.requestSubmit();
+				}
+			}}>
+			<div
+				className={`px-3 py-2 w-full rounded-2xl border dark:text-gray-100 border-gray-300 dark:border-gray-700 shadow-sm ${
+					currentState.loading ? "bg-gray-100 bg-dark" : "bg-white bg-dark"
+				}`}>
+				<div className="flex justify-between p-3 w-full">
+					<h1 className="text-xl font-bold dark:text-gray-50">
+						{state.replyingTo && (
+							<>
+								Replying to{" "}
+								{withEmojis(
+									state.replyingTo.account.display_name,
+									state.replyingTo.account.emojis,
+								)}
+							</>
+						)}
+						{state.quotingTo && (
+							<>
+								Quoting{" "}
+								{withEmojis(
+									state.quotingTo.account.display_name,
+									state.quotingTo.account.emojis,
+								)}
+							</>
+						)}
+						{!(state.replyingTo || state.quotingTo) && <>Compose</>}
+					</h1>
+					<button
+						onClick={e => {
+							e.preventDefault();
+							setState(prev => ({
+								...prev,
+								postComposerOpened: false,
+							}));
+						}}>
+						<IconX />
+					</button>
+				</div>
+
+				<textarea
+					ref={textareaRef}
+					rows={5}
+					name="comment"
+					onPaste={async e => {
+						if (!client) return;
+						if (e.clipboardData && e.clipboardData.files.length > 0) {
+							e.preventDefault();
+							const files = e.clipboardData?.files;
+
+							try {
+								setCurrentState(s => ({
+									...s,
+									files: [...s.files, ...files],
+									loading: true,
 								}));
-							}}>
-							<IconX />
-						</button>
-					</div>
 
-					<textarea
-						ref={textareaRef}
-						id="comment"
-						rows={5}
-						onPaste={async e => {
-							if (!client) return;
-							if (e.clipboardData && e.clipboardData.files.length > 0) {
-								e.preventDefault();
-								const files = e.clipboardData?.files;
-
-								try {
-									setCurrentState(s => ({
-										...s,
-										files: [...s.files, ...files],
-										loading: true,
-									}));
-
-									console.log(files);
-									const ids = await Promise.all(
-										[...files].map(async file => {
-											return (await client.uploadMedia(file)).data.id;
-										}),
-									);
-									toast.success("Files uploaded!");
-									setCurrentState(s => ({
-										...s,
-										loading: false,
-										fileIds: [...s.fileIds, ...ids],
-									}));
-								} catch (error) {
-									console.error(error);
-									toast.error("Couldn't upload files :(");
-									// Handle error
-								}
+								console.log(files);
+								const ids = await Promise.all(
+									[...files].map(async file => {
+										return (await client.uploadMedia(file)).data.id;
+									}),
+								);
+								toast.success("Files uploaded!");
+								setCurrentState(s => ({
+									...s,
+									loading: false,
+									fileIds: [...s.fileIds, ...ids],
+								}));
+							} catch (error) {
+								console.error(error);
+								toast.error("Couldn't upload files :(");
+								// Handle error
 							}
-						}}
-						onChange={async event => {
-							const { value }: any = event.target;
+						}
+					}}
+					onChange={async event => {
+						const { value }: any = event.target;
+						setCurrentState(s => ({
+							...s,
+							characters: value,
+						}));
+
+						const split = value.split(":");
+						if (split.length > 1 && /^\w+$/.test(split[split.length - 1])) {
+							const matched = split[split.length - 1];
+
+							const matchedEmojis = currentState.emojis.filter(e =>
+								e.shortcode.includes(matched),
+							);
 							setCurrentState(s => ({
 								...s,
-								characters: value,
+								emojisSuggestions: matchedEmojis,
 							}));
+						} else {
+							setCurrentState(s => ({
+								...s,
+								emojisSuggestions: [],
+							}));
+						}
+					}}
+					disabled={currentState.loading}
+					className="block py-3 no-scroll w-full bg-transparent border-0 resize-none disabled:text-gray-400 focus:ring-0 dark:placeholder:text-gray-400"
+					placeholder="What's happening?"
+					defaultValue={currentState.characters}
+				/>
 
-							const split = value.split(":");
-							if (split.length > 1 && /^\w+$/.test(split[split.length - 1])) {
-								const matched = split[split.length - 1];
+				{currentState.poll && (
+					<PollCreator currentState={currentState} setCurrentState={setCurrentState} />
+				)}
 
-								const matchedEmojis = currentState.emojis.filter(e =>
-									e.shortcode.includes(matched),
-								);
-								setCurrentState(s => ({
-									...s,
-									emojisSuggestions: matchedEmojis,
-								}));
-							} else {
-								setCurrentState(s => ({
-									...s,
-									emojisSuggestions: [],
-								}));
-							}
-						}}
-						disabled={currentState.loading}
-						className="block py-3 no-scroll w-full bg-transparent border-0 resize-none disabled:text-gray-400 focus:ring-0 dark:placeholder:text-gray-400"
-						placeholder="What's happening?"
-						defaultValue={currentState.characters}
-					/>
+				<Files
+					fileIds={currentState.fileIds}
+					files={currentState.files}
+					setCurrentState={setCurrentState}
+				/>
 
-					{currentState.poll && (
-						<PollCreator currentState={currentState} setCurrentState={setCurrentState}/>
-					)}
+				<ScaleFadeSlide show={currentState.emojisSuggestions.length > 0}>
+					<div className="flex absolute z-[60] flex-col rounded border bg-dark bg-white dark:border-gray-700">
+						{currentState.emojisSuggestions.slice(0, 5).map(emoji => (
+							<EmojiItem
+								key={emoji.shortcode}
+								emoji={emoji}
+								onClick={() => {
+									if (!textareaRef.current) {
+										return;
+									}
 
-					<Files fileIds={currentState.fileIds} files={currentState.files} setCurrentState={setCurrentState}/>
+									const val = textareaRef.current.value;
+									textareaRef.current.value = val.replace(
+										val.split(":")[val.split(":").length - 1],
+										`${emoji.shortcode}: `,
+									);
+									setCurrentState(s => ({
+										...s,
+										emojis: [],
+									}));
+								}}
+							/>
+						))}
+					</div>
+				</ScaleFadeSlide>
 
-					<Transition
-						as={Fragment}
-						enter="ease-out duration-200"
-						enterFrom="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-						enterTo="opacity-100 translate-y-0 sm:scale-100"
-						leave="ease-in duration-200"
-						leaveFrom="opacity-100 translate-y-0 sm:scale-100"
-						leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-						show={currentState.emojisSuggestions.length > 0}>
-						<div className="flex absolute z-[60] flex-col rounded border bg-dark bg-white dark:border-gray-700">
-							{currentState.emojisSuggestions.slice(0, 5).map(emoji => (
-								<EmojiItem
-									key={emoji.shortcode}
-									emoji={emoji}
-									onClick={() => {
-										if (!textareaRef.current) {
-											return;
-										}
-
-										const val = textareaRef.current.value;
-										textareaRef.current.value = val.replace(
-											val.split(":")[val.split(":").length - 1],
-											`${emoji.shortcode}: `,
-										);
-										setCurrentState(s => ({
-											...s,
-											emojis: [],
-										}));
-									}}
-								/>
-							))}
-						</div>
-					</Transition>
-
-					<ButtonRow currentState={currentState} setCurrentState={setCurrentState} fileInputRef={fileInputRef} client={client} max_chars={max_chars} />
-				</div>
-			</form>
-		</div>
+				<ButtonRow
+					currentState={currentState}
+					setCurrentState={setCurrentState}
+					fileInputRef={fileInputRef}
+					client={client}
+					max_chars={max_chars}
+				/>
+			</div>
+		</form>
 	);
 }
 
-function PollCreator({ currentState, setCurrentState }: {
+function PollCreator({
+	currentState,
+	setCurrentState,
+}: {
 	currentState: SendFormState;
-	setCurrentState: StateUpdater<SendFormState>
+	setCurrentState: StateUpdater<SendFormState>;
 }) {
 	return (
-		<div className="flex w-full px-4 flex-col gap-y-2"> 
+		<div className="flex w-full px-4 flex-col gap-y-2">
 			<ol className="flex-col w-full gap-y-4 flex">
 				{currentState.poll?.choices.map((choice, index) => (
 					<li
@@ -570,21 +595,22 @@ function PollCreator({ currentState, setCurrentState }: {
 								</Input>
 							</div>
 						</div>
-						{currentState?.poll?.choices && index === currentState.poll?.choices.length - 1 && (
-							<button
-								onClick={e => {
-									e.preventDefault();
-									let pollCopy = currentState.poll;
-									pollCopy?.choices.splice(index, 1);
+						{currentState?.poll?.choices &&
+							index === currentState.poll?.choices.length - 1 && (
+								<button
+									onClick={e => {
+										e.preventDefault();
+										let pollCopy = currentState.poll;
+										pollCopy?.choices.splice(index, 1);
 
-									setCurrentState(s => ({
-										...s,
-										poll: pollCopy
-									}));
-								}}>
-								<IconX className="w-5 h-5" />
-							</button>
-						)}
+										setCurrentState(s => ({
+											...s,
+											poll: pollCopy,
+										}));
+									}}>
+									<IconX className="w-5 h-5" />
+								</button>
+							)}
 					</li>
 				))}
 				<Button
@@ -617,9 +643,9 @@ function PollCreator({ currentState, setCurrentState }: {
 								poll: {
 									choices: s.poll?.choices ?? [""],
 									duration: Number(i.value),
-									multiple: s.poll?.multiple ?? false
-								}
-							}))
+									multiple: s.poll?.multiple ?? false,
+								},
+							}));
 						}}
 					/>
 				</div>
@@ -656,8 +682,11 @@ function PollCreator({ currentState, setCurrentState }: {
 	);
 }
 
-
-function Files({ files, fileIds, setCurrentState }: {
+function Files({
+	files,
+	fileIds,
+	setCurrentState,
+}: {
 	files: SendFormState["files"];
 	fileIds: SendFormState["fileIds"];
 	setCurrentState: StateUpdater<SendFormState>;
@@ -685,7 +714,7 @@ function Files({ files, fileIds, setCurrentState }: {
 										setCurrentState(s => ({
 											...s,
 											files: newFiles,
-											fileIds: newFileIds
+											fileIds: newFileIds,
 										}));
 									}}
 									style="gray"
@@ -715,7 +744,7 @@ function ButtonRow({
 	max_chars: any;
 }) {
 	return (
-		<div className="flex inset-x-0 bottom-0 justify-between py-2 pr-2 pl-3">
+		<div className="flex inset-x-0 bottom-0 py-2 pr-2 pl-3 flex-row">
 			<div className="flex items-center space-x-1">
 				<button
 					type="button"
@@ -757,20 +786,24 @@ function ButtonRow({
 						}
 					}}
 				/>
-				<SmallSelect2 items={modes} defaultValue={0} onChange={(i) => {
-					setCurrentState(s => ({
-						...s,
-						mode: i
-					}))
-				}} />
+				<SmallSelect2
+					items={modes}
+					defaultValue={0}
+					onChange={i => {
+						setCurrentState(s => ({
+							...s,
+							mode: i,
+						}));
+					}}
+				/>
 				<SmallSelect2
 					items={visibilities}
 					defaultValue={0}
 					onChange={i => {
 						setCurrentState(s => ({
 							...s,
-							visibility: i
-						}))
+							visibility: i,
+						}));
 					}}
 				/>
 				<button
@@ -802,7 +835,9 @@ function ButtonRow({
 			<div className="flex flex-row flex-shrink-0 gap-x-4 items-center">
 				<div className="flex flex-row gap-x-2 items-center">
 					<span className="text-gray-600 dark:text-gray-300">
-						{(max_chars ?? 500) - currentState.characters.length}
+						{((max_chars ?? 500) - currentState.characters.length).toLocaleString("en", {
+							notation: "compact"
+						})}
 					</span>
 					<svg width="27" height="27" viewBox="0 0 27 27" aria-hidden={true}>
 						<circle
@@ -817,7 +852,9 @@ function ButtonRow({
 							cy="13.5"
 							r="10"
 							fill="none"
-							strokeDasharray={(1 - currentState.characters.length / (max_chars ?? 500)) * 62.832}
+							strokeDasharray={
+								(1 - currentState.characters.length / (max_chars ?? 500)) * 62.832
+							}
 							strokeDashoffset="62.832"
 							strokeLinecap="round"
 							strokeWidth="3.5"

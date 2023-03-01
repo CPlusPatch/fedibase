@@ -3,7 +3,7 @@ import { Fragment } from "react";
 
 interface ScaleFadeSlideProps {
 	children: any;
-	show: boolean;
+	show?: boolean;
 }
 
 export function ScaleFadeSlide(props: ScaleFadeSlideProps) {

@@ -5,8 +5,9 @@ import { Input, Label } from "components/forms/Input";
 import generator, { OAuth } from "megalodon";
 import Select from "components/forms/Select";
 import { IconLetterC, IconLetterM, IconLetterP } from "@tabler/icons-preact";
+import Select2, { SelectItem } from "components/forms/Select2";
 
-const instanceTypes = [
+const instanceTypes: SelectItem[] = [
 	{
 		icon: IconLetterP,
 		text: "Pleroma · Akkoma",
@@ -141,9 +142,11 @@ export default function LoginForm({ code }: {
 									<Label htmlFor="handle">Fedi handle</Label>
 								</Input>
 
-								<Select
-									selected={selectedInstanceType}
-									setSelected={setSelectedInstanceType}
+								<Select2
+									defaultValue={0}
+									onChange={item => {
+										setSelectedInstanceType(item);
+									}}
 									items={instanceTypes}
 								/>
 

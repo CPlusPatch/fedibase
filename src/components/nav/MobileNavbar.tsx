@@ -43,10 +43,6 @@ export default function MobileNavbar() {
 					<IconMenu2 aria-hidden={true} className="" />
 					<span className="sr-only">Open sidebar</span>
 				</Button>
-				{/* <a href="/" className="flex flex-row gap-x-3 text-lg dark:text-gray-50 font-poppin">
-					<SmallLogo size="w-7 !h-7" />
-					Fedibase
-				</a> */}
 				<Button
 					style="gray"
 					className="!p-3 !border-none !shadow-none"
@@ -91,11 +87,11 @@ export default function MobileNavbar() {
 			</header>
 			<Transition.Root
 				unmount={window.innerWidth > 768}
-				show={state.notificationsOpened && window.innerWidth < 768}
+				show={state.notificationsOpened && window.innerWidth < 768 && !state.postComposerOpened}
 				as={Fragment}>
 				<Dialog
 					as="div"
-					className="relative z-40"
+					className="relative"
 					onClose={() => {
 						setState(prev => ({
 							...prev,
@@ -144,7 +140,7 @@ export default function MobileNavbar() {
 			<Transition.Root show={state.sidebarOpened} as={Fragment}>
 				<Dialog
 					as="div"
-					className="relative z-40"
+					className="relative"
 					onClose={() => {
 						setState(prev => ({
 							...prev,
@@ -175,16 +171,6 @@ export default function MobileNavbar() {
 									leaveFrom="translate-x-0"
 									leaveTo="translate-x-full">
 									<Dialog.Panel className="overflow-hidden relative w-screen max-w-md pointer-events-auto">
-										<Transition.Child
-											as={Fragment}
-											enter="ease-in-out duration-200"
-											enterFrom="opacity-0"
-											enterTo="opacity-100"
-											leave="ease-in-out duration-200"
-											leaveFrom="opacity-100"
-											leaveTo="opacity-0">
-											<div className="flex absolute top-0 right-0 pt-4 pl-2 -mr-8 sm:-mr-10 sm:pl-4"></div>
-										</Transition.Child>
 										<div className="flex overflow-y-hidden flex-col py-6 max-w-xs h-full bg-white shadow-xl bg-dark">
 											<div className="flex justify-between px-4 sm:px-6">
 												<Dialog.Title className="text-lg font-medium text-gray-900 dark:text-gray-50">

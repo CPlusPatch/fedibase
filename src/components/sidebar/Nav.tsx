@@ -1,6 +1,7 @@
 import { Transition } from "@headlessui/react";
 import { IconHome, IconMoon, IconPlus, IconSun, IconUsers, IconWorld } from "@tabler/icons-preact";
 import { AuthContext } from "components/context/AuthContext";
+import { Link } from "components/transitions/Link";
 import { useContext, useState, useEffect } from "preact/hooks";
 import { JSX, Fragment } from "preact/jsx-runtime";
 import toast from "react-hot-toast";
@@ -92,16 +93,12 @@ export default function Nav(props: NavProps): JSX.Element {
 	return (
 		<div className="hidden fixed top-0 bg-dark bg-white bottom-0 left-0 z-50 flex-col flex-1 col-span-1 min-h-0 bg-gradient-to-b border-r dark:border-gray-700 bg-light dark:bg-dark lg:flex">
 			<div className="flex overflow-y-auto flex-col flex-1 items-center pt-5 pb-4">
-				<a
+				<Link
 					href="/"
-					onClick={e => {
-						e.preventDefault();
-						smoothNavigate("/", setState)
-					}}
 					className="flex flex-shrink-0 justify-center items-center px-2">
 					<img src={instance?.thumbnail ?? ""} className="w-8 h-8 rounded" alt="" />
 					<span className="sr-only">{instance?.title}</span>
-				</a>
+				</Link>
 				<nav className="flex-1 px-2 mt-5 space-y-1" aria-label="Sidebar">
 					{navigation.map(item => (
 						<NavElement item={item} key={item.name} />
@@ -138,14 +135,14 @@ export default function Nav(props: NavProps): JSX.Element {
 					<IconPlus className="w-5 h-5" aria-hidden={true} />
 					<span className="sr-only">Compose new post</span>
 				</button>
-				<a href={`/users/${account?.id}`} className="flex justify-center items-center">
+				<Link href={`/users/${account?.id}`} className="flex justify-center items-center">
 					<img
 						src={account?.avatar}
 						className="w-9 h-9 rounded border dark:border-gray-700"
 						alt=""
 					/>
 					<span className="sr-only">Your avatar, click to visit your profile</span>
-				</a>
+				</Link>
 			</div>
 		</div>
 	);
@@ -202,16 +199,12 @@ export function MobileNav(props: NavProps): JSX.Element {
 	return (
 		<div className="flex z-50 flex-col min-h-0 dark:border-gray-700 bg-light bg-dark">
 			<div className="flex overflow-y-auto flex-col flex-1 text-gray-800 dark:text-gray-100">
-				<a
+				<Link
 					href="/"
-					onClick={e => {
-						e.preventDefault();
-						smoothNavigate("/", setState);
-					}}
 					className="flex flex-shrink-0 gap-x-4 items-center text-lg font-poppins">
 					<img src={instance?.thumbnail ?? ""} className="w-12 h-12 rounded" alt="" />
 					{instance?.title}
-				</a>
+				</Link>
 				<nav className="flex-1 mt-5 space-y-1" aria-label="Sidebar">
 					{navigation.map(item => (
 						<NavElementMobile item={item} key={item.name} />
@@ -236,14 +229,14 @@ export function MobileNav(props: NavProps): JSX.Element {
 						</>
 					)}
 				</button>
-				<a href={`/users/${account?.id}`} className="flex items-center">
+				<Link href={`/users/${account?.id}`} className="flex items-center">
 					<img
 						src={account?.avatar}
 						className="w-9 h-9 rounded border dark:border-gray-700"
 						alt=""
 					/>
 					<span className="sr-only">Your avatar, click to visit your profile</span>
-				</a>
+				</Link>
 			</div>
 		</div>
 	);
@@ -261,14 +254,8 @@ function NavElementMobile(props: NavElementProps) {
 
 	return (
 		<div className="flex flex-row items-center">
-			<a
+			<Link
 				href={props.item.href}
-				onClick={e => {
-					if (!e.ctrlKey && !e.metaKey) {
-						e.preventDefault();
-						smoothNavigate(props.item.href, setState);
-					}
-				}}
 				className={classNames(
 					current
 						? "bg-gray-300/40 dark:bg-gray-700/40"
@@ -280,7 +267,7 @@ function NavElementMobile(props: NavElementProps) {
 					aria-hidden="true"
 				/>
 				{props.item.name}
-			</a>
+			</Link>
 		</div>
 	);
 }
@@ -296,14 +283,8 @@ function NavElement(props: NavElementProps) {
 
 	return (
 		<div className="flex flex-row items-center">
-			<a
+			<Link
 				href={props.item.href}
-				onClick={e => {
-					if (!e.ctrlKey && !e.metaKey) {
-						e.preventDefault();
-						smoothNavigate(props.item.href, setState);
-					}
-				}}
 				className={classNames(
 					current
 						? "bg-gray-300/40 dark:bg-gray-700/40"
@@ -321,7 +302,7 @@ function NavElement(props: NavElementProps) {
 					aria-hidden="true"
 				/>
 				<span className="sr-only">Visit the {props.item.name} feed</span>
-			</a>
+			</Link>
 			<Transition
 				as={Fragment}
 				show={showTooltip}

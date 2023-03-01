@@ -1,12 +1,13 @@
 import { Entity } from "megalodon";
 import Status, { StatusType } from "components/posts/Status";
 import { withEmojis } from "utils/functions";
+import { Link } from "components/transitions/Link";
 
 export const Post = ({ entity, mode = StatusType.Post }: { entity: Entity.Status; mode?: StatusType }) => {
 	return (
 		<div className={`flex flex-col gap-y-2`}>
 			{entity.reblog && (
-				<a
+				<Link
 					href={`/users/@${entity.account.id}`}
 					className="flex overflow-hidden flex-row gap-x-2 items-center max-w-full italic text-gray-500 overflow-ellipsis dark:text-gray-400 hover:underline">
 					<svg
@@ -25,7 +26,7 @@ export const Post = ({ entity, mode = StatusType.Post }: { entity: Entity.Status
 						alt=""
 					/>
 					{withEmojis(entity.account.display_name, entity.account.emojis)} boosted
-				</a>
+				</Link>
 			)}
 			<Status status={entity.reblog !== null ? entity.reblog : entity} type={mode} />
 		</div>
