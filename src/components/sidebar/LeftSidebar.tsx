@@ -744,7 +744,7 @@ function ButtonRow({
 	max_chars: any;
 }) {
 	return (
-		<div className="flex inset-x-0 bottom-0 py-2 pr-2 pl-3 flex-row">
+		<div className="flex inset-x-0 bottom-0 justify-between py-2 pr-2 pl-3 flex-row">
 			<div className="flex items-center space-x-1">
 				<button
 					type="button"
