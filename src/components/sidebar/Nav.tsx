@@ -90,7 +90,7 @@ export default function Nav(): JSX.Element {
 	}, [client]);
 
 	return (
-		<div className="hidden fixed z-10 top-0 bg-dark bg-white bottom-0 left-0 flex-col flex-1 col-span-1 min-h-0 bg-gradient-to-b border-r dark:border-gray-700 bg-light dark:bg-dark lg:flex">
+		<div className="hidden fixed z-10 top-0 dark:bg-dark-800 bg-white bottom-0 left-0 flex-col flex-1 col-span-1 min-h-0 bg-gradient-to-b border-r dark:border-gray-700 bg-light dark:dark:bg-dark-800 lg:flex">
 			<div className="flex overflow-y-auto flex-col flex-1 items-center pt-5 pb-4">
 				<Link
 					href="/"
@@ -188,7 +188,7 @@ function NavElement(props: NavElementProps) {
 				leaveTo="opacity-0 scale-95">
 				<div
 					role="tooltip"
-					className="inline-block absolute z-10 px-3 py-2 ml-14 text-sm font-medium text-gray-900 bg-white rounded-lg border border-gray-200 shadow-sm dark:text-gray-100 bg-dark dark:border-gray-700 font-inter">
+					className="inline-block absolute z-10 px-3 py-2 ml-14 text-sm font-medium text-gray-900 bg-white rounded-lg border border-gray-200 shadow-sm dark:text-gray-100 dark:bg-dark-800 dark:border-gray-700 font-inter">
 					{props.item.name}
 				</div>
 			</Transition>

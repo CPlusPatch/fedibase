@@ -37,7 +37,7 @@ export default function ProfileActionsDropdown({
 				leave="transition ease-in duration-75"
 				leaveFrom="transform opacity-100 scale-100"
 				leaveTo="transform opacity-0 scale-95">
-				<Menu.Items className="origin-top-right text-base absolute right-0 mt-2 w-44 overflow-hidden sm:text-sm rounded-md shadow-lg bg-white bg-dark divide-y divide-gray-100 dark:divide-gray-700 focus:outline-none">
+				<Menu.Items className="origin-top-right text-base absolute right-0 mt-2 w-44 overflow-hidden sm:text-sm rounded-md shadow-lg bg-white dark:bg-dark-800 divide-y divide-gray-100 dark:divide-gray-700 focus:outline-none">
 					<div>
 						<Menu.Item>
 							<button

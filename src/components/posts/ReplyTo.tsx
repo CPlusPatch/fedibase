@@ -13,10 +13,10 @@ export default function ReplyTo({ status, statusType = StatusType.Post }: { stat
 
 	const nodeRef = useRef<HTMLDivElement>();
 	const visible = useIsVisible(nodeRef);
-	const [state, setState] = useStore();
+	const [, setState] = useStore();
 
 	useEffect(() => {
-		 let isMounted = true;
+		let isMounted = true;
 		// If the post is a reply, get the previous post's contents
 		if (status.in_reply_to_id && !replyStatus && visible)
 			client?.getStatus(status.in_reply_to_id).then(data => {
@@ -25,9 +25,9 @@ export default function ReplyTo({ status, statusType = StatusType.Post }: { stat
 				}
 			});
 		
-			return () => {
-				isMounted = false;
-			};
+		return () => {
+			isMounted = false;
+		};
 	}, [client, replyStatus, status.in_reply_to_id, visible]);
 
 	return (
@@ -56,7 +56,7 @@ export default function ReplyTo({ status, statusType = StatusType.Post }: { stat
 					leaveTo="opacity-0 translate-y-1">
 					<div
 						className={classNames(
-							`absolute left-0 px-4 py-3 bg-gray-50 bg-dark w-full rounded dark:border-gray-700 border transform z-[9999]`,
+							`absolute left-0 px-4 py-3 bg-gray-50 dark:bg-dark-800 w-full rounded dark:border-gray-700 border transform z-[9999]`,
 							statusType === StatusType.Post
 								? "translate-x-[-5.55rem]"
 								: "translate-x-[-4rem]",

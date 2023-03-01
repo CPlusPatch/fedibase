@@ -11,6 +11,21 @@ module.exports = {
 			animation: {
 				"spin-once": "spin 1s ease-in-out 1",
 			},
+			colors: {
+				dark: {
+					DEFAULT: "#181A1B",
+					50: "#AEB4B7",
+					100: "#A3AAAD",
+					200: "#8E969A",
+					300: "#788287",
+					400: "#656D71",
+					500: "#52585C",
+					600: "#3E4446",
+					700: "#2B2F31",
+					800: "#181A1B",
+					900: "#000000",
+				},
+			},
 		},
 		nightwind: {
 			typography: true,

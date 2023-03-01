@@ -138,7 +138,7 @@ export default function InteractionBar({ status, setStatus }: { status: Entity.S
 						e.stopPropagation();
 					}}>
 					<ScaleFadeSlide show={showEmojiPicker}>
-						<div className="w-72 h-80 bg-dark border dark:border-gray-700 bg-white p-3 no-scroll rounded-lg overflow-hidden gap-y-4 flex-col flex">
+						<div className="w-72 h-80 dark:bg-dark-800 border dark:border-gray-700 bg-white p-3 no-scroll rounded-lg overflow-hidden gap-y-4 flex-col flex">
 							<Input
 								isLoading={false}
 								name="emoji"

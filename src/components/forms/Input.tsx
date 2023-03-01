@@ -22,7 +22,7 @@ export function Input({
 					name={name}
 					disabled={isLoading}
 					className={classNames(
-						"block px-3 py-2 w-full placeholder-gray-400 bg-white rounded-md border border-gray-300 shadow-sm duration-200 appearance-none outline-none dark:text-gray-100 bg-dark disabled:bg-gray-100 focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm",
+						"block px-3 py-2 w-full placeholder-gray-400 bg-white rounded-md border border-gray-300 shadow-sm duration-200 appearance-none outline-none dark:text-gray-100 dark:bg-dark-800 disabled:bg-gray-100 focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm",
 						className
 					)}
 					{...props}

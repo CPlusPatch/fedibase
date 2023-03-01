@@ -107,7 +107,7 @@ export default function LeftSidebar() {
 							leaveFrom="opacity-100 translate-y-0 scale-100"
 							leaveTo="opacity-0 translate-y-4 translate-y-0 scale-95">
 							<Dialog.Panel className="overflow-hidden relative w-screen max-w-md pointer-events-auto">
-								<div className="flex overflow-y-hidden flex-col pt-6 h-full bg-white shadow-xl bg-dark">
+								<div className="flex overflow-y-hidden flex-col pt-6 h-full bg-white shadow-xl dark:bg-dark-800">
 									<div className="flex justify-between px-4 sm:px-6">
 										<Dialog.Title className="text-lg font-medium text-gray-900 dark:text-gray-50">
 											Conversation
@@ -409,7 +409,7 @@ function SendForm() {
 			}}>
 			<div
 				className={`px-3 py-2 w-full rounded-2xl border dark:text-gray-100 border-gray-300 dark:border-gray-700 shadow-sm ${
-					currentState.loading ? "bg-gray-100 bg-dark" : "bg-white bg-dark"
+					currentState.loading ? "bg-gray-100 dark:bg-dark-800" : "bg-white dark:bg-dark-800"
 				}`}>
 				<div className="flex justify-between p-3 w-full">
 					<h1 className="text-xl font-bold dark:text-gray-50">
@@ -523,7 +523,7 @@ function SendForm() {
 				/>
 
 				<ScaleFadeSlide show={currentState.emojisSuggestions.length > 0}>
-					<div className="flex absolute z-[60] flex-col rounded border bg-dark bg-white dark:border-gray-700">
+					<div className="flex absolute z-[60] flex-col rounded border dark:bg-dark-800 bg-white dark:border-gray-700">
 						{currentState.emojisSuggestions.slice(0, 5).map(emoji => (
 							<EmojiItem
 								key={emoji.shortcode}

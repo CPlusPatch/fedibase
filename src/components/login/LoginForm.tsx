@@ -3,9 +3,9 @@ import { useEffect, useState } from "preact/hooks";
 import Button from "components/buttons/Button";
 import { Input, Label } from "components/forms/Input";
 import generator, { OAuth } from "megalodon";
-import Select from "components/forms/Select";
 import { IconLetterC, IconLetterM, IconLetterP } from "@tabler/icons-preact";
 import Select2, { SelectItem } from "components/forms/Select2";
+import { toast } from "react-hot-toast";
 
 const instanceTypes: SelectItem[] = [
 	{
@@ -30,7 +30,7 @@ export default function LoginForm({ code }: {
 }) {
 	const [isLoading, setIsLoading] = useState<boolean>(false);
 
-	const [mode, setMode] = useState<"login" | "code">(code ? "code" : "login");
+	const [mode,] = useState<"login" | "code">(code ? "code" : "login");
 	const [selectedInstanceType, setSelectedInstanceType] = useState(instanceTypes[0]);
 
 	const loginForm = async (event: any) => {
@@ -39,13 +39,13 @@ export default function LoginForm({ code }: {
 
 		const handle = event.target["handle"].value;
 
-		let domain: string = ""
+		let domain = "";
 
 		if (handle.match(/@/g).length <= 2 && handle.match(/@/g).length >= 0)
-			domain = handle.split("@")[handle.match(/@/g).length]
+			domain = handle.split("@")[handle.match(/@/g).length];
 		else {
 			// TODO: put an error here.
-			domain = "kitsunes.gay"
+			domain = "kitsunes.gay";
 		}
 
 		const instanceUrl = `https://${domain}`;
@@ -53,9 +53,9 @@ export default function LoginForm({ code }: {
 
 		const client = generator(instanceType as any, instanceUrl);
 
-		let scope = []
-		if (instanceType === "misskey") scope = ["read:account","write:account","read:blocks","write:blocks","read:drive","write:drive","read:favorites","write:favorites","read:following","write:following","read:messaging","write:messaging","read:mutes","write:mutes","write:notes","read:notifications","write:notifications","read:reactions","write:reactions","write:votes","read:pages","write:pages","write:page-likes","read:page-likes","read:user-groups","write:user-groups","read:channels","write:channels","read:gallery","write:gallery","read:gallery-likes","write:gallery-likes"]
-		else scope = ["read", "write", "follow"]
+		let scope = [];
+		if (instanceType === "misskey") scope = ["read:account","write:account","read:blocks","write:blocks","read:drive","write:drive","read:favorites","write:favorites","read:following","write:following","read:messaging","write:messaging","read:mutes","write:mutes","write:notes","read:notifications","write:notifications","read:reactions","write:reactions","write:votes","read:pages","write:pages","write:page-likes","read:page-likes","read:user-groups","write:user-groups","read:channels","write:channels","read:gallery","write:gallery","read:gallery-likes","write:gallery-likes"];
+		else scope = ["read", "write", "follow"];
 
 		const appData = await client.registerApp("Fedibase Web", {
 			scopes: scope,
@@ -90,7 +90,7 @@ export default function LoginForm({ code }: {
 					clientSecret,
 					code,
 					`http://${window.location.host}/login`,
-					)
+				)
 				.then(async (tokenData: OAuth.TokenData) => {
 					localStorage.setItem("accessToken", tokenData.accessToken);
 
@@ -106,6 +106,9 @@ export default function LoginForm({ code }: {
 						localStorage.setItem("accountId", data.data.id);
 						window.location.pathname = "/";
 					});
+				}).catch(err => {
+					console.error(err);
+					toast.error("Couldn't fetch access token :(");
 				});
 		}
 	}, [code]);

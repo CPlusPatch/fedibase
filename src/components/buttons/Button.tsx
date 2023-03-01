@@ -3,7 +3,7 @@ import { JSXInternal } from "preact/src/jsx";
 import { classNames } from "utils/functions";
 
 const styles: any = {
-	gray: "text-gray-700 bg-white bg-dark border-gray-300 outline-none hover:bg-gray-50 dark:border-gray-600 dark:text-gray-200",
+	gray: "text-gray-700 bg-white dark:bg-dark-800 border-gray-300 outline-none hover:bg-gray-50 dark:border-gray-600 dark:text-gray-200",
 	orange: "bg-orange-600 hover:bg-orange-700 text-white border-transparent",
 	orangeLight: "text-orange-700 dark:text-orange-200 bg-orange-100 dark:bg-orange-800 hover:bg-orange-200 border-transparent",
 };

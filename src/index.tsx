@@ -85,7 +85,7 @@ export default function Index() {
 	return (
 		<>
 			{!loginMode && (
-				<div className="relative duration-200 font-inter bg-dark flex overflow-hidden">
+				<div className="relative duration-200 font-inter dark:bg-dark-800 flex overflow-hidden">
 					<Nav />
 
 					<MainLayout>{component}</MainLayout>

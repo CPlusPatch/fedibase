@@ -47,7 +47,7 @@ export default function MobileNavbar() {
 
 	return (
 		<>
-			<header className="flex fixed inset-x-0 bottom-0 z-30 justify-between items-center px-6 py-2 bg-white border-b dark:border-gray-700 bg-dark md:hidden">
+			<header className="flex fixed inset-x-0 bottom-0 z-30 justify-between items-center px-6 py-2 bg-white border-b dark:border-gray-700 dark:bg-dark-800 md:hidden">
 				<Button
 					style="gray"
 					className="!p-3 !border-none !shadow-none"
@@ -136,7 +136,7 @@ export default function MobileNavbar() {
 							leaveFrom="opacity-100 translate-y-0 scale-100"
 							leaveTo="opacity-0 translate-y-4 translate-y-0 scale-95">
 							<Dialog.Panel className="overflow-hidden relative w-screen max-w-md pointer-events-auto">
-								<div className="flex overflow-y-hidden flex-col pt-6 h-full bg-white shadow-xl bg-dark">
+								<div className="flex overflow-y-hidden flex-col pt-6 h-full bg-white shadow-xl dark:bg-dark-800">
 									<div className="flex justify-between px-4 sm:px-6">
 										<Dialog.Title className="text-lg font-medium text-gray-900 dark:text-gray-50">
 											Notifications

@@ -42,7 +42,7 @@ export default function SmallSelect2({ items, defaultValue, onChange = () => {
 				</Listbox.Button>
 				<ScaleFadeSlide>
 					<Listbox.Options
-						className={`overflow-auto absolute z-30 mt-1 w-64 text-base bg-white rounded-md border dark:border-gray-700 bg-dark font-inter ${
+						className={`overflow-auto absolute z-30 mt-1 w-64 text-base bg-white rounded-md border dark:border-gray-700 dark:bg-dark-800 font-inter ${
 							direction == SelectDirection.Left && "right-0 origin-top-right"
 						}`}>
 						{items.map(item => (

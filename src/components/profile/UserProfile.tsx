@@ -18,7 +18,7 @@ export default function UserProfile({ user }: { user: Entity.Account }) {
 	return (
 		<div className="flex flex-col gap-y-4 w-full">
 			<div className="relative w-full">
-				<div className="flex overflow-hidden justify-center items-center w-full h-44 bg-gray-200 rounded border bg-dark dark:border-gray-700">
+				<div className="flex overflow-hidden justify-center items-center w-full h-44 bg-gray-200 rounded border dark:bg-dark-800 dark:border-gray-700">
 					<img src={user.header} className="w-full" alt="" loading="lazy" />
 				</div>
 				<img

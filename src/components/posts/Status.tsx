@@ -9,6 +9,7 @@ import useLineClamp from "use-line-clamp";
 import { StatusPoll } from "./StatusPoll";
 import { Reactions } from "./Reaction";
 import { Link } from "components/transitions/Link";
+import { useStore } from "utils/store";
 
 export enum StatusType {
 	Notification = "notification",
@@ -35,10 +36,10 @@ export default function Status({ status: statusProp, type, showInteraction = tru
 	};
 
 	return (
-		<div className="flex flex-col max-w-full font-inter">
+		<div className="flex flex-col max-w-full font-inter cursor-pointer">
 			<div className="flex flex-row max-w-full">
 				<div className="flex flex-col min-w-0 grow gap-y-1">
-					<div className="gap-x-2 text-[0.95rem] flex flex-row justify-between">
+					<div className="gap-x-2 text-[0.95rem] flex flex-row justify-between ">
 						<div className="flex flex-row overflow-hidden text-ellipsis">
 							<Link
 								href={`/users/${status.account.id}`}
@@ -49,7 +50,7 @@ export default function Status({ status: statusProp, type, showInteraction = tru
 									src={status.account.avatar}
 									className={`${
 										type == StatusType.Post ? "w-12 h-12" : "w-10 h-10"
-									} bg-white overflow-hidden bg-dark rounded border border-gray-300 dark:border-gray-700 `}
+									} bg-white overflow-hidden dark:dark:bg-dark-800-800 rounded border border-gray-300 dark:border-gray-700 `}
 								/>
 							</Link>
 							<span
@@ -72,6 +73,7 @@ export default function Status({ status: statusProp, type, showInteraction = tru
 						<div className="whitespace-nowrap">
 							<Link
 								href={`/posts/${status.id}`}
+								sidebar={status.id}
 								className="text-sm text-gray-700 dark:text-gray-300 hover:underline">
 								{fromNow(new Date(status.created_at))}
 							</Link>
