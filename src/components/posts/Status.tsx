@@ -41,9 +41,7 @@ export default function Status({ status: statusProp, type, showInteraction = tru
 				<div className="flex flex-col min-w-0 grow gap-y-1">
 					<div className="gap-x-2 text-[0.95rem] flex flex-row justify-between ">
 						<div className="flex flex-row overflow-hidden text-ellipsis">
-							<Link
-								href={`/users/${status.account.id}`}
-								className="flex-shrink-0 mr-2">
+							<Link href={`/users/${status.account.id}`} className="flex-shrink-0 mr-2">
 								<img
 									loading="lazy"
 									alt={`${status.account.acct}'s avatar`}
@@ -58,15 +56,13 @@ export default function Status({ status: statusProp, type, showInteraction = tru
 									"flex flex-col whitespace-nowrap md:inline",
 									type === StatusType.Notification && "text-sm",
 								)}>
-								<h4
-									className="font-bold dark:text-gray-200"
-									title={status.account.display_name}>
+								<h4 className="font-bold dark:text-gray-200" title={status.account.display_name}>
 									{withEmojis(status.account.display_name, status.account.emojis)}
 								</h4>
 								<h5
 									title={status.account.acct}
 									className="overflow-hidden ml-0 text-gray-500 overflow-ellipsis dark:text-gray-400">
-									@{status.account.acct}
+                  @{status.account.acct}
 								</h5>
 							</span>
 						</div>
@@ -92,18 +88,17 @@ export default function Status({ status: statusProp, type, showInteraction = tru
 							)}
 
 							{/* Actual text */}
-							<div className="relative w-full text-sm">
-								<p
-									ref={textElementRef}
-									className={`mt-1 rounded duration-200 status-text dark:text-gray-50 break-words w-full ${
-										status.sensitive && !showText && "filter blur-lg"
-									} ${clamps && !expand && "line-clamp-6"}`}>
-									{withEmojis(status.content, status.emojis)}
-								</p>
-							</div>
+              
+							<p
+								ref={textElementRef}
+								className={`mt-1 rounded relative text-sm duration-200 status-text dark:text-gray-50 break-words w-full ${
+									status.sensitive && !showText && "filter blur-lg"
+								} ${clamps && !expand && "line-clamp-6"}`}>
+								{withEmojis(status.content, status.emojis)}
+							</p>
 
 							{/* Show More / Show Less button */}
-							{clamps && (textElementRef?.current?.textContent?.length ?? 0) > 0 && (
+							{clamps && (
 								<>
 									<hr />
 									<button
@@ -114,9 +109,7 @@ export default function Status({ status: statusProp, type, showInteraction = tru
 								</>
 							)}
 
-							{status.emoji_reactions && (
-								<Reactions status={status} setStatus={setStatus} />
-							)}
+							{status.emoji_reactions && <Reactions status={status} setStatus={setStatus} />}
 
 							{status.poll && <StatusPoll status={status} setStatus={setStatus} />}
 						</div>
@@ -124,7 +117,7 @@ export default function Status({ status: statusProp, type, showInteraction = tru
 							<div
 								className={`mt-2 ${
 									type === StatusType.Notification &&
-									"flex overflow-hidden justify-center w-28 ml-auto h-20 border dark:border-gray-700 rounded"
+                  "flex overflow-hidden justify-center w-28 ml-auto h-20 border dark:border-gray-700 rounded"
 								}`}>
 								<PostAttachments type={type} status={status} />
 							</div>
