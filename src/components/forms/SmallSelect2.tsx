@@ -1,8 +1,6 @@
 import { Listbox, Transition } from "@headlessui/react";
 import { ScaleFadeSlide } from "components/transitions/ScaleFadeSlide";
-import { StateUpdater } from "preact/hooks";
-import { Fragment } from "preact/jsx-runtime";
-import { useState } from "react";
+import { useState } from "preact/hooks";
 
 interface SelectOptions {
 	items: SelectItem[];

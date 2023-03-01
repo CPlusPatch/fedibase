@@ -12,7 +12,7 @@
 * You should have received a copy of the GNU General Public License along with this program.  If not, see 
 * <http://www.gnu.org/licenses/>.
 */
-import LoginForm from "components/login/LoginForm";
+import LoginForm from "./components/login/LoginForm";
 import { useContext, useEffect, useState } from "preact/hooks";
 import { AuthContext } from "./components/context/AuthContext";
 import { Conversation } from "./components/feed/Conversation";
@@ -21,7 +21,7 @@ import { LocalFeed } from "./components/feed/LocalFeed";
 import { UserFeed } from "./components/feed/UserFeed";
 import MainLayout from "./components/layout/MainLayout";
 import Nav from "./components/sidebar/Nav";
-import { StatusType } from "components/posts/Status";
+import { StatusType } from "./components/posts/Status";
 import { useStore } from "utils/store";
 
 export default function Index() {

@@ -10,11 +10,13 @@ export function Link(props: JSXInternal.HTMLAttributes<HTMLAnchorElement>) {
 			onClick={e => {
 				if (!e.ctrlKey && !e.metaKey) {
 					e.preventDefault();
+					history.pushState(null, "", props.href as string);
 					setState(s => ({
 						...s,
 						path: props.href as string,
 					}));
 				}
-			}}></a>
+			}}>
+			</a>
 	);
 }

@@ -37,8 +37,6 @@ export default function Status({ status: statusProp, type, showInteraction = tru
 
 	const ownId = localStorage.getItem("accountId");
 
-	const [state, setState] = useStore();
-
 	const toggleExpand = () => {
 		setExpand(prev => !prev);
 	};
@@ -122,7 +120,7 @@ export default function Status({ status: statusProp, type, showInteraction = tru
 							)}
 
 							{status.emoji_reactions && (
-								<Reactions status={status} />
+								<Reactions status={status} setStatus={setStatus} />
 							)}
 
 							{status.poll && <StatusPoll status={status} setStatus={setStatus} />}
@@ -140,7 +138,7 @@ export default function Status({ status: statusProp, type, showInteraction = tru
 				</div>
 			</div>
 
-			{showInteraction && <InteractionBar status={status} />}
+			{showInteraction && <InteractionBar status={status} setStatus={setStatus} />}
 		</div>
 	);
 }

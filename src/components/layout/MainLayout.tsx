@@ -2,10 +2,11 @@ import MobileNavbar from "components/nav/MobileNavbar";
 import LeftSidebar from "components/sidebar/LeftSidebar";
 import NotificationsFeed from "components/feed/NotificationsFeed";
 import toast, { Toaster } from "react-hot-toast";
-import { Fragment, useEffect } from "react";
 import { Transition } from "@headlessui/react";
 import { IconCloudOff, IconX } from "@tabler/icons-preact";
 import { useNavigatorOnLine } from "utils/useNavigatorOnline";
+import { Fragment } from "preact/jsx-runtime";
+import { useEffect } from "preact/hooks";
 
 export default function MainLayout({ children }: any) {
 	const online = useNavigatorOnLine();

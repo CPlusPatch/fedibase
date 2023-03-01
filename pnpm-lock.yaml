@@ -4,12 +4,8 @@ patchedDependencies:
   '@headlessui/react@1.7.11':
     hash: s3khnhj44qp6jhnkix4dxzv7mu
     path: patches/@headlessui__react@1.7.11.patch
-  '@types/react@18.0.28':
-    hash: iunzm7uxsm7gxbkhfmg7whmwnm
-    path: patches/@types__react@18.0.28.patch
 
 specifiers:
-  '@emoji-mart/react': ^1.1.1
   '@headlessui/react': ^1.7.11
   '@preact/preset-vite': ^2.5.0
   '@tabler/icons-preact': ^2.5.0
@@ -27,13 +23,11 @@ specifiers:
   eslint-config-preact: ^1.3.0
   events: ^3.3.0
   html-react-parser: ^3.0.9
-  js-cookie: ^3.0.1
   megalodon: npm:@cpluspatch/megalodon@^5.2.0
   performant-array-to-tree: ^1.11.0
   postcss: ^8.4.21
   preact: ^10.11.3
   querystring-es3: ^0.2.1
-  react-flip-move: ^3.0.5
   react-hot-toast: ^2.4.0
   react-is-visible: ^1.2.0
   tailwindcss: ^3.2.7
@@ -45,19 +39,16 @@ specifiers:
   vite-tsconfig-paths: ^4.0.5
 
 dependencies:
-  '@emoji-mart/react': 1.1.1_emoji-mart@5.5.2
   '@headlessui/react': 1.7.11_s3khnhj44qp6jhnkix4dxzv7mu
   '@tabler/icons-preact': 2.5.0_preact@10.12.1
   csstype: 3.1.1
   emoji-mart: 5.5.2
   events: 3.3.0
   html-react-parser: 3.0.9
-  js-cookie: 3.0.1
   megalodon: /@cpluspatch/megalodon/5.2.0
   performant-array-to-tree: 1.11.0
   preact: 10.12.1
   querystring-es3: 0.2.1
-  react-flip-move: 3.0.5
   react-hot-toast: 2.4.0_csstype@3.1.1
   react-is-visible: 1.2.0
   teaful: 0.11.1
@@ -71,7 +62,7 @@ devDependencies:
   '@tailwindcss/typography': 0.5.9_tailwindcss@3.2.7
   '@types/events': 3.0.0
   '@types/node': 18.14.1
-  '@types/react': 18.0.28_iunzm7uxsm7gxbkhfmg7whmwnm
+  '@types/react': 18.0.28
   autoprefixer: 10.4.13_postcss@8.4.21
   eslint: 8.34.0
   eslint-config-preact: 1.3.0_7kw3g6rralp5ps6mg3uyzz6azm
@@ -1338,15 +1329,6 @@ packages:
       - utf-8-validate
     dev: false
 
-  /@emoji-mart/react/1.1.1_emoji-mart@5.5.2:
-    resolution: {integrity: sha512-NMlFNeWgv1//uPsvLxvGQoIerPuVdXwK/EUek8OOkJ6wVOWPUizRBJU0hDqWZCOROVpfBgCemaC3m6jDOXi03g==}
-    peerDependencies:
-      emoji-mart: ^5.2
-      react: ^16.8 || ^17 || ^18
-    dependencies:
-      emoji-mart: 5.5.2
-    dev: false
-
   /@esbuild/android-arm/0.16.17:
     resolution: {integrity: sha512-N9x1CMXVhtWEAMS7pNNONyA14f71VPQN9Cnavj1XQh6T7bskqiLLrSca4O0Vr8Wdcga943eThxnVp3JLnBMYtw==}
     engines: {node: '>=12'}
@@ -1905,14 +1887,13 @@ packages:
     resolution: {integrity: sha512-JCB8C6SnDoQf0cNycqd/35A7MjcnK+ZTqE7judS6o7utxUCg6imJg3QK2qzHKszlTjcj2cn+NwMB2i96ubpj7w==}
     dev: true
 
-  /@types/react/18.0.28_iunzm7uxsm7gxbkhfmg7whmwnm:
+  /@types/react/18.0.28:
     resolution: {integrity: sha512-RD0ivG1kEztNBdoAK7lekI9M+azSnitIn85h4iOiaLjaTrMjzslhaqCGaI4IyCJ1RljWiLCEu4jyrLLgqxBTew==}
     dependencies:
       '@types/prop-types': 15.7.5
       '@types/scheduler': 0.16.2
       csstype: 3.1.1
     dev: true
-    patched: true
 
   /@types/resolve/1.17.1:
     resolution: {integrity: sha512-yy7HuzQhj0dhGpD8RLXSZWEkLsV9ibvxvi6EiJ3bkqLAO1RGo0WbkWQiwpRlSFymTJRz0d3k5LM3kkx8ArDbLw==}
@@ -3429,11 +3410,6 @@ packages:
       supports-color: 7.2.0
     dev: true
 
-  /js-cookie/3.0.1:
-    resolution: {integrity: sha512-+0rgsUXZu4ncpPxRL+lNEptWMOWl9etvPHc/koSRp6MPwpRYAhmk0dUG00J4bxVV3r9uUzfo24wW0knS07SKSw==}
-    engines: {node: '>=12'}
-    dev: false
-
   /js-sdsl/4.3.0:
     resolution: {integrity: sha512-mifzlm2+5nZ+lEcLJMoBK0/IH/bDg8XnJfd/Wq6IP+xoCjLZsTOnV2QpxlVbX9bMnkl5PdEjNtBJ9Cj1NjifhQ==}
     dev: true
@@ -3959,13 +3935,6 @@ packages:
     dependencies:
       safe-buffer: 5.2.1
     dev: true
-
-  /react-flip-move/3.0.5:
-    resolution: {integrity: sha512-Mf4XpbkUNZy9eu80iXXFIjToDvw+bnHxmKHVoositbMpV87O/EQswnXUqVovRHoTx/F+4dE+p//PyJnAT7OtPA==}
-    peerDependencies:
-      react: '>=16.3.x'
-      react-dom: '>=16.3.x'
-    dev: false
 
   /react-hot-toast/2.4.0_csstype@3.1.1:
     resolution: {integrity: sha512-qnnVbXropKuwUpriVVosgo8QrB+IaPJCpL8oBI6Ov84uvHZ5QQcTp2qg6ku2wNfgJl6rlQXJIQU5q+5lmPOutA==}

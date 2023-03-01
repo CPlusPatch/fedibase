@@ -91,7 +91,7 @@ export default function Nav(props: NavProps): JSX.Element {
 	}, [client]);
 
 	return (
-		<div className="hidden fixed top-0 bg-dark bg-white bottom-0 left-0 z-50 flex-col flex-1 col-span-1 min-h-0 bg-gradient-to-b border-r dark:border-gray-700 bg-light dark:bg-dark lg:flex">
+		<div className="hidden fixed z-10 top-0 bg-dark bg-white bottom-0 left-0 flex-col flex-1 col-span-1 min-h-0 bg-gradient-to-b border-r dark:border-gray-700 bg-light dark:bg-dark lg:flex">
 			<div className="flex overflow-y-auto flex-col flex-1 items-center pt-5 pb-4">
 				<Link
 					href="/"
@@ -153,8 +153,6 @@ export function MobileNav(props: NavProps): JSX.Element {
 	const [account, setAccount] = useState<Entity.Account | undefined>();
 	const [instance, setInstance] = useState<Entity.Instance | undefined>();
 	const [theme, setTheme] = useState<string>("light");
-
-	const [state, setState] = useStore();
 
 	const toggleTheme = () => {
 		const html = document.getElementsByTagName("html")[0];

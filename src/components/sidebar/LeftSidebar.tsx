@@ -141,7 +141,7 @@ export default function LeftSidebar() {
 			<Transition.Root show={state.postComposerOpened} as={Fragment}>
 				<Dialog
 					as="div"
-					className="block relative"
+					className="block relative z-40"
 					onClose={() =>
 						setState(prev => ({
 							...prev,

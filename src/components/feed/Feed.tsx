@@ -166,7 +166,7 @@ function Feed<T>(props: FeedProps) {
 
 	useEffect(() => {
 		async function loadMoreEntities() {
-			if (doLoadNewEntities && !loading.current) {
+			if (doLoadNewEntities && !loading.current && entitiesRef.current.length > 0) {
 				const latestPosts = await loadEntitiesBefore(
 					(entitiesRef.current[entitiesRef.current.length - 1] as any).id,
 				);
@@ -209,7 +209,7 @@ function Feed<T>(props: FeedProps) {
 					))}
 			{(props.type === FeedType.Home || props.type === FeedType.User) && (
 				<>
-					{entities.length > 0 && <DummyStatus type="post" reference={loadNewRef} />}
+					<DummyStatus type="post" reference={loadNewRef} />
 					<DummyStatus type="post" />
 					<DummyStatus type="post" />
 					<DummyStatus type="post" />

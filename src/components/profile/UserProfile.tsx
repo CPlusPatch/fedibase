@@ -1,7 +1,6 @@
 import Button from "components/buttons/Button";
 import { AuthContext } from "components/context/AuthContext";
-import { useContext } from "preact/hooks";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "preact/hooks";
 import { toast } from "react-hot-toast";
 import { withEmojis } from "utils/functions";
 import ProfileActionsDropdown from "./ProfileActionsDropdown";

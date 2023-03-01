@@ -1,15 +1,17 @@
 import { AuthContext } from "components/context/AuthContext";
 import { Entity } from "megalodon";
-import { useContext } from "preact/hooks";
+import { StateUpdater, useContext } from "preact/hooks";
 import toast from "react-hot-toast";
 import { classNames } from "utils/functions";
 
 interface ReactionsProps {
 	status: Entity.Status;
+	setStatus: StateUpdater<Entity.Status>;
 }
 
 interface ReactionProps {
 	status: Entity.Status;
+	setStatus: StateUpdater<Entity.Status>;
 	reaction: Entity.Reaction;
 }
 
@@ -17,7 +19,7 @@ export function Reactions(props: ReactionsProps) {
 	return (
 		<div className="w-full flex flex-row gap-2 mt-2">
 			{props.status.emoji_reactions.map(reaction => (
-				<Reaction reaction={reaction} status={props.status} />
+				<Reaction reaction={reaction} status={props.status} setStatus={props.setStatus} />
 			))}
 		</div>
 	);
@@ -35,7 +37,7 @@ export function Reaction(props: ReactionProps) {
 					?.createEmojiReaction(props.status.id, props.reaction.name)
 					.then(res => {
 						toast.success("Added reaction!");
-						props.reaction.me = true;
+						props.setStatus(res.data);
 					})
 					.catch(err => {
 						console.error(err);

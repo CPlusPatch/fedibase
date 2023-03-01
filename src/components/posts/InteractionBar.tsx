@@ -13,9 +13,8 @@ import { AuthContext } from "components/context/AuthContext";
 import { Input } from "components/forms/Input";
 import { ScaleFadeSlide } from "components/transitions/ScaleFadeSlide";
 import { Entity } from "megalodon";
-import { useContext, useState } from "preact/hooks";
+import { StateUpdater, useContext, useEffect, useState } from "preact/hooks";
 import { JSXInternal } from "preact/src/jsx";
-import { Fragment, useEffect } from "react";
 import { toast } from "react-hot-toast";
 import { useStore } from "utils/store";
 
@@ -23,7 +22,7 @@ import { useStore } from "utils/store";
  * Small bar containing all the buttons on a post, such as "favourite", "quote", "reply"...
  * @returns
  */
-export default function InteractionBar({ status }: { status: Entity.Status }) {
+export default function InteractionBar({ status, setStatus }: { status: Entity.Status; setStatus: StateUpdater<Entity.Status> }) {
 	const client = useContext(AuthContext);
 	const [favourited, setFavourited] = useState<boolean>(status.favourited ?? false);
 	const [boosted, setBoosted] = useState<boolean>(status.reblogged ?? false);
@@ -167,6 +166,7 @@ export default function InteractionBar({ status }: { status: Entity.Status }) {
 														)
 														.then(res => {
 															toast.success("Added reaction!");
+															setStatus(res.data);
 															setShowEmojiPicker(false);
 														})
 														.catch(err => {

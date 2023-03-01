@@ -10,19 +10,16 @@
 		"preview": "vite preview"
 	},
 	"dependencies": {
-		"@emoji-mart/react": "^1.1.1",
 		"@headlessui/react": "^1.7.11",
 		"@tabler/icons-preact": "^2.5.0",
 		"csstype": "^3.1.1",
 		"emoji-mart": "^5.5.2",
 		"events": "^3.3.0",
 		"html-react-parser": "^3.0.9",
-		"js-cookie": "^3.0.1",
 		"megalodon": "npm:@cpluspatch/megalodon@^5.2.0",
 		"performant-array-to-tree": "^1.11.0",
 		"preact": "^10.11.3",
 		"querystring-es3": "^0.2.1",
-		"react-flip-move": "^3.0.5",
 		"react-hot-toast": "^2.4.0",
 		"react-is-visible": "^1.2.0",
 		"teaful": "^0.11.1",
@@ -55,8 +52,7 @@
 	},
 	"pnpm": {
 		"patchedDependencies": {
-			"@headlessui/react@1.7.11": "patches/@headlessui__react@1.7.11.patch",
-			"@types/react@18.0.28": "patches/@types__react@18.0.28.patch"
+			"@headlessui/react@1.7.11": "patches/@headlessui__react@1.7.11.patch"
 		}
 	}
 }

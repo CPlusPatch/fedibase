@@ -1,12 +1,11 @@
 /* This example requires Tailwind CSS v2.0+ */
-import { useContext } from "preact/hooks";
+import { useContext, useState } from "preact/hooks";
 import { Menu, Transition } from "@headlessui/react";
 import { IconDots, IconEye, IconEyeOff, IconForbid2, IconHandOff, IconRocket, IconVolume3 } from "@tabler/icons-preact";
 import Button from "components/buttons/Button";
 import { AuthContext } from "components/context/AuthContext";
 import { Fragment } from "preact/jsx-runtime";
 import { toast } from "react-hot-toast";
-import { useState } from "react";
 
 export default function ProfileActionsDropdown({
 	user,

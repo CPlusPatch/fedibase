@@ -1,5 +1,5 @@
 import { Transition } from "@headlessui/react";
-import { Fragment } from "react";
+import { Fragment } from "preact/jsx-runtime";
 
 interface ScaleFadeSlideProps {
 	children: any;
