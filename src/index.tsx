@@ -37,7 +37,7 @@ export default function Index() {
 			...prev,
 			path: (e.target as Window).location.pathname,
 		}));
-	}
+	};
 
 	useEffect(() => {
 		console.log(state.path);
@@ -53,32 +53,30 @@ export default function Index() {
 				paths = window.location.pathname.split("/");
 			}
 
-			if (
-				(!localStorage.getItem("accessToken") || !localStorage.getItem("instanceType"))
-			) {
+			if (!localStorage.getItem("accessToken") || !localStorage.getItem("instanceType")) {
 				setLoginMode(true);
 			}
 
 			switch (paths[1]) {
-				case "posts":
-					setComponent(<Conversation id={paths[2]} mode={StatusType.Post} />);
-					break;
-				case "local":
-					setComponent(<LocalFeed />);
-					break;
-				case "":
-					setComponent(<HomeFeed />);
-					break;
-				case "users":
-					client?.getAccount(paths[2].replace("@", "")).then(res => {
-						setComponent(<UserFeed account={res.data} />);
-					});
-					break;
-				case "login":
-					setLoginMode(true);
+			case "posts":
+				setComponent(<Conversation id={paths[2]} mode={StatusType.Post} />);
+				break;
+			case "local":
+				setComponent(<LocalFeed />);
+				break;
+			case "":
+				setComponent(<HomeFeed />);
+				break;
+			case "users":
+				client?.getAccount(paths[2].replace("@", "")).then(res => {
+					setComponent(<UserFeed account={res.data} />);
+				});
+				break;
+			case "login":
+				setLoginMode(true);
 			}
 
-			window.addEventListener("popstate", handlePopState)
+			window.addEventListener("popstate", handlePopState);
 
 			return () => window.removeEventListener("popstate", handlePopState);
 		}

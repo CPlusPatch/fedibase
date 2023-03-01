@@ -30,7 +30,7 @@ export function App() {
 								localStorage.getItem("instanceType") as any,
 								localStorage.getItem("instanceUrl") as any,
 								localStorage.getItem("accessToken"),
-							)
+						)
 						: null
 				}>
 				<Index />

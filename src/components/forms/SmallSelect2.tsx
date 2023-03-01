@@ -1,4 +1,4 @@
-import { Listbox, Transition } from "@headlessui/react";
+import { Listbox } from "@headlessui/react";
 import { ScaleFadeSlide } from "components/transitions/ScaleFadeSlide";
 import { useState } from "preact/hooks";
 
@@ -21,7 +21,9 @@ interface SelectItem {
 	description?: string;
 }
 
-export default function SmallSelect2({ items, defaultValue, onChange = (item) => {}, direction = SelectDirection.Right }: SelectOptions) {
+export default function SmallSelect2({ items, defaultValue, onChange = () => {
+	//
+}, direction = SelectDirection.Right }: SelectOptions) {
 	const [selected, setSelected] = useState<SelectItem>(items[defaultValue]);
 
 	return (

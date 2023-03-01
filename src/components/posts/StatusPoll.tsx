@@ -16,7 +16,7 @@ export function StatusPoll({
 		<form
 			onSubmit={e => {
 				e.preventDefault();
-				let value = [];
+				const value = [];
 
 				if (!status.poll) return false;
 
@@ -55,9 +55,9 @@ export function StatusPoll({
 							)
 								? 0
 								: Math.round(
-										(option.votes_count ??
+									(option.votes_count ??
 											0 / (status.poll?.votes_count ?? 0)) * 100,
-								  )}
+								)}
 							%
 						</span>
 						{!status.poll?.voted && (

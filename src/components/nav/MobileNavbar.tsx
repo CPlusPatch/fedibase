@@ -1,5 +1,5 @@
 import { Dialog, Transition } from "@headlessui/react";
-import { IconBell, IconHome, IconMenu2, IconMoon, IconPencilPlus, IconSun, IconX } from "@tabler/icons-preact";
+import { IconBell, IconHome, IconMoon, IconPencilPlus, IconSun, IconX } from "@tabler/icons-preact";
 import Button from "components/buttons/Button";
 import NotificationsFeed from "components/feed/NotificationsFeed";
 import { Fragment } from "preact/jsx-runtime";
@@ -27,7 +27,7 @@ export default function MobileNavbar() {
 				toast.error("Couldn't load account data :(");
 			});
 		
-			setTheme((localStorage.getItem("theme") ?? "light").toString());
+		setTheme((localStorage.getItem("theme") ?? "light").toString());
 	}, []);
 
 

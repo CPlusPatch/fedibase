@@ -30,7 +30,7 @@ export function Reaction(props: ReactionProps) {
 
 	return (
 		<button
-			onClick={e => {
+			onClick={() => {
 				if (props.reaction.me) return toast.error("Already reacted to this!");
 
 				client

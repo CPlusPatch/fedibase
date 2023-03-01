@@ -2,7 +2,7 @@ import { JSXInternal } from "preact/src/jsx";
 import { useStore } from "utils/store";
 
 export function Link(props: JSXInternal.HTMLAttributes<HTMLAnchorElement>) {
-	const [state, setState] = useStore();
+	const [, setState] = useStore();
 
 	return (
 		<a
@@ -17,6 +17,6 @@ export function Link(props: JSXInternal.HTMLAttributes<HTMLAnchorElement>) {
 					}));
 				}
 			}}>
-			</a>
+		</a>
 	);
 }

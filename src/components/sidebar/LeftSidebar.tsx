@@ -147,7 +147,7 @@ export default function LeftSidebar() {
 							...prev,
 							postComposerOpened: false,
 							quotingTo: null,
-							replyingTo: null
+							replyingTo: null,
 						}))
 					}>
 					<Transition.Child
@@ -291,7 +291,7 @@ function SendForm() {
 
 	useEffect(() => {
 		const { replyingTo, quotingTo } = state;
-		let otherPost = replyingTo ?? quotingTo ?? null;
+		const otherPost = replyingTo ?? quotingTo ?? null;
 
 		if (otherPost) {
 			const id = localStorage.getItem("accountId");
@@ -365,11 +365,11 @@ function SendForm() {
 				media_ids: currentState.fileIds,
 				quote_id: quoteId,
 				poll:
-					currentState.poll && currentState.poll.choices.length > 0
-						? {
-								options: currentState.poll.choices,
-								expires_in: Number(currentState.poll.duration),
-						  }
+					currentState.poll && currentState.poll.choices.length > 0 ?
+						{
+							options: currentState.poll.choices,
+							expires_in: Number(currentState.poll.duration),
+						}
 						: undefined,
 			});
 			toast("Post sent!", {
@@ -378,7 +378,7 @@ function SendForm() {
 		} catch (err) {
 			toast.error("There was an error sending your post. Maybe check the visibility?");
 		} finally {
-			setCurrentState(s => ({
+			setCurrentState({
 				mode: modes[0],
 				visibility: visibilities[0],
 				files: [],
@@ -388,12 +388,12 @@ function SendForm() {
 				emojis: [],
 				emojisSuggestions: [],
 				poll: null,
-			}));
+			});
 			setState(prev => ({
 				...prev,
 				postComposerOpened: false,
 				quotingTo: null,
-				replyingTo: null
+				replyingTo: null,
 			}));
 		}
 	};
@@ -578,8 +578,8 @@ function PollCreator({
 							{index + 1}.
 							<div className="grow">
 								<Input
-									onChange={(e: any) => {
-										let pollCopy = currentState.poll;
+									onChange={() => {
+										const pollCopy = currentState.poll;
 
 										pollCopy?.choices.splice(index, 1);
 										setCurrentState(s => ({
@@ -597,27 +597,27 @@ function PollCreator({
 						</div>
 						{currentState?.poll?.choices &&
 							index === currentState.poll?.choices.length - 1 && (
-								<button
-									onClick={e => {
-										e.preventDefault();
-										let pollCopy = currentState.poll;
-										pollCopy?.choices.splice(index, 1);
+							<button
+								onClick={e => {
+									e.preventDefault();
+									const pollCopy = currentState.poll;
+									pollCopy?.choices.splice(index, 1);
 
-										setCurrentState(s => ({
-											...s,
-											poll: pollCopy,
-										}));
-									}}>
-									<IconX className="w-5 h-5" />
-								</button>
-							)}
+									setCurrentState(s => ({
+										...s,
+										poll: pollCopy,
+									}));
+								}}>
+								<IconX className="w-5 h-5" />
+							</button>
+						)}
 					</li>
 				))}
 				<Button
 					onClick={e => {
 						e.preventDefault();
 
-						let pollCopy = currentState.poll;
+						const pollCopy = currentState.poll;
 
 						pollCopy?.choices.push("");
 
@@ -705,8 +705,8 @@ function Files({
 									onClick={(e: any) => {
 										e.preventDefault();
 
-										let newFiles = files;
-										let newFileIds = fileIds;
+										const newFiles = files;
+										const newFileIds = fileIds;
 
 										newFiles.splice(index, 1);
 										newFileIds.splice(index, 1);
@@ -770,8 +770,7 @@ function ButtonRow({
 							}));
 							const ids = await Promise.all(
 								[...(e.target as any).files].map(async file => {
-									return (await client.uploadMedia((e.target as any).files[0]))
-										.data.id;
+									return (await client.uploadMedia(file)).data.id;
 								}),
 							);
 							setCurrentState(s => ({
@@ -835,9 +834,12 @@ function ButtonRow({
 			<div className="flex flex-row flex-shrink-0 gap-x-4 items-center">
 				<div className="flex flex-row gap-x-2 items-center">
 					<span className="text-gray-600 dark:text-gray-300">
-						{((max_chars ?? 500) - currentState.characters.length).toLocaleString("en", {
-							notation: "compact"
-						})}
+						{((max_chars ?? 500) - currentState.characters.length).toLocaleString(
+							"en",
+							{
+								notation: "compact",
+							},
+						)}
 					</span>
 					<svg width="27" height="27" viewBox="0 0 27 27" aria-hidden={true}>
 						<circle

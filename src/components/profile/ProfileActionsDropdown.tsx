@@ -1,7 +1,7 @@
 /* This example requires Tailwind CSS v2.0+ */
 import { useContext, useState } from "preact/hooks";
 import { Menu, Transition } from "@headlessui/react";
-import { IconDots, IconEye, IconEyeOff, IconForbid2, IconHandOff, IconRocket, IconVolume3 } from "@tabler/icons-preact";
+import { IconDots, IconEye, IconEyeOff, IconForbid2, IconHandOff, IconVolume3 } from "@tabler/icons-preact";
 import Button from "components/buttons/Button";
 import { AuthContext } from "components/context/AuthContext";
 import { Fragment } from "preact/jsx-runtime";

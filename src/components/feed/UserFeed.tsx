@@ -12,7 +12,9 @@ export const UserFeed = ({ account }: { account: Entity.Account }) => {
 						<UserProfile user={account} />
 						<Feed<Entity.Status>
 							type={FeedType.User}
-							onChange={() => {}}
+							onChange={() => {
+								//
+							}}
 							entityElement={Post}
 							options={{
 								id: account.id,

@@ -5,7 +5,7 @@ import { Link } from "components/transitions/Link";
 
 export const Post = ({ entity, mode = StatusType.Post }: { entity: Entity.Status; mode?: StatusType }) => {
 	return (
-		<div className={`flex flex-col gap-y-2`}>
+		<div className={"flex flex-col gap-y-2"}>
 			{entity.reblog && (
 				<Link
 					href={`/users/@${entity.account.id}`}

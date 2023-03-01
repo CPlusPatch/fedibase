@@ -1,8 +1,6 @@
 import { IconStarFilled } from "@tabler/icons-preact";
 import { withEmojis, withEmojiReactions } from "utils/functions";
-import DummyStatus from "./DummyStatus";
 import Status, { StatusType } from "./Status";
-import { MutableRef } from "preact/hooks";
 import { Link } from "components/transitions/Link";
 
 export const Notification = ({ entity }: { entity: Entity.Notification }) => {
@@ -88,7 +86,7 @@ export const Notification = ({ entity }: { entity: Entity.Notification }) => {
 				</li>
 			)}
 			{entity.type === "follow" && (
-				<li className={`flex flex-col gap-y-2 p-2 max-w-full rounded bg-green-500/10`}>
+				<li className={"flex flex-col gap-y-2 p-2 max-w-full rounded bg-green-500/10"}>
 					<Link
 						href={`/users/@${entity.account.id}`}
 						className="overflow-hidden gap-x-2 max-w-full text-base text-gray-800 dark:text-gray-100 hover:underline">

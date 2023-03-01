@@ -1,4 +1,3 @@
-import { Transition } from "@headlessui/react";
 import {
 	IconDots,
 	IconLock,
@@ -45,7 +44,7 @@ export default function InteractionBar({ status, setStatus }: { status: Entity.S
 		}
 	}, [showEmojiPicker]);
 
-	const [state, setState] = useStore();
+	const [, setState] = useStore();
 
 	return (
 		<div className="flex justify-between px-5 mt-3 w-full text-gray-700 dark:text-gray-400">
@@ -127,7 +126,7 @@ export default function InteractionBar({ status, setStatus }: { status: Entity.S
 
 			<InteractionBarIcon
 				title="Add reaction"
-				onClick={e => {
+				onClick={() => {
 					setShowEmojiPicker(s => !s);
 				}}>
 				<IconMoodHappy className="w-5 h-5" aria-hidden={true} />
@@ -158,7 +157,7 @@ export default function InteractionBar({ status, setStatus }: { status: Entity.S
 											<button
 												className="items-center flex justify-center"
 												title={emoji.shortcode}
-												onClick={e => {
+												onClick={() => {
 													client
 														?.createEmojiReaction(
 															status.id,
@@ -211,7 +210,9 @@ export default function InteractionBar({ status, setStatus }: { status: Entity.S
 
 function InteractionBarIcon({
 	children,
-	onClick = e => {},
+	onClick = () => {
+		//
+	},
 	title = "",
 }: {
 	children: any;

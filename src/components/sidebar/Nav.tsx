@@ -5,7 +5,7 @@ import { Link } from "components/transitions/Link";
 import { useContext, useState, useEffect } from "preact/hooks";
 import { JSX, Fragment } from "preact/jsx-runtime";
 import toast from "react-hot-toast";
-import { classNames, smoothNavigate } from "utils/functions";
+import { classNames } from "utils/functions";
 import { useStore } from "utils/store";
 
 type NavigationItem = {
@@ -19,7 +19,6 @@ type NavElementProps = {
 	item: NavigationItem;
 };
 
-type NavProps = {};
 
 const navigation: NavigationItem[] = [
 	{
@@ -42,8 +41,8 @@ const navigation: NavigationItem[] = [
 	},
 ];
 
-export default function Nav(props: NavProps): JSX.Element {
-	const [state, setState] = useStore();
+export default function Nav(): JSX.Element {
+	const [, setState] = useStore();
 	const client = useContext(AuthContext);
 	
 	const [account, setAccount] = useState<Entity.Account | undefined>();
@@ -150,7 +149,7 @@ export default function Nav(props: NavProps): JSX.Element {
 
 function NavElement(props: NavElementProps) {
 	const [current, setCurrent] = useState<boolean>(false);
-	let [showTooltip, setShowTooltip] = useState<boolean>(false);
+	const [showTooltip, setShowTooltip] = useState<boolean>(false);
 
 	useEffect(() => {
 		setCurrent(typeof window !== "undefined" ? window.location.pathname === props.item.href : false);

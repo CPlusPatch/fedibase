@@ -1,16 +1,12 @@
 import { Entity } from "megalodon";
-import { useContext, useRef, useState } from "preact/hooks";
-import { classNames, fromNow, smoothNavigate, withEmojis } from "utils/functions";
+import { useRef, useState } from "preact/hooks";
+import { classNames, fromNow, withEmojis } from "utils/functions";
 import InteractionBar from "./InteractionBar";
 import PostAttachments from "./PostAttachments";
 import ReplyTo from "./ReplyTo";
 import SensitiveTextSpoiler from "./SensitiveTextSpoiler";
 import useLineClamp from "use-line-clamp";
-import { JSXInternal } from "preact/src/jsx";
 import { StatusPoll } from "./StatusPoll";
-import { useStore } from "utils/store";
-import { AuthContext } from "components/context/AuthContext";
-import { toast } from "react-hot-toast";
 import { Reactions } from "./Reaction";
 import { Link } from "components/transitions/Link";
 
@@ -30,12 +26,9 @@ export default function Status({ status: statusProp, type, showInteraction = tru
 	const [status, setStatus] = useState(statusProp);
 	const [showText, setShowText] = useState(false);
 	const textElementRef = useRef<HTMLParagraphElement>(null);
-	const client = useContext(AuthContext);
 	const clamps = useLineClamp(textElementRef, {
 		lines: 6,
 	});
-
-	const ownId = localStorage.getItem("accountId");
 
 	const toggleExpand = () => {
 		setExpand(prev => !prev);

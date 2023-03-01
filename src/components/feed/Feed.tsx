@@ -35,7 +35,7 @@ function Feed<T>(props: FeedProps) {
 	const loading = useRef<boolean>(false);
 	const loadNewRef = useRef(null);
 	const doLoadNewEntities = useIsVisible(loadNewRef);
-	const [initialLoadDone, setInitialLoadDone] = useState<boolean>(false);
+	const [, setInitialLoadDone] = useState<boolean>(false);
 
 	const getNewEntities = useCallback(
 		async (since_id: string) => {
@@ -44,36 +44,36 @@ function Feed<T>(props: FeedProps) {
 			props.onLoadStart && props.onLoadStart();
 			let res: Response<T[]>;
 			switch (props.type) {
-				case FeedType.Home: {
-					res = (await client?.getHomeTimeline({
-						limit: DEFAULT_LOAD,
-						since_id: since_id,
-					})) as any;
-					break;
-				}
-				case FeedType.User: {
-					if (!props.options?.id)
-						throw Error("Feed needs a user ID to work in user mode!");
-					res = (await client?.getAccountStatuses(props.options.id, {
-						limit: DEFAULT_LOAD,
-						since_id: since_id,
-					})) as any;
-					break;
-				}
-				case FeedType.Notifications: {
-					res = (await client?.getNotifications({
-						limit: DEFAULT_LOAD,
-						since_id: since_id,
-					})) as any;
-					break;
-				}
-				case FeedType.Local: {
-					res = (await client?.getLocalTimeline({
-						limit: DEFAULT_LOAD,
-						since_id: since_id,
-					})) as any;
-					break;
-				}
+			case FeedType.Home: {
+				res = (await client?.getHomeTimeline({
+					limit: DEFAULT_LOAD,
+					since_id: since_id,
+				})) as any;
+				break;
+			}
+			case FeedType.User: {
+				if (!props.options?.id)
+					throw Error("Feed needs a user ID to work in user mode!");
+				res = (await client?.getAccountStatuses(props.options.id, {
+					limit: DEFAULT_LOAD,
+					since_id: since_id,
+				})) as any;
+				break;
+			}
+			case FeedType.Notifications: {
+				res = (await client?.getNotifications({
+					limit: DEFAULT_LOAD,
+					since_id: since_id,
+				})) as any;
+				break;
+			}
+			case FeedType.Local: {
+				res = (await client?.getLocalTimeline({
+					limit: DEFAULT_LOAD,
+					since_id: since_id,
+				})) as any;
+				break;
+			}
 			}
 			loading.current = false;
 			props.onLoadEnd && props.onLoadEnd();
@@ -89,36 +89,36 @@ function Feed<T>(props: FeedProps) {
 			props.onLoadStart && props.onLoadStart();
 			let res: Response<T[]>;
 			switch (props.type) {
-				case FeedType.Home: {
-					res = (await client?.getHomeTimeline({
-						limit: DEFAULT_LOAD,
-						max_id: before_id,
-					})) as any;
-					break;
-				}
-				case FeedType.User: {
-					if (!props.options?.id)
-						throw Error("Feed needs a user ID to work in user mode!");
-					res = (await client?.getAccountStatuses(props.options.id, {
-						limit: DEFAULT_LOAD,
-						max_id: before_id,
-					})) as any;
-					break;
-				}
-				case FeedType.Notifications: {
-					res = (await client?.getNotifications({
-						limit: DEFAULT_LOAD,
-						max_id: before_id,
-					})) as any;
-					break;
-				}
-				case FeedType.Local: {
-					res = (await client?.getLocalTimeline({
-						limit: DEFAULT_LOAD,
-						max_id: before_id,
-					})) as any;
-					break;
-				}
+			case FeedType.Home: {
+				res = (await client?.getHomeTimeline({
+					limit: DEFAULT_LOAD,
+					max_id: before_id,
+				})) as any;
+				break;
+			}
+			case FeedType.User: {
+				if (!props.options?.id)
+					throw Error("Feed needs a user ID to work in user mode!");
+				res = (await client?.getAccountStatuses(props.options.id, {
+					limit: DEFAULT_LOAD,
+					max_id: before_id,
+				})) as any;
+				break;
+			}
+			case FeedType.Notifications: {
+				res = (await client?.getNotifications({
+					limit: DEFAULT_LOAD,
+					max_id: before_id,
+				})) as any;
+				break;
+			}
+			case FeedType.Local: {
+				res = (await client?.getLocalTimeline({
+					limit: DEFAULT_LOAD,
+					max_id: before_id,
+				})) as any;
+				break;
+			}
 			}
 			loading.current = false;
 			props.onLoadEnd && props.onLoadEnd();
@@ -194,17 +194,17 @@ function Feed<T>(props: FeedProps) {
 				entities
 					.filter(e => {
 						switch (props.options?.filter) {
-							case "all":
-								return true;
-							case "reblogs":
-								return (e as Entity.Notification).type === "reblog";
-							case "mention":
-								return (e as Entity.Notification).type === "mention";
-							case "favourites":
-								return (e as Entity.Notification).type === "favourite";
+						case "all":
+							return true;
+						case "reblogs":
+							return (e as Entity.Notification).type === "reblog";
+						case "mention":
+							return (e as Entity.Notification).type === "mention";
+						case "favourites":
+							return (e as Entity.Notification).type === "favourite";
 						}
 					})
-					.map((entity: any, index) => (
+					.map((entity: any) => (
 						<props.entityElement key={entity.id} entity={entity} />
 					))}
 			{(props.type === FeedType.Home || props.type === FeedType.User) && (
@@ -238,7 +238,7 @@ const DummyNotification = ({ reference }: { reference?: MutableRef<any> | null }
 		<>
 			<li
 				ref={reference ?? undefined}
-				className={`flex flex-col gap-y-2 p-2 max-w-full rounded`}>
+				className={"flex flex-col gap-y-2 p-2 max-w-full rounded"}>
 				<DummyStatus type={StatusType.Notification} />
 			</li>
 		</>
