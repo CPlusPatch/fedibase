@@ -29,13 +29,13 @@
 
 ### Planned features (coming soon™️):
 
-- Emoji reactions
-- More timelines
+- ~~Emoji reactions~~
+- ~~More timelines~~
 - Placing CWs on posts
 - Drag and drop files to upload
-- More files support
+- ~~More files support~~
 - Quote post rendering
-- Notifications
+- ~~Notifications~~
 - Settings page
 
 ## Running your own instance
