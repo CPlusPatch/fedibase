@@ -95,7 +95,7 @@ export default function Status({ status: statusProp, type, showInteraction = tru
 							<div className="relative w-full text-sm">
 								<p
 									ref={textElementRef}
-									className={`mt-1 rounded duration-200 status-text dark:text-gray-50 break-all ${
+									className={`mt-1 rounded duration-200 status-text dark:text-gray-50 break-words w-full ${
 										status.sensitive && !showText && "filter blur-lg"
 									} ${clamps && !expand && "line-clamp-6"}`}>
 									{withEmojis(status.content, status.emojis)}
