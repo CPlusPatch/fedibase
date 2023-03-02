@@ -1,3 +1,4 @@
+import { getSetting } from "components/settings/Settings";
 import { JSXInternal } from "preact/src/jsx";
 import { useStore } from "utils/store";
 
@@ -15,7 +16,7 @@ export function Link(props: JSXInternal.HTMLAttributes<HTMLAnchorElement> & {
 				if (!e.ctrlKey && !e.metaKey) {
 					e.preventDefault();
 					
-					if (props.sidebar) {
+					if (props.sidebar && getSetting("sidebarLoad") === "on") {
 						setConversation(props.sidebar);
 						setMobilePostViewer(true);
 					} else {

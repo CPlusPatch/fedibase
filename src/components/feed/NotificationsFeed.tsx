@@ -53,51 +53,51 @@ function NotificationsFeed({ withTitle = true }: { withTitle?: boolean }) {
 				</div>
 			)}
 			
-				<ul className="flex overflow-y-scroll flex-col overflow-x-hidden gap-y-2 max-w-full h-full divide-y-2 dark:divide-gray-700 no-scroll">
-					<Feed<Entity.Notification> type={FeedType.Notifications}
-						onChange={(entities: Entity.Notification[]) => {
-							if (!localStorage.getItem("lastReadNotification")) localStorage.setItem("lastReadNotification", Math.max(...entities.map(entity => {
-								return Number(entity.id);
-							})).toString())
+			<ul className="flex overflow-y-scroll flex-col overflow-x-hidden gap-y-2 max-w-full h-full divide-y-2 dark:divide-gray-700 no-scroll">
+				<Feed<Entity.Notification> type={FeedType.Notifications}
+					onChange={(entities: Entity.Notification[]) => {
+						if (!localStorage.getItem("lastReadNotification")) localStorage.setItem("lastReadNotification", Math.max(...entities.map(entity => {
+							return Number(entity.id);
+						})).toString());
 
-							if (Notification.permission === "denied" || Notification.permission === "default") return;
-							entities.forEach(entity => {
-								if (Number(entity.id) <= Number(localStorage.getItem("lastReadNotification"))) return;
+						if (Notification.permission === "denied" || Notification.permission === "default") return;
+						entities.forEach(entity => {
+							if (Number(entity.id) <= Number(localStorage.getItem("lastReadNotification"))) return;
 
-								let title;
-								switch (entity.type) {
-									case "favourite":
-										title = `${entity.account.display_name} favourited your post`;
-										break;
-									case "reblog":
-										title = `${entity.account.display_name} boosted your post`;
-										break;
-									case "mention":
-									default:
-										title = `${entity.account.display_name}`;
-										break
-								}
+							let title;
+							switch (entity.type) {
+							case "favourite":
+								title = `${entity.account.display_name} favourited your post`;
+								break;
+							case "reblog":
+								title = `${entity.account.display_name} boosted your post`;
+								break;
+							case "mention":
+							default:
+								title = `${entity.account.display_name}`;
+								break;
+							}
 
-								let notif = new Notification(title, {
-									body: entity.status?.plain_content ?? "",
-									icon: entity.account.avatar_static
-								});
+							const notif = new Notification(title, {
+								body: entity.status?.plain_content ?? "",
+								icon: entity.account.avatar_static
+							});
 
 
-								notif.onclick = () => {
-									window.parent.focus();
-									notif.close();
-								}
+							notif.onclick = () => {
+								window.parent.focus();
+								notif.close();
+							};
 
-								localStorage.setItem("lastReadNotification", entity.id.toString());
-							})
-						}}
-						entityElement={NotificationElement}
-						options={{
-							id: "",
-							filter: mode.value
-						}}/>
-				</ul>
+							localStorage.setItem("lastReadNotification", entity.id.toString());
+						});
+					}}
+					entityElement={NotificationElement}
+					options={{
+						id: "",
+						filter: mode.value
+					}}/>
+			</ul>
 		</div>
 	);
 }

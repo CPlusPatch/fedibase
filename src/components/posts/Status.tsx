@@ -9,7 +9,6 @@ import useLineClamp from "use-line-clamp";
 import { StatusPoll } from "./StatusPoll";
 import { Reactions } from "./Reaction";
 import { Link } from "components/transitions/Link";
-import { useStore } from "utils/store";
 
 export enum StatusType {
 	Notification = "notification",
@@ -77,7 +76,7 @@ export default function Status({ status: statusProp, type, showInteraction = tru
 					</div>
 					<div className={`${type === StatusType.Notification && "flex flex-row"}`}>
 						<div className="flex flex-col gap-y-1">
-							{status.in_reply_to_id && <ReplyTo status={status} statusType={type} />}
+							{status.in_reply_to_id && <ReplyTo status={status} />}
 
 							{status.sensitive && (
 								<SensitiveTextSpoiler

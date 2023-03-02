@@ -1,19 +1,17 @@
 import { IconMessage } from "@tabler/icons-preact";
 import { AuthContext } from "components/context/AuthContext";
 import { withEmojis } from "utils/functions";
-import { StatusType } from "./Status";
 import { useIsVisible } from "react-is-visible";
 import { Entity } from "megalodon";
 import { useState, useContext, useRef, useEffect } from "preact/hooks";
-import { useStore } from "utils/store";
+import { Link } from "components/transitions/Link";
 
-export default function ReplyTo({ status, statusType = StatusType.Post }: { status: Entity.Status; statusType: StatusType }) {
+export default function ReplyTo({ status }: { status: Entity.Status }) {
 	const [replyStatus, setReplyStatus] = useState<Entity.Status>();
 	const client = useContext(AuthContext);
 
 	const nodeRef = useRef<HTMLDivElement>();
 	const visible = useIsVisible(nodeRef);
-	const [, setState] = useStore();
 
 	useEffect(() => {
 		let isMounted = true;
@@ -32,14 +30,9 @@ export default function ReplyTo({ status, statusType = StatusType.Post }: { stat
 
 	return (
 		<div className="inline relative bg-slate-300/0" ref={nodeRef as any}>
-			<span
-				onClick={() => {
-					setState(prev => ({
-						...prev,
-						viewingConversation: status.id,
-						mobilePostViewer: true
-					}));
-				}}
+			<Link
+				href={`/posts/${status.id}`}
+				sidebar={status.id}
 				className="text-xs text-gray-600 hover:underline dark:text-gray-300">
 				<IconMessage className="inline mr-1 w-4 h-4" aria-hidden={true} />
 				Replying to{" "}
@@ -64,7 +57,7 @@ export default function ReplyTo({ status, statusType = StatusType.Post }: { stat
 						{replyStatus && <Status status={replyStatus} type={statusType} />}
 					</div>
 				</Transition> */}
-			</span>
+			</Link>
 		</div>
 	);
 }

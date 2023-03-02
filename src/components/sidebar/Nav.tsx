@@ -1,5 +1,5 @@
 import { Transition } from "@headlessui/react";
-import { IconHome, IconMoon, IconPlus, IconSun, IconUsers, IconWorld } from "@tabler/icons-preact";
+import { IconHome, IconMoon, IconPlus, IconSettings, IconSun, IconUsers, IconWorld } from "@tabler/icons-preact";
 import { AuthContext } from "components/context/AuthContext";
 import { Link } from "components/transitions/Link";
 import { useContext, useState, useEffect } from "preact/hooks";
@@ -121,6 +121,17 @@ export default function Nav(): JSX.Element {
 							<span className="sr-only">Enable light mode</span>
 						</>
 					)}
+				</button>
+				<button
+					onClick={() => {
+						setState(prev => ({
+							...prev,
+							settingsOpen: true
+						}));
+					}}
+					className="flex justify-center items-center p-2 mb-3 text-sm font-medium rounded-md duration-200 dark:text-gray-300 hover:bg-gray-300/40 hover:dark:bg-gray-700/40 hover:bg-opacity-75 group">
+					<IconSettings className="w-5 h-5" aria-hidden={true} />
+					<span className="sr-only">Enable light mode</span>
 				</button>
 				<button
 					onClick={() => {

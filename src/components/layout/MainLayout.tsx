@@ -7,6 +7,7 @@ import { IconCloudOff, IconX } from "@tabler/icons-preact";
 import { useNavigatorOnLine } from "utils/useNavigatorOnline";
 import { Fragment } from "preact/jsx-runtime";
 import { useEffect } from "preact/hooks";
+import { Settings } from "components/settings/Settings";
 
 export default function MainLayout({ children }: any) {
 	const online = useNavigatorOnLine();
@@ -95,6 +96,7 @@ export default function MainLayout({ children }: any) {
 			)}
 			<Toaster />
 			<MobileNavbar />
+			<Settings />
 			<div className="grid relative grid-cols-6 bg-gradient-light mx-auto h-full md:grid-cols-11 md:pl-[4.3rem] rounded-t-lg">
 				<div className="hidden h-full md:col-span-3 md:block overflow-hidden no-scroll">
 					<LeftSidebar />

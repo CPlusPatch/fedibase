@@ -9,6 +9,7 @@ export interface StateType {
 	sidebarOpened: boolean;
 	quotingTo: null | Entity.Status;
 	viewingConversation: string;
+	settingsOpen: boolean;
 }
 
 const initialState: StateType = {
@@ -20,5 +21,7 @@ const initialState: StateType = {
 	sidebarOpened: false,
 	quotingTo: null,
 	viewingConversation: "",
+	settingsOpen: false
 };
+
 export const { useStore, getStore, withStore } = createStore(initialState);

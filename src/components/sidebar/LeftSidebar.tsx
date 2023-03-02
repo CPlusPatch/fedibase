@@ -19,6 +19,7 @@ import { Input } from "components/forms/Input";
 import Select2, { SelectItem } from "components/forms/Select2";
 import SmallSelect2 from "components/forms/SmallSelect2";
 import { StatusType } from "components/posts/Status";
+import { ModalOverlay } from "components/transitions/ModalOverlay";
 import { ScaleFadeSlide } from "components/transitions/ScaleFadeSlide";
 import { Entity } from "megalodon";
 import { StateUpdater, useContext, useEffect, useRef, useState } from "preact/hooks";
@@ -150,16 +151,7 @@ export default function LeftSidebar() {
 							replyingTo: null,
 						}))
 					}>
-					<Transition.Child
-						as={Fragment}
-						enter="ease-out duration-300"
-						enterFrom="opacity-0"
-						enterTo="opacity-100"
-						leave="ease-in duration-200"
-						leaveFrom="opacity-100"
-						leaveTo="opacity-0">
-						<div className="fixed inset-0 transition-all bg-orange-500/40" />
-					</Transition.Child>
+					<ModalOverlay />
 
 					<div className="overflow-y-auto fixed inset-0">
 						<div className="flex justify-center items-start p-4 min-h-full text-center md:items-center sm:p-0">
@@ -743,6 +735,30 @@ function ButtonRow({
 	currentState: SendFormState;
 	max_chars: any;
 }) {
+	const [state,] = useStore();
+
+	const [defaultVisibility, setDefaultVisibility] = useState<number>(0);
+
+	useEffect(() => {
+		const { replyingTo, quotingTo } = state;
+		const otherPost = replyingTo ?? quotingTo ?? null;
+
+		switch (otherPost?.visibility) {
+		case "direct":
+			setDefaultVisibility(3);
+			break;
+		case "private":
+			setDefaultVisibility(2);
+			break;
+		case "unlisted":
+			setDefaultVisibility(1);
+			break;
+		case "public":
+			setDefaultVisibility(0);
+			break;
+		}
+	}, []);
+
 	return (
 		<div className="flex inset-x-0 bottom-0 justify-between py-2 pr-2 pl-3 flex-row">
 			<div className="flex items-center space-x-1">
@@ -797,7 +813,7 @@ function ButtonRow({
 				/>
 				<SmallSelect2
 					items={visibilities}
-					defaultValue={0}
+					defaultValue={defaultVisibility}
 					onChange={i => {
 						setCurrentState(s => ({
 							...s,
