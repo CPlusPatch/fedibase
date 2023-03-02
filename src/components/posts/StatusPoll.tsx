@@ -45,7 +45,7 @@ export function StatusPoll({
 										100,
 								)}%`,
 							}}
-							className="absolute bg-orange-200 dark:bg-orange-800 rounded h-full z-0"></div>
+							className="absolute max-w-full bg-orange-200 dark:bg-orange-800 rounded h-full z-0"></div>
 						<span className="w-10 z-10">
 							{Number.isNaN(
 								Math.round(

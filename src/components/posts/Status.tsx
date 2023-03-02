@@ -90,7 +90,7 @@ export default function Status({ status: statusProp, type, showInteraction = tru
               
 							<p
 								ref={textElementRef}
-								className={`mt-1 rounded relative text-sm duration-200 status-text dark:text-gray-50 break-words w-full ${
+								className={`mt-1 status-text rounded relative text-sm duration-200 status-text dark:text-gray-50 break-words w-full ${
 									status.sensitive && !showText && "filter blur-lg"
 								} ${clamps && !expand && "line-clamp-6"}`}>
 								{withEmojis(status.content, status.emojis)}
