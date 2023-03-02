@@ -98,7 +98,12 @@ export default function MobileNavbar() {
 					<IconBell aria-hidden={true} />
 					<span className="sr-only">Open notifications</span>
 				</Button>
-				<Button style="gray" className="!p-0 !border-none !shadow-none">
+				<Button style="gray" className="!p-0 !border-none !shadow-none" onClick={() => {
+					setState(prev => ({
+						...prev,
+						settingsOpen: true,
+					}));
+				}}>
 					<img
 						src={account?.avatar}
 						className="w-9 h-9 rounded border-2"
