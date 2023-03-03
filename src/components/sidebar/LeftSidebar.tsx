@@ -8,6 +8,7 @@ import {
 	IconLockOpen,
 	IconMail,
 	IconMarkdown,
+	IconNewSection,
 	IconPaperclip,
 	IconWorld,
 	IconX,
@@ -76,8 +77,19 @@ export default function LeftSidebar() {
 
 	return (
 		<>
-			{state.viewingConversation && (
+			{state.viewingConversation ? (
 				<Conversation id={state.viewingConversation} mode={StatusType.Notification} />
+			) : (
+				<div className="p-3 h-full">
+					<label className="flex flex-col items-center justify-center w-full h-full border-2 no-bad-scale duration-200 border-dashed rounded-lg cursor-pointer border-gray-300 hover:border-gray-400 dark:border-gray-600 dark:hover:border-gray-500">
+						<div className="flex flex-col justify-center items-center pt-5 pb-6">
+							<IconNewSection className="mb-3 w-10 h-10 dark:text-gray-200 text-gray-600" />
+							<p className="mb-2 text-sm dark:text-gray-400 text-gray-500">
+								Click on a conversation and it will appear here
+							</p>
+						</div>
+					</label>
+				</div>
 			)}
 
 			{/* Only show on mobile */}

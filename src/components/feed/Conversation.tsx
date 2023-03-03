@@ -20,10 +20,10 @@ export const Conversation = ({ id, mode, showTitle = true}: ConversationProps) =
 	const mainPostRef = useRef<HTMLDivElement>(null);
 
 	function findParentElements(array: Entity.Status[], elementId: string) {
-		let parentElements = [];
+		const parentElements = [];
 		let currentElement = array.find(element => element.id === elementId);
 		while (currentElement && currentElement.in_reply_to_id !== "") {
-			let parentElement = array.find(element => element.id === currentElement?.in_reply_to_id);
+			const parentElement = array.find(element => element.id === currentElement?.in_reply_to_id);
 			if (parentElement) {
 				parentElements.push(parentElement);
 				currentElement = parentElement;

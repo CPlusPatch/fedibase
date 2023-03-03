@@ -97,14 +97,14 @@ export default function MainLayout({ children }: any) {
 			<Toaster />
 			<MobileNavbar />
 			<Settings />
-			<div className="grid relative grid-cols-6 bg-gradient-light mx-auto h-full md:grid-cols-11 md:pl-[4.3rem] rounded-t-lg">
+			<div className="grid relative grid-cols-6 bg-gradient-light h-full md:grid-cols-11 md:pl-[4.3rem] rounded-t-lg">
 				<div className="hidden h-full md:col-span-3 md:block overflow-hidden no-scroll">
 					<LeftSidebar />
 				</div>
 				<div className="overflow-x-hidden overflow-y-hidden md:col-span-5 col-span-6 max-h-screen md:border-x dark:border-gray-700 md:pt-0">
 					{children}
 				</div>
-				<div className="hidden overflow-x-hidden p-4 min-w-0 max-h-screen md:col-span-3 md:flex">
+				<div className="hidden overflow-x-hidden p-4 max-h-screen md:col-span-3 md:flex">
 					{window.innerWidth > 768 && <NotificationsFeed />}
 				</div>
 			</div>
