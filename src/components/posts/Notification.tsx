@@ -45,7 +45,7 @@ export const Notification = ({ entity }: { entity: Entity.Notification }) => {
 								className="h-[1em] w-[1em] align-middle inline rounded mb-0.5 mr-2"
 							/>
 							{withEmojis(entity.account.display_name, entity.account.emojis)}
-							{" reacted with"}{" "}
+							{" reacted with "}
 							{entity.status?.emoji_reactions &&
 								withEmojiReactions(
 									entity.emoji ?? "",

@@ -46,14 +46,14 @@ export default function DummyStatus({
 					<div className="flex flex-col gap-y-1">
 						<div className="relative w-full text-sm">
 							<p
-								className={`mt-1 h-5 bg-gray-300 rounded duration-200 animate-pulse status-text dark:bg-gray-700/40`}></p>
+								className={"mt-1 h-5 bg-gray-300 rounded duration-200 animate-pulse status-text dark:bg-gray-700/40"}></p>
 							<p
-								className={`mt-1 h-5 bg-gray-300 rounded duration-200 animate-pulse status-text dark:bg-gray-700/40`}></p>
+								className={"mt-1 h-5 bg-gray-300 rounded duration-200 animate-pulse status-text dark:bg-gray-700/40"}></p>
 							<p
 								style={{
 									width: `${random * 100}%`,
 								}}
-								className={`mt-1 h-5 bg-gray-300 rounded duration-200 animate-pulse status-text dark:bg-gray-700/40`}></p>
+								className={"mt-1 h-5 bg-gray-300 rounded duration-200 animate-pulse status-text dark:bg-gray-700/40"}></p>
 						</div>
 					</div>
 				</div>

@@ -2,13 +2,12 @@ import { IconX } from "@tabler/icons-preact";
 import Button from "components/buttons/Button";
 import { Entity } from "megalodon";
 import { useState } from "preact/hooks";
-import { StatusType } from "./Status";
 
 /**
  * Images of a Status (extracted for modularity)
  * @returns 
  */
-export default function PostAttachments({ status, type }: { status: Entity.Status; type: StatusType }) {
+export default function PostAttachments({ status }: { status: Entity.Status }) {
 	return (
 		<>
 			{status.media_attachments.length > 0 && (
@@ -29,11 +28,11 @@ function PostAttachment({ status, image }: { status: Entity.Status; image: Entit
 	const [revealed, setRevealed] = useState<boolean>(!status.sensitive);
 
 	return (
-		<div className="flex overflow-hidden relative items-center max-h-[80vh]">
+		<div className="relative rounded grow-0 mx-auto overflow-hidden flex items-center">
 			{image.type == "image" && (
 				<img
 					loading="lazy"
-					className={`filter duration-500 rounded h-full object-contain ${
+					className={`filter duration-500 rounded max-h-[80vh] ${
 						revealed ? "" : "filter blur-2xl"
 					}`}
 					src={image.remote_url ?? ""}
@@ -51,31 +50,27 @@ function PostAttachment({ status, image }: { status: Entity.Status; image: Entit
 				/>
 			)}
 			{status.sensitive && !revealed && (
-				<>
-					<div
-						aria-hidden={true}
-						onClick={() => {
-							setRevealed(true);
-						}}
-						className="flex absolute inset-0 z-20 justify-center items-center text-lg font-bold text-white font-inter">
-						{status.spoiler_text == ""
-							? "Image marked as sensitive"
-							: status.spoiler_text}
-					</div>
-				</>
+				<div
+					aria-hidden={true}
+					onClick={() => {
+						setRevealed(true);
+					}}
+					className="flex absolute inset-0 z-20 justify-center p-3 items-center text-lg font-bold text-white font-inter">
+					{status.spoiler_text == ""
+						? "Image marked as sensitive"
+						: status.spoiler_text}
+				</div>
 			)}
 			{status.sensitive && revealed && (
-				<div className="absolute top-0 right-0">
-					<Button
-						style="gray"
-						onClick={() => {
-							setRevealed(false);
-						}}
-						className="!px-1 !py-1 mt-4 mr-4">
-						<IconX aria-hidden={true} className="w-8 h-8" />
-						<span className="sr-only">Hide this image</span>
-					</Button>
-				</div>
+				<Button
+					style="gray"
+					onClick={() => {
+						setRevealed(false);
+					}}
+					className="!px-1 !py-1 mt-2 mr-2 !absolute top-0 right-0 !bg-opacity-70">
+					<IconX aria-hidden={true} className="w-4 h-4" />
+					<span className="sr-only">Hide this image</span>
+				</Button>
 			)}
 		</div>
 	);

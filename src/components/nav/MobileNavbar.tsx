@@ -7,8 +7,8 @@ import { Entity } from "megalodon";
 import { AuthContext } from "components/context/AuthContext";
 import { useContext, useEffect, useState } from "preact/hooks";
 import toast from "react-hot-toast";
-import { smoothNavigate } from "utils/functions";
 import { useStore } from "utils/store";
+import { Link } from "components/transitions/Link";
 
 export default function MobileNavbar() {
 	const [state, setState] = useStore();
@@ -51,29 +51,28 @@ export default function MobileNavbar() {
 				<Button
 					style="gray"
 					className="!p-3 !border-none !shadow-none"
+					title={theme === "light" ? "Enable dark mode" : "Enable light mode"}
 					onClick={toggleTheme}>
 					{theme === "light" && (
 						<>
 							<IconSun aria-hidden={true} />
-							<span className="sr-only">Enable dark mode</span>
 						</>
 					)}
 					{theme === "dark" && (
 						<>
 							<IconMoon aria-hidden={true} />
-							<span className="sr-only">Enable light mode</span>
 						</>
 					)}
 				</Button>
-				<Button
-					style="gray"
-					className="!p-3 !border-none !shadow-none"
-					onClick={() => {
-						smoothNavigate("/", setState);
-					}}>
-					<IconHome aria-hidden={true} className="" />
-					<span className="sr-only">Visit main feed</span>
-				</Button>
+				<Link href="/">
+					<Button
+						style="gray"
+						className="!p-3 !border-none !shadow-none"
+						title="Visit main feed">
+						<IconHome aria-hidden={true} className="" />
+						<span className="sr-only">Visit main feed</span>
+					</Button>
+				</Link>
 				<Button
 					style="gray"
 					className="!p-3 !border-none !shadow-none"

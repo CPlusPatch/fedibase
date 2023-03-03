@@ -34,12 +34,13 @@ export function Input({
 
 export function Label({
 	children,
+	...labelProps
 }: {
 	children: any;
 } & JSXInternal.HTMLAttributes<HTMLLabelElement>) {
 	return (
 		<label
-			htmlFor="name"
+			{...labelProps}
 			className="block text-sm font-medium text-gray-600 dark:text-gray-300">
 			{children}
 		</label>

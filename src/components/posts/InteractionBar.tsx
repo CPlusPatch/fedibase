@@ -23,9 +23,6 @@ import { useStore } from "utils/store";
  */
 export default function InteractionBar({ status, setStatus }: { status: Entity.Status; setStatus: StateUpdater<Entity.Status> }) {
 	const client = useContext(AuthContext);
-	const [favourited, setFavourited] = useState<boolean>(status.favourited ?? false);
-	const [boosted, setBoosted] = useState<boolean>(status.reblogged ?? false);
-
 	const [showEmojiPicker, setShowEmojiPicker] = useState<boolean>(false);
 	const [instanceEmojis, setInstanceEmojis] = useState<Entity.Emoji[]>([]);
 
@@ -64,15 +61,17 @@ export default function InteractionBar({ status, setStatus }: { status: Entity.S
 			<InteractionBarIcon
 				title="Favourite this post"
 				onClick={() => {
-					if (favourited) {
-						client?.unfavouriteStatus(status.id);
-					} else if (!favourited) {
-						client?.favouriteStatus(status.id);
+					if (status.favourited) {
+						client?.unfavouriteStatus(status.id).then(res => {
+							setStatus(res.data);
+						});
+					} else if (!status.favourited) {
+						client?.favouriteStatus(status.id).then(res => {
+							setStatus(res.data);
+						});
 					}
-
-					setFavourited(f => !f);
 				}}>
-				{favourited ? (
+				{status.favourited ? (
 					<>
 						<span className="sr-only">You favourited this post!</span>
 						<IconStarFilled
@@ -91,17 +90,19 @@ export default function InteractionBar({ status, setStatus }: { status: Entity.S
 			<InteractionBarIcon
 				title="Boost this post"
 				onClick={() => {
-					if (boosted) {
-						client?.unreblogStatus(status.id);
-					} else if (!boosted) {
-						client?.reblogStatus(status.id);
+					if (status.reblogged) {
+						client?.unreblogStatus(status.id).then(res => {
+							setStatus(res.data);
+						});
+					} else if (!status.reblogged) {
+						client?.reblogStatus(status.id).then(res => {
+							setStatus(res.data);
+						});
 					}
-
-					setBoosted(b => !b);
 				}}>
 				{status.visibility !== "private" && status.visibility !== "direct" ? (
 					<>
-						{boosted ? (
+						{status.reblogged ? (
 							<>
 								<span className="sr-only">You boosted this post!</span>
 								<IconRocket

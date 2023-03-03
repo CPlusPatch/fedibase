@@ -1,5 +1,5 @@
 import Button from "components/buttons/Button";
-import { StateUpdater, useState } from "preact/hooks";
+import { StateUpdater } from "preact/hooks";
 import { withEmojis } from "utils/functions";
 
 export default function SensitiveTextSpoiler({
