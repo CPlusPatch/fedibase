@@ -59,7 +59,7 @@ export default function InteractionBar({ status, setStatus }: { status: Entity.S
 			</InteractionBarIcon>
 
 			<InteractionBarIcon
-				title="Favourite this post"
+				title={status.favourited ? "You favourited this post!" : "Favourite this post"}
 				onClick={() => {
 					if (status.favourited) {
 						setStatus(prev => ({
@@ -77,7 +77,6 @@ export default function InteractionBar({ status, setStatus }: { status: Entity.S
 				}}>
 				{status.favourited ? (
 					<>
-						<span className="sr-only">You favourited this post!</span>
 						<IconStarFilled
 							aria-hidden={true}
 							className="w-5 h-5 text-yellow-400 animate-[spin_1s_ease-in-out]"
@@ -85,7 +84,6 @@ export default function InteractionBar({ status, setStatus }: { status: Entity.S
 					</>
 				) : (
 					<>
-						<span className="sr-only">Favourite this post</span>
 						<IconStar aria-hidden={true} className="w-5 h-5" />
 					</>
 				)}
