@@ -62,13 +62,17 @@ export default function InteractionBar({ status, setStatus }: { status: Entity.S
 				title="Favourite this post"
 				onClick={() => {
 					if (status.favourited) {
-						client?.unfavouriteStatus(status.id).then(res => {
-							setStatus(res.data);
-						});
+						setStatus(prev => ({
+							...prev,
+							favourited: false
+						}));
+						client?.unfavouriteStatus(status.id);
 					} else if (!status.favourited) {
-						client?.favouriteStatus(status.id).then(res => {
-							setStatus(res.data);
-						});
+						setStatus(prev => ({
+							...prev,
+							favourited: true
+						}));
+						client?.favouriteStatus(status.id);
 					}
 				}}>
 				{status.favourited ? (
@@ -91,19 +95,17 @@ export default function InteractionBar({ status, setStatus }: { status: Entity.S
 				title="Boost this post"
 				onClick={() => {
 					if (status.reblogged) {
-						client?.unreblogStatus(status.id).then(() => {
-							setStatus(prev => ({
-								...prev,
-								reblogged: false
-							}));
-						});
+						setStatus(prev => ({
+							...prev,
+							reblogged: false
+						}));
+						client?.unreblogStatus(status.id);
 					} else if (!status.reblogged) {
-						client?.reblogStatus(status.id).then(() => {
-							setStatus(prev => ({
-								...prev,
-								reblogged: true
-							}));
-						});
+						setStatus(prev => ({
+							...prev,
+							reblogged: true
+						}));
+						client?.reblogStatus(status.id);
 					}
 				}}>
 				{status.visibility !== "private" && status.visibility !== "direct" ? (
