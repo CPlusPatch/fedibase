@@ -91,12 +91,18 @@ export default function InteractionBar({ status, setStatus }: { status: Entity.S
 				title="Boost this post"
 				onClick={() => {
 					if (status.reblogged) {
-						client?.unreblogStatus(status.id).then(res => {
-							setStatus(res.data);
+						client?.unreblogStatus(status.id).then(() => {
+							setStatus(prev => ({
+								...prev,
+								reblogged: false
+							}));
 						});
 					} else if (!status.reblogged) {
-						client?.reblogStatus(status.id).then(res => {
-							setStatus(res.data);
+						client?.reblogStatus(status.id).then(() => {
+							setStatus(prev => ({
+								...prev,
+								reblogged: true
+							}));
 						});
 					}
 				}}>
