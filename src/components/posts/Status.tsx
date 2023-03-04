@@ -9,6 +9,8 @@ import useLineClamp from "use-line-clamp";
 import { StatusPoll } from "./StatusPoll";
 import { Reactions } from "./Reaction";
 import { Link } from "components/transitions/Link";
+import { Transition } from "@headlessui/react";
+import { Fragment } from "preact/jsx-runtime";
 
 export enum StatusType {
 	Notification = "notification",
