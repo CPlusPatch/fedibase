@@ -451,7 +451,7 @@ function SendForm() {
 
 				<textarea
 					ref={textareaRef}
-					rows={5}
+					rows={7}
 					name="comment"
 					onPaste={async e => {
 						if (!client) return;
@@ -896,7 +896,7 @@ function ButtonRow({
 					disabled={currentState.loading}
 					style="orangeLight"
 					type="submit"
-					className="!px-4 !py-2 !text-base">
+					className="!px-4 !py-2 !text-base !border-none !text-white !bg-[radial-gradient(ellipse_at_top_left,_var(--tw-gradient-stops))] !from-pink-500 !via-red-500 !to-yellow-500">
 					Post
 				</Button>
 			</div>

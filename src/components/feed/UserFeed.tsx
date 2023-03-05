@@ -11,7 +11,7 @@ export const UserFeed = ({ account }: { account: Entity.Account }) => {
 					<UserProfile user={account} />
 					<Feed<Entity.Status>
 						type={FeedType.User}
-						onChange={() => {
+						onLoadNew={() => {
 							//
 						}}
 						entityElement={Post}

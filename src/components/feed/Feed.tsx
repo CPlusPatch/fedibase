@@ -19,7 +19,7 @@ const DEFAULT_LOAD = 20;
 interface FeedProps {
 	type: FeedType;
 	entityElement: any;
-	onChange: (entities: any) => void;
+	onLoadNew: (entities: any) => void;
 	options?: {
 		id: string;
 		filter?: string;
@@ -134,8 +134,6 @@ function Feed<T>(props: FeedProps) {
 					const latestEntities = await getNewEntities("") ?? [];
 
 					entitiesRef.current = dedupeById(latestEntities as any) as T[];
-
-					props.onChange(latestEntities);
 					setEntities(entitiesRef.current);
 					setInitialLoadDone(true);
 				}
@@ -156,7 +154,7 @@ function Feed<T>(props: FeedProps) {
 					...latestEntities,
 					...entitiesRef.current,
 				] as any) as T[];
-				props.onChange(latestEntities);
+				props.onLoadNew(latestEntities);
 				setEntities(entitiesRef.current);
 			}
 		}, 15000);
@@ -175,7 +173,6 @@ function Feed<T>(props: FeedProps) {
 					...entitiesRef.current,
 					...latestPosts,
 				] as any) as T[];
-				props.onChange(latestPosts);
 				setEntities(entitiesRef.current);
 			}
 		}

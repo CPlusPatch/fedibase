@@ -55,15 +55,9 @@ function NotificationsFeed({ withTitle = true }: { withTitle?: boolean }) {
 			
 			<ul className="flex overflow-y-scroll flex-col overflow-x-hidden gap-y-3 max-w-full h-full no-scroll">
 				<Feed<Entity.Notification> type={FeedType.Notifications}
-					onChange={(entities: Entity.Notification[]) => {
-						if (!localStorage.getItem("lastReadNotification")) localStorage.setItem("lastReadNotification", Math.max(...entities.map(entity => {
-							return Number(entity.id);
-						})).toString());
-
+					onLoadNew={(entities: Entity.Notification[]) => {
 						if (Notification.permission === "denied" || Notification.permission === "default") return;
 						entities.forEach(entity => {
-							if (Number(entity.id) <= Number(localStorage.getItem("lastReadNotification"))) return;
-
 							let title;
 							switch (entity.type) {
 							case "favourite":
@@ -88,8 +82,6 @@ function NotificationsFeed({ withTitle = true }: { withTitle?: boolean }) {
 								window.parent.focus();
 								notif.close();
 							};
-
-							localStorage.setItem("lastReadNotification", entity.id.toString());
 						});
 					}}
 					entityElement={NotificationElement}
