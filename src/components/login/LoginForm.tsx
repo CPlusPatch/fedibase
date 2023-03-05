@@ -1,6 +1,6 @@
 import SmallLogo from "components/logo/SmallLogo";
 import { useEffect, useState } from "preact/hooks";
-import Button from "components/buttons/Button";
+import { Button } from "@cpluspatch/catgirl-ui";
 import { Input, Label } from "components/forms/Input";
 import generator, { OAuth } from "megalodon";
 import { IconLetterC, IconLetterM, IconLetterP } from "@tabler/icons-preact";
@@ -160,7 +160,7 @@ export default function LoginForm({ code }: {
 										ringColor="orange-500"
 										style="orange"
 										className="w-full"
-										isLoading={isLoading}>
+										loading={isLoading}>
 										Sign in
 									</Button>
 								</div>

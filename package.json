@@ -10,6 +10,7 @@
 		"preview": "vite preview"
 	},
 	"dependencies": {
+		"@cpluspatch/catgirl-ui": "^1.0.0",
 		"@headlessui/react": "^1.7.11",
 		"@tabler/icons-preact": "^2.5.0",
 		"csstype": "^3.1.1",

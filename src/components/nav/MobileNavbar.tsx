@@ -1,6 +1,6 @@
 import { Dialog, Transition } from "@headlessui/react";
 import { IconBell, IconHome, IconMoon, IconPencilPlus, IconSun, IconX } from "@tabler/icons-preact";
-import Button from "components/buttons/Button";
+import { Button } from "@cpluspatch/catgirl-ui";
 import NotificationsFeed from "components/feed/NotificationsFeed";
 import { Fragment } from "preact/jsx-runtime";
 import { Entity } from "megalodon";

@@ -1,4 +1,4 @@
-import Button from "components/buttons/Button";
+import { Button } from "@cpluspatch/catgirl-ui";
 import { AuthContext } from "components/context/AuthContext";
 import { useContext, useEffect, useState } from "preact/hooks";
 import { toast } from "react-hot-toast";

@@ -6,6 +6,7 @@ patchedDependencies:
     path: patches/@headlessui__react@1.7.11.patch
 
 specifiers:
+  '@cpluspatch/catgirl-ui': ^1.0.0
   '@headlessui/react': ^1.7.11
   '@preact/preset-vite': ^2.5.0
   '@tabler/icons-preact': ^2.5.0
@@ -41,6 +42,7 @@ specifiers:
   vite-tsconfig-paths: ^4.0.5
 
 dependencies:
+  '@cpluspatch/catgirl-ui': 1.0.0
   '@headlessui/react': 1.7.11_s3khnhj44qp6jhnkix4dxzv7mu
   '@tabler/icons-preact': 2.5.0_preact@10.12.1
   csstype: 3.1.1
@@ -1309,6 +1311,16 @@ packages:
       to-fast-properties: 2.0.0
     dev: true
 
+  /@cpluspatch/catgirl-ui/1.0.0:
+    resolution: {integrity: sha512-RRyaahIYIc/Qq4rNfgBsvwjDkDfPTOOWpIuwsKkLVnwf+7w/DmFW2l9htrS5B3sRN48pbzfORHJ8nlmsOI6U/A==}
+    dependencies:
+      '@headlessui/react': 1.7.13
+      preact: 10.13.0
+    transitivePeerDependencies:
+      - react
+      - react-dom
+    dev: false
+
   /@cpluspatch/megalodon/5.2.0:
     resolution: {integrity: sha512-FwmXF8xkcdFigAZWV42Aah6X/hs8NijnT2WKPpZkicuhmYa4SeWn0bHWwpgrVQ1PU4/WDxOwyIbXY+rd5TR5jg==}
     engines: {node: '>=15.0.0'}
@@ -1558,6 +1570,16 @@ packages:
       client-only: 0.0.1
     dev: false
     patched: true
+
+  /@headlessui/react/1.7.13:
+    resolution: {integrity: sha512-9n+EQKRtD9266xIHXdY5MfiXPDfYwl7zBM7KOx2Ae3Gdgxy8QML1FkCMjq6AsOf0l6N9uvI4HcFtuFlenaldKg==}
+    engines: {node: '>=10'}
+    peerDependencies:
+      react: ^16 || ^17 || ^18
+      react-dom: ^16 || ^17 || ^18
+    dependencies:
+      client-only: 0.0.1
+    dev: false
 
   /@humanwhocodes/config-array/0.11.8:
     resolution: {integrity: sha512-UybHIJzJnR5Qc/MsD9Kr+RpO2h+/P1GhOwdiLPXK5TWk5sgTdu88bTD9UP+CKbPPh5Rni1u0GjAdYQLemG8g+g==}
@@ -4022,6 +4044,10 @@ packages:
 
   /preact/10.12.1:
     resolution: {integrity: sha512-l8386ixSsBdbreOAkqtrwqHwdvR35ID8c3rKPa8lCWuO86dBi32QWHV4vfsZK1utLLFMvw+Z5Ad4XLkZzchscg==}
+
+  /preact/10.13.0:
+    resolution: {integrity: sha512-ERdIdUpR6doqdaSIh80hvzebHB7O6JxycOhyzAeLEchqOq/4yueslQbfnPwXaNhAYacFTyCclhwkEbOumT0tHw==}
+    dev: false
 
   /prelude-ls/1.2.1:
     resolution: {integrity: sha512-vkcDPrRZo1QZLbn5RLGPpg/WmIQ65qoWWhcGKf/b5eplkkarX0m9z8ppCat4mlOqUsWpyNuYgO3VRyrYHSzX5g==}

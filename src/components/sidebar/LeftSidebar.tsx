@@ -13,7 +13,7 @@ import {
 	IconWorld,
 	IconX,
 } from "@tabler/icons-preact";
-import Button from "components/buttons/Button";
+import { Button } from "@cpluspatch/catgirl-ui";
 import { AuthContext } from "components/context/AuthContext";
 import { Conversation } from "components/feed/Conversation";
 import { Input } from "components/forms/Input";
@@ -170,11 +170,11 @@ export default function LeftSidebar() {
 							<Transition.Child
 								as={Fragment}
 								enter="ease-in-out duration-200"
-								enterFrom="opacity-0 translate-y-20 translate-y-0 scale-95"
+								enterFrom="opacity-0 translate-y-4 translate-y-0 scale-75"
 								enterTo="opacity-100 translate-y-0 scale-100"
 								leave="ease-in duration-200"
 								leaveFrom="opacity-100 translate-y-0 scale-100"
-								leaveTo="opacity-0 translate-y-20 translate-y-0 scale-95">
+								leaveTo="opacity-0 translate-y-4 translate-y-0 scale-75">
 								<Dialog.Panel className="relative my-8 w-full text-left transition-all transform sm:max-w-xl">
 									<SendForm />
 								</Dialog.Panel>
@@ -416,37 +416,49 @@ function SendForm() {
 					currentState.loading ? "bg-gray-100 dark:bg-dark-800" : "bg-white dark:bg-dark-800"
 				}`}>
 				<div className="flex justify-between p-3 w-full">
-					<h1 className="text-xl font-bold dark:text-gray-50">
-						{state.replyingTo && (
-							<>
+					<div className="flex flex-row items-center gap-x-3">
+						<button
+							className="mb-1"
+							onClick={e => {
+								e.preventDefault();
+								setState(prev => ({
+									...prev,
+									postComposerOpened: false,
+								}));
+							}}>
+							<IconX className="w-6 h-6"/>
+						</button>
+						<h1 className="text-xl font-bold dark:text-gray-50">
+							{state.replyingTo && (
+								<>
 								Replying to{" "}
-								{withEmojis(
-									state.replyingTo.account.display_name,
-									state.replyingTo.account.emojis,
-								)}
-							</>
-						)}
-						{state.quotingTo && (
-							<>
+									{withEmojis(
+										state.replyingTo.account.display_name,
+										state.replyingTo.account.emojis,
+									)}
+								</>
+							)}
+							{state.quotingTo && (
+								<>
 								Quoting{" "}
-								{withEmojis(
-									state.quotingTo.account.display_name,
-									state.quotingTo.account.emojis,
-								)}
-							</>
-						)}
-						{!(state.replyingTo || state.quotingTo) && <>Compose</>}
-					</h1>
-					<button
-						onClick={e => {
-							e.preventDefault();
-							setState(prev => ({
-								...prev,
-								postComposerOpened: false,
-							}));
-						}}>
-						<IconX />
-					</button>
+									{withEmojis(
+										state.quotingTo.account.display_name,
+										state.quotingTo.account.emojis,
+									)}
+								</>
+							)}
+							{!(state.replyingTo || state.quotingTo) && <>Compose</>}
+						</h1>
+					</div>
+					<div>
+						<Button
+							loading={currentState.loading}
+							style="orangeLight"
+							type="submit"
+							className="!px-4 !py-2 !text-base !border-none !text-white !bg-[radial-gradient(ellipse_at_top_left,_var(--tw-gradient-stops))] !from-pink-500 !via-red-500 !to-yellow-500">
+							Post
+						</Button>
+					</div>
 				</div>
 
 				<textarea
@@ -861,7 +873,7 @@ function ButtonRow({
 			</div>
 			<div className="flex flex-row flex-shrink-0 gap-x-4 items-center">
 				<div className="flex flex-row gap-x-2 items-center">
-					<span className="text-gray-600 dark:text-gray-300">
+					<span className={classNames("text-gray-600 dark:text-gray-300", currentState.characters.length > max_chars && "!text-red-600")}>
 						{((max_chars ?? 500) - currentState.characters.length).toLocaleString(
 							"en",
 							{
@@ -883,22 +895,16 @@ function ButtonRow({
 							r="10"
 							fill="none"
 							strokeDasharray={
+								62.832
+							}
+							strokeDashoffset={
 								(1 - currentState.characters.length / (max_chars ?? 500)) * 62.832
 							}
-							strokeDashoffset="62.832"
 							strokeLinecap="round"
 							strokeWidth="3.5"
 							className="stroke-orange-500"></circle>
 					</svg>
 				</div>
-				<Button
-					isLoading={currentState.loading}
-					disabled={currentState.loading}
-					style="orangeLight"
-					type="submit"
-					className="!px-4 !py-2 !text-base !border-none !text-white !bg-[radial-gradient(ellipse_at_top_left,_var(--tw-gradient-stops))] !from-pink-500 !via-red-500 !to-yellow-500">
-					Post
-				</Button>
 			</div>
 		</div>
 	);
