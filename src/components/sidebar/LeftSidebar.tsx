@@ -13,7 +13,7 @@ import {
 	IconWorld,
 	IconX,
 } from "@tabler/icons-preact";
-import { Button } from "@cpluspatch/catgirl-ui";
+import Button from "components/buttons/Button";
 import { AuthContext } from "components/context/AuthContext";
 import { Conversation } from "components/feed/Conversation";
 import { Input } from "components/forms/Input";
@@ -452,10 +452,10 @@ function SendForm() {
 					</div>
 					<div>
 						<Button
-							loading={currentState.loading}
+							isLoading={currentState.loading}
 							style="orangeLight"
 							type="submit"
-							className="!px-4 !py-2 !text-base !border-none !text-white !bg-[radial-gradient(ellipse_at_top_left,_var(--tw-gradient-stops))] !from-pink-500 !via-red-500 !to-yellow-500">
+							className="!px-4 !py-2 !text-base text-white dark:text-white !border-none !bg-[radial-gradient(ellipse_at_top_left,_var(--tw-gradient-stops))] !from-pink-500 !via-red-500 !to-yellow-500">
 							Post
 						</Button>
 					</div>
