@@ -170,11 +170,11 @@ export default function LeftSidebar() {
 							<Transition.Child
 								as={Fragment}
 								enter="ease-in-out duration-200"
-								enterFrom="opacity-0 translate-y-4 translate-y-0 scale-95"
+								enterFrom="opacity-0 translate-y-20 translate-y-0 scale-95"
 								enterTo="opacity-100 translate-y-0 scale-100"
 								leave="ease-in duration-200"
 								leaveFrom="opacity-100 translate-y-0 scale-100"
-								leaveTo="opacity-0 translate-y-4 translate-y-0 scale-95">
+								leaveTo="opacity-0 translate-y-20 translate-y-0 scale-95">
 								<Dialog.Panel className="relative my-8 w-full text-left transition-all transform sm:max-w-xl">
 									<SendForm />
 								</Dialog.Panel>
@@ -451,7 +451,7 @@ function SendForm() {
 
 				<textarea
 					ref={textareaRef}
-					rows={7}
+					rows={6}
 					name="comment"
 					onPaste={async e => {
 						if (!client) return;
