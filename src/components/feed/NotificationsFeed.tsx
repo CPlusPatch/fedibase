@@ -53,7 +53,7 @@ function NotificationsFeed({ withTitle = true }: { withTitle?: boolean }) {
 				</div>
 			)}
 			
-			<ul className="flex overflow-y-scroll flex-col overflow-x-hidden gap-y-2 max-w-full h-full divide-y-2 dark:divide-gray-700 no-scroll">
+			<ul className="flex overflow-y-scroll flex-col overflow-x-hidden gap-y-3 max-w-full h-full no-scroll">
 				<Feed<Entity.Notification> type={FeedType.Notifications}
 					onChange={(entities: Entity.Notification[]) => {
 						if (!localStorage.getItem("lastReadNotification")) localStorage.setItem("lastReadNotification", Math.max(...entities.map(entity => {

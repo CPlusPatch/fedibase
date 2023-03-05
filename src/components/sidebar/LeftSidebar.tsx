@@ -169,7 +169,7 @@ export default function LeftSidebar() {
 						<div className="flex justify-center items-start p-4 min-h-full text-center md:items-center sm:p-0">
 							<Transition.Child
 								as={Fragment}
-								enter="ease-out duration-300"
+								enter="ease-in-out duration-200"
 								enterFrom="opacity-0 translate-y-4 translate-y-0 scale-95"
 								enterTo="opacity-100 translate-y-0 scale-100"
 								leave="ease-in duration-200"
@@ -366,7 +366,7 @@ function SendForm() {
 			await client?.postStatus(text, {
 				in_reply_to_id: inReplyToId,
 				visibility: currentState.visibility.value as any,
-				media_ids: currentState.fileIds,
+				media_ids: currentState.fileIds.length > 0 ? currentState.fileIds : undefined,
 				quote_id: quoteId,
 				poll:
 					currentState.poll && currentState.poll.choices.length > 0 ?
