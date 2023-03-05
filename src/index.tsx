@@ -92,7 +92,7 @@ export default function Index() {
 				</div>
 			)}
 			{loginMode && (
-				<LoginForm code={new URLSearchParams(document.location.search).get("code") ?? ""} />
+				<LoginForm code={new URLSearchParams(document.location.search).get("code") ?? new URLSearchParams(document.location.search).get("token") ?? ""} />
 			)}
 		</>
 	);

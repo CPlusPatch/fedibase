@@ -75,12 +75,13 @@ export default function LoginForm({ code }: {
 
 	useEffect(() => {
 		if (code !== "") {
+			console.log("logging in!");
 			const instanceType = localStorage.getItem("instanceType");
 			const instanceUrl = localStorage.getItem("instanceUrl");
 			const clientId = localStorage.getItem("clientId");
 			const clientSecret = localStorage.getItem("clientSecret");
 
-			if (!instanceType || !instanceUrl || !clientId || !clientSecret) return;
+			if (!instanceType || !instanceUrl || !clientSecret) return console.error("Items missing in localStorage");
 
 			const client = generator(instanceType as any, instanceUrl);
 
