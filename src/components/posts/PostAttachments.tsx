@@ -31,7 +31,6 @@ function PostAttachment({ status, image }: { status: Entity.Status; image: Entit
 		<div className="relative rounded grow-0 mx-auto overflow-hidden flex items-center">
 			{image.type == "image" && (
 				<img
-					loading="lazy"
 					className={`filter duration-500 rounded max-h-[80vh] ${
 						revealed ? "" : "filter blur-2xl"
 					}`}
@@ -41,7 +40,6 @@ function PostAttachment({ status, image }: { status: Entity.Status; image: Entit
 			)}
 			{image.type == "video" && (
 				<video
-					loading="lazy"
 					className={`filter duration-500 object-contain h-full rounded ${
 						revealed ? "" : "filter blur-2xl"
 					}`}
