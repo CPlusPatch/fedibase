@@ -1,4 +1,4 @@
-import { Button } from "@cpluspatch/catgirl-ui";
+import { Button } from "components/buttons/Button";
 import { AuthContext } from "components/context/AuthContext";
 import { useContext, useEffect, useState } from "preact/hooks";
 import { toast } from "react-hot-toast";
@@ -19,7 +19,7 @@ export default function UserProfile({ user }: { user: Entity.Account }) {
 	return (
 		<ScaleFadeSlide appear={true} show={true}>
 			<div className="flex flex-col gap-y-4 w-full">
-				<div className="w-full">
+				<div className="w-full relative">
 					<div className="flex overflow-hidden justify-center items-center w-full h-44 bg-gray-200 rounded border dark:bg-dark-800 dark:border-gray-700">
 						<img src={user.header} className="w-full" alt="" loading="lazy" />
 					</div>

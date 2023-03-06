@@ -2,7 +2,7 @@
 import { useContext, useState } from "preact/hooks";
 import { Menu, Transition } from "@headlessui/react";
 import { IconDots, IconEye, IconEyeOff, IconForbid2, IconHandOff, IconVolume3 } from "@tabler/icons-preact";
-import { Button } from "@cpluspatch/catgirl-ui";
+import { Button } from "components/buttons/Button";
 import { AuthContext } from "components/context/AuthContext";
 import { Fragment } from "preact/jsx-runtime";
 import { toast } from "react-hot-toast";

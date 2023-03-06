@@ -1,4 +1,4 @@
-import { Button } from "@cpluspatch/catgirl-ui";
+import { Button } from "components/buttons/Button";
 import { StateUpdater } from "preact/hooks";
 import { withEmojis } from "utils/functions";
 

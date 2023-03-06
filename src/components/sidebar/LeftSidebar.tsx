@@ -13,7 +13,7 @@ import {
 	IconWorld,
 	IconX,
 } from "@tabler/icons-preact";
-import Button from "components/buttons/Button";
+import { Button } from "components/buttons/Button";
 import { AuthContext } from "components/context/AuthContext";
 import { Conversation } from "components/feed/Conversation";
 import { Input } from "components/forms/Input";

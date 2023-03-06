@@ -1,4 +1,4 @@
-import { Button } from "@cpluspatch/catgirl-ui";
+import { Button } from "components/buttons/Button";
 import { AuthContext } from "components/context/AuthContext";
 import { StateUpdater, useContext } from "preact/hooks";
 import { fromNow } from "utils/functions";

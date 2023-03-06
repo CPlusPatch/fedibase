@@ -1,11 +1,11 @@
 import SmallLogo from "components/logo/SmallLogo";
 import { useEffect, useState } from "preact/hooks";
-import { Button } from "@cpluspatch/catgirl-ui";
 import { Input, Label } from "components/forms/Input";
 import generator, { OAuth } from "megalodon";
 import { IconLetterC, IconLetterM, IconLetterP } from "@tabler/icons-preact";
 import Select2, { SelectItem } from "components/forms/Select2";
 import { toast } from "react-hot-toast";
+import { Button } from "components/buttons/Button";
 
 const instanceTypes: SelectItem[] = [
 	{

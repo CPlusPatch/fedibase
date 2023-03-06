@@ -1,5 +1,5 @@
 import { IconX } from "@tabler/icons-preact";
-import { Button } from "@cpluspatch/catgirl-ui";
+import { Button } from "components/buttons/Button";
 import { Entity } from "megalodon";
 import { useState } from "preact/hooks";
 
