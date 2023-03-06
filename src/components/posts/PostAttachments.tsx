@@ -63,7 +63,7 @@ function PostAttachment({ status, image }: { status: Entity.Status; image: Entit
 			)}
 			{status.sensitive && revealed && (
 				<Button
-					style="gray"
+					theme="gray"
 					onClick={() => {
 						setRevealed(false);
 					}}

@@ -19,7 +19,7 @@ export default function UserProfile({ user }: { user: Entity.Account }) {
 	return (
 		<ScaleFadeSlide appear={true} show={true}>
 			<div className="flex flex-col gap-y-4 w-full">
-				<div className="relative w-full">
+				<div className="w-full">
 					<div className="flex overflow-hidden justify-center items-center w-full h-44 bg-gray-200 rounded border dark:bg-dark-800 dark:border-gray-700">
 						<img src={user.header} className="w-full" alt="" loading="lazy" />
 					</div>
@@ -43,7 +43,7 @@ export default function UserProfile({ user }: { user: Entity.Account }) {
 					</div>
 					<div className="flex items-center gap-x-1">
 						<Button
-							style="gray"
+							theme="gray"
 							className="!px-3 !py-2"
 							onClick={() => {
 								if (relationship?.requested) {

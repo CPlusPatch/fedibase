@@ -19,7 +19,7 @@ export default function SensitiveTextSpoiler({
 					: withEmojis(status.spoiler_text, status.emojis)}
 
 				<Button
-					style="gray"
+					theme="gray"
 					className="!py-1 !px-2"
 					onClick={() => {
 						setShowText(t => !t);

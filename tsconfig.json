@@ -18,8 +18,10 @@
 		"jsx": "react-jsx",
 		"jsxImportSource": "preact",
 		"paths": {
-			"react": ["./node_modules/@types/react"]
-		}
+			"react": ["node_modules/preact/compat"],
+      		"react-dom": ["node_modules/preact/compat"]
+		},
+		
 	},
 	"include": ["src"],
 	"references": [{ "path": "./tsconfig.node.json" }],

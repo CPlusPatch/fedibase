@@ -12,7 +12,7 @@ export function ModalOverlay() {
 			leave="ease-in duration-200"
 			leaveFrom={classNames("opacity-100", getSetting("blur") === "on" && "backdrop-blur-lg")}
 			leaveTo="opacity-0 backdrop-blur-none"
-			className={classNames("fixed inset-0 transition-all", getSetting("tintedBackdrop") === "off" ? "bg-gray-500/50 dark:bg-dark-700/50" : "bg-orange-400/50 dark:bg-orange-300/50")}>
+			className={classNames("fixed inset-0 transition-all", getSetting("tintedBackdrop") === "off" ? "bg-gray-500/75 dark:bg-dark-700/75" : "bg-orange-400/50 dark:bg-orange-300/50")}>
 		</Transition.Child>
 	);
 }

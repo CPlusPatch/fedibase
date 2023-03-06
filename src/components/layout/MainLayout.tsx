@@ -85,7 +85,7 @@ export default function MainLayout({ children }: any) {
 		return () => window.clearTimeout(timeout);
 	}, []);
 	return (
-		<div className="flex overflow-hidden w-full h-screen duration-200 grow flex-col">
+		<div className="flex overflow-hidden w-full h-screen duration-200 grow flex-col relative">
 			{!online && (
 				<div className="fixed inset-x-0 top-0 w-full py-1 text-white font-poppins text-base flex justify-center rounded-b shadow bg-red-700/40 backdrop-blur-lg z-[99999]">
 					<div className="flex gap-x-3 items-center">
@@ -97,7 +97,7 @@ export default function MainLayout({ children }: any) {
 			<Toaster />
 			<MobileNavbar />
 			<Settings />
-			<div className="grid relative grid-cols-6 bg-gradient-light h-full md:grid-cols-11 md:pl-[4.3rem] rounded-t-lg">
+			<div className="grid grid-cols-6 bg-gradient-light h-full md:grid-cols-11 md:pl-[4.3rem] rounded-t-lg">
 				<div className="hidden h-full md:col-span-3 md:block overflow-hidden no-scroll">
 					<LeftSidebar />
 				</div>

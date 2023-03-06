@@ -20,7 +20,7 @@ export default function ProfileActionsDropdown({
 
 	return (
 		<Menu as="div" className="relative inline-block text-left">
-			<Menu.Button className="!p-2" as={Button} style="gray">
+			<Menu.Button className="!p-2" as={Button} theme="gray">
 				<IconDots className="h-6 w-6 md:h-5 md:w-5" aria-hidden="true" />
 				<span className="sr-only">Open advanced settings</span>
 			</Menu.Button>

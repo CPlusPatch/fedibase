@@ -49,7 +49,7 @@ export default function MobileNavbar() {
 		<>
 			<header className="flex fixed inset-x-0 bottom-0 z-30 justify-between items-center px-6 py-2 bg-white border-b dark:border-gray-700 dark:bg-dark-800 md:hidden">
 				<Button
-					style="gray"
+					theme="gray"
 					className="!p-3 !border-none !shadow-none"
 					title={theme === "light" ? "Enable dark mode" : "Enable light mode"}
 					onClick={toggleTheme}>
@@ -66,7 +66,7 @@ export default function MobileNavbar() {
 				</Button>
 				<Link href="/">
 					<Button
-						style="gray"
+						theme="gray"
 						className="!p-3 !border-none !shadow-none"
 						title="Visit main feed">
 						<IconHome aria-hidden={true} className="" />
@@ -74,7 +74,7 @@ export default function MobileNavbar() {
 					</Button>
 				</Link>
 				<Button
-					style="gray"
+					theme="gray"
 					className="!p-3 !border-none !shadow-none"
 					onClick={() => {
 						setState(prev => ({
@@ -86,7 +86,7 @@ export default function MobileNavbar() {
 					<span className="sr-only">Compose new post</span>
 				</Button>
 				<Button
-					style="gray"
+					theme="gray"
 					className="!p-3 !border-none !shadow-none"
 					onClick={() => {
 						setState(prev => ({
@@ -97,7 +97,7 @@ export default function MobileNavbar() {
 					<IconBell aria-hidden={true} />
 					<span className="sr-only">Open notifications</span>
 				</Button>
-				<Button style="gray" className="!p-0 !border-none !shadow-none" onClick={() => {
+				<Button theme="gray" className="!p-0 !border-none !shadow-none" onClick={() => {
 					setState(prev => ({
 						...prev,
 						settingsOpen: true,

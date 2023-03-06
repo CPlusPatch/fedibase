@@ -1,5 +1,5 @@
-import { defineConfig } from 'vite'
-import preact from '@preact/preset-vite';
+import { defineConfig } from "vite";
+import preact from "@preact/preset-vite";
 import tsconfigPaths from "vite-tsconfig-paths";
 import { VitePWA } from "vite-plugin-pwa";
 
@@ -73,6 +73,8 @@ export default defineConfig({
 	resolve: {
 		alias: {
 			querystring: "querystring-es3",
+			react: "preact/compat",
+			"react-dom": "preact/compat"
 		},
-	},
+	}
 });

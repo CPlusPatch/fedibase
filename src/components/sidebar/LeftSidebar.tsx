@@ -19,7 +19,7 @@ import { Conversation } from "components/feed/Conversation";
 import { Input } from "components/forms/Input";
 import Select2, { SelectItem } from "components/forms/Select2";
 import SmallSelect2 from "components/forms/SmallSelect2";
-import { StatusType } from "components/posts/Status";
+import Status, { StatusType } from "components/posts/Status";
 import { ModalOverlay } from "components/transitions/ModalOverlay";
 import { ScaleFadeSlide } from "components/transitions/ScaleFadeSlide";
 import { Entity } from "megalodon";
@@ -165,7 +165,7 @@ export default function LeftSidebar() {
 					}>
 					<ModalOverlay />
 
-					<div className="overflow-y-auto fixed inset-0">
+					<div className="overflow-y-auto fixed inset-0 no-scroll py-5">
 						<div className="flex justify-center items-start p-4 min-h-full text-center md:items-center sm:p-0">
 							<Transition.Child
 								as={Fragment}
@@ -261,6 +261,7 @@ interface SendFormState {
 	characters: string;
 	emojis: Entity.Emoji[];
 	emojisSuggestions: Entity.Emoji[];
+	userSuggestions: Entity.Account[];
 	poll: null | {
 		choices: string[];
 		duration: number;
@@ -283,6 +284,7 @@ function SendForm() {
 		characters: "",
 		emojis: [],
 		emojisSuggestions: [],
+		userSuggestions: [],
 		poll: null,
 	});
 
@@ -357,10 +359,19 @@ function SendForm() {
 			loading: true,
 		}));
 
-		const { comment } = (event.target as any).elements;
-		const text = comment.value;
+		const text: string = (event.target as HTMLFormElement)["comment"].value;
+		//const text = comment.value;
 		const inReplyToId = state.replyingTo?.id;
 		const quoteId = state.quotingTo?.id;
+
+		if (text.length <= 0) {
+			toast.error("You need to add some text!");
+			setCurrentState(prev => ({
+				...prev,
+				loading: false,
+			}));
+			return false;
+		}
 
 		try {
 			await client?.postStatus(text, {
@@ -391,6 +402,7 @@ function SendForm() {
 				characters: "",
 				emojis: [],
 				emojisSuggestions: [],
+				userSuggestions: [],
 				poll: null,
 			});
 			setState(prev => ({
@@ -415,7 +427,7 @@ function SendForm() {
 				className={`px-3 py-2 w-full rounded-2xl border dark:text-gray-100 border-gray-300 dark:border-gray-700 shadow-sm ${
 					currentState.loading ? "bg-gray-100 dark:bg-dark-800" : "bg-white dark:bg-dark-800"
 				}`}>
-				<div className="flex justify-between p-3 w-full">
+				<div className="flex justify-between p-3 w-full gap-x-2">
 					<div className="flex flex-row items-center gap-x-3">
 						<button
 							className="mb-1"
@@ -460,7 +472,12 @@ function SendForm() {
 						</Button>
 					</div>
 				</div>
-
+				
+				{state.replyingTo && (
+					<div className="px-4 opacity-60">
+						<Status status={state.replyingTo ?? state.quotingTo} type={StatusType.Notification} showInteraction={false}/>
+					</div>
+				)}
 				<textarea
 					ref={textareaRef}
 					rows={6}
@@ -498,7 +515,7 @@ function SendForm() {
 						}
 					}}
 					onChange={async event => {
-						const { value }: any = event.target;
+						const value: string  = (event.target as any).value;
 						setCurrentState(s => ({
 							...s,
 							characters: value,
@@ -521,6 +538,18 @@ function SendForm() {
 								emojisSuggestions: [],
 							}));
 						}
+						
+						// Matched: @john or @john@site.com
+						const userMatches = value.match(/@\w+(?:\.\w+)?/g);
+
+						if (userMatches && userMatches.length > 0) client?.searchAccount(userMatches[userMatches.length - 1], {
+							limit: 5,
+						}).then(res => {
+							setCurrentState(prev => ({
+								...prev,
+								userSuggestions: res.data
+							}));
+						});
 					}}
 					disabled={currentState.loading}
 					className="block py-3 no-scroll w-full bg-transparent border-0 resize-none disabled:text-gray-400 focus:ring-0 dark:placeholder:text-gray-400"
@@ -557,6 +586,28 @@ function SendForm() {
 									setCurrentState(s => ({
 										...s,
 										emojis: [],
+									}));
+								}}
+							/>
+						))}
+					</div>
+				</ScaleFadeSlide>
+
+				<ScaleFadeSlide show={currentState.userSuggestions.length > 0}>
+					<div className="flex absolute z-[60] flex-col rounded border dark:bg-dark-800 bg-white dark:border-gray-700">
+						{currentState.userSuggestions.slice(0, 5).map(user => (
+							<SuggestionItem
+								key={user.id}
+								user={user}
+								onClick={() => {
+									if (!textareaRef.current) {
+										return;
+									}
+
+									const val = textareaRef.current.value;
+									setCurrentState(s => ({
+										...s,
+										userSuggestions: [],
 									}));
 								}}
 							/>
@@ -909,6 +960,7 @@ function ButtonRow({
 		</div>
 	);
 }
+
 function EmojiItem({ emoji, onClick }: any) {
 	return (
 		<div
@@ -916,6 +968,20 @@ function EmojiItem({ emoji, onClick }: any) {
 			className="flex flex-row gap-x-4 px-3 py-2 duration-200 hover:bg-gray-100 hover:dark:bg-gray-800">
 			<img src={emoji.url} className="w-5 h-5" alt="" />
 			<span>{emoji.shortcode}</span>
+		</div>
+	);
+}
+
+function SuggestionItem({ user, onClick }: {
+	user: Entity.Account;
+	onClick: any;
+}) {
+	return (
+		<div
+			onClick={onClick}
+			className="flex flex-row gap-x-4 px-3 py-2 duration-200 hover:bg-gray-100 hover:dark:bg-gray-800">
+			<img src={user.avatar} className="w-5 h-5" alt="" />
+			<span>{user.display_name}</span>
 		</div>
 	);
 }

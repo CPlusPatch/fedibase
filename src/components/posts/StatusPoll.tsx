@@ -74,7 +74,7 @@ export function StatusPoll({
 			</fieldset>
 			<div className="text-sm text-gray-500 dark:text-gray-400">
 				{!status.poll?.voted && (
-					<Button style="gray" type="submit" className="!px-2 !py-1 mr-2">
+					<Button theme="gray" type="submit" className="!px-2 !py-1 mr-2">
 						Vote
 					</Button>
 				)}

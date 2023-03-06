@@ -29,7 +29,7 @@ export default function ReplyTo({ status }: { status: Entity.Status }) {
 	}, [client, replyStatus, status.in_reply_to_id, visible]);
 
 	return (
-		<div className="inline relative bg-slate-300/0" ref={nodeRef as any}>
+		<div className="inline bg-slate-300/0" ref={nodeRef as any}>
 			<Link
 				href={`/posts/${status.id}`}
 				sidebar={status.id}

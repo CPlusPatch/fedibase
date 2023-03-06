@@ -158,7 +158,7 @@ export default function LoginForm({ code }: {
 									<Button
 										type="submit"
 										ringColor="orange-500"
-										style="orange"
+										theme="orange"
 										className="w-full"
 										loading={isLoading}>
 										Sign in

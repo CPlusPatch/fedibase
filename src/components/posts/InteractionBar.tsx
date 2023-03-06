@@ -1,3 +1,4 @@
+import { Dialog, Popover, Transition } from "@headlessui/react";
 import {
 	IconDots,
 	IconLock,
@@ -13,8 +14,10 @@ import { Input } from "components/forms/Input";
 import { ScaleFadeSlide } from "components/transitions/ScaleFadeSlide";
 import { Entity } from "megalodon";
 import { StateUpdater, useContext, useEffect, useState } from "preact/hooks";
+import { Fragment } from "preact/jsx-runtime";
 import { JSXInternal } from "preact/src/jsx";
 import { toast } from "react-hot-toast";
+import { classNames } from "utils/functions";
 import { useStore } from "utils/store";
 
 /**
@@ -132,66 +135,40 @@ export default function InteractionBar({ status, setStatus }: { status: Entity.S
 			</InteractionBarIcon>
 
 			<InteractionBarIcon
+				shake={false}
 				title="Add reaction"
 				onClick={() => {
-					setShowEmojiPicker(s => !s);
+					setShowEmojiPicker(true);
 				}}>
-				<IconMoodHappy className="w-5 h-5" aria-hidden={true} />
-				<span className="sr-only">Add reaction</span>
+				<>
+					<IconMoodHappy className="w-5 h-5" aria-hidden={true} />
+					<span className="sr-only">Add reaction</span>
 
-				<div
-					className="absolute left-0 -translate-x-[55%] top-7 z-[99]"
-					onClick={e => {
-						e.stopPropagation();
-					}}>
-					<ScaleFadeSlide show={showEmojiPicker}>
-						<div className="w-72 h-80 dark:bg-dark-800 border dark:border-gray-700 bg-white p-3 no-scroll rounded-lg overflow-hidden gap-y-4 flex-col flex">
-							<Input
-								isLoading={false}
-								name="emoji"
-								className="w-full rounded px-2 py-1 dark:border-gray-700"
-								placeholder="Emoji (alpha)"
-								onChange={(e: any) => {
-									setEmojiFilter(e.target.value);
-								}}>
-								<span className="sr-only">Type to filter emojis</span>
-							</Input>
-							<div className="gap-3 rounded-lg grid grid-cols-5 justify-between overflow-y-scroll no-scroll max-h-[85%]">
-								{instanceEmojis
-									.filter(f => f.shortcode.includes(emojiFilter))
-									.map(emoji => {
-										return (
-											<button
-												className="items-center flex justify-center"
-												title={emoji.shortcode}
-												onClick={() => {
-													client
-														?.createEmojiReaction(
-															status.id,
-															emoji.shortcode,
-														)
-														.then(res => {
-															toast.success("Added reaction!");
-															setStatus(res.data);
-															setShowEmojiPicker(false);
-														})
-														.catch(err => {
-															console.error(err);
-															toast.error("Couldn't add reaction :(");
-														});
-												}}>
-												<img
-													src={emoji.url}
-													loading="lazy"
-													className="w-7 h-7"
-												/>
-											</button>
-										);
-									})}
-							</div>
-						</div>
-					</ScaleFadeSlide>
-				</div>
+					<Transition appear show={showEmojiPicker} as={Fragment}>
+						<Dialog onClose={() => {
+							setShowEmojiPicker(false);
+						}} onClick={(e: any) => {
+							e.stopPropagation();
+						}}
+						className="z-50 fixed">
+							<Transition.Child
+								as={Fragment}
+								enter="ease-out duration-300"
+								enterFrom="opacity-0 scale-95"
+								enterTo="opacity-100 scale-100"
+								leave="ease-in duration-200"
+								leaveFrom="opacity-100 scale-100"
+								leaveTo="opacity-0 scale-95">
+								<Dialog.Panel>
+									<div className="w-80 bottom-0 left-0 m-4 absolute z-50 bg-orange-100 border shadow rounded-xl h-48">
+									GAY
+
+									</div>
+								</Dialog.Panel>
+							</Transition.Child>
+						</Dialog>
+					</Transition>
+				</>
 			</InteractionBarIcon>
 
 			<InteractionBarIcon
@@ -221,13 +198,15 @@ function InteractionBarIcon({
 		//
 	},
 	title = "",
+	shake = true,
 }: {
 	children: any;
 	onClick?: (e: JSXInternal.TargetedMouseEvent<HTMLButtonElement>) => void;
 	title: string;
+	shake?: boolean;
 }) {
 	return (
-		<button title={title} className="flex justify-center relative" onClick={onClick}>
+		<button title={title} className={classNames("flex justify-center !static", shake && "hover:animate-hithere")} onClick={onClick}>
 			{children}
 		</button>
 	);

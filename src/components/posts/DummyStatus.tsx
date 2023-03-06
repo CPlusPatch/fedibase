@@ -44,7 +44,7 @@ export default function DummyStatus({
 						</div>
 					</div>
 					<div className="flex flex-col gap-y-1">
-						<div className="relative w-full text-sm">
+						<div className="w-full text-sm">
 							<p
 								className={"mt-1 h-5 bg-gray-300 rounded duration-200 animate-pulse status-text dark:bg-gray-700/40"}></p>
 							<p
