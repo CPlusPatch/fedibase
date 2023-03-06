@@ -540,7 +540,7 @@ function SendForm() {
 						}
 						
 						// Matched: @john or @john@site.com
-						const userMatches = value.match(/@\w+(?:\.\w+)?/g);
+						const userMatches = value.match(/@\w+(?:\.\w+)?$/g);
 
 						if (userMatches && userMatches.length > 0) client?.searchAccount(userMatches[userMatches.length - 1], {
 							limit: 5,
@@ -549,7 +549,10 @@ function SendForm() {
 								...prev,
 								userSuggestions: res.data
 							}));
-						});
+						}); else setCurrentState(prev => ({
+							...prev,
+							userSuggestions: []
+						}));
 					}}
 					disabled={currentState.loading}
 					className="block py-3 no-scroll w-full bg-transparent border-0 resize-none disabled:text-gray-400 focus:ring-0 dark:placeholder:text-gray-400"
@@ -605,6 +608,10 @@ function SendForm() {
 									}
 
 									const val = textareaRef.current.value;
+
+									textareaRef.current.value = val.replace(/@\w+(?:\.\w+)?$/g, "@" + user.acct + " ");
+									textareaRef.current.focus();
+									
 									setCurrentState(s => ({
 										...s,
 										userSuggestions: [],
@@ -979,9 +986,12 @@ function SuggestionItem({ user, onClick }: {
 	return (
 		<div
 			onClick={onClick}
-			className="flex flex-row gap-x-4 px-3 py-2 duration-200 hover:bg-gray-100 hover:dark:bg-gray-800">
-			<img src={user.avatar} className="w-5 h-5" alt="" />
-			<span>{user.display_name}</span>
+			className="flex flex-row gap-x-4 px-3 py-2 duration-200 hover:bg-gray-100 hover:dark:bg-gray-800 items-center">
+			<img src={user.avatar} className="w-8 h-8 rounded-md" alt="" />
+			<div className="flex flex-col justify-between">
+				<span>@{user.display_name}</span>
+				<span className="text-gray-500 dark:text-gray-400">{user.acct}</span>
+			</div>
 		</div>
 	);
 }
