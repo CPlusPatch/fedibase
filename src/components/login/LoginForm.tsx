@@ -44,6 +44,7 @@ export default function LoginForm({ code }: {
 		if (handle.match(/@/g).length <= 2 && handle.match(/@/g).length >= 0)
 			domain = handle.split("@")[handle.match(/@/g).length];
 		else {
+			console.error("Invalid handle");
 			// TODO: put an error here.
 			domain = "kitsunes.gay";
 		}

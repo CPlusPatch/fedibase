@@ -51,7 +51,9 @@ export default function Nav(): JSX.Element {
 
 	const toggleTheme = () => {
 		const html = document.getElementsByTagName("html")[0];
+
 		const themeCookie = (localStorage.getItem("theme") ?? "light").toString();
+		
 		if (themeCookie === "dark") {
 			localStorage.setItem("theme", "light");
 			html.className = html.className.replaceAll("dark", "");

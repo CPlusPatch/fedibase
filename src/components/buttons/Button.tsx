@@ -10,12 +10,12 @@ const themes: any = {
 };
 
 interface ButtonProps {
-        className?: string;
-        children: any;
-        ringColor?: string;
-        theme?: "gray" | "orange" | "orangeLight" | null;
-        loading?: boolean;
-        spinnerClasses?: string;
+	className?: string;
+	children: any;
+	ringColor?: string;
+	theme?: "gray" | "orange" | "orangeLight" | null;
+	loading?: boolean;
+	spinnerClasses?: string;
 }
 
 export function Button({
