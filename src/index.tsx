@@ -40,7 +40,6 @@ export default function Index() {
 	};
 
 	useEffect(() => {
-		console.log(state.path);
 		if (window) {
 			if (localStorage.getItem("theme") === "dark") {
 				document.getElementsByTagName("html")[0].className += " dark";

@@ -34,7 +34,7 @@ export function Button({
 				"inline-flex justify-center relative ease-in-out items-center no-bad-scale px-4 py-2 text-base font-medium rounded-md border shadow-sm duration-200 font-inter focus:outline-none sm:text-sm",
 				theme && themes[theme],
 				className,
-				loading && "@text-transparent",
+				loading && "!text-transparent",
 				ringColor !== ""
 					? `focus:ring-2 focus:ring-offset-2 focus:ring-${ringColor}`
 					: "ring-0 focus:ring-0"

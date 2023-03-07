@@ -495,7 +495,6 @@ function SendForm() {
 									loading: true,
 								}));
 
-								console.log(files);
 								const ids = await Promise.all(
 									[...files].map(async file => {
 										return (await client.uploadMedia(file)).data.id;
@@ -524,7 +523,6 @@ function SendForm() {
 						const emojiMatch = value.match(/:\w+(?<!:)$/g)?.[0].replace(":", "");
 
 						if (emojiMatch) {
-							console.log(emojiMatch);
 
 							setCurrentState(s => ({
 								...s,

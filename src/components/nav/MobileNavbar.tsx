@@ -22,8 +22,8 @@ export default function MobileNavbar() {
 			.then(data => {
 				setAccount(data.data);
 			})
-			.catch(e => {
-				console.log(e);
+			.catch(err => {
+				console.error(err);
 				toast.error("Couldn't load account data :(");
 			});
 		
