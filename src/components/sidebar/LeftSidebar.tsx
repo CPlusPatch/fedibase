@@ -521,16 +521,16 @@ function SendForm() {
 							characters: value,
 						}));
 
-						const split = value.split(":");
-						if (split.length > 1 && /^\w+$/.test(split[split.length - 1])) {
-							const matched = split[split.length - 1];
+						const emojiMatch = value.match(/:\w+(?<!:)$/g)?.[0].replace(":", "");
 
-							const matchedEmojis = currentState.emojis.filter(e =>
-								e.shortcode.includes(matched),
-							);
+						if (emojiMatch) {
+							console.log(emojiMatch);
+
 							setCurrentState(s => ({
 								...s,
-								emojisSuggestions: matchedEmojis,
+								emojisSuggestions: currentState.emojis.filter(e =>
+									e.shortcode.includes(emojiMatch),
+								),
 							}));
 						} else {
 							setCurrentState(s => ({
@@ -571,7 +571,7 @@ function SendForm() {
 				/>
 
 				<ScaleFadeSlide show={currentState.emojisSuggestions.length > 0}>
-					<div className="flex absolute z-[60] flex-col rounded border dark:bg-dark-800 bg-white dark:border-gray-700">
+					<div className="flex absolute z-[60] flex-col rounded-lg border dark:bg-dark-800/80 backdrop-blur-md bg-white/80 dark:border-gray-700">
 						{currentState.emojisSuggestions.slice(0, 5).map(emoji => (
 							<EmojiItem
 								key={emoji.shortcode}
@@ -582,13 +582,17 @@ function SendForm() {
 									}
 
 									const val = textareaRef.current.value;
+
+									const matchedEmoji = val.match(/:\w+(?<!:)$/g)?.[0];
+
+									if (!matchedEmoji) return;
 									textareaRef.current.value = val.replace(
-										val.split(":")[val.split(":").length - 1],
-										`${emoji.shortcode}: `,
+										matchedEmoji,
+										`:${emoji.shortcode}: `,
 									);
 									setCurrentState(s => ({
 										...s,
-										emojis: [],
+										emojisSuggestions: [],
 									}));
 								}}
 							/>
@@ -597,7 +601,7 @@ function SendForm() {
 				</ScaleFadeSlide>
 
 				<ScaleFadeSlide show={currentState.userSuggestions.length > 0}>
-					<div className="flex absolute z-[60] flex-col rounded border dark:bg-dark-800 bg-white dark:border-gray-700">
+					<div className="flex absolute z-[60] flex-col rounded-xl border dark:bg-dark-800/80 backdrop-blur-md bg-white/80 dark:border-gray-700">
 						{currentState.userSuggestions.slice(0, 5).map(user => (
 							<SuggestionItem
 								key={user.id}
