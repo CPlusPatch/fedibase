@@ -64,6 +64,32 @@ export default defineConfig({
 						type: "image/png",
 					},
 				],
+				screenshots: [
+					{
+						src: "images/screenshots/dark1.webp",
+						sizes: "1170x2532",
+						type: "image/webp",
+						platform: "narrow"
+					},
+					{
+						src: "images/screenshots/dark2.webp",
+						sizes: "1170x2532",
+						type: "image/webp",
+						platform: "narrow"
+					},
+					{
+						src: "images/screenshots/light1.webp",
+						sizes: "1170x2532",
+						type: "image/webp",
+						platform: "narrow"
+					},
+					{
+						src: "images/screenshots/light2.webp",
+						sizes: "1170x2532",
+						type: "image/webp",
+						platform: "narrow"
+					}
+				]
 			},
 		}),
 	],
