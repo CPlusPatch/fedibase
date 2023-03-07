@@ -2,12 +2,14 @@ import { defineConfig } from "vite";
 import preact from "@preact/preset-vite";
 import tsconfigPaths from "vite-tsconfig-paths";
 import { VitePWA } from "vite-plugin-pwa";
+import { ViteImageOptimizer } from "vite-plugin-image-optimizer";
 
 // https://vitejs.dev/config/
 export default defineConfig({
 	plugins: [
 		preact(),
 		tsconfigPaths(),
+		ViteImageOptimizer(),
 		VitePWA({
 			registerType: "autoUpdate",
 			devOptions: {
