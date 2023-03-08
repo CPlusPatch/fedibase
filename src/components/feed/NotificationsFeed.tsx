@@ -5,7 +5,7 @@ import { Entity } from "megalodon";
 import { useState } from "preact/hooks";
 import Feed, { FeedType } from "./Feed";
 import { memo } from "preact/compat";
-import SmallSelect2, { SelectDirection } from "components/forms/SmallSelect2";
+import SmallSelect, { SelectDirection } from "components/forms/SmallSelect";
 
 const modes: SelectItem[] = [
 	{
@@ -42,7 +42,7 @@ function NotificationsFeed({ withTitle = true }: { withTitle?: boolean }) {
 			{withTitle && (
 				<div className="flex flex-row justify-between items-center">
 					<h3 className="text-lg font-bold dark:text-gray-50">Notifications</h3>
-					<SmallSelect2
+					<SmallSelect
 						items={modes}
 						defaultValue={0}
 						onChange={(item) => {

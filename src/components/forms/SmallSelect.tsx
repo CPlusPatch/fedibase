@@ -21,7 +21,7 @@ interface SelectItem {
 	description?: string;
 }
 
-export default function SmallSelect2({ items, defaultValue, onChange = () => {
+export default function SmallSelect({ items, defaultValue, onChange = () => {
 	//
 }, direction = SelectDirection.Right }: SelectOptions) {
 	const [selected, setSelected] = useState<SelectItem>(items[defaultValue]);

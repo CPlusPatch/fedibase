@@ -79,7 +79,7 @@ export default function Index() {
 
 			return () => window.removeEventListener("popstate", handlePopState);
 		}
-	}, [client, store.path, store.auth.token, store.loaded]);
+	}, [store.path, store.auth.token, store.loaded]);
 
 	return (
 		<>

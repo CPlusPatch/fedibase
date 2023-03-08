@@ -7,7 +7,6 @@ import Select2, { SelectItem } from "components/forms/Select2";
 import { toast } from "react-hot-toast";
 import { Button } from "components/buttons/Button";
 import { useBackupStore } from "utils/useBackupStore";
-import { modifyStore } from "utils/functions";
 
 const instanceTypes: SelectItem[] = [
 	{

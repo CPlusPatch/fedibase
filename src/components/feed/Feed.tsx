@@ -79,7 +79,7 @@ function Feed<T>(props: FeedProps) {
 			props.onLoadEnd && props.onLoadEnd();
 			return dedupeById(res.data as any) as T[];
 		},
-		[client, props.options?.id, props.type],
+		[props.options?.id, props.type],
 	);
 
 	const loadEntitiesBefore = useCallback(
@@ -124,7 +124,7 @@ function Feed<T>(props: FeedProps) {
 			props.onLoadEnd && props.onLoadEnd();
 			return dedupeById(res.data as any) as T[];
 		},
-		[client, props.options?.id, props.type],
+		[props.options?.id, props.type],
 	);
 
 	useEffect(() => {
@@ -143,7 +143,7 @@ function Feed<T>(props: FeedProps) {
 		}, 300);
 
 		return () => clearTimeout(timeout);
-	}, [client, getNewEntities]);
+	}, [getNewEntities]);
 
 	useEffect(() => {
 		const interval = window.setInterval(async () => {

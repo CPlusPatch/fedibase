@@ -26,7 +26,7 @@ export default function ReplyTo({ status }: { status: Entity.Status }) {
 		return () => {
 			isMounted = false;
 		};
-	}, [client, replyStatus, status.in_reply_to_id, visible]);
+	}, [replyStatus, status.in_reply_to_id, visible]);
 
 	return (
 		<div className="inline bg-slate-300/0" ref={nodeRef as any}>

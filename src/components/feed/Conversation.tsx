@@ -3,8 +3,8 @@ import DummyStatus from "components/posts/DummyStatus";
 import { StatusType } from "components/posts/Status";
 import { Post } from "components/scroll/InfiniteScrollPosts";
 import { Entity } from "megalodon";
-import { arrayToTree } from "performant-array-to-tree";
 import { useState, useContext, useEffect, useRef } from "preact/hooks";
+import { Fragment } from "preact/jsx-runtime";
 
 interface ConversationProps {
 	id: string;
@@ -13,77 +13,53 @@ interface ConversationProps {
 }
 
 export const Conversation = ({ id, mode, showTitle = true}: ConversationProps) => {
-	const [ancestors, setAncestors] = useState<Entity.Status[]>([]);
-	const [posts, setPosts] = useState<Entity.Status[]>([]);
-	const [descendants, setDescendants] = useState<Entity.Status[]>([]);
+	const [posts, setPosts] = useState<{ancestors: Entity.Status[]; post: Entity.Status; descendants: Entity.Status[]}>();
 	const client = useContext(AuthContext);
 	const mainPostRef = useRef<HTMLDivElement>(null);
 
 	function findParentElements(array: Entity.Status[], elementId: string) {
 		const parentElements = [];
-		let currentElement = array.find(element => element.id === elementId);
+		let currentElement = array.find((element) => element.id === elementId);
+
 		while (currentElement && currentElement.in_reply_to_id !== "") {
-			const parentElement = array.find(element => element.id === currentElement?.in_reply_to_id);
-			if (parentElement) {
-				parentElements.push(parentElement);
-				currentElement = parentElement;
-			} else {
-				currentElement = undefined;
-			}
+			parentElements.push(currentElement);
+			currentElement = array.find((element) => element.id === currentElement?.in_reply_to_id);
 		}
+
 		return parentElements;
 	}
 
 	useEffect(() => {
-		client?.getStatus(id).then(data => {
-			setPosts([data.data]);
-
-			client.getStatusContext(id).then(context => {
-				setAncestors(
-					findParentElements(
-						[...context.data.ancestors, data.data],
-						data.data.id,
-					).reverse(),
-				);
-				setDescendants(
-					arrayToTree(context.data.descendants, {
-						id: "id",
-						parentId: "in_reply_to_id",
-						rootParentIds: {
-							[id]: true,
-						},
-						dataField: null,
-					}) as any,
-				);
+		client?.getStatus(id).then((data) => {
+			client.getStatusContext(id).then((context) => {
+				const ancestors = findParentElements([...context.data.ancestors, data.data], data.data.id).reverse();
+				const descendants = context.data.descendants;
+				setPosts({ ancestors, post: data.data, descendants });
 			});
 		});
+	}, [id, client]);
 
-		return () => setPosts([]);
-	}, [client, id]);
+	const { ancestors, post, descendants } = posts ?? {};
 
 	return (
 		<>
 			{showTitle && (
 				<h3 className="px-5 py-4 text-xl font-bold dark:text-gray-50">Conversation</h3>
 			)}
-			{posts.length > 0 ? (
+			{post ? (
 				<div className="flex overflow-y-scroll flex-col gap-y-5 py-4 w-full h-full no-scroll">
 					<div className="flex flex-col gap-y-4 px-6">
-						{ancestors.map(post => {
-							return <Post entity={post} mode={mode} key={post.id} />;
+						{ancestors?.map(ancestor => {
+							return <Post entity={ancestor} mode={mode} key={ancestor.id} />;
 						})}
 					</div>
 					<div
 						className="px-6 py-4 border-y-2 dark:border-gray-700 bg-gray-300/10"
 						ref={mainPostRef}>
-						{posts.map(post => (
-							<Post entity={post} mode={mode} key={post.id} />
-						))}
+						<Post entity={post} mode={mode} />
 					</div>
-					<div className="flex flex-col gap-y-4 px-6 mb-20">
-						{descendants.map(post => {
-							return <PostWithChildren mode={mode} post={post} key={post.id} />;
-						})}
+					<div className="flex flex-col gap-y-4 px-4 mb-20">
+						{descendants && <ChildPost posts={descendants} mode={mode} parentId={post.id} />}
 					</div>
 				</div>
 			) : (
@@ -101,28 +77,23 @@ export const Conversation = ({ id, mode, showTitle = true}: ConversationProps) =
 	);
 };
 
-type PostWithChild = Entity.Status & {
-	children?: PostWithChild[]
-}
+type ChildPostProps = {
+  posts: Entity.Status[];
+  parentId?: string;
+  mode: StatusType;
+};
 
-function PostWithChildren({ post, mode }: {
-	post: PostWithChild,
-	mode: StatusType
-}) {
+function ChildPost({ posts, parentId, mode }: ChildPostProps) {
+	const children = posts.filter((post) => post.in_reply_to_id === parentId);
+
 	return (
-		<>
-			{post.children && post.children.length > 0 ? (
-				<>
-					<Post entity={post} />
-					<div className="flex flex-col gap-y-4 pl-2 border-l-4 dark:border-gray-500">
-						{post.children.map(postChild => (
-							<PostWithChildren post={postChild} key={postChild.id} mode={mode} />
-						))}
-					</div>
-				</>
-			) : (
-				<Post mode={mode} entity={post} />
-			)}
-		</>
+		<div className="flex flex-col gap-y-4 pl-2 border-l-4 dark:border-gray-500 rounded">
+			{children.map((post) => (
+				<Fragment key={post.id}>
+					<Post mode={mode} entity={post} />
+					<ChildPost posts={posts} parentId={post.id} mode={mode} />
+				</Fragment>
+			))}
+		</div>
 	);
 }

@@ -18,7 +18,7 @@ import { AuthContext } from "components/context/AuthContext";
 import { Conversation } from "components/feed/Conversation";
 import { Input } from "components/forms/Input";
 import Select2, { SelectItem } from "components/forms/Select2";
-import SmallSelect2 from "components/forms/SmallSelect2";
+import SmallSelect from "components/forms/SmallSelect";
 import Status, { StatusType } from "components/posts/Status";
 import { ModalOverlay } from "components/transitions/ModalOverlay";
 import { ScaleFadeSlide } from "components/transitions/ScaleFadeSlide";
@@ -339,7 +339,7 @@ function SendForm() {
 			}));
 		}
 
-		setTimeout(() => {
+		const timeout = setTimeout(() => {
 			// Move the cursor to the end of the textarea
 			textareaRef.current?.setSelectionRange(
 				textareaRef.current?.value.length,
@@ -348,7 +348,9 @@ function SendForm() {
 
 			textareaRef.current?.focus();
 		}, 500);
-	}, [client, store.replyingTo, store.quotingTo]);
+
+		return () => clearTimeout(timeout);
+	}, [store.replyingTo, store.quotingTo]);
 
 	const submitForm = async (event: JSXInternal.TargetedEvent<HTMLFormElement, Event>) => {
 		event.preventDefault();
@@ -881,7 +883,7 @@ function ButtonRow({
 						}
 					}}
 				/>
-				<SmallSelect2
+				<SmallSelect
 					items={modes}
 					defaultValue={0}
 					onChange={i => {
@@ -891,7 +893,7 @@ function ButtonRow({
 						}));
 					}}
 				/>
-				<SmallSelect2
+				<SmallSelect
 					items={visibilities}
 					defaultValue={defaultVisibility}
 					onChange={i => {

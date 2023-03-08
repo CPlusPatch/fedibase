@@ -86,7 +86,7 @@ export default function Nav(): JSX.Element {
 				});
 			}
 		}
-	}, [client]);
+	}, []);
 
 	return (
 		<div className="hidden fixed z-10 top-0 dark:bg-dark-800 bg-white bottom-0 left-0 flex-col flex-1 col-span-1 min-h-0 bg-gradient-to-b border-r dark:border-gray-700 bg-light dark:dark:bg-dark-800 lg:flex">
