@@ -206,13 +206,13 @@ function Feed<T>(props: FeedProps) {
 					))}
 			{(props.type === FeedType.Home || props.type === FeedType.User) && (
 				<>
-					<DummyStatus type="post" reference={loadNewRef} />
-					<DummyStatus type="post" />
-					<DummyStatus type="post" />
-					<DummyStatus type="post" />
-					<DummyStatus type="post" />
-					<DummyStatus type="post" />
-					<DummyStatus type="post" />
+					<DummyStatus statusType="post" reference={loadNewRef} />
+					<DummyStatus statusType="post" />
+					<DummyStatus statusType="post" />
+					<DummyStatus statusType="post" />
+					<DummyStatus statusType="post" />
+					<DummyStatus statusType="post" />
+					<DummyStatus statusType="post" />
 				</>
 			)}
 			{props.type === FeedType.Notifications && (
@@ -236,7 +236,7 @@ const DummyNotification = ({ reference }: { reference?: MutableRef<any> | null }
 			<li
 				ref={reference ?? undefined}
 				className={"flex flex-col gap-y-2 p-2 max-w-full rounded"}>
-				<DummyStatus type={StatusType.Notification} />
+				<DummyStatus statusType={StatusType.Notification} />
 			</li>
 		</>
 	);

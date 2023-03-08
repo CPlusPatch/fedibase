@@ -88,13 +88,13 @@ export const Conversation = ({ id, mode, showTitle = true}: ConversationProps) =
 				</div>
 			) : (
 				<div className="flex overflow-y-auto flex-col gap-y-4 px-6 py-4 w-full h-full no-scroll">
-					<DummyStatus type="post" />
-					<DummyStatus type="post" />
-					<DummyStatus type="post" />
-					<DummyStatus type="post" />
-					<DummyStatus type="post" />
-					<DummyStatus type="post" />
-					<DummyStatus type="post" />
+					<DummyStatus statusType={StatusType.Post} />
+					<DummyStatus statusType={StatusType.Post} />
+					<DummyStatus statusType={StatusType.Post} />
+					<DummyStatus statusType={StatusType.Post} />
+					<DummyStatus statusType={StatusType.Post} />
+					<DummyStatus statusType={StatusType.Post} />
+					<DummyStatus statusType={StatusType.Post} />
 				</div>
 			)}
 		</>

@@ -12,7 +12,7 @@ import { Settings } from "components/settings/Settings";
 export default function MainLayout({ children }: any) {
 	const online = useNavigatorOnLine();
 
-	useEffect(() => {
+	/* useEffect(() => {
 		const timeout = window.setTimeout(() => {
 			if (Notification.permission === "default" && localStorage.getItem("notificationsDenied") !== "true") {
 				toast.custom(
@@ -83,7 +83,7 @@ export default function MainLayout({ children }: any) {
 		}, 2000);
 
 		return () => window.clearTimeout(timeout);
-	}, []);
+	}, []); */
 	return (
 		<div className="flex overflow-hidden w-full h-screen duration-200 grow flex-col relative">
 			{!online && (

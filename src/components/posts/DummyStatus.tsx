@@ -1,63 +1,61 @@
-import { MutableRef, useEffect, useState } from "preact/hooks";
+import { MutableRef } from "preact/hooks";
 import { StatusType } from "./Status";
 
 export default function DummyStatus({
-	type = "post",
+	statusType = StatusType.Post,
 	reference = undefined,
 }: {
-	type: "post" | "notification";
+	statusType?: StatusType;
 	reference?: MutableRef<any>;
 }) {
-	const [random, setRandom] = useState<number>(0);
-
-	useEffect(() => {
-		setRandom(Math.random());
-	}, []);
 	return (
-		<li className="flex flex-col max-w-full" aria-hidden={true} ref={reference}>
-			<div className="flex flex-row max-w-full">
-				<div className="flex flex-col min-w-0 grow gap-y-2">
-					<div className="gap-x-2 text-[0.95rem] flex flex-row justify-between">
-						<div className="flex flex-row">
-							<div className="flex-shrink-0 mr-2">
-								<div
-									className={`${
-										type == StatusType.Post ? "w-12 h-12" : "w-10 h-10"
-									} overflow-hidden rounded border border-gray-300 dark:border-gray-700 bg-gray-300 animate-pulse dark:text-gray-200 dark:bg-gray-500/40 `}
-								/>
-							</div>
-							<span className="flex overflow-hidden flex-col whitespace-nowrap md:inline text-ellipsis justif-between">
-								<h4
-									style={{
-										width: `${random * 100 + 100}px`,
-									}}
-									className="mt-0.5 h-4 font-bold bg-gray-300 rounded animate-pulse dark:text-gray-200 dark:bg-gray-500/40"></h4>
-								<h6
-									style={{
-										width: `${random * 150 + 100}px`,
-									}}
-									className="mt-2 overflow-hidden ml-0 w-12 h-4 text-gray-500 overflow-ellipsis rounded animate-pulse bg-gray-300 dark:text-gray-400 dark:bg-gray-500/40"></h6>
-							</span>
+		<>
+			<div className="flex flex-col max-w-full font-inter cursor-pointer" aria-hidden={true} ref={reference}>
+				<div className="flex flex-col min-w-0 grow gap-y-1">
+					<div className="flex flex-row overflow-hidden text-[0.95rem] text-ellipsis whitespace-nowrap w-full">
+						<div
+							className={`${
+								statusType === StatusType.Post ? "w-12 h-12" : "w-10 h-10"
+							} mr-2 border border-gray-300 dark:border-gray-700 bg-gray-300 rounded dark:bg-gray-500/40 animate-pulse`}
+						/>
+						<div
+							className={"flex flex-col grow justify-around"}>
+							<h4 className="bg-gray-300 rounded h-4 dark:bg-gray-500/40 animate-pulse" style={{
+								width: `${Math.random() * 100 + 100}px`,
+							}}>
+							
+							</h4>
+							<h5
+								style={{
+									width: `${Math.random() * 150 + 100}px`,
+								}}
+								className=" bg-gray-300 rounded h-4 dark:bg-gray-500/40 animate-pulse ml-0">
+							</h5>
 						</div>
-						<div className="whitespace-nowrap">
-							<span className="text-sm text-gray-700 bg-gray-300 rounded inline-block w-12 h-4 dark:bg-gray-500/40 animate-pulse dark:text-gray-300 hover:underline"></span>
+						<div
+							className="bg-gray-300 rounded w-12 h-4 dark:bg-gray-500/40 animate-pulse">
+		
 						</div>
 					</div>
-					<div className="flex flex-col gap-y-1">
-						<div className="w-full text-sm">
-							<p
-								className={"mt-1 h-5 bg-gray-300 rounded duration-200 animate-pulse status-text dark:bg-gray-700/40"}></p>
-							<p
-								className={"mt-1 h-5 bg-gray-300 rounded duration-200 animate-pulse status-text dark:bg-gray-700/40"}></p>
-							<p
-								style={{
-									width: `${random * 100}%`,
-								}}
-								className={"mt-1 h-5 bg-gray-300 rounded duration-200 animate-pulse status-text dark:bg-gray-700/40"}></p>
-						</div>
+					<div className="flex flex-col gap-y-2">
+
+						{/* Actual text */}
+              
+						<p
+							className={"mt-1 w-full bg-gray-300 rounded h-5 dark:bg-gray-500/40 animate-pulse"}>
+						</p>
+						<p
+							className={"w-full bg-gray-300 rounded h-5 dark:bg-gray-500/40 animate-pulse"}>
+						</p>
+						<p
+							style={{
+								width: `${Math.random() * 100}%`,
+							}}
+							className={"bg-gray-300 rounded h-5 dark:bg-gray-500/40 animate-pulse"}>
+						</p>
 					</div>
 				</div>
 			</div>
-		</li>
+		</>
 	);
 }
