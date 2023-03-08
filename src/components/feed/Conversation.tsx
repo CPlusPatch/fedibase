@@ -32,6 +32,10 @@ export const Conversation = ({ id, mode, showTitle = true}: ConversationProps) =
 	}
 
 	useEffect(() => {
+		setPost(undefined);
+		setAncestors([]);
+		setDescendants([]);
+
 		client?.getStatus(id).then(data => {
 			setPost(data.data);
 
@@ -47,6 +51,12 @@ export const Conversation = ({ id, mode, showTitle = true}: ConversationProps) =
 				);
 			});
 		});
+
+		return () => {
+			setPost(undefined);
+			setAncestors([]);
+			setDescendants([]);
+		};
 	}, [id]);
 
 	return (
