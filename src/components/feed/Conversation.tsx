@@ -13,33 +13,41 @@ interface ConversationProps {
 }
 
 export const Conversation = ({ id, mode, showTitle = true}: ConversationProps) => {
-	const [posts, setPosts] = useState<{ancestors: Entity.Status[]; post: Entity.Status; descendants: Entity.Status[]}>();
+	const [ancestors, setAncestors] = useState<Entity.Status[]>([]);
+	const [post, setPost] = useState<Entity.Status>();
+	const [descendants, setDescendants] = useState<Entity.Status[]>([]);
 	const client = useContext(AuthContext);
 	const mainPostRef = useRef<HTMLDivElement>(null);
 
 	function findParentElements(array: Entity.Status[], elementId: string) {
 		const parentElements = [];
-		let currentElement = array.find((element) => element.id === elementId);
-
+		let currentElement = array.find(element => element.id === elementId);
+  
 		while (currentElement && currentElement.in_reply_to_id !== "") {
 			parentElements.push(currentElement);
-			currentElement = array.find((element) => element.id === currentElement?.in_reply_to_id);
+			currentElement = array.find(element => element.id === currentElement?.in_reply_to_id);
 		}
-
+  
 		return parentElements;
 	}
 
 	useEffect(() => {
-		client?.getStatus(id).then((data) => {
-			client.getStatusContext(id).then((context) => {
-				const ancestors = findParentElements([...context.data.ancestors, data.data], data.data.id).reverse();
-				const descendants = context.data.descendants;
-				setPosts({ ancestors, post: data.data, descendants });
+		client?.getStatus(id).then(data => {
+			setPost(data.data);
+
+			client.getStatusContext(id).then(context => {
+				setAncestors(
+					findParentElements(
+						[...context.data.ancestors, data.data],
+						data.data.id,
+					).reverse().slice(0, -1), // Slice because it includes the post, so remove last element
+				);
+				setDescendants(
+					context.data.descendants,
+				);
 			});
 		});
-	}, [id, client]);
-
-	const { ancestors, post, descendants } = posts ?? {};
+	}, [id]);
 
 	return (
 		<>
@@ -49,7 +57,7 @@ export const Conversation = ({ id, mode, showTitle = true}: ConversationProps) =
 			{post ? (
 				<div className="flex overflow-y-scroll flex-col gap-y-5 py-4 w-full h-full no-scroll">
 					<div className="flex flex-col gap-y-4 px-6">
-						{ancestors?.map(ancestor => {
+						{ancestors.map(ancestor => {
 							return <Post entity={ancestor} mode={mode} key={ancestor.id} />;
 						})}
 					</div>
@@ -58,8 +66,8 @@ export const Conversation = ({ id, mode, showTitle = true}: ConversationProps) =
 						ref={mainPostRef}>
 						<Post entity={post} mode={mode} />
 					</div>
-					<div className="flex flex-col gap-y-4 px-4 mb-20">
-						{descendants && <ChildPost posts={descendants} mode={mode} parentId={post.id} />}
+					<div className="flex flex-col gap-y-4 pr-6 pl-4 mb-20">
+						<ChildPost posts={descendants} mode={mode} parentId={post.id} />
 					</div>
 				</div>
 			) : (
