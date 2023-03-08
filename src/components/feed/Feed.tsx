@@ -206,13 +206,13 @@ function Feed<T>(props: FeedProps) {
 					))}
 			{(props.type === FeedType.Home || props.type === FeedType.User) && (
 				<>
-					<DummyStatus statusType="post" reference={loadNewRef} />
-					<DummyStatus statusType="post" />
-					<DummyStatus statusType="post" />
-					<DummyStatus statusType="post" />
-					<DummyStatus statusType="post" />
-					<DummyStatus statusType="post" />
-					<DummyStatus statusType="post" />
+					<DummyStatus statusType={StatusType.Post} reference={loadNewRef} />
+					<DummyStatus statusType={StatusType.Post} />
+					<DummyStatus statusType={StatusType.Post} />
+					<DummyStatus statusType={StatusType.Post} />
+					<DummyStatus statusType={StatusType.Post} />
+					<DummyStatus statusType={StatusType.Post} />
+					<DummyStatus statusType={StatusType.Post} />
 				</>
 			)}
 			{props.type === FeedType.Notifications && (
