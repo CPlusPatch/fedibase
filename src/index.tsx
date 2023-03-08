@@ -52,7 +52,7 @@ export default function Index() {
 				paths = window.location.pathname.split("/");
 			}
 
-			if (store.auth.token === "" && window.location.pathname !== "/login") {
+			if (store.auth.token === null && window.location.pathname !== "/login") {
 				window.location.pathname = "/login";
 			}
 
