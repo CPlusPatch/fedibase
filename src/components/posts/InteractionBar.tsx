@@ -1,4 +1,4 @@
-import { Dialog, Popover, Transition } from "@headlessui/react";
+import { Dialog, Transition } from "@headlessui/react";
 import {
 	IconDots,
 	IconLock,
@@ -10,13 +10,10 @@ import {
 	IconStarFilled,
 } from "@tabler/icons-preact";
 import { AuthContext } from "components/context/AuthContext";
-import { Input } from "components/forms/Input";
-import { ScaleFadeSlide } from "components/transitions/ScaleFadeSlide";
 import { Entity } from "megalodon";
 import { StateUpdater, useContext, useEffect, useState } from "preact/hooks";
 import { Fragment } from "preact/jsx-runtime";
 import { JSXInternal } from "preact/src/jsx";
-import { toast } from "react-hot-toast";
 import { classNames } from "utils/functions";
 import { useStore } from "utils/store";
 

@@ -27,8 +27,9 @@ import { StateUpdater, useContext, useEffect, useRef, useState } from "preact/ho
 import { Fragment } from "preact/jsx-runtime";
 import { JSXInternal } from "preact/src/jsx";
 import { toast } from "react-hot-toast";
-import { classNames, withEmojis } from "utils/functions";
+import { classNames, modifyStore, withEmojis } from "utils/functions";
 import { useStore } from "utils/store";
+import { useBackupStore } from "utils/useBackupStore";
 
 const modes = [
 	{
@@ -73,12 +74,12 @@ const visibilities = [
 ];
 
 export default function LeftSidebar() {
-	const [state, setState] = useStore();
+	const { store, setStore } = useBackupStore();
 
 	return (
 		<>
-			{state.viewingConversation ? (
-				<Conversation id={state.viewingConversation} mode={StatusType.Notification} />
+			{store.viewingConversation ? (
+				<Conversation id={store.viewingConversation} mode={StatusType.Notification} />
 			) : (
 				<div className="p-3 h-full">
 					<label className="flex flex-col items-center justify-center w-full h-full border-2 no-bad-scale duration-200 border-dashed rounded-lg cursor-pointer border-gray-300 hover:border-gray-400 dark:border-gray-600 dark:hover:border-gray-500">
@@ -96,17 +97,16 @@ export default function LeftSidebar() {
 			<Transition.Root
 				unmount={window.innerWidth > 768}
 				show={
-					state.mobilePostViewer && window.innerWidth < 768 && !state.postComposerOpened
+					store.mobilePostViewer && window.innerWidth < 768 && !store.postComposerOpened
 				}
 				as={Fragment}>
 				<Dialog
 					as="div"
 					className="relative md:hidden"
 					onClose={() => {
-						setState(prev => ({
-							...prev,
+						modifyStore(setStore, {
 							mobilePostViewer: false,
-						}));
+						});
 					}}
 					unmount={false}>
 					<div className="flex fixed inset-y-0 right-0 ml-10 max-w-full pointer-events-none">
@@ -129,10 +129,9 @@ export default function LeftSidebar() {
 											type="button"
 											className="text-gray-300 rounded-md hover:text-white dark:hover:text-black focus:outline-none"
 											onClick={() => {
-												setState(prev => ({
-													...prev,
+												modifyStore(setStore, {
 													mobilePostViewer: false,
-												}));
+												});
 											}}>
 											<span className="sr-only">Close panel</span>
 											<IconX className="w-6 h-6" aria-hidden="true" />
@@ -141,7 +140,7 @@ export default function LeftSidebar() {
 									<div className="flex overflow-hidden relative mt-6 max-w-full grow sm:px-6">
 										<Conversation
 											showTitle={false}
-											id={state.viewingConversation}
+											id={store.viewingConversation}
 											mode={StatusType.Post}
 										/>
 									</div>
@@ -151,17 +150,16 @@ export default function LeftSidebar() {
 					</div>
 				</Dialog>
 			</Transition.Root>
-			<Transition.Root show={state.postComposerOpened} as={Fragment}>
+			<Transition.Root show={store.postComposerOpened} as={Fragment}>
 				<Dialog
 					as="div"
 					className="block relative z-40"
 					onClose={() =>
-						setState(prev => ({
-							...prev,
+						modifyStore(setStore, {
 							postComposerOpened: false,
 							quotingTo: null,
 							replyingTo: null,
-						}))
+						})
 					}>
 					<ModalOverlay />
 
@@ -273,7 +271,7 @@ function SendForm() {
 	// Context stuff
 	const client = useContext(AuthContext);
 
-	const [state, setState] = useStore();
+	const { store, setStore } = useBackupStore();
 
 	const [currentState, setCurrentState] = useState<SendFormState>({
 		mode: modes[0],
@@ -296,11 +294,11 @@ function SendForm() {
 	const textareaRef = useRef<HTMLTextAreaElement>(null);
 
 	useEffect(() => {
-		const { replyingTo, quotingTo } = state;
+		const { replyingTo, quotingTo } = store;
 		const otherPost = replyingTo ?? quotingTo ?? null;
 
 		if (otherPost) {
-			const id = localStorage.getItem("accountId");
+			const id = store.auth.id;
 			const mentions = [
 				...new Map(
 					otherPost.mentions
@@ -350,7 +348,7 @@ function SendForm() {
 
 			textareaRef.current?.focus();
 		}, 500);
-	}, [client, state.replyingTo, state.quotingTo]);
+	}, [client, store.replyingTo, store.quotingTo]);
 
 	const submitForm = async (event: JSXInternal.TargetedEvent<HTMLFormElement, Event>) => {
 		event.preventDefault();
@@ -361,8 +359,8 @@ function SendForm() {
 
 		const text: string = (event.target as HTMLFormElement)["comment"].value;
 		//const text = comment.value;
-		const inReplyToId = state.replyingTo?.id;
-		const quoteId = state.quotingTo?.id;
+		const inReplyToId = store.replyingTo?.id;
+		const quoteId = store.quotingTo?.id;
 
 		if (text.length <= 0) {
 			toast.error("You need to add some text!");
@@ -405,12 +403,11 @@ function SendForm() {
 				userSuggestions: [],
 				poll: null,
 			});
-			setState(prev => ({
-				...prev,
+			modifyStore(setStore, {
 				postComposerOpened: false,
 				quotingTo: null,
 				replyingTo: null,
-			}));
+			});
 		}
 	};
 	return (
@@ -433,33 +430,32 @@ function SendForm() {
 							className="mb-1"
 							onClick={e => {
 								e.preventDefault();
-								setState(prev => ({
-									...prev,
+								modifyStore(setStore, {
 									postComposerOpened: false,
-								}));
+								});
 							}}>
 							<IconX className="w-6 h-6"/>
 						</button>
 						<h1 className="text-xl font-bold dark:text-gray-50">
-							{state.replyingTo && (
+							{store.replyingTo && (
 								<>
 								Replying to{" "}
 									{withEmojis(
-										state.replyingTo.account.display_name,
-										state.replyingTo.account.emojis,
+										store.replyingTo.account.display_name,
+										store.replyingTo.account.emojis,
 									)}
 								</>
 							)}
-							{state.quotingTo && (
+							{store.quotingTo && (
 								<>
 								Quoting{" "}
 									{withEmojis(
-										state.quotingTo.account.display_name,
-										state.quotingTo.account.emojis,
+										store.quotingTo.account.display_name,
+										store.quotingTo.account.emojis,
 									)}
 								</>
 							)}
-							{!(state.replyingTo || state.quotingTo) && <>Compose</>}
+							{!(store.replyingTo || store.quotingTo) && <>Compose</>}
 						</h1>
 					</div>
 					<div>
@@ -473,9 +469,9 @@ function SendForm() {
 					</div>
 				</div>
 				
-				{state.replyingTo && (
+				{store.replyingTo && (
 					<div className="px-4 opacity-60">
-						<Status status={state.replyingTo ?? state.quotingTo} type={StatusType.Notification} showInteraction={false}/>
+						<Status status={store.replyingTo ?? store.quotingTo} type={StatusType.Notification} showInteraction={false}/>
 					</div>
 				)}
 				<textarea

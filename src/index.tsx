@@ -22,38 +22,38 @@ import { UserFeed } from "./components/feed/UserFeed";
 import MainLayout from "./components/layout/MainLayout";
 import Nav from "./components/sidebar/Nav";
 import { StatusType } from "./components/posts/Status";
-import { useStore } from "utils/store";
+import { useBackupStore } from "utils/useBackupStore";
+import { modifyStore } from "utils/functions";
 
 export default function Index() {
 	const client = useContext(AuthContext);
 
-	const [state, setState] = useStore();
+	const { store, setStore } = useBackupStore();
 
 	const [component, setComponent] = useState(<></>);
 	const [loginMode, setLoginMode] = useState<boolean>(false);
 
 	const handlePopState = (e: PopStateEvent) => {
-		setState(prev => ({
-			...prev,
+		modifyStore(setStore, {
 			path: (e.target as Window).location.pathname,
-		}));
+		});
 	};
 
 	useEffect(() => {
-		if (window) {
-			if (localStorage.getItem("theme") === "dark") {
+		if (window && store.loaded) {
+			if (store.theme === "dark") {
 				document.getElementsByTagName("html")[0].className += " dark";
 			}
 
 			let paths;
-			if (state.path) {
-				paths = state.path.split("/");
+			if (store.path) {
+				paths = store.path.split("/");
 			} else {
 				paths = window.location.pathname.split("/");
 			}
 
-			if (!localStorage.getItem("accessToken") || !localStorage.getItem("instanceType")) {
-				setLoginMode(true);
+			if (store.auth.token === "" && window.location.pathname !== "/login") {
+				window.location.pathname = "/login";
 			}
 
 			switch (paths[1]) {
@@ -79,7 +79,7 @@ export default function Index() {
 
 			return () => window.removeEventListener("popstate", handlePopState);
 		}
-	}, [client, state.path]);
+	}, [client, store.path, store.auth.token, store.loaded]);
 
 	return (
 		<>

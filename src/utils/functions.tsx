@@ -14,6 +14,7 @@
 */
 import parse from "html-react-parser";
 import { Entity } from "megalodon";
+import { StateType } from "./store";
 
 /**
  * Checks if an object is empty (= to {})
@@ -178,4 +179,12 @@ export function stripNonPrintableAndNormalize(text: string) {
 	text = text.replace(/\p{Zs}/gu, " ");
 
 	return text;
+}
+
+export function modifyStore(setStore: any, newValues: Partial<StateType>) {
+	console.log("Modified store!");
+	setStore((prev: any) => ({
+		...prev,
+		...newValues
+	}));
 }

@@ -15,21 +15,21 @@
 import generator from "megalodon";
 import { AuthContext } from "./components/context/AuthContext";
 import Index from "./index";
+import { useBackupStore } from "utils/useBackupStore";
 
 export function App() {
+	const { store } = useBackupStore();
 
 	return (
 		<>
 			<AuthContext.Provider
 				value={
 					typeof window !== "undefined" &&
-					localStorage.getItem("instanceUrl") &&
-					localStorage.getItem("accessToken") &&
-					localStorage.getItem("instanceType")
+					store.auth.token
 						? generator(
-								localStorage.getItem("instanceType") as any,
-								localStorage.getItem("instanceUrl") as any,
-								localStorage.getItem("accessToken"),
+							store.auth.type as any,
+							store.auth.url,
+							store.auth.token,
 						)
 						: null
 				}>

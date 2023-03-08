@@ -7,14 +7,14 @@ import { Entity } from "megalodon";
 import { AuthContext } from "components/context/AuthContext";
 import { useContext, useEffect, useState } from "preact/hooks";
 import toast from "react-hot-toast";
-import { useStore } from "utils/store";
 import { Link } from "components/transitions/Link";
+import { useBackupStore } from "utils/useBackupStore";
+import { modifyStore } from "utils/functions";
 
 export default function MobileNavbar() {
-	const [state, setState] = useStore();
+	const { store, setStore } = useBackupStore();
 	const [account, setAccount] = useState<Entity.Account | null>(null);
 	const client = useContext(AuthContext);
-	const [theme, setTheme] = useState<string>("light");
 
 	useEffect(() => {
 		client
@@ -26,22 +26,21 @@ export default function MobileNavbar() {
 				console.error(err);
 				toast.error("Couldn't load account data :(");
 			});
-		
-		setTheme((localStorage.getItem("theme") ?? "light").toString());
 	}, []);
 
 
 	const toggleTheme = () => {
 		const html = document.getElementsByTagName("html")[0];
-		const themeCookie = (localStorage.getItem("theme") ?? "light").toString();
-		if (themeCookie === "dark") {
-			localStorage.setItem("theme", "light");
+		if (store.theme === "dark") {
+			modifyStore(setStore, {
+				theme: "light"
+			});
 			html.className = html.className.replaceAll("dark", "");
-			setTheme("light");
-		} else if (themeCookie === "light") {
-			localStorage.setItem("theme", "dark");
+		} else if (store.theme === "light") {
+			modifyStore(setStore, {
+				theme: "dark"
+			});
 			html.className = html.className + " dark";
-			setTheme("dark");
 		}
 	};
 
@@ -51,14 +50,14 @@ export default function MobileNavbar() {
 				<Button
 					theme="gray"
 					className="!p-3 !border-none !shadow-none !bg-white dark:!bg-transparent"
-					title={theme === "light" ? "Enable dark mode" : "Enable light mode"}
+					title={store.theme === "light" ? "Enable dark mode" : "Enable light mode"}
 					onClick={toggleTheme}>
-					{theme === "light" && (
+					{store.theme === "light" && (
 						<>
 							<IconSun aria-hidden={true} />
 						</>
 					)}
-					{theme === "dark" && (
+					{store.theme === "dark" && (
 						<>
 							<IconMoon aria-hidden={true} />
 						</>
@@ -77,10 +76,9 @@ export default function MobileNavbar() {
 					theme="gray"
 					className="!p-3 !border-none !shadow-none !bg-white dark:!bg-transparent"
 					onClick={() => {
-						setState(prev => ({
-							...prev,
+						modifyStore(setStore, {
 							postComposerOpened: true,
-						}));
+						});
 					}}>
 					<IconPencilPlus aria-hidden={true} />
 					<span className="sr-only">Compose new post</span>
@@ -89,19 +87,17 @@ export default function MobileNavbar() {
 					theme="gray"
 					className="!p-3 !border-none !shadow-none !bg-white dark:!bg-transparent"
 					onClick={() => {
-						setState(prev => ({
-							...prev,
+						modifyStore(setStore, {
 							notificationsOpened: true,
-						}));
+						});
 					}}>
 					<IconBell aria-hidden={true} />
 					<span className="sr-only">Open notifications</span>
 				</Button>
 				<Button theme="gray" className="!p-0 !border-none !shadow-none !bg-white dark:!bg-transparent" onClick={() => {
-					setState(prev => ({
-						...prev,
+					modifyStore(setStore, {
 						settingsOpen: true,
-					}));
+					});
 				}}>
 					<img
 						src={account?.avatar}
@@ -114,19 +110,18 @@ export default function MobileNavbar() {
 			<Transition.Root
 				unmount={window.innerWidth > 768}
 				show={
-					state.notificationsOpened &&
+					store.notificationsOpened &&
 					window.innerWidth < 768 &&
-					!state.postComposerOpened
+					!store.postComposerOpened
 				}
 				as={Fragment}>
 				<Dialog
 					as="div"
 					className="relative"
 					onClose={() => {
-						setState(prev => ({
-							...prev,
+						modifyStore(setStore, {
 							postComposerOpened: false,
-						}));
+						});
 					}}
 					unmount={false}>
 					<div className="flex fixed inset-y-0 right-0 ml-10 max-w-full pointer-events-none">
@@ -149,10 +144,9 @@ export default function MobileNavbar() {
 											type="button"
 											className="text-gray-300 rounded-md hover:text-white dark:hover:text-black focus:outline-none"
 											onClick={() => {
-												setState(prev => ({
-													...prev,
+												modifyStore(setStore, {
 													notificationsOpened: false,
-												}));
+												});
 											}}>
 											<span className="sr-only">Close panel</span>
 											<IconX className="w-6 h-6" aria-hidden="true" />

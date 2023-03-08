@@ -1,13 +1,13 @@
 import { getSetting } from "components/settings/Settings";
 import { JSXInternal } from "preact/src/jsx";
-import { useStore } from "utils/store";
+import { modifyStore } from "utils/functions";
+import { useBackupStore } from "utils/useBackupStore";
 
 export function Link(props: JSXInternal.HTMLAttributes<HTMLAnchorElement> & {
 	sidebar?: string
 }) {
-	const [, setPath] = useStore.path();
-	const [, setConversation] = useStore.viewingConversation();
-	const [, setMobilePostViewer] = useStore.mobilePostViewer();
+	const { setStore } = useBackupStore();
+
 
 	return (
 		<a
@@ -17,11 +17,15 @@ export function Link(props: JSXInternal.HTMLAttributes<HTMLAnchorElement> & {
 					e.preventDefault();
 					
 					if (props.sidebar && getSetting("sidebarLoad") === "on") {
-						setConversation(props.sidebar);
-						setMobilePostViewer(true);
+						modifyStore(setStore, {
+							mobilePostViewer: true,
+							viewingConversation: props.sidebar
+						});
 					} else {
 						history.pushState(null, "", props.href as string);
-						setPath(props.href as string);
+						modifyStore(setStore, {
+							path: props.href as string
+						});
 					}
 				}
 			}}>

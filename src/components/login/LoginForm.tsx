@@ -6,6 +6,8 @@ import { IconLetterC, IconLetterM, IconLetterP } from "@tabler/icons-preact";
 import Select2, { SelectItem } from "components/forms/Select2";
 import { toast } from "react-hot-toast";
 import { Button } from "components/buttons/Button";
+import { useBackupStore } from "utils/useBackupStore";
+import { modifyStore } from "utils/functions";
 
 const instanceTypes: SelectItem[] = [
 	{
@@ -32,6 +34,7 @@ export default function LoginForm({ code }: {
 
 	const [mode,] = useState<"login" | "code">(code ? "code" : "login");
 	const [selectedInstanceType, setSelectedInstanceType] = useState(instanceTypes[0]);
+	const { store, setStore } = useBackupStore();
 
 	const loginForm = async (event: any) => {
 		event.preventDefault();
@@ -65,11 +68,18 @@ export default function LoginForm({ code }: {
 
 		const { clientId, clientSecret, url } = appData;
 
-		localStorage.setItem("clientId", clientId);
-		localStorage.setItem("clientSecret", clientSecret);
-		localStorage.setItem("instanceUrl", instanceUrl);
-		localStorage.setItem("handle", handle);
-		localStorage.setItem("instanceType", instanceType);
+		setStore(prev => ({
+			...prev,
+			auth: {
+				...prev.auth,
+				clientSecret: clientSecret,
+				clientId: clientId,
+				handle: handle,
+				type: instanceType as any,
+				id: "",
+				url: instanceUrl
+			}
+		}));
 
 		url && window.location.replace(url);
 	};
@@ -77,36 +87,38 @@ export default function LoginForm({ code }: {
 	useEffect(() => {
 		if (code !== "") {
 			console.log("logging in!");
-			const instanceType = localStorage.getItem("instanceType");
-			const instanceUrl = localStorage.getItem("instanceUrl");
-			const clientId = localStorage.getItem("clientId");
-			const clientSecret = localStorage.getItem("clientSecret");
 
-			if (!instanceType || !instanceUrl || !clientSecret) return console.error("Items missing in localStorage");
+			if (!store.auth.type || !store.auth.url || !store.auth.clientSecret) return console.error("Items missing in localStorage");
 
-			const client = generator(instanceType as any, instanceUrl);
+			const client = generator(store.auth.type as any, store.auth.url);
 
 			client
 				.fetchAccessToken(
-					clientId,
-					clientSecret,
+					store.auth.clientId,
+					store.auth.clientSecret,
 					code,
 					`http://${window.location.host}/login`,
 				)
 				.then(async (tokenData: OAuth.TokenData) => {
-					localStorage.setItem("accessToken", tokenData.accessToken);
-
-					// Needed in case instance restricts searching to authenticated users
-					const client = generator(
-						instanceType as any,
-						instanceUrl,
-						tokenData.accessToken,
-					);
-
+					const client = generator(store.auth.type as any, store.auth.url, tokenData.accessToken);
 					// Find ID of logged in account
 					client.verifyAccountCredentials().then(data => {
-						localStorage.setItem("accountId", data.data.id);
-						window.location.pathname = "/";
+						console.log(tokenData.accessToken);
+
+
+						setStore(prev => ({
+							...prev,
+							auth: {
+								...prev.auth,
+								token: tokenData.accessToken,
+								id: data.data.id
+							}
+						}));
+
+						// Wait for localStorage to update
+						setTimeout(() => {
+							window.location.href = "/";
+						}, 1000);
 					});
 				}).catch(err => {
 					console.error(err);

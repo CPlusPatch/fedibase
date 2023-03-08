@@ -5,8 +5,8 @@ import { Link } from "components/transitions/Link";
 import { useContext, useState, useEffect } from "preact/hooks";
 import { JSX, Fragment } from "preact/jsx-runtime";
 import toast from "react-hot-toast";
-import { classNames } from "utils/functions";
-import { useStore } from "utils/store";
+import { classNames, modifyStore } from "utils/functions";
+import { useBackupStore } from "utils/useBackupStore";
 
 type NavigationItem = {
 	name: string;
@@ -42,26 +42,25 @@ const navigation: NavigationItem[] = [
 ];
 
 export default function Nav(): JSX.Element {
-	const [, setState] = useStore();
 	const client = useContext(AuthContext);
 	
 	const [account, setAccount] = useState<Entity.Account | undefined>();
 	const [instance, setInstance] = useState<Entity.Instance | undefined>();
-	const [theme, setTheme] = useState<string>("light");
+	const { store, setStore } = useBackupStore();
 
 	const toggleTheme = () => {
 		const html = document.getElementsByTagName("html")[0];
-
-		const themeCookie = (localStorage.getItem("theme") ?? "light").toString();
 		
-		if (themeCookie === "dark") {
-			localStorage.setItem("theme", "light");
+		if (store.theme === "dark") {
+			modifyStore(setStore, {
+				theme: "light"
+			});
 			html.className = html.className.replaceAll("dark", "");
-			setTheme("light");
-		} else if (themeCookie === "light") {
-			localStorage.setItem("theme", "dark");
+		} else if (store.theme === "light") {
+			modifyStore(setStore, {
+				theme: "dark"
+			});
 			html.className = html.className + " dark";
-			setTheme("dark");
 		}
 	};
 
@@ -86,8 +85,6 @@ export default function Nav(): JSX.Element {
 					setInstance(data.data);
 				});
 			}
-
-			setTheme((localStorage.getItem("theme") ?? "light").toString());
 		}
 	}, [client]);
 
@@ -111,13 +108,13 @@ export default function Nav(): JSX.Element {
 						toggleTheme();
 					}}
 					className="flex justify-center items-center p-2 mb-3 text-sm font-medium rounded-md duration-200 dark:text-gray-300 hover:bg-gray-300/40 hover:dark:bg-gray-700/40 hover:bg-opacity-75 group">
-					{theme === "light" && (
+					{store.theme === "light" && (
 						<>
 							<IconSun className="w-5 h-5" aria-hidden={true} />
 							<span className="sr-only">Enable dark mode</span>
 						</>
 					)}
-					{theme === "dark" && (
+					{store.theme === "dark" && (
 						<>
 							<IconMoon className="w-5 h-5" aria-hidden={true} />
 							<span className="sr-only">Enable light mode</span>
@@ -126,10 +123,9 @@ export default function Nav(): JSX.Element {
 				</button>
 				<button
 					onClick={() => {
-						setState(prev => ({
-							...prev,
+						modifyStore(setStore, {
 							settingsOpen: true
-						}));
+						});
 					}}
 					className="flex justify-center items-center p-2 mb-3 text-sm font-medium rounded-md duration-200 dark:text-gray-300 hover:bg-gray-300/40 hover:dark:bg-gray-700/40 hover:bg-opacity-75 group">
 					<IconSettings className="w-5 h-5" aria-hidden={true} />
@@ -137,10 +133,9 @@ export default function Nav(): JSX.Element {
 				</button>
 				<button
 					onClick={() => {
-						setState(prev => ({
-							...prev,
-							postComposerOpened: true,
-						}));
+						modifyStore(setStore, {
+							postComposerOpened: true
+						});
 					}}
 					title="Compose new post"
 					className="flex justify-center items-center p-2 mb-3 text-sm font-medium rounded-md duration-200 dark:text-gray-300 bg-orange-300/20 hover:bg-orange-300/40 hover:bg-opacity-75 group">

@@ -2,23 +2,23 @@ import { Transition, Dialog, Switch } from "@headlessui/react";
 import { ModalOverlay } from "components/transitions/ModalOverlay";
 import { useState } from "preact/hooks";
 import { Fragment } from "preact/jsx-runtime";
-import { classNames } from "utils/functions";
-import { useStore } from "utils/store";
+import { classNames, modifyStore } from "utils/functions";
+import { useBackupStore } from "utils/useBackupStore";
 
 export function Settings() {
-	const [state, setState] = useStore();
+	const { store, setStore } = useBackupStore();
+
 	return (
 		<Transition.Root
-			show={state.settingsOpen}
+			show={store.settingsOpen}
 			as={Fragment}>
 			<Dialog
 				as="div"
 				className="block relative z-40"
 				onClose={() =>
-					setState(prev => ({
-						...prev,
+					modifyStore(setStore, {
 						settingsOpen: false
-					}))
+					})
 				}>
 
 				<ModalOverlay />

@@ -1,6 +1,15 @@
 import createStore from "teaful";
 
 export interface StateType {
+	auth: {
+		token: string | null;
+		clientId: string;
+		id: string;
+		url: string;
+		type: "mastodon" | "pleroma" | "misskey" | "";
+		clientSecret: string;
+		handle: string;
+	}
 	replyingTo: null | Entity.Status;
 	postComposerOpened: boolean;
 	notificationsOpened: boolean;
@@ -10,9 +19,21 @@ export interface StateType {
 	quotingTo: null | Entity.Status;
 	viewingConversation: string;
 	settingsOpen: boolean;
+	theme: "light" | "dark";
+	loaded: boolean;
 }
 
-const initialState: StateType = {
+let initialState: StateType = {
+	auth: {
+		token: null,
+		id: "",
+		clientId: "",
+		url: "",
+		type: "",
+		clientSecret: "",
+		handle: ""
+	},
+	theme: "light",
 	replyingTo: null,
 	postComposerOpened: false,
 	notificationsOpened: false,
@@ -21,7 +42,15 @@ const initialState: StateType = {
 	sidebarOpened: false,
 	quotingTo: null,
 	viewingConversation: "",
-	settingsOpen: false
+	settingsOpen: false,
+	loaded: false,
+};
+
+const storedStore = localStorage.getItem("store");
+
+if (storedStore) initialState = {
+	...JSON.parse(storedStore),
+	loaded: true
 };
 
 export const { useStore, getStore, withStore } = createStore(initialState);
