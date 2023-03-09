@@ -66,6 +66,12 @@ function NotificationsFeed({ withTitle = true }: { withTitle?: boolean }) {
 							case "reblog":
 								title = `${entity.account.display_name} boosted your post`;
 								break;
+							case "follow":
+								title = `${entity.account.display_name} followed you`;
+								break;
+							case "emoji_reaction":
+								title = `${entity.account.display_name} reacted with ${entity.emoji}`;
+								break;
 							case "mention":
 							default:
 								title = `${entity.account.display_name}`;
