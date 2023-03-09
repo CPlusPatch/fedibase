@@ -5,6 +5,7 @@ import { useIsVisible } from "react-is-visible";
 import { Entity } from "megalodon";
 import { useState, useContext, useRef, useEffect } from "preact/hooks";
 import { Link } from "components/transitions/Link";
+import { useCallback } from "react";
 
 export default function ReplyTo({ status }: { status: Entity.Status }) {
 	const [replyStatus, setReplyStatus] = useState<Entity.Status>();
@@ -13,19 +14,16 @@ export default function ReplyTo({ status }: { status: Entity.Status }) {
 	const nodeRef = useRef<HTMLDivElement>();
 	const visible = useIsVisible(nodeRef);
 
+	const fetchPostData = useCallback(async (): Promise<Entity.Status> => {
+		return (await client?.getStatus(status.in_reply_to_id ?? ""))?.data as Entity.Status;
+	}, []);
+
 	useEffect(() => {
-		let isMounted = true;
 		// If the post is a reply, get the previous post's contents
 		if (status.in_reply_to_id && !replyStatus && visible)
-			client?.getStatus(status.in_reply_to_id).then(data => {
-				if (isMounted) {
-					setReplyStatus(data.data);
-				}
+			fetchPostData().then((data) => {
+				setReplyStatus(data);
 			});
-		
-		return () => {
-			isMounted = false;
-		};
 	}, [replyStatus, status.in_reply_to_id, visible]);
 
 	return (

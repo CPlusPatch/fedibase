@@ -1,3 +1,4 @@
+import { IconDots } from "@tabler/icons-preact";
 import { AuthContext } from "components/context/AuthContext";
 import DummyStatus from "components/posts/DummyStatus";
 import { StatusType } from "components/posts/Status";
@@ -17,8 +18,10 @@ export const Conversation = ({ id, mode, showTitle = true}: ConversationProps) =
 	const [post, setPost] = useState<Entity.Status>();
 	const [descendants, setDescendants] = useState<Entity.Status[]>([]);
 	const client = useContext(AuthContext);
-	const mainPostRef = useRef<HTMLDivElement>(null);
 
+	const mainPostRef = useRef<HTMLDivElement>(null);
+	
+	// Finds all the parent elements of a post in a list of statuses
 	function findParentElements(array: Entity.Status[], elementId: string) {
 		const parentElements = [];
 		let currentElement = array.find(element => element.id === elementId);
@@ -27,11 +30,12 @@ export const Conversation = ({ id, mode, showTitle = true}: ConversationProps) =
 			parentElements.push(currentElement);
 			currentElement = array.find(element => element.id === currentElement?.in_reply_to_id);
 		}
-  
 		return parentElements;
 	}
 
+	// Get the main post and its context
 	useEffect(() => {
+		// Reset all the state variables
 		setPost(undefined);
 		setAncestors([]);
 		setDescendants([]);
@@ -52,6 +56,7 @@ export const Conversation = ({ id, mode, showTitle = true}: ConversationProps) =
 			});
 		});
 
+		// Reset all the state variables
 		return () => {
 			setPost(undefined);
 			setAncestors([]);
@@ -99,17 +104,24 @@ type ChildPostProps = {
   posts: Entity.Status[];
   parentId?: string;
   mode: StatusType;
+  recursionDepth?: number;
 };
 
-function ChildPost({ posts, parentId, mode }: ChildPostProps) {
+function ChildPost({ posts, parentId, mode, recursionDepth = 0 }: ChildPostProps) {
 	const children = posts.filter((post) => post.in_reply_to_id === parentId);
 
+	if (recursionDepth > 10) {
+		return (<div className="flex flex-col gap-y-4 dark:border-gray-500 rounded justify-center items-center p-4 w-full">
+			<IconDots className="w-5 h-5 dark:text-white" />
+		</div>);
+	}
+
 	return (
-		<div className="flex flex-col gap-y-4 pl-2 border-l-4 dark:border-gray-500 rounded">
+		<div className="flex flex-col gap-y-4 pl-1.5 border-l-4 dark:border-gray-500 rounded">
 			{children.map((post) => (
 				<Fragment key={post.id}>
 					<Post mode={mode} entity={post} />
-					<ChildPost posts={posts} parentId={post.id} mode={mode} />
+					<ChildPost posts={posts} parentId={post.id} mode={mode} recursionDepth={recursionDepth + 1} />
 				</Fragment>
 			))}
 		</div>
