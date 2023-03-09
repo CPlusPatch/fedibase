@@ -45,12 +45,7 @@ export default function Index() {
 				document.getElementsByTagName("html")[0].className += " dark";
 			}
 
-			let paths;
-			if (store.path) {
-				paths = store.path.split("/");
-			} else {
-				paths = window.location.pathname.split("/");
-			}
+			const paths = window.location.pathname.split("/");
 
 			if (store.auth.token === null && window.location.pathname !== "/login") {
 				window.location.pathname = "/login";
@@ -58,6 +53,7 @@ export default function Index() {
 
 			switch (paths[1]) {
 			case "posts":
+				console.log("gay");
 				setComponent(<Conversation id={paths[2]} mode={StatusType.Post} />);
 				break;
 			case "local":
