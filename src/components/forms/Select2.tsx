@@ -2,6 +2,7 @@ import { Listbox, Transition } from "@headlessui/react";
 import { IconSeparatorHorizontal } from "@tabler/icons-preact";
 import { Fragment } from "preact/jsx-runtime";
 import { useState } from "preact/hooks";
+import { memo } from "preact/compat";
 
 interface SelectOptions {
 	items: SelectItem[];
@@ -16,7 +17,7 @@ export interface SelectItem {
 	description?: string;
 }
 
-export default function Select2({ items, defaultValue, onChange = () => {
+function Select2({ items, defaultValue, onChange = () => {
 	//
 } }: SelectOptions) {
 	const [selected, setSelected] = useState(items[defaultValue]);
@@ -70,3 +71,5 @@ export default function Select2({ items, defaultValue, onChange = () => {
 		</div>
 	);
 }
+
+export default memo(Select2);

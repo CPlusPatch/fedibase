@@ -1,7 +1,6 @@
 import { AuthContext } from "components/context/AuthContext";
 import DummyStatus from "components/posts/DummyStatus";
 import { Response } from "megalodon";
-import { dedupeById } from "utils/functions";
 import { useIsVisible } from "react-is-visible";
 import { useState, useRef, useContext, useCallback, useEffect, MutableRef } from "preact/hooks";
 import { memo } from "preact/compat";
@@ -77,7 +76,7 @@ function Feed<T>(props: FeedProps) {
 			}
 			loading.current = false;
 			props.onLoadEnd && props.onLoadEnd();
-			return dedupeById(res.data as any) as T[];
+			return res.data as T[];
 		},
 		[props.options?.id, props.type],
 	);
@@ -122,7 +121,7 @@ function Feed<T>(props: FeedProps) {
 			}
 			loading.current = false;
 			props.onLoadEnd && props.onLoadEnd();
-			return dedupeById(res.data as any) as T[];
+			return res.data as T[];
 		},
 		[props.options?.id, props.type],
 	);
@@ -133,7 +132,7 @@ function Feed<T>(props: FeedProps) {
 				if (!loading.current) {
 					const latestEntities = await getNewEntities("") ?? [];
 
-					entitiesRef.current = dedupeById(latestEntities as any) as T[];
+					entitiesRef.current = latestEntities as T[];
 					setEntities(entitiesRef.current);
 					setInitialLoadDone(true);
 				}
@@ -150,10 +149,10 @@ function Feed<T>(props: FeedProps) {
 			if (!loading.current) {
 				const latestEntities = await getNewEntities((entitiesRef.current[0] as any).id) ?? [];
 
-				entitiesRef.current = dedupeById([
+				entitiesRef.current = [
 					...latestEntities,
 					...entitiesRef.current,
-				] as any) as T[];
+				] as T[];
 				props.onLoadNew(latestEntities);
 				setEntities(entitiesRef.current);
 			}
@@ -169,10 +168,10 @@ function Feed<T>(props: FeedProps) {
 					(entitiesRef.current[entitiesRef.current.length - 1] as any).id,
 				);
 
-				entitiesRef.current = dedupeById([
+				entitiesRef.current = [
 					...entitiesRef.current,
 					...latestPosts,
-				] as any) as T[];
+				] as T[];
 				setEntities(entitiesRef.current);
 			}
 		}

@@ -11,6 +11,7 @@ import {
 } from "@tabler/icons-preact";
 import { AuthContext } from "components/context/AuthContext";
 import { Entity } from "megalodon";
+import { memo } from "preact/compat";
 import { StateUpdater, useContext, useEffect, useState } from "preact/hooks";
 import { Fragment } from "preact/jsx-runtime";
 import { JSXInternal } from "preact/src/jsx";
@@ -21,7 +22,7 @@ import { useStore } from "utils/store";
  * Small bar containing all the buttons on a post, such as "favourite", "quote", "reply"...
  * @returns
  */
-export default function InteractionBar({ status, setStatus }: { status: Entity.Status; setStatus: StateUpdater<Entity.Status> }) {
+function InteractionBar({ status, setStatus }: { status: Entity.Status; setStatus: StateUpdater<Entity.Status> }) {
 	const client = useContext(AuthContext);
 	const [showEmojiPicker, setShowEmojiPicker] = useState<boolean>(false);
 	const [instanceEmojis, setInstanceEmojis] = useState<Entity.Emoji[]>([]);
@@ -188,6 +189,8 @@ export default function InteractionBar({ status, setStatus }: { status: Entity.S
 		</div>
 	);
 }
+
+export default memo(InteractionBar);
 
 function InteractionBarIcon({
 	children,

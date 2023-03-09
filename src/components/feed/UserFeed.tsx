@@ -2,8 +2,9 @@ import UserProfile from "components/profile/UserProfile";
 import { Post } from "components/scroll/InfiniteScrollPosts";
 import { Entity } from "megalodon";
 import Feed, { FeedType } from "./Feed";
+import { memo } from "preact/compat";
 
-export const UserFeed = ({ account }: { account: Entity.Account }) => {
+export const UserFeed = memo(({ account }: { account: Entity.Account }) => {
 	return (
 		<>
 			{account && (
@@ -23,4 +24,4 @@ export const UserFeed = ({ account }: { account: Entity.Account }) => {
 			)}
 		</>
 	);
-};
+});

@@ -1,3 +1,4 @@
+import { memo } from "preact/compat";
 import { JSXInternal } from "preact/src/jsx";
 import { classNames } from "utils/functions";
 
@@ -7,13 +8,13 @@ interface InputOptions {
 	name: string;
 }
 
-export function Input({
+export const Input = memo(({
 	isLoading,
 	children,
 	name,
 	className = "",
 	...props
-}: InputOptions & JSXInternal.HTMLAttributes<HTMLInputElement>) {
+}: InputOptions & JSXInternal.HTMLAttributes<HTMLInputElement>) => {
 	return (
 		<div>
 			{children}
@@ -30,7 +31,7 @@ export function Input({
 			</div>
 		</div>
 	);
-}
+});
 
 export function Label({
 	children,

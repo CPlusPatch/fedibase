@@ -3,8 +3,9 @@ import Status, { StatusType } from "components/posts/Status";
 import { withEmojis } from "utils/functions";
 import { Link } from "components/transitions/Link";
 import { ScaleFadeSlide } from "components/transitions/ScaleFadeSlide";
+import { memo } from "preact/compat";
 
-export const Post = ({ entity, mode = StatusType.Post }: { entity: Entity.Status; mode?: StatusType }) => {
+export const Post = memo(({ entity, mode = StatusType.Post }: { entity: Entity.Status; mode?: StatusType }) => {
 	return (
 		<ScaleFadeSlide appear={true} show={true}>
 			<div className={"flex flex-col gap-y-2"}>
@@ -34,4 +35,4 @@ export const Post = ({ entity, mode = StatusType.Post }: { entity: Entity.Status
 			</div>
 		</ScaleFadeSlide>
 	);
-};
+});

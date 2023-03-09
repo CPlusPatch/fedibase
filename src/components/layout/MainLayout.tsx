@@ -5,8 +5,9 @@ import { Toaster } from "react-hot-toast";
 import { IconCloudOff } from "@tabler/icons-preact";
 import { useNavigatorOnLine } from "utils/useNavigatorOnline";
 import { Settings } from "components/settings/Settings";
+import { memo } from "preact/compat";
 
-export default function MainLayout({ children }: any) {
+function MainLayout({ children }: any) {
 	const online = useNavigatorOnLine();
 
 	/* useEffect(() => {
@@ -109,3 +110,5 @@ export default function MainLayout({ children }: any) {
 		</div>
 	);
 }
+
+export default memo(MainLayout);

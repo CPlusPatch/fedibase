@@ -9,6 +9,7 @@ import useLineClamp from "use-line-clamp";
 import { StatusPoll } from "./StatusPoll";
 import { Reactions } from "./Reaction";
 import { Link } from "components/transitions/Link";
+import { memo } from "preact/compat";
 
 export enum StatusType {
 	Notification = "notification",
@@ -21,7 +22,7 @@ interface StatusProps {
 	showInteraction?: boolean;
 }
 
-export default function Status({ status: statusProp, type, showInteraction = true }: StatusProps) {
+function Status({ status: statusProp, type, showInteraction = true }: StatusProps) {
 	const [expand, setExpand] = useState(false);
 	const [status, setStatus] = useState(statusProp);
 	const [showText, setShowText] = useState(false);
@@ -117,3 +118,5 @@ export default function Status({ status: statusProp, type, showInteraction = tru
 		</div>
 	);
 }
+
+export default memo(Status);

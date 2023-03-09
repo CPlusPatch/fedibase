@@ -1,5 +1,6 @@
 import { AuthContext } from "components/context/AuthContext";
 import { Entity } from "megalodon";
+import { memo } from "preact/compat";
 import { StateUpdater, useContext } from "preact/hooks";
 import toast from "react-hot-toast";
 import { classNames } from "utils/functions";
@@ -15,7 +16,7 @@ interface ReactionProps {
 	reaction: Entity.Reaction;
 }
 
-export function Reactions(props: ReactionsProps) {
+export const Reactions = memo((props: ReactionsProps) => {
 	return (
 		<div className="w-full flex flex-row gap-2 mt-2">
 			{props.status.emoji_reactions.map(reaction => (
@@ -23,7 +24,7 @@ export function Reactions(props: ReactionsProps) {
 			))}
 		</div>
 	);
-}
+});
 
 export function Reaction(props: ReactionProps) {
 	const client = useContext(AuthContext);

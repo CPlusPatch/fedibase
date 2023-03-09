@@ -2,6 +2,7 @@ import { Transition } from "@headlessui/react";
 import { IconHome, IconMoon, IconPlus, IconSettings, IconSun, IconUsers, IconWorld } from "@tabler/icons-preact";
 import { AuthContext } from "components/context/AuthContext";
 import { Link } from "components/transitions/Link";
+import { memo } from "preact/compat";
 import { useContext, useState, useEffect } from "preact/hooks";
 import { JSX, Fragment } from "preact/jsx-runtime";
 import toast from "react-hot-toast";
@@ -41,7 +42,7 @@ const navigation: NavigationItem[] = [
 	},
 ];
 
-export default function Nav(): JSX.Element {
+function Nav(): JSX.Element {
 	const client = useContext(AuthContext);
 	
 	const [account, setAccount] = useState<Entity.Account | undefined>();
@@ -203,3 +204,4 @@ function NavElement(props: NavElementProps) {
 		</div>
 	);
 }
+export default memo(Nav);

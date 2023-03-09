@@ -1,15 +1,16 @@
 import { Button } from "components/buttons/Button";
 import { AuthContext } from "components/context/AuthContext";
+import { memo } from "preact/compat";
 import { StateUpdater, useContext } from "preact/hooks";
 import { fromNow } from "utils/functions";
 
-export function StatusPoll({
+export const StatusPoll = memo(({
 	status,
 	setStatus,
 }: {
 	status: Entity.Status;
 	setStatus: StateUpdater<Entity.Status>
-}) {
+}) => {
 	const client = useContext(AuthContext);
 	
 	return (
@@ -84,4 +85,4 @@ export function StatusPoll({
 			</div>
 		</form>
 	);
-}
+});

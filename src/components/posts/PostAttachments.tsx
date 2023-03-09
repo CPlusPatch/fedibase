@@ -1,13 +1,14 @@
 import { IconX } from "@tabler/icons-preact";
 import { Button } from "components/buttons/Button";
 import { Entity } from "megalodon";
+import { memo } from "preact/compat";
 import { useState } from "preact/hooks";
 
 /**
  * Images of a Status (extracted for modularity)
  * @returns 
  */
-export default function PostAttachments({ status }: { status: Entity.Status }) {
+function PostAttachments({ status }: { status: Entity.Status }) {
 	return (
 		<>
 			{status.media_attachments.length > 0 && (
@@ -23,6 +24,8 @@ export default function PostAttachments({ status }: { status: Entity.Status }) {
 		</>
 	);
 }
+
+export default memo(PostAttachments);
 
 function PostAttachment({ status, image }: { status: Entity.Status; image: Entity.Attachment }) {
 	const [revealed, setRevealed] = useState<boolean>(!status.sensitive);

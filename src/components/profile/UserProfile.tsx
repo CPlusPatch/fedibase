@@ -5,8 +5,9 @@ import { toast } from "react-hot-toast";
 import { withEmojis } from "utils/functions";
 import ProfileActionsDropdown from "./ProfileActionsDropdown";
 import { ScaleFadeSlide } from "components/transitions/ScaleFadeSlide";
+import { memo } from "preact/compat";
 
-export default function UserProfile({ user }: { user: Entity.Account }) {
+function UserProfile({ user }: { user: Entity.Account }) {
 	const client = useContext(AuthContext);
 	const [relationship, setRelationship] = useState<Entity.Relationship>();
 
@@ -96,3 +97,5 @@ export default function UserProfile({ user }: { user: Entity.Account }) {
 		</ScaleFadeSlide>
 	);
 }
+
+export default memo(UserProfile);

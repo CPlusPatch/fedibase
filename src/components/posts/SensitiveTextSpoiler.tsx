@@ -1,8 +1,9 @@
 import { Button } from "components/buttons/Button";
+import { memo } from "preact/compat";
 import { StateUpdater } from "preact/hooks";
 import { withEmojis } from "utils/functions";
 
-export default function SensitiveTextSpoiler({
+function SensitiveTextSpoiler({
 	status,
 	showText,
 	setShowText,
@@ -30,3 +31,5 @@ export default function SensitiveTextSpoiler({
 		</>
 	);
 }
+
+export default memo(SensitiveTextSpoiler);

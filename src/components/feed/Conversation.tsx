@@ -4,6 +4,7 @@ import DummyStatus from "components/posts/DummyStatus";
 import { StatusType } from "components/posts/Status";
 import { Post } from "components/scroll/InfiniteScrollPosts";
 import { Entity } from "megalodon";
+import { memo } from "preact/compat";
 import { useState, useContext, useEffect, useRef } from "preact/hooks";
 import { Fragment } from "preact/jsx-runtime";
 
@@ -13,7 +14,7 @@ interface ConversationProps {
 	showTitle?: boolean
 }
 
-export const Conversation = ({ id, mode, showTitle = true}: ConversationProps) => {
+export const Conversation = memo(({ id, mode, showTitle = true}: ConversationProps) => {
 	const [ancestors, setAncestors] = useState<Entity.Status[]>([]);
 	const [post, setPost] = useState<Entity.Status>();
 	const [descendants, setDescendants] = useState<Entity.Status[]>([]);
@@ -98,7 +99,7 @@ export const Conversation = ({ id, mode, showTitle = true}: ConversationProps) =
 			)}
 		</>
 	);
-};
+});
 
 type ChildPostProps = {
   posts: Entity.Status[];

@@ -1,11 +1,12 @@
 import { getSetting } from "components/settings/Settings";
+import { memo } from "preact/compat";
 import { JSXInternal } from "preact/src/jsx";
 import { modifyStore } from "utils/functions";
 import { useBackupStore } from "utils/useBackupStore";
 
-export function Link(props: JSXInternal.HTMLAttributes<HTMLAnchorElement> & {
+export const Link = memo((props: JSXInternal.HTMLAttributes<HTMLAnchorElement> & {
 	sidebar?: string
-}) {
+}) => {
 	const { setStore } = useBackupStore();
 
 
@@ -31,4 +32,4 @@ export function Link(props: JSXInternal.HTMLAttributes<HTMLAnchorElement> & {
 			}}>
 		</a>
 	);
-}
+});

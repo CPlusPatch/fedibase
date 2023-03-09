@@ -10,8 +10,9 @@ import toast from "react-hot-toast";
 import { Link } from "components/transitions/Link";
 import { useBackupStore } from "utils/useBackupStore";
 import { modifyStore } from "utils/functions";
+import { memo } from "preact/compat";
 
-export default function MobileNavbar() {
+function MobileNavbar() {
 	const { store, setStore } = useBackupStore();
 	const [account, setAccount] = useState<Entity.Account | null>(null);
 	const client = useContext(AuthContext);
@@ -164,3 +165,5 @@ export default function MobileNavbar() {
 		</>
 	);
 }
+
+export default memo(MobileNavbar);

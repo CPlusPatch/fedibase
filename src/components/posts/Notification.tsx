@@ -2,8 +2,9 @@ import { IconStarFilled } from "@tabler/icons-preact";
 import { withEmojis, withEmojiReactions } from "utils/functions";
 import Status, { StatusType } from "./Status";
 import { Link } from "components/transitions/Link";
+import { memo } from "preact/compat";
 
-export const Notification = ({ entity }: { entity: Entity.Notification }) => {
+export const Notification = memo(({ entity }: { entity: Entity.Notification }) => {
 	return (
 		<>
 			{(entity.type == "mention" ||
@@ -103,4 +104,4 @@ export const Notification = ({ entity }: { entity: Entity.Notification }) => {
 			)}
 		</>
 	);
-};
+});

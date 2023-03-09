@@ -23,7 +23,8 @@ import Status, { StatusType } from "components/posts/Status";
 import { ModalOverlay } from "components/transitions/ModalOverlay";
 import { ScaleFadeSlide } from "components/transitions/ScaleFadeSlide";
 import { Entity } from "megalodon";
-import { StateUpdater, useContext, useEffect, useRef, useState } from "preact/hooks";
+import { memo } from "preact/compat";
+import { StateUpdater, useContext, useEffect, useMemo, useRef, useState } from "preact/hooks";
 import { Fragment } from "preact/jsx-runtime";
 import { JSXInternal } from "preact/src/jsx";
 import { toast } from "react-hot-toast";
@@ -267,7 +268,7 @@ interface SendFormState {
 	};
 }
 
-function SendForm() {
+const SendForm = memo(() => {
 	// Context stuff
 	const client = useContext(AuthContext);
 
@@ -632,7 +633,7 @@ function SendForm() {
 			</div>
 		</form>
 	);
-}
+});
 
 function PollCreator({
 	currentState,

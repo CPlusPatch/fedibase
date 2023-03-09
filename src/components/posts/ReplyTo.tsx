@@ -6,8 +6,9 @@ import { Entity } from "megalodon";
 import { useState, useContext, useRef, useEffect } from "preact/hooks";
 import { Link } from "components/transitions/Link";
 import { useCallback } from "react";
+import { memo } from "preact/compat";
 
-export default function ReplyTo({ status }: { status: Entity.Status }) {
+function ReplyTo({ status }: { status: Entity.Status }) {
 	const [replyStatus, setReplyStatus] = useState<Entity.Status>();
 	const client = useContext(AuthContext);
 
@@ -40,3 +41,5 @@ export default function ReplyTo({ status }: { status: Entity.Status }) {
 		</div>
 	);
 }
+
+export default memo(ReplyTo);

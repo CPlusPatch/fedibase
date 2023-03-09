@@ -1,11 +1,12 @@
 import { Transition, Dialog, Switch } from "@headlessui/react";
 import { ModalOverlay } from "components/transitions/ModalOverlay";
+import { memo } from "preact/compat";
 import { useState } from "preact/hooks";
 import { Fragment } from "preact/jsx-runtime";
 import { classNames, modifyStore } from "utils/functions";
 import { useBackupStore } from "utils/useBackupStore";
 
-export function Settings() {
+export const Settings = memo(() => {
 	const { store, setStore } = useBackupStore();
 
 	return (
@@ -51,7 +52,7 @@ export function Settings() {
 			</Dialog>
 		</Transition.Root>
 	);
-}
+});
 
 enum SettingType {
 	Switch,

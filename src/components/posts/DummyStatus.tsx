@@ -1,7 +1,8 @@
 import { MutableRef } from "preact/hooks";
 import { StatusType } from "./Status";
+import { memo } from "preact/compat";
 
-export default function DummyStatus({
+function DummyStatus({
 	statusType = StatusType.Post,
 	reference = undefined,
 }: {
@@ -59,3 +60,5 @@ export default function DummyStatus({
 		</>
 	);
 }
+
+export default memo(DummyStatus);

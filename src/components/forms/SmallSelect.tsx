@@ -1,5 +1,6 @@
 import { Listbox } from "@headlessui/react";
 import { ScaleFadeSlide } from "components/transitions/ScaleFadeSlide";
+import { memo } from "preact/compat";
 import { useState } from "preact/hooks";
 
 interface SelectOptions {
@@ -21,7 +22,7 @@ interface SelectItem {
 	description?: string;
 }
 
-export default function SmallSelect({ items, defaultValue, onChange = () => {
+function SmallSelect({ items, defaultValue, onChange = () => {
 	//
 }, direction = SelectDirection.Right }: SelectOptions) {
 	const [selected, setSelected] = useState<SelectItem>(items[defaultValue]);
@@ -72,3 +73,5 @@ export default function SmallSelect({ items, defaultValue, onChange = () => {
 		</Listbox>
 	);
 }
+
+export default memo(SmallSelect);
