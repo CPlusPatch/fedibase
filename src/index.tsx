@@ -45,7 +45,13 @@ export default function Index() {
 				document.getElementsByTagName("html")[0].className += " dark";
 			}
 
-			const paths = window.location.pathname.split("/");
+			let paths;
+			console.log(store.path);
+			if (store.path === window.location.pathname) {
+				paths = store.path.split("/");
+			} else {
+				paths = window.location.pathname.split("/");
+			}
 
 			if (store.auth.token === null && window.location.pathname !== "/login") {
 				window.location.pathname = "/login";
