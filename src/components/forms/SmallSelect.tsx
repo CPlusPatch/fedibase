@@ -1,5 +1,6 @@
 import { Listbox } from "@headlessui/react";
 import { ScaleFadeSlide } from "components/transitions/ScaleFadeSlide";
+import { SlideFade } from "components/transitions/SlideFade";
 import { memo } from "preact/compat";
 import { useState } from "preact/hooks";
 
@@ -53,9 +54,9 @@ function SmallSelect({
 					aria-hidden="true"
 				/>
 			</Listbox.Button>
-			<ScaleFadeSlide>
+			<SlideFade>
 				<Listbox.Options
-					className={`overflow-auto absolute z-30 mt-1 w-64 text-base bg-white rounded-md border dark:border-gray-700 dark:bg-dark-800 font-inter ${
+					className={`overflow-auto absolute z-30 shadow-lg mt-1 w-64 text-base bg-gray-100/75 rounded-md border dark:border-gray-700 dark:bg-dark-800/75 backdrop-blur-md font-inter ${
 						direction == SelectDirection.Left &&
 						"right-0 origin-top-right"
 					}`}>
@@ -65,15 +66,15 @@ function SmallSelect({
 							title={item.description}
 							className={`${
 								item.value === selected.value &&
-								"bg-orange-100 dark:bg-gray-800"
-							} flex relative flex-row gap-x-3 items-center p-2 text-gray-800 dark:text-gray-100 duration-200 cursor-default select-none hover:bg-gray-100 dark:hover:bg-gray-700`}
+								"bg-orange-100 dark:bg-orange-500/10"
+							} flex relative flex-row gap-x-3 items-center py-2 px-3 text-gray-800 dark:text-gray-100 duration-200 cursor-default select-none hover:bg-gray-100 dark:hover:bg-gray-700`}
 							value={item.value}>
 							<item.icon
-								className="w-4 h-auto text-gray-500"
+								className="w-5 h-auto text-gray-500"
 								aria-hidden={true}
 							/>
 							<div className="flex flex-col">
-								<span className="text-sm font-semibold">
+								<span className="text-sm font-semibold font-poppins">
 									{item.text}
 								</span>
 								<span className="text-sm text-orange-700 dark:text-orange-200">
@@ -83,7 +84,7 @@ function SmallSelect({
 						</Listbox.Option>
 					))}
 				</Listbox.Options>
-			</ScaleFadeSlide>
+			</SlideFade>
 		</Listbox>
 	);
 }

@@ -24,6 +24,7 @@ import Nav from "./components/sidebar/Nav";
 import { StatusType } from "./components/posts/Status";
 import { useBackupStore } from "utils/useBackupStore";
 import { modifyStore } from "utils/functions";
+import FastClick from "fastclick";
 
 export default function Index() {
 	const client = useContext(AuthContext);
@@ -87,6 +88,10 @@ export default function Index() {
 			return () => window.removeEventListener("popstate", handlePopState);
 		}
 	}, [store.path, store.auth.token, store.loaded]);
+
+	useEffect(() => {
+		FastClick(document.body);
+	}, []);
 
 	return (
 		<>
