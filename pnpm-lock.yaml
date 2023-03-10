@@ -1,5 +1,10 @@
 lockfileVersion: 5.4
 
+patchedDependencies:
+  '@headlessui/react@1.7.13':
+    hash: 4sx5e3ohqfkuc6cj4viq7snat4
+    path: patches/@headlessui__react@1.7.13.patch
+
 specifiers:
   '@cpluspatch/catgirl-ui': ^1.0.0
   '@headlessui/react': ^1.7.13
@@ -42,7 +47,7 @@ specifiers:
 
 dependencies:
   '@cpluspatch/catgirl-ui': 1.0.0
-  '@headlessui/react': 1.7.13
+  '@headlessui/react': 1.7.13_4sx5e3ohqfkuc6cj4viq7snat4
   '@tabler/icons-preact': 2.9.0_preact@10.13.1
   csstype: 3.1.1
   events: 3.3.0
@@ -1317,7 +1322,7 @@ packages:
   /@cpluspatch/catgirl-ui/1.0.0:
     resolution: {integrity: sha512-RRyaahIYIc/Qq4rNfgBsvwjDkDfPTOOWpIuwsKkLVnwf+7w/DmFW2l9htrS5B3sRN48pbzfORHJ8nlmsOI6U/A==}
     dependencies:
-      '@headlessui/react': 1.7.13
+      '@headlessui/react': 1.7.13_4sx5e3ohqfkuc6cj4viq7snat4
       preact: 10.13.1
     transitivePeerDependencies:
       - react
@@ -1568,7 +1573,7 @@ packages:
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
     dev: true
 
-  /@headlessui/react/1.7.13:
+  /@headlessui/react/1.7.13_4sx5e3ohqfkuc6cj4viq7snat4:
     resolution: {integrity: sha512-9n+EQKRtD9266xIHXdY5MfiXPDfYwl7zBM7KOx2Ae3Gdgxy8QML1FkCMjq6AsOf0l6N9uvI4HcFtuFlenaldKg==}
     engines: {node: '>=10'}
     peerDependencies:
@@ -1577,6 +1582,7 @@ packages:
     dependencies:
       client-only: 0.0.1
     dev: false
+    patched: true
 
   /@humanwhocodes/config-array/0.11.8:
     resolution: {integrity: sha512-UybHIJzJnR5Qc/MsD9Kr+RpO2h+/P1GhOwdiLPXK5TWk5sgTdu88bTD9UP+CKbPPh5Rni1u0GjAdYQLemG8g+g==}
