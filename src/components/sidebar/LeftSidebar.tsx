@@ -143,6 +143,8 @@ export default function LeftSidebar() {
 											onClick={() => {
 												modifyStore(setStore, {
 													mobilePostViewer: false,
+													quotingTo: null,
+													replyingTo: null
 												});
 											}}>
 											<span className="sr-only">
