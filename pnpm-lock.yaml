@@ -25,6 +25,7 @@ specifiers:
   performant-array-to-tree: ^1.11.0
   postcss: ^8.4.21
   preact: ^10.13.1
+  prettier: ^2.8.4
   querystring-es3: ^0.2.1
   react-hot-toast: ^2.4.0
   react-is-visible: ^1.2.0
@@ -71,6 +72,7 @@ devDependencies:
   eslint-config-preact: 1.3.0_33n3pjg2mfyezna5nqe7vcsqra
   eslint-config-prettier: 8.7.0_eslint@8.35.0
   postcss: 8.4.21
+  prettier: 2.8.4
   sharp: 0.31.3
   svgo: 3.0.2
   tailwindcss: 3.2.7_postcss@8.4.21
@@ -4186,6 +4188,12 @@ packages:
   /prelude-ls/1.2.1:
     resolution: {integrity: sha512-vkcDPrRZo1QZLbn5RLGPpg/WmIQ65qoWWhcGKf/b5eplkkarX0m9z8ppCat4mlOqUsWpyNuYgO3VRyrYHSzX5g==}
     engines: {node: '>= 0.8.0'}
+    dev: true
+
+  /prettier/2.8.4:
+    resolution: {integrity: sha512-vIS4Rlc2FNh0BySk3Wkd6xmwxB0FpOndW5fisM5H8hsZSxU2VWVB5CWIkIjWvrHjIhxk2g3bfMKM87zNTrZddw==}
+    engines: {node: '>=10.13.0'}
+    hasBin: true
     dev: true
 
   /pretty-bytes/5.6.0:
