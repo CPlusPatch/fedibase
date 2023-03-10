@@ -144,7 +144,7 @@ export default function LeftSidebar() {
 												modifyStore(setStore, {
 													mobilePostViewer: false,
 													quotingTo: null,
-													replyingTo: null
+													replyingTo: null,
 												});
 											}}>
 											<span className="sr-only">
