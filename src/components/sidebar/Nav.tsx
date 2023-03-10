@@ -1,5 +1,13 @@
 import { Transition } from "@headlessui/react";
-import { IconHome, IconMoon, IconPlus, IconSettings, IconSun, IconUsers, IconWorld } from "@tabler/icons-preact";
+import {
+	IconHome,
+	IconMoon,
+	IconPlus,
+	IconSettings,
+	IconSun,
+	IconUsers,
+	IconWorld,
+} from "@tabler/icons-preact";
 import { AuthContext } from "components/context/AuthContext";
 import { Link } from "components/transitions/Link";
 import { memo } from "preact/compat";
@@ -19,7 +27,6 @@ type NavigationItem = {
 type NavElementProps = {
 	item: NavigationItem;
 };
-
 
 const navigation: NavigationItem[] = [
 	{
@@ -44,22 +51,22 @@ const navigation: NavigationItem[] = [
 
 function Nav(): JSX.Element {
 	const client = useContext(AuthContext);
-	
+
 	const [account, setAccount] = useState<Entity.Account | undefined>();
 	const [instance, setInstance] = useState<Entity.Instance | undefined>();
 	const { store, setStore } = useBackupStore();
 
 	const toggleTheme = () => {
 		const html = document.getElementsByTagName("html")[0];
-		
+
 		if (store.theme === "dark") {
 			modifyStore(setStore, {
-				theme: "light"
+				theme: "light",
 			});
 			html.className = html.className.replaceAll("dark", "");
 		} else if (store.theme === "light") {
 			modifyStore(setStore, {
-				theme: "dark"
+				theme: "dark",
 			});
 			html.className = html.className + " dark";
 		}
@@ -78,11 +85,16 @@ function Nav(): JSX.Element {
 				});
 
 			if (localStorage.getItem("instanceData")) {
-				setInstance(JSON.parse(localStorage.getItem("instanceData") ?? ""));
+				setInstance(
+					JSON.parse(localStorage.getItem("instanceData") ?? "")
+				);
 			} else {
 				client?.getInstance().then(data => {
 					// Caches instance data
-					localStorage.setItem("instanceData", JSON.stringify(data.data));
+					localStorage.setItem(
+						"instanceData",
+						JSON.stringify(data.data)
+					);
 					setInstance(data.data);
 				});
 			}
@@ -95,10 +107,16 @@ function Nav(): JSX.Element {
 				<Link
 					href="/"
 					className="flex flex-shrink-0 justify-center items-center px-2">
-					<img src={instance?.thumbnail ?? ""} className="w-8 h-8 rounded" alt="" />
+					<img
+						src={instance?.thumbnail ?? ""}
+						className="w-8 h-8 rounded"
+						alt=""
+					/>
 					<span className="sr-only">{instance?.title}</span>
 				</Link>
-				<nav className="flex-1 px-2 mt-5 space-y-1" aria-label="Sidebar">
+				<nav
+					className="flex-1 px-2 mt-5 space-y-1"
+					aria-label="Sidebar">
 					{navigation.map(item => (
 						<NavElement item={item} key={item.name} />
 					))}
@@ -125,7 +143,7 @@ function Nav(): JSX.Element {
 				<button
 					onClick={() => {
 						modifyStore(setStore, {
-							settingsOpen: true
+							settingsOpen: true,
 						});
 					}}
 					className="flex justify-center items-center p-2 mb-3 text-sm font-medium rounded-md duration-200 dark:text-gray-300 hover:bg-gray-300/40 hover:dark:bg-gray-700/40 hover:bg-opacity-75 group">
@@ -135,7 +153,7 @@ function Nav(): JSX.Element {
 				<button
 					onClick={() => {
 						modifyStore(setStore, {
-							postComposerOpened: true
+							postComposerOpened: true,
 						});
 					}}
 					title="Compose new post"
@@ -143,13 +161,17 @@ function Nav(): JSX.Element {
 					<IconPlus className="w-5 h-5" aria-hidden={true} />
 					<span className="sr-only">Compose new post</span>
 				</button>
-				<Link href={`/users/${account?.id}`} className="flex justify-center items-center">
+				<Link
+					href={`/users/${account?.id}`}
+					className="flex justify-center items-center">
 					<img
 						src={account?.avatar}
 						className="w-9 h-9 rounded border dark:border-gray-700"
 						alt=""
 					/>
-					<span className="sr-only">Your avatar, click to visit your profile</span>
+					<span className="sr-only">
+						Your avatar, click to visit your profile
+					</span>
 				</Link>
 			</div>
 		</div>
@@ -161,7 +183,11 @@ function NavElement(props: NavElementProps) {
 	const [showTooltip, setShowTooltip] = useState<boolean>(false);
 
 	useEffect(() => {
-		setCurrent(typeof window !== "undefined" ? window.location.pathname === props.item.href : false);
+		setCurrent(
+			typeof window !== "undefined"
+				? window.location.pathname === props.item.href
+				: false
+		);
 	}, [props.item.href]);
 
 	return (
@@ -172,7 +198,7 @@ function NavElement(props: NavElementProps) {
 					current
 						? "bg-gray-300/40 dark:bg-gray-700/40"
 						: "hover:bg-gray-300/40 hover:dark:bg-gray-700/40 hover:bg-opacity-75",
-					"flex justify-center items-center p-2 mx-2 text-sm font-medium rounded-md duration-200 group",
+					"flex justify-center items-center p-2 mx-2 text-sm font-medium rounded-md duration-200 group"
 				)}
 				onMouseEnter={() => {
 					setShowTooltip(true);
@@ -184,7 +210,9 @@ function NavElement(props: NavElementProps) {
 					className="flex-shrink-0 w-5 h-5 text-gray-600 dark:text-gray-300"
 					aria-hidden="true"
 				/>
-				<span className="sr-only">Visit the {props.item.name} feed</span>
+				<span className="sr-only">
+					Visit the {props.item.name} feed
+				</span>
 			</Link>
 			<Transition
 				as={Fragment}

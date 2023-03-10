@@ -10,18 +10,15 @@ export const Settings = memo(() => {
 	const { store, setStore } = useBackupStore();
 
 	return (
-		<Transition.Root
-			show={store.settingsOpen}
-			as={Fragment}>
+		<Transition.Root show={store.settingsOpen} as={Fragment}>
 			<Dialog
 				as="div"
 				className="block relative z-40"
 				onClose={() =>
 					modifyStore(setStore, {
-						settingsOpen: false
+						settingsOpen: false,
 					})
 				}>
-
 				<ModalOverlay />
 
 				<div className="overflow-y-auto fixed inset-0">
@@ -37,12 +34,29 @@ export const Settings = memo(() => {
 							<Dialog.Panel className="relative my-8 w-full text-left transition-all transform sm:max-w-4xl">
 								<div className="bg-gray-50 dark:bg-dark-800 p-4 rounded-lg flex flex-col gap-y-4">
 									<div className="w-full">
-										<h1 className="text-lg dark:text-gray-50 font-poppins font-bold">Settings</h1>
+										<h1 className="text-lg dark:text-gray-50 font-poppins font-bold">
+											Settings
+										</h1>
 									</div>
 									<div className="flex flex-col gap-y-3">
-										<SettingItem description="Toggles blur on modal backdrops" text="Enable blur" settingType={SettingType.Switch} name="blur" />
-										<SettingItem description="Adds an orange tint to modal backdrops" text="Orange tint on backdrops" settingType={SettingType.Switch} name="tintedBackdrop" />
-										<SettingItem description="When you click on a post, load it in the sidebar instead of reloading page" text="Load posts in sidebar" settingType={SettingType.Switch} name="sidebarLoad" />
+										<SettingItem
+											description="Toggles blur on modal backdrops"
+											text="Enable blur"
+											settingType={SettingType.Switch}
+											name="blur"
+										/>
+										<SettingItem
+											description="Adds an orange tint to modal backdrops"
+											text="Orange tint on backdrops"
+											settingType={SettingType.Switch}
+											name="tintedBackdrop"
+										/>
+										<SettingItem
+											description="When you click on a post, load it in the sidebar instead of reloading page"
+											text="Load posts in sidebar"
+											settingType={SettingType.Switch}
+											name="sidebarLoad"
+										/>
 									</div>
 								</div>
 							</Dialog.Panel>
@@ -63,23 +77,29 @@ function SettingItem({
 	settingType,
 	name,
 	text,
-	description
+	description,
 }: {
-	settingType: SettingType,
+	settingType: SettingType;
 	name: string;
 	text: string;
 	description: string;
 }) {
-	const [enabled, setEnabled] = useState<boolean>(getSetting(name) === "on" ? true : false);
+	const [enabled, setEnabled] = useState<boolean>(
+		getSetting(name) === "on" ? true : false
+	);
 
 	return (
 		<div className="dark:text-gray-200">
 			<div className="flex items-center justify-between">
 				<span className="flex-grow flex flex-col">
-					<h2 as="span" className="text-sm font-medium text-gray-900 dark:text-gray-50">
+					<h2
+						as="span"
+						className="text-sm font-medium text-gray-900 dark:text-gray-50">
 						{text}
 					</h2>
-					<p as="span" className="text-sm text-gray-500 dark:text-gray-400">
+					<p
+						as="span"
+						className="text-sm text-gray-500 dark:text-gray-400">
 						{description}
 					</p>
 				</span>
@@ -91,7 +111,9 @@ function SettingItem({
 							setEnabled(value);
 						}}
 						className={classNames(
-							enabled ? "bg-orange-600" : "bg-gray-200 dark:bg-dark-600 ",
+							enabled
+								? "bg-orange-600"
+								: "bg-gray-200 dark:bg-dark-600 ",
 							"relative inline-flex flex-shrink-0 h-6 w-11 border-2 border-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:outline-none"
 						)}>
 						<span
@@ -99,7 +121,8 @@ function SettingItem({
 							className={classNames(
 								enabled ? "translate-x-5" : "translate-x-0",
 								"pointer-events-none inline-block h-5 w-5 rounded-full bg-white  shadow transform ring-0 transition ease-in-out duration-200"
-							)}/>
+							)}
+						/>
 					</Switch>
 				)}
 			</div>
@@ -110,7 +133,7 @@ function SettingItem({
 const defaultSettings: any = {
 	blur: "on",
 	sidebarLoad: "on",
-	tintedBackdrop: "off"
+	tintedBackdrop: "off",
 };
 
 export function setSetting(name: string, value: string) {

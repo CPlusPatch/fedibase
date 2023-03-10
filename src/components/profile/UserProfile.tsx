@@ -22,7 +22,12 @@ function UserProfile({ user }: { user: Entity.Account }) {
 			<div className="flex flex-col gap-y-4 w-full">
 				<div className="w-full relative">
 					<div className="flex overflow-hidden justify-center items-center w-full h-44 bg-gray-200 rounded border dark:bg-dark-800 dark:border-gray-700">
-						<img src={user.header} className="w-full" alt="" loading="lazy" />
+						<img
+							src={user.header}
+							className="w-full"
+							alt=""
+							loading="lazy"
+						/>
 					</div>
 					<img
 						loading="lazy"
@@ -39,7 +44,7 @@ function UserProfile({ user }: { user: Entity.Account }) {
 						<h6
 							title={user.acct}
 							className="text-sm text-gray-500 dark:text-gray-400 font-inter">
-						@{user.acct}
+							@{user.acct}
 						</h6>
 					</div>
 					<div className="flex items-center gap-x-1">
@@ -48,7 +53,9 @@ function UserProfile({ user }: { user: Entity.Account }) {
 							className="!px-3 !py-2"
 							onClick={() => {
 								if (relationship?.requested) {
-									toast.error("Follow request already pending");
+									toast.error(
+										"Follow request already pending"
+									);
 								} else {
 									if (!relationship?.following) {
 										client
@@ -58,7 +65,9 @@ function UserProfile({ user }: { user: Entity.Account }) {
 											})
 											.catch(err => {
 												console.error(err);
-												toast.error("Error following account");
+												toast.error(
+													"Error following account"
+												);
 											});
 									} else {
 										client
@@ -68,17 +77,24 @@ function UserProfile({ user }: { user: Entity.Account }) {
 											})
 											.catch(err => {
 												console.error(err);
-												toast.error("Error unfollowing account");
+												toast.error(
+													"Error unfollowing account"
+												);
 											});
 									}
 								}
 							}}>
 							{relationship?.requested && "Requested!"}
 							{!relationship?.requested &&
-							(relationship?.following ? "Unfollow" : "Follow")}
+								(relationship?.following
+									? "Unfollow"
+									: "Follow")}
 						</Button>
 						{relationship && (
-							<ProfileActionsDropdown user={user} initialRelationship={relationship} />
+							<ProfileActionsDropdown
+								user={user}
+								initialRelationship={relationship}
+							/>
 						)}
 					</div>
 				</div>
@@ -88,8 +104,13 @@ function UserProfile({ user }: { user: Entity.Account }) {
 				<div className="w-full gap-y-2 md:gap-y-0 flex flex-col md:divide-y dark:divide-gray-700 text-sm rounded-md border dark:border-gray-700 dark:text-gray-50 font-inter">
 					{user.fields.map(field => (
 						<div className="flex px-3 md:flex-row gap-x-3 flex-col py-2">
-							<div className="w-1/3 font-bold text-xs md:text-sm">{field.name}</div>
-							<div dangerouslySetInnerHTML={{ __html: field.value }}></div>
+							<div className="w-1/3 font-bold text-xs md:text-sm">
+								{field.name}
+							</div>
+							<div
+								dangerouslySetInnerHTML={{
+									__html: field.value,
+								}}></div>
 						</div>
 					))}
 				</div>

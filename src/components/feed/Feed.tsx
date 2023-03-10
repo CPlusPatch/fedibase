@@ -2,7 +2,14 @@ import { AuthContext } from "components/context/AuthContext";
 import DummyStatus from "components/posts/DummyStatus";
 import { Response } from "megalodon";
 import { useIsVisible } from "react-is-visible";
-import { useState, useRef, useContext, useCallback, useEffect, MutableRef } from "preact/hooks";
+import {
+	useState,
+	useRef,
+	useContext,
+	useCallback,
+	useEffect,
+	MutableRef,
+} from "preact/hooks";
 import { memo } from "preact/compat";
 import { StatusType } from "components/posts/Status";
 
@@ -43,42 +50,44 @@ function Feed<T>(props: FeedProps) {
 			props.onLoadStart && props.onLoadStart();
 			let res: Response<T[]>;
 			switch (props.type) {
-			case FeedType.Home: {
-				res = (await client?.getHomeTimeline({
-					limit: DEFAULT_LOAD,
-					since_id: since_id,
-				})) as any;
-				break;
-			}
-			case FeedType.User: {
-				if (!props.options?.id)
-					throw Error("Feed needs a user ID to work in user mode!");
-				res = (await client?.getAccountStatuses(props.options.id, {
-					limit: DEFAULT_LOAD,
-					since_id: since_id,
-				})) as any;
-				break;
-			}
-			case FeedType.Notifications: {
-				res = (await client?.getNotifications({
-					limit: DEFAULT_LOAD,
-					since_id: since_id,
-				})) as any;
-				break;
-			}
-			case FeedType.Local: {
-				res = (await client?.getLocalTimeline({
-					limit: DEFAULT_LOAD,
-					since_id: since_id,
-				})) as any;
-				break;
-			}
+				case FeedType.Home: {
+					res = (await client?.getHomeTimeline({
+						limit: DEFAULT_LOAD,
+						since_id: since_id,
+					})) as any;
+					break;
+				}
+				case FeedType.User: {
+					if (!props.options?.id)
+						throw Error(
+							"Feed needs a user ID to work in user mode!"
+						);
+					res = (await client?.getAccountStatuses(props.options.id, {
+						limit: DEFAULT_LOAD,
+						since_id: since_id,
+					})) as any;
+					break;
+				}
+				case FeedType.Notifications: {
+					res = (await client?.getNotifications({
+						limit: DEFAULT_LOAD,
+						since_id: since_id,
+					})) as any;
+					break;
+				}
+				case FeedType.Local: {
+					res = (await client?.getLocalTimeline({
+						limit: DEFAULT_LOAD,
+						since_id: since_id,
+					})) as any;
+					break;
+				}
 			}
 			loading.current = false;
 			props.onLoadEnd && props.onLoadEnd();
 			return res.data as T[];
 		},
-		[props.options?.id, props.type],
+		[props.options?.id, props.type]
 	);
 
 	const loadEntitiesBefore = useCallback(
@@ -88,49 +97,51 @@ function Feed<T>(props: FeedProps) {
 			props.onLoadStart && props.onLoadStart();
 			let res: Response<T[]>;
 			switch (props.type) {
-			case FeedType.Home: {
-				res = (await client?.getHomeTimeline({
-					limit: DEFAULT_LOAD,
-					max_id: before_id,
-				})) as any;
-				break;
-			}
-			case FeedType.User: {
-				if (!props.options?.id)
-					throw Error("Feed needs a user ID to work in user mode!");
-				res = (await client?.getAccountStatuses(props.options.id, {
-					limit: DEFAULT_LOAD,
-					max_id: before_id,
-				})) as any;
-				break;
-			}
-			case FeedType.Notifications: {
-				res = (await client?.getNotifications({
-					limit: DEFAULT_LOAD,
-					max_id: before_id,
-				})) as any;
-				break;
-			}
-			case FeedType.Local: {
-				res = (await client?.getLocalTimeline({
-					limit: DEFAULT_LOAD,
-					max_id: before_id,
-				})) as any;
-				break;
-			}
+				case FeedType.Home: {
+					res = (await client?.getHomeTimeline({
+						limit: DEFAULT_LOAD,
+						max_id: before_id,
+					})) as any;
+					break;
+				}
+				case FeedType.User: {
+					if (!props.options?.id)
+						throw Error(
+							"Feed needs a user ID to work in user mode!"
+						);
+					res = (await client?.getAccountStatuses(props.options.id, {
+						limit: DEFAULT_LOAD,
+						max_id: before_id,
+					})) as any;
+					break;
+				}
+				case FeedType.Notifications: {
+					res = (await client?.getNotifications({
+						limit: DEFAULT_LOAD,
+						max_id: before_id,
+					})) as any;
+					break;
+				}
+				case FeedType.Local: {
+					res = (await client?.getLocalTimeline({
+						limit: DEFAULT_LOAD,
+						max_id: before_id,
+					})) as any;
+					break;
+				}
 			}
 			loading.current = false;
 			props.onLoadEnd && props.onLoadEnd();
 			return res.data as T[];
 		},
-		[props.options?.id, props.type],
+		[props.options?.id, props.type]
 	);
 
 	useEffect(() => {
 		const timeout = setTimeout(() => {
 			async function fetchInitialData() {
 				if (!loading.current) {
-					const latestEntities = await getNewEntities("") ?? [];
+					const latestEntities = (await getNewEntities("")) ?? [];
 
 					entitiesRef.current = latestEntities as T[];
 					setEntities(entitiesRef.current);
@@ -147,7 +158,10 @@ function Feed<T>(props: FeedProps) {
 	useEffect(() => {
 		const interval = window.setInterval(async () => {
 			if (!loading.current) {
-				const latestEntities = await getNewEntities((entitiesRef.current[0] as any).id) ?? [];
+				const latestEntities =
+					(await getNewEntities(
+						(entitiesRef.current[0] as any).id
+					)) ?? [];
 
 				entitiesRef.current = [
 					...latestEntities,
@@ -163,9 +177,14 @@ function Feed<T>(props: FeedProps) {
 
 	useEffect(() => {
 		async function loadMoreEntities() {
-			if (doLoadNewEntities && !loading.current && entitiesRef.current.length > 0) {
+			if (
+				doLoadNewEntities &&
+				!loading.current &&
+				entitiesRef.current.length > 0
+			) {
 				const latestPosts = await loadEntitiesBefore(
-					(entitiesRef.current[entitiesRef.current.length - 1] as any).id,
+					(entitiesRef.current[entitiesRef.current.length - 1] as any)
+						.id
 				);
 
 				entitiesRef.current = [
@@ -190,14 +209,22 @@ function Feed<T>(props: FeedProps) {
 				entities
 					.filter(e => {
 						switch (props.options?.filter) {
-						case "all":
-							return true;
-						case "reblogs":
-							return (e as Entity.Notification).type === "reblog";
-						case "mention":
-							return (e as Entity.Notification).type === "mention";
-						case "favourites":
-							return (e as Entity.Notification).type === "favourite";
+							case "all":
+								return true;
+							case "reblogs":
+								return (
+									(e as Entity.Notification).type === "reblog"
+								);
+							case "mention":
+								return (
+									(e as Entity.Notification).type ===
+									"mention"
+								);
+							case "favourites":
+								return (
+									(e as Entity.Notification).type ===
+									"favourite"
+								);
 						}
 					})
 					.map((entity: any) => (
@@ -205,7 +232,10 @@ function Feed<T>(props: FeedProps) {
 					))}
 			{(props.type === FeedType.Home || props.type === FeedType.User) && (
 				<>
-					<DummyStatus statusType={StatusType.Post} reference={loadNewRef} />
+					<DummyStatus
+						statusType={StatusType.Post}
+						reference={loadNewRef}
+					/>
 					<DummyStatus statusType={StatusType.Post} />
 					<DummyStatus statusType={StatusType.Post} />
 					<DummyStatus statusType={StatusType.Post} />
@@ -229,7 +259,11 @@ function Feed<T>(props: FeedProps) {
 	);
 }
 
-const DummyNotification = ({ reference }: { reference?: MutableRef<any> | null }) => {
+const DummyNotification = ({
+	reference,
+}: {
+	reference?: MutableRef<any> | null;
+}) => {
 	return (
 		<>
 			<li

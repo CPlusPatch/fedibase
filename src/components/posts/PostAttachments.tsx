@@ -6,7 +6,7 @@ import { useState } from "preact/hooks";
 
 /**
  * Images of a Status (extracted for modularity)
- * @returns 
+ * @returns
  */
 function PostAttachments({ status }: { status: Entity.Status }) {
 	return (
@@ -17,7 +17,11 @@ function PostAttachments({ status }: { status: Entity.Status }) {
 						status.media_attachments.length === 2 && "grid-cols-2"
 					} ${status.media_attachments.length > 2 && "grid-cols-3"}`}>
 					{status.media_attachments.map(attachment => (
-						<PostAttachment status={status} image={attachment} key={attachment.id} />
+						<PostAttachment
+							status={status}
+							image={attachment}
+							key={attachment.id}
+						/>
 					))}
 				</div>
 			)}
@@ -27,7 +31,13 @@ function PostAttachments({ status }: { status: Entity.Status }) {
 
 export default memo(PostAttachments);
 
-function PostAttachment({ status, image }: { status: Entity.Status; image: Entity.Attachment }) {
+function PostAttachment({
+	status,
+	image,
+}: {
+	status: Entity.Status;
+	image: Entity.Attachment;
+}) {
 	const [revealed, setRevealed] = useState<boolean>(!status.sensitive);
 
 	return (

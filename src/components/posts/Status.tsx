@@ -22,7 +22,11 @@ interface StatusProps {
 	showInteraction?: boolean;
 }
 
-function Status({ status: statusProp, type, showInteraction = true }: StatusProps) {
+function Status({
+	status: statusProp,
+	type,
+	showInteraction = true,
+}: StatusProps) {
 	const [expand, setExpand] = useState(false);
 	const [status, setStatus] = useState(statusProp);
 	const [showText, setShowText] = useState(false);
@@ -39,28 +43,37 @@ function Status({ status: statusProp, type, showInteraction = true }: StatusProp
 		<div className="flex flex-col max-w-full font-inter cursor-pointer">
 			<div className="flex flex-col min-w-0 grow gap-y-1">
 				<div className="flex flex-row overflow-hidden text-[0.95rem] text-ellipsis whitespace-nowrap w-full">
-					<Link href={`/users/${status.account.id}`} className="flex-shrink-0 mr-2">
+					<Link
+						href={`/users/${status.account.id}`}
+						className="flex-shrink-0 mr-2">
 						<img
 							loading="lazy"
 							alt={`${status.account.acct}'s avatar`}
 							src={status.account.avatar}
 							className={`${
-								type == StatusType.Post ? "w-12 h-12" : "w-10 h-10"
+								type == StatusType.Post
+									? "w-12 h-12"
+									: "w-10 h-10"
 							} bg-white overflow-hidden dark:dark:bg-dark-800-800 rounded border border-gray-300 dark:border-gray-700 `}
 						/>
 					</Link>
 					<div
 						className={classNames(
 							"flex flex-col grow",
-							type === StatusType.Notification && "text-sm",
+							type === StatusType.Notification && "text-sm"
 						)}>
-						<h4 className="font-bold dark:text-gray-200" title={status.account.display_name}>
-							{withEmojis(status.account.display_name, status.account.emojis)}
+						<h4
+							className="font-bold dark:text-gray-200"
+							title={status.account.display_name}>
+							{withEmojis(
+								status.account.display_name,
+								status.account.emojis
+							)}
 						</h4>
 						<h5
 							title={status.account.acct}
 							className="overflow-hidden ml-0 text-gray-500 overflow-ellipsis dark:text-gray-400">
-                  @{status.account.acct}
+							@{status.account.acct}
 						</h5>
 					</div>
 					<Link
@@ -82,7 +95,7 @@ function Status({ status: statusProp, type, showInteraction = true }: StatusProp
 					)}
 
 					{/* Actual text */}
-              
+
 					<p
 						ref={textElementRef}
 						className={`mt-1 status-text rounded text-sm duration-200 status-text dark:text-gray-50 break-words w-full ${
@@ -102,19 +115,24 @@ function Status({ status: statusProp, type, showInteraction = true }: StatusProp
 						</>
 					)}
 
-					{status.emoji_reactions && <Reactions status={status} setStatus={setStatus} />}
+					{status.emoji_reactions && (
+						<Reactions status={status} setStatus={setStatus} />
+					)}
 
-					{status.poll && <StatusPoll status={status} setStatus={setStatus} />}
+					{status.poll && (
+						<StatusPoll status={status} setStatus={setStatus} />
+					)}
 				</div>
 				{status.media_attachments.length > 0 && (
-					<div
-						className={"mt-2"}>
+					<div className={"mt-2"}>
 						<PostAttachments status={status} />
 					</div>
 				)}
 			</div>
 
-			{showInteraction && <InteractionBar status={status} setStatus={setStatus} />}
+			{showInteraction && (
+				<InteractionBar status={status} setStatus={setStatus} />
+			)}
 		</div>
 	);
 }

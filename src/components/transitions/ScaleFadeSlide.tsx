@@ -4,7 +4,7 @@ import { Fragment } from "preact/jsx-runtime";
 interface ScaleFadeSlideProps {
 	children: any;
 	show?: boolean;
-	appear?: boolean
+	appear?: boolean;
 }
 
 export function ScaleFadeSlide(props: ScaleFadeSlideProps) {
@@ -17,7 +17,6 @@ export function ScaleFadeSlide(props: ScaleFadeSlideProps) {
 			enterTo="opacity-100 translate-y-0 sm:scale-100"
 			leave="ease-in duration-200"
 			leaveFrom="opacity-100 translate-y-0 sm:scale-100"
-			leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95">
-		</Transition>
+			leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"></Transition>
 	);
 }

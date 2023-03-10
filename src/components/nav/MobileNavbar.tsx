@@ -1,5 +1,12 @@
 import { Dialog, Transition } from "@headlessui/react";
-import { IconBell, IconHome, IconMoon, IconPencilPlus, IconSun, IconX } from "@tabler/icons-preact";
+import {
+	IconBell,
+	IconHome,
+	IconMoon,
+	IconPencilPlus,
+	IconSun,
+	IconX,
+} from "@tabler/icons-preact";
 import { Button } from "components/buttons/Button";
 import NotificationsFeed from "components/feed/NotificationsFeed";
 import { Fragment } from "preact/jsx-runtime";
@@ -29,17 +36,16 @@ function MobileNavbar() {
 			});
 	}, []);
 
-
 	const toggleTheme = () => {
 		const html = document.getElementsByTagName("html")[0];
 		if (store.theme === "dark") {
 			modifyStore(setStore, {
-				theme: "light"
+				theme: "light",
 			});
 			html.className = html.className.replaceAll("dark", "");
 		} else if (store.theme === "light") {
 			modifyStore(setStore, {
-				theme: "dark"
+				theme: "dark",
 			});
 			html.className = html.className + " dark";
 		}
@@ -51,7 +57,11 @@ function MobileNavbar() {
 				<Button
 					theme="gray"
 					className="!p-3 !border-none !shadow-none !bg-white dark:!bg-transparent"
-					title={store.theme === "light" ? "Enable dark mode" : "Enable light mode"}
+					title={
+						store.theme === "light"
+							? "Enable dark mode"
+							: "Enable light mode"
+					}
 					onClick={toggleTheme}>
 					{store.theme === "light" && (
 						<>
@@ -95,11 +105,14 @@ function MobileNavbar() {
 					<IconBell aria-hidden={true} />
 					<span className="sr-only">Open notifications</span>
 				</Button>
-				<Button theme="gray" className="!p-0 !border-none !shadow-none !bg-white dark:!bg-transparent" onClick={() => {
-					modifyStore(setStore, {
-						settingsOpen: true,
-					});
-				}}>
+				<Button
+					theme="gray"
+					className="!p-0 !border-none !shadow-none !bg-white dark:!bg-transparent"
+					onClick={() => {
+						modifyStore(setStore, {
+							settingsOpen: true,
+						});
+					}}>
 					<img
 						src={account?.avatar}
 						className="w-9 h-9 rounded border-2"
@@ -149,8 +162,13 @@ function MobileNavbar() {
 													notificationsOpened: false,
 												});
 											}}>
-											<span className="sr-only">Close panel</span>
-											<IconX className="w-6 h-6" aria-hidden="true" />
+											<span className="sr-only">
+												Close panel
+											</span>
+											<IconX
+												className="w-6 h-6"
+												aria-hidden="true"
+											/>
 										</button>
 									</div>
 									<div className="flex overflow-hidden relative px-4 mt-6 max-w-full grow sm:px-6">

@@ -7,10 +7,14 @@ interface MetaTagsTypes {
 }
 
 export default function MetaTags({
-	title, description = "", author = "", type = "", image = ""
+	title,
+	description = "",
+	author = "",
+	type = "",
+	image = "",
 }: MetaTagsTypes) {
-	return (
-		{/* <Head>
+	return {
+		/* <Head>
 			<title>{title}</title>
 			<meta
 				name="title"
@@ -30,6 +34,6 @@ export default function MetaTags({
 			/>
 			<meta property="og:description" content={description} />
 			<meta property="og:image" content={image} />
-		</Head> */}
-	);
+		</Head> */
+	};
 }

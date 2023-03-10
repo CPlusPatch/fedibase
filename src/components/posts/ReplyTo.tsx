@@ -16,13 +16,14 @@ function ReplyTo({ status }: { status: Entity.Status }) {
 	const visible = useIsVisible(nodeRef);
 
 	const fetchPostData = useCallback(async (): Promise<Entity.Status> => {
-		return (await client?.getStatus(status.in_reply_to_id ?? ""))?.data as Entity.Status;
+		return (await client?.getStatus(status.in_reply_to_id ?? ""))
+			?.data as Entity.Status;
 	}, []);
 
 	useEffect(() => {
 		// If the post is a reply, get the previous post's contents
 		if (status.in_reply_to_id && !replyStatus && visible)
-			fetchPostData().then((data) => {
+			fetchPostData().then(data => {
 				setReplyStatus(data);
 			});
 	}, [replyStatus, status.in_reply_to_id, visible]);
@@ -33,10 +34,16 @@ function ReplyTo({ status }: { status: Entity.Status }) {
 				href={`/posts/${status.id}`}
 				sidebar={status.id}
 				className="text-xs text-gray-600 hover:underline dark:text-gray-300">
-				<IconMessage className="inline mr-1 w-4 h-4" aria-hidden={true} />
+				<IconMessage
+					className="inline mr-1 w-4 h-4"
+					aria-hidden={true}
+				/>
 				Replying to{" "}
 				{replyStatus &&
-					withEmojis(replyStatus.account.display_name, replyStatus.account.emojis)}
+					withEmojis(
+						replyStatus.account.display_name,
+						replyStatus.account.emojis
+					)}
 			</Link>
 		</div>
 	);

@@ -6,7 +6,7 @@ const themes: any = {
 	gray: "dark:text-gray-200 bg-gray-100 text-black dark:bg-dark-800 dark:border-gray-600 outline-none hover:scale-105",
 	orange: "bg-orange-600 hover:bg-orange-700 text-white border-transparent",
 	orangeLight:
-                "text-orange-700 dark:text-orange-200 bg-orange-100 dark:bg-orange-800 hover:bg-orange-200 border-transparent",
+		"text-orange-700 dark:text-orange-200 bg-orange-100 dark:bg-orange-800 hover:bg-orange-200 border-transparent",
 };
 
 interface ButtonProps {
@@ -26,7 +26,8 @@ export function Button({
 	loading = false,
 	spinnerClasses = "h-4 text-gray-100 fill-orange-400",
 	...props
-}: ButtonProps & Omit<JSXInternal.HTMLAttributes<HTMLButtonElement>, "loading">) {
+}: ButtonProps &
+	Omit<JSXInternal.HTMLAttributes<HTMLButtonElement>, "loading">) {
 	return (
 		<button
 			{...props}

@@ -22,7 +22,13 @@ import { useStore } from "utils/store";
  * Small bar containing all the buttons on a post, such as "favourite", "quote", "reply"...
  * @returns
  */
-function InteractionBar({ status, setStatus }: { status: Entity.Status; setStatus: StateUpdater<Entity.Status> }) {
+function InteractionBar({
+	status,
+	setStatus,
+}: {
+	status: Entity.Status;
+	setStatus: StateUpdater<Entity.Status>;
+}) {
 	const client = useContext(AuthContext);
 	const [showEmojiPicker, setShowEmojiPicker] = useState<boolean>(false);
 	const [instanceEmojis, setInstanceEmojis] = useState<Entity.Emoji[]>([]);
@@ -33,11 +39,16 @@ function InteractionBar({ status, setStatus }: { status: Entity.Status; setStatu
 		if (showEmojiPicker) {
 			if (!localStorage.getItem("customEmojis")) {
 				client?.getInstanceCustomEmojis().then(res => {
-					localStorage.setItem("customEmojis", JSON.stringify(res.data));
+					localStorage.setItem(
+						"customEmojis",
+						JSON.stringify(res.data)
+					);
 					setInstanceEmojis(res.data);
 				});
 			} else {
-				setInstanceEmojis(JSON.parse(localStorage.getItem("customEmojis") as any));
+				setInstanceEmojis(
+					JSON.parse(localStorage.getItem("customEmojis") as any)
+				);
 			}
 		}
 	}, [showEmojiPicker]);
@@ -60,18 +71,22 @@ function InteractionBar({ status, setStatus }: { status: Entity.Status; setStatu
 			</InteractionBarIcon>
 
 			<InteractionBarIcon
-				title={status.favourited ? "You favourited this post!" : "Favourite this post"}
+				title={
+					status.favourited
+						? "You favourited this post!"
+						: "Favourite this post"
+				}
 				onClick={() => {
 					if (status.favourited) {
 						setStatus(prev => ({
 							...prev,
-							favourited: false
+							favourited: false,
 						}));
 						client?.unfavouriteStatus(status.id);
 					} else if (!status.favourited) {
 						setStatus(prev => ({
 							...prev,
-							favourited: true
+							favourited: true,
 						}));
 						client?.favouriteStatus(status.id);
 					}
@@ -96,22 +111,25 @@ function InteractionBar({ status, setStatus }: { status: Entity.Status; setStatu
 					if (status.reblogged) {
 						setStatus(prev => ({
 							...prev,
-							reblogged: false
+							reblogged: false,
 						}));
 						client?.unreblogStatus(status.id);
 					} else if (!status.reblogged) {
 						setStatus(prev => ({
 							...prev,
-							reblogged: true
+							reblogged: true,
 						}));
 						client?.reblogStatus(status.id);
 					}
 				}}>
-				{status.visibility !== "private" && status.visibility !== "direct" ? (
+				{status.visibility !== "private" &&
+				status.visibility !== "direct" ? (
 					<>
 						{status.reblogged ? (
 							<>
-								<span className="sr-only">You boosted this post!</span>
+								<span className="sr-only">
+									You boosted this post!
+								</span>
 								<IconRocket
 									aria-hidden={true}
 									className="w-5 h-5 text-green-400 animate-[spin_1s_ease-in-out]"
@@ -120,14 +138,22 @@ function InteractionBar({ status, setStatus }: { status: Entity.Status; setStatu
 						) : (
 							<>
 								<span className="sr-only">Boost this post</span>
-								<IconRocket aria-hidden={true} className="w-5 h-5" />
+								<IconRocket
+									aria-hidden={true}
+									className="w-5 h-5"
+								/>
 							</>
 						)}
 					</>
 				) : (
 					<>
-						<span className="sr-only">This post is locked and cannot be boosted</span>
-						<IconLock aria-hidden={true} className="w-5 h-5 text-gray-300" />
+						<span className="sr-only">
+							This post is locked and cannot be boosted
+						</span>
+						<IconLock
+							aria-hidden={true}
+							className="w-5 h-5 text-gray-300"
+						/>
 					</>
 				)}
 			</InteractionBarIcon>
@@ -143,12 +169,14 @@ function InteractionBar({ status, setStatus }: { status: Entity.Status; setStatu
 					<span className="sr-only">Add reaction</span>
 
 					<Transition appear show={showEmojiPicker} as={Fragment}>
-						<Dialog onClose={() => {
-							setShowEmojiPicker(false);
-						}} onClick={(e: any) => {
-							e.stopPropagation();
-						}}
-						className="z-50 fixed">
+						<Dialog
+							onClose={() => {
+								setShowEmojiPicker(false);
+							}}
+							onClick={(e: any) => {
+								e.stopPropagation();
+							}}
+							className="z-50 fixed">
 							<Transition.Child
 								as={Fragment}
 								enter="ease-out duration-300"
@@ -159,8 +187,7 @@ function InteractionBar({ status, setStatus }: { status: Entity.Status; setStatu
 								leaveTo="opacity-0 scale-95">
 								<Dialog.Panel>
 									<div className="w-80 bottom-0 left-0 m-4 absolute z-50 bg-orange-100 border shadow rounded-xl h-48">
-									GAY
-
+										GAY
 									</div>
 								</Dialog.Panel>
 							</Transition.Child>
@@ -184,7 +211,9 @@ function InteractionBar({ status, setStatus }: { status: Entity.Status; setStatu
 
 			<InteractionBarIcon title="Open options menu (not implemented)">
 				<IconDots className="w-5 h-5" />
-				<span className="sr-only">Open options menu (not implemented)</span>
+				<span className="sr-only">
+					Open options menu (not implemented)
+				</span>
 			</InteractionBarIcon>
 		</div>
 	);
@@ -206,7 +235,13 @@ function InteractionBarIcon({
 	shake?: boolean;
 }) {
 	return (
-		<button title={title} className={classNames("flex justify-center !static", shake && "hover:animate-hithere")} onClick={onClick}>
+		<button
+			title={title}
+			className={classNames(
+				"flex justify-center !static",
+				shake && "hover:animate-hithere"
+			)}
+			onClick={onClick}>
 			{children}
 		</button>
 	);

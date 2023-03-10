@@ -24,13 +24,12 @@ export function App() {
 		<>
 			<AuthContext.Provider
 				value={
-					typeof window !== "undefined" &&
-					store.auth.token
+					typeof window !== "undefined" && store.auth.token
 						? generator(
-							store.auth.type as any,
-							store.auth.url,
-							store.auth.token,
-						)
+								store.auth.type as any,
+								store.auth.url,
+								store.auth.token
+						  )
 						: null
 				}>
 				<Index />

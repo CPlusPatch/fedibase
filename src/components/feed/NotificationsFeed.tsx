@@ -1,4 +1,9 @@
-import { IconList, IconListDetails, IconRocket, IconStarFilled } from "@tabler/icons-preact";
+import {
+	IconList,
+	IconListDetails,
+	IconRocket,
+	IconStarFilled,
+} from "@tabler/icons-preact";
 import { SelectItem } from "components/forms/Select2";
 import { Notification as NotificationElement } from "components/posts/Notification";
 import { Entity } from "megalodon";
@@ -41,48 +46,54 @@ function NotificationsFeed({ withTitle = true }: { withTitle?: boolean }) {
 		<div className="flex flex-col gap-y-6 w-full max-w-full min-h-full font-inter">
 			{withTitle && (
 				<div className="flex flex-row justify-between items-center">
-					<h3 className="text-lg font-bold dark:text-gray-50">Notifications</h3>
+					<h3 className="text-lg font-bold dark:text-gray-50">
+						Notifications
+					</h3>
 					<SmallSelect
 						items={modes}
 						defaultValue={0}
-						onChange={(item) => {
+						onChange={item => {
 							setMode(item);
 						}}
 						direction={SelectDirection.Left}
 					/>
 				</div>
 			)}
-			
+
 			<ul className="flex overflow-y-scroll flex-col overflow-x-hidden gap-y-3 max-w-full h-full no-scroll">
-				<Feed<Entity.Notification> type={FeedType.Notifications}
+				<Feed<Entity.Notification>
+					type={FeedType.Notifications}
 					onLoadNew={(entities: Entity.Notification[]) => {
-						if (Notification.permission === "denied" || Notification.permission === "default") return;
+						if (
+							Notification.permission === "denied" ||
+							Notification.permission === "default"
+						)
+							return;
 						entities.forEach(entity => {
 							let title;
 							switch (entity.type) {
-							case "favourite":
-								title = `${entity.account.display_name} favourited your post`;
-								break;
-							case "reblog":
-								title = `${entity.account.display_name} boosted your post`;
-								break;
-							case "follow":
-								title = `${entity.account.display_name} followed you`;
-								break;
-							case "emoji_reaction":
-								title = `${entity.account.display_name} reacted with ${entity.emoji}`;
-								break;
-							case "mention":
-							default:
-								title = `${entity.account.display_name}`;
-								break;
+								case "favourite":
+									title = `${entity.account.display_name} favourited your post`;
+									break;
+								case "reblog":
+									title = `${entity.account.display_name} boosted your post`;
+									break;
+								case "follow":
+									title = `${entity.account.display_name} followed you`;
+									break;
+								case "emoji_reaction":
+									title = `${entity.account.display_name} reacted with ${entity.emoji}`;
+									break;
+								case "mention":
+								default:
+									title = `${entity.account.display_name}`;
+									break;
 							}
 
 							const notif = new Notification(title, {
 								body: entity.status?.plain_content ?? "",
-								icon: entity.account.avatar_static
+								icon: entity.account.avatar_static,
 							});
-
 
 							notif.onclick = () => {
 								window.parent.focus();
@@ -93,8 +104,9 @@ function NotificationsFeed({ withTitle = true }: { withTitle?: boolean }) {
 					entityElement={NotificationElement}
 					options={{
 						id: "",
-						filter: mode.value
-					}}/>
+						filter: mode.value,
+					}}
+				/>
 			</ul>
 		</div>
 	);

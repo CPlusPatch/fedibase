@@ -7,7 +7,7 @@ import { memo } from "preact/compat";
 interface SelectOptions {
 	items: SelectItem[];
 	defaultValue: number;
-	onChange?: (item: SelectItem) => void
+	onChange?: (item: SelectItem) => void;
 }
 
 export interface SelectItem {
@@ -17,9 +17,13 @@ export interface SelectItem {
 	description?: string;
 }
 
-function Select2({ items, defaultValue, onChange = () => {
-	//
-} }: SelectOptions) {
+function Select2({
+	items,
+	defaultValue,
+	onChange = () => {
+		//
+	},
+}: SelectOptions) {
 	const [selected, setSelected] = useState(items[defaultValue]);
 	return (
 		<div className="w-full">
@@ -38,7 +42,10 @@ function Select2({ items, defaultValue, onChange = () => {
 				<Listbox.Button className="relative py-2 pr-10 pl-3 w-full text-left bg-white rounded border shadow-sm cursor-default dark:bg-dark-800 dark:border-gray-700 dark:text-gray-100 focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm">
 					<span className="block truncate">{selected.text}</span>
 					<span className="flex absolute inset-y-0 right-0 items-center pr-2 pointer-events-none">
-						<IconSeparatorHorizontal className="w-5 h-5 text-gray-400" aria-hidden="true" />
+						<IconSeparatorHorizontal
+							className="w-5 h-5 text-gray-400"
+							aria-hidden="true"
+						/>
 					</span>
 				</Listbox.Button>
 				<Transition
@@ -54,12 +61,13 @@ function Select2({ items, defaultValue, onChange = () => {
 							<Listbox.Option
 								key={item.text}
 								title={item.text}
-								className={"flex relative flex-row gap-x-3 items-center px-4 py-2 duration-200 hover:bg-gray-200 hover:dark:bg-gray-700 dark:text-gray-100"}
+								className={
+									"flex relative flex-row gap-x-3 items-center px-4 py-2 duration-200 hover:bg-gray-200 hover:dark:bg-gray-700 dark:text-gray-100"
+								}
 								value={item.value}>
 								<>
-									<item.icon className="w-4 h-4"/>
-									<span
-										className={"block truncate"}>
+									<item.icon className="w-4 h-4" />
+									<span className={"block truncate"}>
 										{item.text}
 									</span>
 								</>

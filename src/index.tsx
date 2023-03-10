@@ -53,28 +53,33 @@ export default function Index() {
 				paths = window.location.pathname.split("/");
 			}
 
-			if (store.auth.token === null && window.location.pathname !== "/login") {
+			if (
+				store.auth.token === null &&
+				window.location.pathname !== "/login"
+			) {
 				window.location.pathname = "/login";
 			}
 
 			switch (paths[1]) {
-			case "posts":
-				console.log("gay");
-				setComponent(<Conversation id={paths[2]} mode={StatusType.Post} />);
-				break;
-			case "local":
-				setComponent(<LocalFeed />);
-				break;
-			case "":
-				setComponent(<HomeFeed />);
-				break;
-			case "users":
-				client?.getAccount(paths[2].replace("@", "")).then(res => {
-					setComponent(<UserFeed account={res.data} />);
-				});
-				break;
-			case "login":
-				setLoginMode(true);
+				case "posts":
+					console.log("gay");
+					setComponent(
+						<Conversation id={paths[2]} mode={StatusType.Post} />
+					);
+					break;
+				case "local":
+					setComponent(<LocalFeed />);
+					break;
+				case "":
+					setComponent(<HomeFeed />);
+					break;
+				case "users":
+					client?.getAccount(paths[2].replace("@", "")).then(res => {
+						setComponent(<UserFeed account={res.data} />);
+					});
+					break;
+				case "login":
+					setLoginMode(true);
 			}
 
 			window.addEventListener("popstate", handlePopState);
@@ -93,7 +98,17 @@ export default function Index() {
 				</div>
 			)}
 			{loginMode && (
-				<LoginForm code={new URLSearchParams(document.location.search).get("code") ?? new URLSearchParams(document.location.search).get("token") ?? ""} />
+				<LoginForm
+					code={
+						new URLSearchParams(document.location.search).get(
+							"code"
+						) ??
+						new URLSearchParams(document.location.search).get(
+							"token"
+						) ??
+						""
+					}
+				/>
 			)}
 		</>
 	);

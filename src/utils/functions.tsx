@@ -56,12 +56,12 @@ export function withEmojis(string: string, emojis: Entity.Emoji[]) {
 		const re = new RegExp(`:${emoji.shortcode}:`, "g");
 		string = string.replaceAll(
 			re,
-			`<img src="${emoji.url}" loading="lazy" alt="Emoji (${emoji.shortcode})" style="height: 1em; display: inline; vertical-align: middle;" />`,
+			`<img src="${emoji.url}" loading="lazy" alt="Emoji (${emoji.shortcode})" style="height: 1em; display: inline; vertical-align: middle;" />`
 		);
 	});
 
 	return parse(string, {
-		trim: true
+		trim: true,
 	});
 }
 
@@ -71,7 +71,10 @@ export function withEmojis(string: string, emojis: Entity.Emoji[]) {
  * @param emojis List of emojis in the text
  * @returns JSX element of rendered HTML with the emoji
  */
-export function withEmojiReactions(string: string, emojis: Entity.Status["emoji_reactions"]) {
+export function withEmojiReactions(
+	string: string,
+	emojis: Entity.Status["emoji_reactions"]
+) {
 	string = stripNonPrintableAndNormalize(string);
 	emojis.forEach(emoji => {
 		// img has .25em bottom margin to line up right
@@ -79,7 +82,7 @@ export function withEmojiReactions(string: string, emojis: Entity.Status["emoji_
 			`:${emoji.name.split("@")[0]}:`,
 			`<img src="${(emoji as any).url}" loading="lazy" alt="Emoji (${
 				emoji.name
-			})" style="height: 1em; display: inline; margin-bottom: 0.25em"/>`,
+			})" style="height: 1em; display: inline; margin-bottom: 0.25em"/>`
 		);
 	});
 
@@ -97,7 +100,10 @@ export function withEmojiReactions(string: string, emojis: Entity.Status["emoji_
  */
 export function fromNow(
 	date: any,
-	rft = new Intl.RelativeTimeFormat(undefined, { numeric: "auto", style: "narrow" }),
+	rft = new Intl.RelativeTimeFormat(undefined, {
+		numeric: "auto",
+		style: "narrow",
+	})
 ) {
 	const SECOND = 1000;
 	const MINUTE = 60 * SECOND;
@@ -118,7 +124,8 @@ export function fromNow(
 	];
 	const nowDate = Date.now();
 	const now = new Date(nowDate).getTime();
-	const diff = now - (typeof date === "object" ? date : new Date(date)).getTime();
+	const diff =
+		now - (typeof date === "object" ? date : new Date(date)).getTime();
 	const diffAbs = Math.abs(diff);
 	for (const interval of intervals) {
 		if (diffAbs >= interval.ge) {
@@ -140,7 +147,7 @@ export function fromNow(
 export function dedupeById(
 	arr: {
 		id: string;
-	}[],
+	}[]
 ) {
 	return arr.filter((v, i, a) => a.findIndex(v2 => v2.id === v.id) === i);
 }
@@ -153,7 +160,7 @@ export function dedupeById(
 export function smoothNavigate(url: string, setState: any) {
 	setState((prev: any) => ({
 		...prev,
-		path: url
+		path: url,
 	}));
 
 	history.pushState(null, "", url);
@@ -185,6 +192,6 @@ export function modifyStore(setStore: any, newValues: Partial<StateType>) {
 	console.log("Modified store!");
 	setStore((prev: any) => ({
 		...prev,
-		...newValues
+		...newValues,
 	}));
 }

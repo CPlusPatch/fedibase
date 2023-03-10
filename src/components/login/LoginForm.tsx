@@ -26,13 +26,13 @@ const instanceTypes: SelectItem[] = [
 	},
 ];
 
-export default function LoginForm({ code }: {
-	code: string;
-}) {
+export default function LoginForm({ code }: { code: string }) {
 	const [isLoading, setIsLoading] = useState<boolean>(false);
 
-	const [mode,] = useState<"login" | "code">(code ? "code" : "login");
-	const [selectedInstanceType, setSelectedInstanceType] = useState(instanceTypes[0]);
+	const [mode] = useState<"login" | "code">(code ? "code" : "login");
+	const [selectedInstanceType, setSelectedInstanceType] = useState(
+		instanceTypes[0]
+	);
 	const { store, setStore } = useBackupStore();
 
 	const loginForm = async (event: any) => {
@@ -57,7 +57,41 @@ export default function LoginForm({ code }: {
 		const client = generator(instanceType as any, instanceUrl);
 
 		let scope = [];
-		if (instanceType === "misskey") scope = ["read:account","write:account","read:blocks","write:blocks","read:drive","write:drive","read:favorites","write:favorites","read:following","write:following","read:messaging","write:messaging","read:mutes","write:mutes","write:notes","read:notifications","write:notifications","read:reactions","write:reactions","write:votes","read:pages","write:pages","write:page-likes","read:page-likes","read:user-groups","write:user-groups","read:channels","write:channels","read:gallery","write:gallery","read:gallery-likes","write:gallery-likes"];
+		if (instanceType === "misskey")
+			scope = [
+				"read:account",
+				"write:account",
+				"read:blocks",
+				"write:blocks",
+				"read:drive",
+				"write:drive",
+				"read:favorites",
+				"write:favorites",
+				"read:following",
+				"write:following",
+				"read:messaging",
+				"write:messaging",
+				"read:mutes",
+				"write:mutes",
+				"write:notes",
+				"read:notifications",
+				"write:notifications",
+				"read:reactions",
+				"write:reactions",
+				"write:votes",
+				"read:pages",
+				"write:pages",
+				"write:page-likes",
+				"read:page-likes",
+				"read:user-groups",
+				"write:user-groups",
+				"read:channels",
+				"write:channels",
+				"read:gallery",
+				"write:gallery",
+				"read:gallery-likes",
+				"write:gallery-likes",
+			];
 		else scope = ["read", "write", "follow"];
 
 		const appData = await client.registerApp("Fedibase Web", {
@@ -76,8 +110,8 @@ export default function LoginForm({ code }: {
 				handle: handle,
 				type: instanceType as any,
 				id: "",
-				url: instanceUrl
-			}
+				url: instanceUrl,
+			},
 		}));
 
 		url && window.location.replace(url);
@@ -87,7 +121,8 @@ export default function LoginForm({ code }: {
 		if (code !== "") {
 			console.log("logging in!");
 
-			if (!store.auth.type || !store.auth.url || !store.auth.clientSecret) return console.error("Items missing in localStorage");
+			if (!store.auth.type || !store.auth.url || !store.auth.clientSecret)
+				return console.error("Items missing in localStorage");
 
 			const client = generator(store.auth.type as any, store.auth.url);
 
@@ -96,22 +131,25 @@ export default function LoginForm({ code }: {
 					store.auth.clientId,
 					store.auth.clientSecret,
 					code,
-					`http://${window.location.host}/login`,
+					`http://${window.location.host}/login`
 				)
 				.then(async (tokenData: OAuth.TokenData) => {
-					const client = generator(store.auth.type as any, store.auth.url, tokenData.accessToken);
+					const client = generator(
+						store.auth.type as any,
+						store.auth.url,
+						tokenData.accessToken
+					);
 					// Find ID of logged in account
 					client.verifyAccountCredentials().then(data => {
 						console.log(tokenData.accessToken);
-
 
 						setStore(prev => ({
 							...prev,
 							auth: {
 								...prev.auth,
 								token: tokenData.accessToken,
-								id: data.data.id
-							}
+								id: data.data.id,
+							},
 						}));
 
 						// Wait for localStorage to update
@@ -119,7 +157,8 @@ export default function LoginForm({ code }: {
 							window.location.href = "/";
 						}, 1000);
 					});
-				}).catch(err => {
+				})
+				.catch(err => {
 					console.error(err);
 					toast.error("Couldn't fetch access token :(");
 				});
@@ -178,7 +217,9 @@ export default function LoginForm({ code }: {
 								</div>
 							</form>
 						) : (
-							<h4 className="dark:text-gray-100">Validating...</h4>
+							<h4 className="dark:text-gray-100">
+								Validating...
+							</h4>
 						)}
 					</div>
 				</div>

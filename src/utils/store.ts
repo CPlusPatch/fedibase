@@ -9,11 +9,11 @@ export interface StateType {
 		type: "mastodon" | "pleroma" | "misskey" | "";
 		clientSecret: string;
 		handle: string;
-	}
+	};
 	replyingTo: null | Entity.Status;
 	postComposerOpened: boolean;
 	notificationsOpened: boolean;
-	mobilePostViewer: boolean
+	mobilePostViewer: boolean;
 	path: string;
 	sidebarOpened: boolean;
 	quotingTo: null | Entity.Status;
@@ -31,7 +31,7 @@ let initialState: StateType = {
 		url: "",
 		type: "",
 		clientSecret: "",
-		handle: ""
+		handle: "",
 	},
 	theme: "light",
 	replyingTo: null,
@@ -48,9 +48,10 @@ let initialState: StateType = {
 
 const storedStore = localStorage.getItem("store");
 
-if (storedStore) initialState = {
-	...JSON.parse(storedStore),
-	loaded: true
-};
+if (storedStore)
+	initialState = {
+		...JSON.parse(storedStore),
+		loaded: true,
+	};
 
 export const { useStore, getStore, withStore } = createStore(initialState);
