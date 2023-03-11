@@ -362,7 +362,7 @@ const SendForm = memo(() => {
 	const handlePaste = async (
 		e: JSXInternal.TargetedClipboardEvent<HTMLTextAreaElement>
 	) => {
-		if (!client || !e.clipboardData) return;
+		if (!client || !e.clipboardData || e.clipboardData.files.length < 1) return;
 		e.preventDefault();
 
 		try {
