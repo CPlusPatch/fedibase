@@ -875,46 +875,48 @@ function PollCreator({
 	);
 }
 
-const Files = memo(({
-	files,
-	setCurrentState,
-}: {
-	files: SendFormState["files"];
-	setCurrentState: StateUpdater<SendFormState>;
-}) => (
-	<>
-		{files.length > 0 && (
-			<div className="flex flex-wrap gap-4 flex-row px-4 w-full mt-4">
-				{files.map((file, index) => {
-					return (
-						<div
-							key={file.uuid}
-							className="overflow-hidden relative h-24 rounded-lg border-2">
-							{renderFilePreview(file.file)}
-							<Button
-								onClick={(e: any) => {
-									e.preventDefault();
+const Files = memo(
+	({
+		files,
+		setCurrentState,
+	}: {
+		files: SendFormState["files"];
+		setCurrentState: StateUpdater<SendFormState>;
+	}) => (
+		<>
+			{files.length > 0 && (
+				<div className="flex flex-wrap gap-4 flex-row px-4 w-full mt-4">
+					{files.map((file, index) => {
+						return (
+							<div
+								key={file.uuid}
+								className="overflow-hidden relative h-24 rounded-lg border-2">
+								{renderFilePreview(file.file)}
+								<Button
+									onClick={(e: any) => {
+										e.preventDefault();
 
-									const newFiles = files;
+										const newFiles = files;
 
-									newFiles.splice(index, 1);
+										newFiles.splice(index, 1);
 
-									setCurrentState(s => ({
-										...s,
-										files: newFiles,
-									}));
-								}}
-								style="gray"
-								className="!absolute top-2 right-2 !p-2">
-								<IconX className="w-4 h-4" />
-							</Button>
-						</div>
-					);
-				})}
-			</div>
-		)}
-	</>
-));
+										setCurrentState(s => ({
+											...s,
+											files: newFiles,
+										}));
+									}}
+									style="gray"
+									className="!absolute top-2 right-2 !p-2">
+									<IconX className="w-4 h-4" />
+								</Button>
+							</div>
+						);
+					})}
+				</div>
+			)}
+		</>
+	)
+);
 
 function ButtonRow({
 	fileInputRef,

@@ -17,9 +17,15 @@ interface ConversationProps {
 }
 
 export const Conversation = memo(
-	({ id, mode, showTitle = true, onClose = () => {
-		//
-	}, showCloseButton = false }: ConversationProps) => {
+	({
+		id,
+		mode,
+		showTitle = true,
+		onClose = () => {
+			//
+		},
+		showCloseButton = false,
+	}: ConversationProps) => {
 		const [ancestors, setAncestors] = useState<Entity.Status[]>([]);
 		const [post, setPost] = useState<Entity.Status>();
 		const [descendants, setDescendants] = useState<Entity.Status[]>([]);
@@ -81,9 +87,11 @@ export const Conversation = memo(
 						<h3 className="text-xl font-bold dark:text-gray-50">
 							Conversation
 						</h3>
-						<button className="flex items-center justify-center" onClick={() => {
-							onClose();
-						}}>
+						<button
+							className="flex items-center justify-center"
+							onClick={() => {
+								onClose();
+							}}>
 							{showCloseButton && (
 								<IconX className="w-5 h-5 dark:text-gray-50" />
 							)}
