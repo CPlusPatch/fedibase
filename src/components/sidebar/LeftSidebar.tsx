@@ -208,7 +208,7 @@ export default function LeftSidebar() {
 								leaveFrom="opacity-100 translate-y-0 scale-100"
 								leaveTo="opacity-0 translate-y-4 translate-y-0 scale-75">
 								<Dialog.Panel className="relative my-8 w-full text-left transition-all transform sm:max-w-xl">
-									<SendForm />
+									<SendForm showClose={true} border={true}/>
 								</Dialog.Panel>
 							</Transition.Child>
 						</div>
