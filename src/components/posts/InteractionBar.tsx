@@ -167,6 +167,7 @@ function InteractionBar({
 				shake={false}
 				title="Add reaction"
 				onClick={() => {
+					if (store.auth.type === "mastodon") return toast.error("Mastodon does not support reactions!");
 					setShowEmojiPicker(true);
 				}}>
 				<>
@@ -222,6 +223,10 @@ function InteractionBar({
 			<InteractionBarIcon
 				title="Quote this post"
 				onClick={() => {
+					if (store.auth.type === "mastodon")
+						return toast.error(
+							"Mastodon does not support quote posts!"
+						);
 					setStore(prev => ({
 						...prev,
 						quotingTo: status,
