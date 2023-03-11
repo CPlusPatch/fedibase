@@ -454,7 +454,12 @@ const SendForm = memo(() => {
 		}));
 
 		const text: string = (event.target as HTMLFormElement)["comment"].value;
-		const cw: string = (event.target as HTMLFormElement)["cw"].value;
+		let cw: string;
+		try {
+			cw = (event.target as HTMLFormElement)["cw"].value;
+		} catch {
+			cw = "";
+		}
 		//const text = comment.value;
 		const inReplyToId = store.replyingTo?.id;
 		const quoteId = store.quotingTo?.id;
