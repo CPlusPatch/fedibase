@@ -16,7 +16,6 @@ import { StateUpdater, useContext, useEffect, useState } from "preact/hooks";
 import { Fragment } from "preact/jsx-runtime";
 import { JSXInternal } from "preact/src/jsx";
 import { classNames } from "utils/functions";
-import { useStore } from "utils/store";
 import { useBackupStore } from "utils/useBackupStore";
 
 /**
@@ -64,6 +63,7 @@ function InteractionBar({
 					setStore(prev => ({
 						...prev,
 						replyingTo: status,
+						quotingTo: null,
 						postComposerOpened:
 							window.innerWidth < 1400 ||
 							store.viewingConversation !== "",
@@ -205,6 +205,7 @@ function InteractionBar({
 					setStore(prev => ({
 						...prev,
 						quotingTo: status,
+						replyingTo: null,
 						postComposerOpened:
 							window.innerWidth < 1400 ||
 							store.viewingConversation !== "",

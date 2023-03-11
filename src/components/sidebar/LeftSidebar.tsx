@@ -9,7 +9,6 @@ import {
 	IconLockOpen,
 	IconMail,
 	IconMarkdown,
-	IconNewSection,
 	IconPaperclip,
 	IconWorld,
 	IconX,
@@ -97,7 +96,7 @@ export default function LeftSidebar() {
 				<Conversation
 					onClose={() => {
 						modifyStore(setStore, {
-							viewingConversation: ""
+							viewingConversation: "",
 						});
 					}}
 					showCloseButton={true}
@@ -114,7 +113,7 @@ export default function LeftSidebar() {
 							</p>
 						</div>
 					</label> */}
-					<SendForm border={false} showClose={false}/>
+					<SendForm border={false} showClose={false} />
 				</div>
 			)}
 
@@ -208,7 +207,7 @@ export default function LeftSidebar() {
 								leaveFrom="opacity-100 translate-y-0 scale-100"
 								leaveTo="opacity-0 translate-y-4 translate-y-0 scale-75">
 								<Dialog.Panel className="relative my-8 w-full text-left transition-all transform sm:max-w-xl">
-									<SendForm showClose={true} border={true}/>
+									<SendForm showClose={true} border={true} />
 								</Dialog.Panel>
 							</Transition.Child>
 						</div>
@@ -317,405 +316,433 @@ interface SendFormState {
 
 interface SendFormProps {
 	border?: boolean;
-	showClose?: boolean
+	showClose?: boolean;
 }
 
-const SendForm = memo((props: SendFormProps = {
-	border: true,
-	showClose: true
-}) => {
-	// Context stuff
-	const client = useContext(AuthContext);
-
-	const { store, setStore } = useBackupStore();
-	const otherPost = store.replyingTo ?? store.quotingTo;
-
-	const [currentState, setCurrentState] = useState<SendFormState>({
-		mode: modes[0],
-		visibility: visibilities[0],
-		files: [],
-		loading: false,
-		emojisSuggestions: [],
-		userSuggestions: [],
-		contentWarning: otherPost?.sensitive
-			? `RE: ${otherPost.spoiler_text}`
-			: null,
-		poll: null,
-	});
-
-	// Element refs
-	const fileInputRef = useRef<HTMLInputElement>(null);
-	const textareaRef = useRef<HTMLTextAreaElement>(null);
-
-	const uploadFiles = async (toUpload: FileList) => {
-		setCurrentState(prev => ({
-			...prev,
-			loading: true,
-		}));
-		console.info(`Uploading ${toUpload.length} files`);
-
-		const files = await Promise.all(
-			[...toUpload].map(async file => {
-				const upload = (await client?.uploadMedia(file)) as any;
-
-				return {
-					uuid: uuidv4(),
-					metadata: upload.data,
-					file: file,
-				};
-			})
-		);
-
-		toast.success("Files uploaded!");
-		setCurrentState(prev => ({
-			...prev,
-			loading: false,
-			files: files,
-		}));
-	};
-
-	const handlePaste = async (
-		e: JSXInternal.TargetedClipboardEvent<HTMLTextAreaElement>
+const SendForm = memo(
+	(
+		props: SendFormProps = {
+			border: true,
+			showClose: true,
+		}
 	) => {
-		if (!client || !e.clipboardData || e.clipboardData.files.length < 1) return;
-		e.preventDefault();
+		// Context stuff
+		const client = useContext(AuthContext);
 
-		try {
-			await uploadFiles(e.clipboardData.files);
-		} catch (error) {
-			console.error(error);
-			toast.error("Couldn't upload files :(");
-			// Handle error
-		}
-	};
+		const { store, setStore } = useBackupStore();
+		const otherPost = store.replyingTo ?? store.quotingTo;
 
-	const handleChange = async (event: ChangeEvent<HTMLTextAreaElement>) => {
-		const value = (event.target as HTMLTextAreaElement).value;
+		const [currentState, setCurrentState] = useState<SendFormState>({
+			mode: modes[0],
+			visibility: visibilities[0],
+			files: [],
+			loading: false,
+			emojisSuggestions: [],
+			userSuggestions: [],
+			contentWarning: otherPost?.sensitive
+				? `RE: ${otherPost.spoiler_text}`
+				: null,
+			poll: null,
+		});
 
-		// Check for emoji mentions
-		setCurrentState(s => ({ ...s, characters: value }));
-		const emojiMatch = value.match(/:\w+(?<!:)$/g)?.[0]?.replace(":", "");
-		const matchedEmojis = emojiMatch
-			? store.emojis.filter(e => e.shortcode.includes(emojiMatch))
-			: [];
-		setCurrentState(prev => ({
-			...prev,
-			emojisSuggestions: matchedEmojis,
-		}));
+		// Element refs
+		const fileInputRef = useRef<HTMLInputElement>(null);
+		const textareaRef = useRef<HTMLTextAreaElement>(null);
 
-		// Check for username mentions
-		const userMatches = value.match(/@\w+(?:\.\w+)?$/g);
-
-		if (!client) return;
-
-		const matches = (
-			await client.searchAccount(userMatches?.at(-1) ?? "", { limit: 5 })
-		).data;
-
-		setCurrentState(s => ({
-			...s,
-			userSuggestions:
-				userMatches && userMatches.length > 0 ? matches : [],
-		}));
-	};
-
-	useEffect(() => {
-		const otherPost = store.replyingTo ?? store.quotingTo ?? null;
-
-		if (otherPost) {
-			const id = store.auth.id;
-			const mentions = findMentions(otherPost, id).join(" ");
-
-			if (mentions && textareaRef.current) {
-				textareaRef.current.value = `${mentions} `;
-			}
-
-			setCurrentState(s => ({
-				...s,
-				visibility:
-					visibilities.find(v => v.value === otherPost?.visibility) ??
-					visibilities[0],
+		const uploadFiles = async (toUpload: FileList) => {
+			setCurrentState(prev => ({
+				...prev,
+				loading: true,
 			}));
-		}
+			console.info(`Uploading ${toUpload.length} files`);
 
-		client &&
-			getCustomEmojis(client).then(emojis => {
-				setCurrentState(s => ({
-					...s,
-					emojis: emojis,
-				}));
-			});
+			const files = await Promise.all(
+				[...toUpload].map(async file => {
+					const upload = (await client?.uploadMedia(file)) as any;
 
-		const timeout = setTimeout(() => {
-			// Move the cursor to the end of the textarea
-			textareaRef.current?.setSelectionRange(
-				textareaRef.current?.value.length,
-				textareaRef.current?.value.length
+					return {
+						uuid: uuidv4(),
+						metadata: upload.data,
+						file: file,
+					};
+				})
 			);
 
-			textareaRef.current?.focus();
-		}, 500);
-
-		return () => clearTimeout(timeout);
-	}, [store.replyingTo, store.quotingTo]);
-
-	const submitForm = async (
-		event: JSXInternal.TargetedEvent<HTMLFormElement, Event>
-	) => {
-		event.preventDefault();
-		setCurrentState(s => ({
-			...s,
-			loading: true,
-		}));
-
-		const text: string = (event.target as HTMLFormElement)["comment"].value;
-		let cw: string;
-		try {
-			cw = (event.target as HTMLFormElement)["cw"].value;
-		} catch {
-			cw = "";
-		}
-		//const text = comment.value;
-		const inReplyToId = store.replyingTo?.id;
-		const quoteId = store.quotingTo?.id;
-
-		if (text.length <= 0) {
-			toast.error("You need to add some text!");
+			toast.success("Files uploaded!");
 			setCurrentState(prev => ({
 				...prev,
 				loading: false,
+				files: [...prev.files, ...files],
 			}));
-			return false;
-		}
+		};
 
-		try {
-			await client?.postStatus(text, {
-				in_reply_to_id: inReplyToId,
-				visibility: currentState.visibility.value as any,
-				media_ids:
-					currentState.files.length > 0
-						? currentState.files.map(f => f.metadata.id)
-						: undefined,
-				spoiler_text: cw,
-				sensitive: currentState.contentWarning !== null,
-				quote_id: quoteId,
-				poll:
-					currentState.poll && currentState.poll.choices.length > 0
-						? {
-								options: currentState.poll.choices,
-								expires_in: Number(currentState.poll.duration),
-						  }
-						: undefined,
-			});
-			toast("Post sent!", {
-				icon: "👍",
-			});
-		} catch (err) {
-			toast.error(
-				"There was an error sending your post. Maybe check the visibility?"
-			);
-		} finally {
-			setCurrentState({
-				mode: modes[0],
-				visibility: visibilities[0],
-				files: [],
-				loading: false,
-				emojisSuggestions: [],
-				userSuggestions: [],
-				poll: null,
-				contentWarning: null,
-			});
-			if(textareaRef.current) textareaRef.current.value = "";
-			modifyStore(setStore, {
-				postComposerOpened: false,
-				quotingTo: null,
-				replyingTo: null,
-			});
-		}
-	};
-	return (
-		<form
-			action="#"
-			className="relative text-sm font-inter w-full flex h-full min-h-[30rem]"
-			onSubmit={submitForm}
-			onKeyUp={e => {
-				if (e.key === "Enter" && (e.ctrlKey || e.metaKey)) {
-					e.currentTarget.requestSubmit();
+		const handlePaste = async (
+			e: JSXInternal.TargetedClipboardEvent<HTMLTextAreaElement>
+		) => {
+			if (!client || !e.clipboardData || e.clipboardData.files.length < 1)
+				return;
+			e.preventDefault();
+
+			try {
+				await uploadFiles(e.clipboardData.files);
+			} catch (error) {
+				console.error(error);
+				toast.error("Couldn't upload files :(");
+				// Handle error
+			}
+		};
+
+		const handleChange = async (
+			event: ChangeEvent<HTMLTextAreaElement>
+		) => {
+			const value = (event.target as HTMLTextAreaElement).value;
+
+			// Check for emoji mentions
+			setCurrentState(s => ({ ...s, characters: value }));
+			const emojiMatch = value
+				.match(/:\w+(?<!:)$/g)?.[0]
+				?.replace(":", "");
+			const matchedEmojis = emojiMatch
+				? store.emojis.filter(e => e.shortcode.includes(emojiMatch))
+				: [];
+			setCurrentState(prev => ({
+				...prev,
+				emojisSuggestions: matchedEmojis,
+			}));
+
+			// Check for username mentions
+			const userMatches = value.match(/@\w+(?:\.\w+)?$/g);
+
+			if (!client) return;
+
+			const matches = (
+				await client.searchAccount(userMatches?.at(-1) ?? "", {
+					limit: 5,
+				})
+			).data;
+
+			setCurrentState(s => ({
+				...s,
+				userSuggestions:
+					userMatches && userMatches.length > 0 ? matches : [],
+			}));
+		};
+
+		useEffect(() => {
+			const otherPost = store.replyingTo ?? store.quotingTo ?? null;
+
+			if (otherPost) {
+				const id = store.auth.id;
+				const mentions = findMentions(otherPost, id).join(" ");
+
+				if (mentions && textareaRef.current) {
+					textareaRef.current.value = `${mentions} `;
 				}
-			}}>
-			<div
-				className={classNames(
-					"px-3 py-2 w-full flex flex-col rounded-2xl dark:text-gray-100 border-gray-300 dark:border-gray-700 shadow-sm",
-					props.border && "border",
-					currentState.loading
-						? "bg-gray-100 dark:bg-dark-800"
-						: "bg-white dark:bg-dark-800"
-				)}>
-				<div className="flex justify-between p-3 w-full gap-x-2">
-					<div className="flex flex-row items-center gap-x-3">
-						{(props.showClose || store.replyingTo || store.quotingTo) && (
-							<button
-								className="mb-1"
-								onClick={e => {
-									e.preventDefault();
-									if (textareaRef.current) textareaRef.current.value = "";
-									modifyStore(setStore, {
-										postComposerOpened: false,
-										quotingTo: null,
-										replyingTo: null,
-									});
-								}}>
-								<IconX className="w-6 h-6" />
-							</button>
-						)}
-						<h1 className="text-xl font-bold dark:text-gray-50">
-							{store.replyingTo && (
-								<>
-									Replying to{" "}
-									{withEmojis(
-										store.replyingTo.account.display_name,
-										store.replyingTo.account.emojis
-									)}
-								</>
-							)}
-							{store.quotingTo && (
-								<>
-									Quoting{" "}
-									{withEmojis(
-										store.quotingTo.account.display_name,
-										store.quotingTo.account.emojis
-									)}
-								</>
-							)}
-							{!(store.replyingTo || store.quotingTo) && (
-								<>Compose</>
-							)}
-						</h1>
-					</div>
-					<div>
-						<Button
-							loading={currentState.loading}
-							style="orangeLight"
-							type="submit"
-							className="!px-4 !py-2 !text-base text-white dark:text-white !border-none !bg-[radial-gradient(ellipse_at_top_left,_var(--tw-gradient-stops))] !from-pink-500 !via-red-500 !to-yellow-500">
-							Post
-						</Button>
-					</div>
-				</div>
 
-				{store.replyingTo && (
-					<div className="px-4 opacity-60 max-h-40 no-scroll overflow-scroll">
-						<Status
-							status={store.replyingTo ?? store.quotingTo}
-							type={StatusType.Notification}
-							showInteraction={false}
+				setCurrentState(s => ({
+					...s,
+					visibility:
+						visibilities.find(
+							v => v.value === otherPost?.visibility
+						) ?? visibilities[0],
+				}));
+			}
+
+			client &&
+				getCustomEmojis(client).then(emojis => {
+					setCurrentState(s => ({
+						...s,
+						emojis: emojis,
+					}));
+				});
+
+			const timeout = setTimeout(() => {
+				// Move the cursor to the end of the textarea
+				textareaRef.current?.setSelectionRange(
+					textareaRef.current?.value.length,
+					textareaRef.current?.value.length
+				);
+
+				textareaRef.current?.focus();
+			}, 500);
+
+			return () => clearTimeout(timeout);
+		}, [store.replyingTo, store.quotingTo]);
+
+		const submitForm = async (
+			event: JSXInternal.TargetedEvent<HTMLFormElement, Event>
+		) => {
+			event.preventDefault();
+			setCurrentState(s => ({
+				...s,
+				loading: true,
+			}));
+
+			const text: string = (event.target as HTMLFormElement)["comment"]
+				.value;
+			let cw: string;
+			try {
+				cw = (event.target as HTMLFormElement)["cw"].value;
+			} catch {
+				cw = "";
+			}
+			//const text = comment.value;
+			const inReplyToId = store.replyingTo?.id;
+			const quoteId = store.quotingTo?.id;
+
+			if (text.length <= 0) {
+				toast.error("You need to add some text!");
+				setCurrentState(prev => ({
+					...prev,
+					loading: false,
+				}));
+				return false;
+			}
+
+			try {
+				await client?.postStatus(text, {
+					in_reply_to_id: inReplyToId,
+					visibility: currentState.visibility.value as any,
+					media_ids:
+						currentState.files.length > 0
+							? currentState.files.map(f => f.metadata.id)
+							: undefined,
+					spoiler_text: cw,
+					sensitive: currentState.contentWarning !== null,
+					quote_id: quoteId,
+					poll:
+						currentState.poll &&
+						currentState.poll.choices.length > 0
+							? {
+									options: currentState.poll.choices,
+									expires_in: Number(
+										currentState.poll.duration
+									),
+							  }
+							: undefined,
+				});
+				toast("Post sent!", {
+					icon: "👍",
+				});
+			} catch (err) {
+				toast.error(
+					"There was an error sending your post. Maybe check the visibility?"
+				);
+			} finally {
+				setCurrentState({
+					mode: modes[0],
+					visibility: visibilities[0],
+					files: [],
+					loading: false,
+					emojisSuggestions: [],
+					userSuggestions: [],
+					poll: null,
+					contentWarning: null,
+				});
+				if (textareaRef.current) textareaRef.current.value = "";
+				modifyStore(setStore, {
+					postComposerOpened: false,
+					quotingTo: null,
+					replyingTo: null,
+				});
+			}
+		};
+		return (
+			<form
+				action="#"
+				className="relative text-sm font-inter w-full flex h-full min-h-[30rem]"
+				onSubmit={submitForm}
+				onKeyUp={e => {
+					if (e.key === "Enter" && (e.ctrlKey || e.metaKey)) {
+						e.currentTarget.requestSubmit();
+					}
+				}}>
+				<div
+					className={classNames(
+						"px-3 py-2 w-full flex flex-col rounded-2xl dark:text-gray-100 border-gray-300 dark:border-gray-700 shadow-sm",
+						props.border && "border",
+						currentState.loading
+							? "bg-gray-100 dark:bg-dark-800"
+							: "bg-white dark:bg-dark-800"
+					)}>
+					<div className="flex justify-between p-3 w-full gap-x-2">
+						<div className="flex flex-row items-center gap-x-3">
+							{(props.showClose ||
+								store.replyingTo ||
+								store.quotingTo) && (
+								<button
+									className="mb-1"
+									onClick={e => {
+										e.preventDefault();
+										if (textareaRef.current)
+											textareaRef.current.value = "";
+										modifyStore(setStore, {
+											postComposerOpened: false,
+											quotingTo: null,
+											replyingTo: null,
+										});
+									}}>
+									<IconX className="w-6 h-6" />
+								</button>
+							)}
+							<h1 className="text-xl font-bold dark:text-gray-50">
+								{store.replyingTo && (
+									<>
+										Replying to{" "}
+										{withEmojis(
+											store.replyingTo.account
+												.display_name,
+											store.replyingTo.account.emojis
+										)}
+									</>
+								)}
+								{store.quotingTo && (
+									<>
+										Quoting{" "}
+										{withEmojis(
+											store.quotingTo.account
+												.display_name,
+											store.quotingTo.account.emojis
+										)}
+									</>
+								)}
+								{!(store.replyingTo || store.quotingTo) && (
+									<>Compose</>
+								)}
+							</h1>
+						</div>
+						<div>
+							<Button
+								loading={currentState.loading}
+								style="orangeLight"
+								type="submit"
+								className="!px-4 !py-2 !text-base text-white dark:text-white !border-none !bg-[radial-gradient(ellipse_at_top_left,_var(--tw-gradient-stops))] !from-pink-500 !via-red-500 !to-yellow-500">
+								Post
+							</Button>
+						</div>
+					</div>
+
+					{store.replyingTo && (
+						<div className="px-4 opacity-60 max-h-40 no-scroll overflow-scroll">
+							<Status
+								status={store.replyingTo ?? store.quotingTo}
+								type={StatusType.Notification}
+								showInteraction={false}
+							/>
+						</div>
+					)}
+
+					<textarea
+						ref={textareaRef}
+						name="comment"
+						onPaste={handlePaste}
+						onChange={handleChange}
+						disabled={currentState.loading}
+						className="flex py-3 flex-1 no-scroll w-full bg-transparent border-0 resize-none disabled:text-gray-400 focus:ring-0 dark:placeholder:text-gray-400"
+						placeholder="What's happening?"
+					/>
+
+					{currentState.poll && (
+						<PollCreator
+							currentState={currentState}
+							setCurrentState={setCurrentState}
 						/>
-					</div>
-				)}
+					)}
 
-				<textarea
-					ref={textareaRef}
-					name="comment"
-					onPaste={handlePaste}
-					onChange={handleChange}
-					disabled={currentState.loading}
-					className="flex py-3 flex-1 no-scroll w-full bg-transparent border-0 resize-none disabled:text-gray-400 focus:ring-0 dark:placeholder:text-gray-400"
-					placeholder="What's happening?"
-				/>
+					{currentState.contentWarning !== null && (
+						<Input
+							defaultValue={currentState.contentWarning}
+							placeholder="Add content warning"
+							className="border-0 px-6 !bg-orange-500/10"
+							name="cw"
+							id="cw"
+							isLoading={currentState.loading}>
+							{""}
+						</Input>
+					)}
 
-				{currentState.poll && (
-					<PollCreator
-						currentState={currentState}
+					<Files
+						files={currentState.files}
 						setCurrentState={setCurrentState}
 					/>
-				)}
 
-				{currentState.contentWarning !== null && (
-					<Input
-						defaultValue={currentState.contentWarning}
-						placeholder="Add content warning"
-						className="border-0 px-6 !bg-orange-500/10"
-						name="cw"
-						id="cw"
-						isLoading={currentState.loading}>
-						{""}
-					</Input>
-				)}
+					<ScaleFadeSlide
+						show={currentState.emojisSuggestions.length > 0}>
+						<div className="flex absolute z-[60] flex-col rounded-lg border dark:bg-dark-800/80 backdrop-blur-md bg-white/80 dark:border-gray-700">
+							{currentState.emojisSuggestions
+								.slice(0, 5)
+								.map(emoji => (
+									<EmojiItem
+										key={emoji.shortcode}
+										emoji={emoji}
+										onClick={() => {
+											if (!textareaRef.current) return;
+											const val =
+												textareaRef.current.value;
 
-				<Files
-					files={currentState.files}
-					setCurrentState={setCurrentState}
-				/>
+											const matchedEmoji =
+												val.match(/:\w+(?<!:)$/g)?.[0];
 
-				<ScaleFadeSlide
-					show={currentState.emojisSuggestions.length > 0}>
-					<div className="flex absolute z-[60] flex-col rounded-lg border dark:bg-dark-800/80 backdrop-blur-md bg-white/80 dark:border-gray-700">
-						{currentState.emojisSuggestions
-							.slice(0, 5)
-							.map(emoji => (
-								<EmojiItem
-									key={emoji.shortcode}
-									emoji={emoji}
-									onClick={() => {
-										if (!textareaRef.current) return;
-										const val = textareaRef.current.value;
+											if (!matchedEmoji) return;
+											textareaRef.current.value =
+												val.replace(
+													matchedEmoji,
+													`:${emoji.shortcode}: `
+												);
+											setCurrentState(s => ({
+												...s,
+												emojisSuggestions: [],
+											}));
+										}}
+									/>
+								))}
+						</div>
+					</ScaleFadeSlide>
 
-										const matchedEmoji =
-											val.match(/:\w+(?<!:)$/g)?.[0];
+					<ScaleFadeSlide
+						show={currentState.userSuggestions.length > 0}>
+						<div className="flex absolute z-[60] flex-col rounded-xl border dark:bg-dark-800/80 backdrop-blur-md bg-white/80 dark:border-gray-700">
+							{currentState.userSuggestions
+								.slice(0, 5)
+								.map(user => (
+									<SuggestionItem
+										key={user.id}
+										user={user}
+										onClick={() => {
+											if (!textareaRef.current) return;
 
-										if (!matchedEmoji) return;
-										textareaRef.current.value = val.replace(
-											matchedEmoji,
-											`:${emoji.shortcode}: `
-										);
-										setCurrentState(s => ({
-											...s,
-											emojisSuggestions: [],
-										}));
-									}}
-								/>
-							))}
-					</div>
-				</ScaleFadeSlide>
+											const val =
+												textareaRef.current.value;
 
-				<ScaleFadeSlide show={currentState.userSuggestions.length > 0}>
-					<div className="flex absolute z-[60] flex-col rounded-xl border dark:bg-dark-800/80 backdrop-blur-md bg-white/80 dark:border-gray-700">
-						{currentState.userSuggestions.slice(0, 5).map(user => (
-							<SuggestionItem
-								key={user.id}
-								user={user}
-								onClick={() => {
-									if (!textareaRef.current) return;
+											textareaRef.current.value =
+												val.replace(
+													/@\w+(?:\.\w+)?$/g,
+													"@" + user.acct + " "
+												);
+											textareaRef.current.focus();
 
-									const val = textareaRef.current.value;
+											setCurrentState(s => ({
+												...s,
+												userSuggestions: [],
+											}));
+										}}
+									/>
+								))}
+						</div>
+					</ScaleFadeSlide>
 
-									textareaRef.current.value = val.replace(
-										/@\w+(?:\.\w+)?$/g,
-										"@" + user.acct + " "
-									);
-									textareaRef.current.focus();
-
-									setCurrentState(s => ({
-										...s,
-										userSuggestions: [],
-									}));
-								}}
-							/>
-						))}
-					</div>
-				</ScaleFadeSlide>
-
-				<ButtonRow
-					currentState={currentState}
-					setCurrentState={setCurrentState}
-					fileInputRef={fileInputRef}
-					textareaRef={textareaRef}
-					uploadFiles={uploadFiles}
-				/>
-			</div>
-		</form>
-	);
-});
+					<ButtonRow
+						currentState={currentState}
+						setCurrentState={setCurrentState}
+						fileInputRef={fileInputRef}
+						textareaRef={textareaRef}
+						uploadFiles={uploadFiles}
+					/>
+				</div>
+			</form>
+		);
+	}
+);
 
 function PollCreator({
 	currentState,
@@ -735,12 +762,14 @@ function PollCreator({
 							{index + 1}.
 							<div className="grow">
 								<Input
-									onChange={(e) => {
+									onChange={e => {
 										if (!currentState.poll) return;
-										
+
 										const pollCopy = currentState.poll;
 
-										pollCopy.choices[index] = (e.target as HTMLInputElement).value;
+										pollCopy.choices[index] = (
+											e.target as HTMLInputElement
+										).value;
 
 										setCurrentState(s => ({
 											...s,
@@ -846,48 +875,46 @@ function PollCreator({
 	);
 }
 
-function Files({
+const Files = memo(({
 	files,
 	setCurrentState,
 }: {
 	files: SendFormState["files"];
 	setCurrentState: StateUpdater<SendFormState>;
-}) {
-	return (
-		<>
-			{files.length > 0 && (
-				<div className="flex flex-wrap gap-4 flex-row px-4 w-full mt-4">
-					{files.map((file, index) => {
-						return (
-							<div
-								key={file.uuid}
-								className="overflow-hidden relative h-24 rounded-lg border-2">
-								{renderFilePreview(file.file)}
-								<Button
-									onClick={(e: any) => {
-										e.preventDefault();
+}) => (
+	<>
+		{files.length > 0 && (
+			<div className="flex flex-wrap gap-4 flex-row px-4 w-full mt-4">
+				{files.map((file, index) => {
+					return (
+						<div
+							key={file.uuid}
+							className="overflow-hidden relative h-24 rounded-lg border-2">
+							{renderFilePreview(file.file)}
+							<Button
+								onClick={(e: any) => {
+									e.preventDefault();
 
-										const newFiles = files;
+									const newFiles = files;
 
-										newFiles.splice(index, 1);
+									newFiles.splice(index, 1);
 
-										setCurrentState(s => ({
-											...s,
-											files: newFiles,
-										}));
-									}}
-									style="gray"
-									className="!absolute top-2 right-2 !p-2">
-									<IconX className="w-4 h-4" />
-								</Button>
-							</div>
-						);
-					})}
-				</div>
-			)}
-		</>
-	);
-}
+									setCurrentState(s => ({
+										...s,
+										files: newFiles,
+									}));
+								}}
+								style="gray"
+								className="!absolute top-2 right-2 !p-2">
+								<IconX className="w-4 h-4" />
+							</Button>
+						</div>
+					);
+				})}
+			</div>
+		)}
+	</>
+));
 
 function ButtonRow({
 	fileInputRef,
