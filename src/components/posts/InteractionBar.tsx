@@ -17,6 +17,7 @@ import { Fragment } from "preact/jsx-runtime";
 import { JSXInternal } from "preact/src/jsx";
 import { classNames } from "utils/functions";
 import { useStore } from "utils/store";
+import { useBackupStore } from "utils/useBackupStore";
 
 /**
  * Small bar containing all the buttons on a post, such as "favourite", "quote", "reply"...
@@ -53,17 +54,19 @@ function InteractionBar({
 		}
 	}, [showEmojiPicker]);
 
-	const [, setState] = useStore();
+	const { store, setStore } = useBackupStore();
 
 	return (
 		<div className="flex justify-between px-5 mt-3 w-full text-gray-700 dark:text-gray-400">
 			<InteractionBarIcon
 				title="Reply to this post"
 				onClick={() => {
-					setState(prev => ({
+					setStore(prev => ({
 						...prev,
 						replyingTo: status,
-						postComposerOpened: window.innerWidth < 1400
+						postComposerOpened:
+							window.innerWidth < 1400 ||
+							store.viewingConversation !== "",
 					}));
 				}}>
 				<IconMessage aria-hidden={true} className="w-5 h-5" />
@@ -199,10 +202,12 @@ function InteractionBar({
 			<InteractionBarIcon
 				title="Quote this post"
 				onClick={() => {
-					setState(prev => ({
+					setStore(prev => ({
 						...prev,
 						quotingTo: status,
-						postComposerOpened: true,
+						postComposerOpened:
+							window.innerWidth < 1400 ||
+							store.viewingConversation !== "",
 					}));
 				}}>
 				<IconQuote className="w-5 h-5" aria-hidden={true} />
