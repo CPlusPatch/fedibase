@@ -10,11 +10,13 @@ import {
 	IconStarFilled,
 } from "@tabler/icons-preact";
 import { AuthContext } from "components/context/AuthContext";
+import { Input } from "components/forms/Input";
 import { Entity } from "megalodon";
 import { memo } from "preact/compat";
 import { StateUpdater, useContext, useEffect, useState } from "preact/hooks";
 import { Fragment } from "preact/jsx-runtime";
 import { JSXInternal } from "preact/src/jsx";
+import { toast } from "react-hot-toast";
 import { classNames } from "utils/functions";
 import { useBackupStore } from "utils/useBackupStore";
 
@@ -179,18 +181,36 @@ function InteractionBar({
 							onClick={(e: any) => {
 								e.stopPropagation();
 							}}
-							className="z-50 fixed">
+							className="z-50 fixed bottom-0">
 							<Transition.Child
 								as={Fragment}
-								enter="ease-out duration-300"
+								enter="ease-out duration-100"
 								enterFrom="opacity-0 scale-95"
 								enterTo="opacity-100 scale-100"
 								leave="ease-in duration-200"
 								leaveFrom="opacity-100 scale-100"
 								leaveTo="opacity-0 scale-95">
 								<Dialog.Panel>
-									<div className="w-80 bottom-0 left-0 m-4 absolute z-50 bg-orange-100 border shadow rounded-xl h-48">
-										GAY
+									<div className="w-80 flex flex-col bottom-0 left-0 m-4 p-3 absolute z-50 bg-orange-100/50 backdrop-blur-md dark:bg-dark-800/75 border dark:border-gray-700 shadow rounded-xl h-72">
+										<Input autoFocus={true} onChange={e => {
+											setEmojiFilter((e.target as HTMLInputElement).value);
+										}} className="dark:border-gray-700" placeholder="Search for emoji here" isLoading={false} name="emoji">{""}</Input>
+										<div className="grid grid-cols-6 justify-around no-scroll p-3 gap-4 overflow-scroll">
+											{store.emojis.filter(e => e.shortcode.includes(emojiFilter)).map(emoji => (
+												<button title={emoji.shortcode} className="flex items-center justify-center w-full" onClick={() => {
+													client?.createEmojiReaction(status.id, emoji.shortcode).then(res => {
+														setStatus(res.data);
+														toast.success("Added reaction!");
+														setShowEmojiPicker(false);
+													}).catch(err => {
+														console.log(err);
+														toast.error("Error adding reaction");
+													});
+												}}>
+													<img src={emoji.url} className="w-7 h-7 rounded" />
+												</button>
+											))}
+										</div>
 									</div>
 								</Dialog.Panel>
 							</Transition.Child>
