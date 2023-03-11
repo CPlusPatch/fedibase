@@ -17,7 +17,7 @@ import {
 import { Button } from "components/buttons/Button";
 import { AuthContext } from "components/context/AuthContext";
 import { Conversation } from "components/feed/Conversation";
-import { Input, Label } from "components/forms/Input";
+import { Input } from "components/forms/Input";
 import Select2, { SelectItem } from "components/forms/Select2";
 import SmallSelect from "components/forms/SmallSelect";
 import Status, { StatusType } from "components/posts/Status";

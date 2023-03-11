@@ -31,12 +31,12 @@
 
 - ~~Emoji reactions~~
 - ~~More timelines~~
-- Placing CWs on posts
+- ~~Placing CWs on posts~~
 - Drag and drop files to upload
 - ~~More files support~~
 - Quote post rendering
 - ~~Notifications~~
-- Settings page
+- ~~Settings page~~
 
 ## Running your own instance
 
