@@ -259,7 +259,7 @@ function Feed<T>(props: FeedProps) {
 	);
 }
 
-const DummyNotification = ({
+const DummyNotification = memo(({
 	reference,
 }: {
 	reference?: MutableRef<any> | null;
@@ -273,6 +273,6 @@ const DummyNotification = ({
 			</li>
 		</>
 	);
-};
+});
 
 export default memo(Feed);

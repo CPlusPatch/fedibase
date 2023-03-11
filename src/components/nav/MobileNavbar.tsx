@@ -19,7 +19,7 @@ import { useBackupStore } from "utils/useBackupStore";
 import { modifyStore } from "utils/functions";
 import { memo } from "preact/compat";
 
-function MobileNavbar() {
+const MobileNavbar = () => {
 	const { store, setStore } = useBackupStore();
 	const [account, setAccount] = useState<Entity.Account | null>(null);
 	const client = useContext(AuthContext);
@@ -182,6 +182,6 @@ function MobileNavbar() {
 			</Transition.Root>
 		</>
 	);
-}
+};
 
 export default memo(MobileNavbar);

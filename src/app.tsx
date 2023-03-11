@@ -14,7 +14,7 @@
 */
 import generator from "megalodon";
 import { AuthContext } from "./components/context/AuthContext";
-import Index from "./index";
+import { Index } from "./index";
 import { useBackupStore } from "utils/useBackupStore";
 
 export function App() {

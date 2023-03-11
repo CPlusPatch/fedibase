@@ -30,7 +30,7 @@ export const Reactions = memo((props: ReactionsProps) => {
 	);
 });
 
-export function Reaction(props: ReactionProps) {
+export const Reaction = memo((props: ReactionProps) => {
 	const client = useContext(AuthContext);
 
 	return (
@@ -69,4 +69,4 @@ export function Reaction(props: ReactionProps) {
 			{props.reaction.count}
 		</button>
 	);
-}
+});

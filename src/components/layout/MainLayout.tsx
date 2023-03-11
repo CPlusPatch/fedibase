@@ -7,7 +7,7 @@ import { useNavigatorOnLine } from "utils/useNavigatorOnline";
 import { Settings } from "components/settings/Settings";
 import { memo } from "preact/compat";
 
-function MainLayout({ children }: any) {
+const MainLayout = ({ children }: any) => {
 	const online = useNavigatorOnLine();
 
 	/* useEffect(() => {
@@ -109,6 +109,6 @@ function MainLayout({ children }: any) {
 			</div>
 		</div>
 	);
-}
+};
 
 export default memo(MainLayout);

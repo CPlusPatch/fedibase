@@ -23,10 +23,11 @@ import MainLayout from "./components/layout/MainLayout";
 import Nav from "./components/sidebar/Nav";
 import { StatusType } from "./components/posts/Status";
 import { useBackupStore } from "utils/useBackupStore";
-import { modifyStore } from "utils/functions";
+import { getInstanceData, modifyStore } from "utils/functions";
 import FastClick from "fastclick";
+import { memo } from "preact/compat";
 
-export default function Index() {
+export const Index = memo(() => {
 	const client = useContext(AuthContext);
 
 	const { store, setStore } = useBackupStore();
@@ -91,6 +92,16 @@ export default function Index() {
 
 	useEffect(() => {
 		FastClick(document.body);
+
+		client && getInstanceData(client).then(data => {
+			setStore(prev => ({
+				...prev,
+				auth: {
+					...prev.auth,
+					instance: data
+				}
+			}));
+		});
 	}, []);
 
 	return (
@@ -117,4 +128,4 @@ export default function Index() {
 			)}
 		</>
 	);
-}
+});

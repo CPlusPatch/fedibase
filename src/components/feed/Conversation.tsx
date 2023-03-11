@@ -126,12 +126,12 @@ type ChildPostProps = {
 	recursionDepth?: number;
 };
 
-function ChildPost({
+const ChildPost = memo(({
 	posts,
 	parentId,
 	mode,
 	recursionDepth = 0,
-}: ChildPostProps) {
+}: ChildPostProps) => {
 	const children = posts.filter(post => post.in_reply_to_id === parentId);
 
 	if (recursionDepth > 10) {
@@ -157,4 +157,4 @@ function ChildPost({
 			))}
 		</div>
 	);
-}
+});

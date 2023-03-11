@@ -23,14 +23,14 @@ interface SelectItem {
 	description?: string;
 }
 
-function SmallSelect({
+const SmallSelect = ({
 	items,
 	defaultValue,
 	onChange = () => {
 		//
 	},
 	direction = SelectDirection.Right,
-}: SelectOptions) {
+}: SelectOptions) => {
 	const [selected, setSelected] = useState<SelectItem>(items[defaultValue]);
 
 	return (
@@ -87,6 +87,6 @@ function SmallSelect({
 			</SlideFade>
 		</Listbox>
 	);
-}
+};
 
 export default memo(SmallSelect);

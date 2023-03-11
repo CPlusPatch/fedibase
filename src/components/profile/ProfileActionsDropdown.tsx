@@ -13,14 +13,15 @@ import { Button } from "components/buttons/Button";
 import { AuthContext } from "components/context/AuthContext";
 import { Fragment } from "preact/jsx-runtime";
 import { toast } from "react-hot-toast";
+import { memo } from "preact/compat";
 
-export default function ProfileActionsDropdown({
+export const ProfileActionsDropdown = memo(({
 	user,
 	initialRelationship,
 }: {
 	user: Entity.Account;
 	initialRelationship: Entity.Relationship;
-}) {
+}) => {
 	const client = useContext(AuthContext);
 
 	const [relationship, setRelationship] =
@@ -179,4 +180,4 @@ export default function ProfileActionsDropdown({
 			</Transition>
 		</Menu>
 	);
-}
+});

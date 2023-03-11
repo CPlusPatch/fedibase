@@ -23,8 +23,9 @@ import Status, { StatusType } from "components/posts/Status";
 import { ModalOverlay } from "components/transitions/ModalOverlay";
 import { ScaleFadeSlide } from "components/transitions/ScaleFadeSlide";
 import { Entity } from "megalodon";
-import { memo } from "preact/compat";
+import { ChangeEvent, memo } from "preact/compat";
 import {
+	Ref,
 	StateUpdater,
 	useContext,
 	useEffect,
@@ -34,8 +35,7 @@ import {
 import { Fragment } from "preact/jsx-runtime";
 import { JSXInternal } from "preact/src/jsx";
 import { toast } from "react-hot-toast";
-import { classNames, modifyStore, withEmojis } from "utils/functions";
-import { useStore } from "utils/store";
+import { classNames, findMentions, getCustomEmojis, modifyStore, withEmojis } from "utils/functions";
 import { useBackupStore } from "utils/useBackupStore";
 
 const modes = [
@@ -287,7 +287,6 @@ interface SendFormState {
 	files: File[];
 	fileIds: string[];
 	loading: boolean;
-	characters: string;
 	emojis: Entity.Emoji[];
 	emojisSuggestions: Entity.Emoji[];
 	userSuggestions: Entity.Account[];
@@ -310,45 +309,86 @@ const SendForm = memo(() => {
 		files: [],
 		fileIds: [],
 		loading: false,
-		characters: "",
 		emojis: [],
 		emojisSuggestions: [],
 		userSuggestions: [],
 		poll: null,
 	});
 
-	const max_chars = (
-		JSON.parse(
-			localStorage.getItem("instanceData") ?? "{}"
-		) as Entity.Instance
-	).max_toot_chars;
-
 	// Element refs
 	const fileInputRef = useRef<HTMLInputElement>(null);
 	const textareaRef = useRef<HTMLTextAreaElement>(null);
 
+	const handlePaste = async (
+		e: JSXInternal.TargetedClipboardEvent<HTMLTextAreaElement>
+	) => {
+		if (!client || !e.clipboardData) return;
+		e.preventDefault();
+		const files = e.clipboardData.files;
+		try {
+			setCurrentState(s => ({
+				...s,
+				files: [...s.files, ...files],
+				loading: true,
+			}));
+			const ids = await Promise.all(
+				[...files].map(f =>
+					client.uploadMedia(f).then(res => res.data.id)
+				)
+			);
+			toast.success("Files uploaded!");
+			setCurrentState(s => ({
+				...s,
+				loading: false,
+				fileIds: [...s.fileIds, ...ids],
+			}));
+		} catch (error) {
+			console.error(error);
+			toast.error("Couldn't upload files :(");
+			// Handle error
+		}
+	};
+
+	const handleChange = async (event: ChangeEvent<HTMLTextAreaElement>) => {
+		const value = (event.target as HTMLTextAreaElement).value;
+
+		// Check for emoji mentions
+		setCurrentState(s => ({ ...s, characters: value }));
+		const emojiMatch = value.match(/:\w+(?<!:)$/g)?.[0]?.replace(":", "");
+		setCurrentState(s => ({
+			...s,
+			emojisSuggestions: emojiMatch
+				? s.emojis.filter(e => e.shortcode.includes(emojiMatch))
+				: [],
+		}));
+
+		// Check for username mentions
+		const userMatches = value.match(/@\w+(?:\.\w+)?$/g);
+
+		if (!client) return;
+
+		const matches = (
+			await client.searchAccount(userMatches?.at(-1) ?? "", { limit: 5 })
+		).data;
+
+		setCurrentState(s => ({
+			...s,
+			userSuggestions:
+				userMatches && userMatches.length > 0
+					? matches
+					: [],
+		}));
+	};
+
 	useEffect(() => {
-		const { replyingTo, quotingTo } = store;
-		const otherPost = replyingTo ?? quotingTo ?? null;
+		const otherPost = store.replyingTo ?? store.quotingTo ?? null;
 
 		if (otherPost) {
 			const id = store.auth.id;
-			const mentions = [
-				...new Map(
-					otherPost.mentions
-						.concat([otherPost.account])
-						.filter(m => m.id !== id)
-						.map(v => [v.id, v])
-				).values(),
-			]
-				.map(m => "@" + m.acct)
-				.join(" ");
+			const mentions = findMentions(otherPost, id).join(" ");
 
-			if (mentions) {
-				setCurrentState(s => ({
-					...s,
-					characters: `${mentions} `,
-				}));
+			if (mentions && textareaRef.current) {
+				textareaRef.current.value = `${mentions} `;
 			}
 
 			setCurrentState(s => ({
@@ -359,20 +399,12 @@ const SendForm = memo(() => {
 			}));
 		}
 
-		if (!localStorage.getItem("customEmojis")) {
-			client?.getInstanceCustomEmojis().then(res => {
-				localStorage.setItem("customEmojis", JSON.stringify(res.data));
-				setCurrentState(s => ({
-					...s,
-					emojis: res.data,
-				}));
-			});
-		} else {
+		client && getCustomEmojis(client).then((emojis) => {
 			setCurrentState(s => ({
 				...s,
-				emojis: JSON.parse(localStorage.getItem("customEmojis") as any),
+				emojis: emojis,
 			}));
-		}
+		});
 
 		const timeout = setTimeout(() => {
 			// Move the cursor to the end of the textarea
@@ -441,7 +473,6 @@ const SendForm = memo(() => {
 				files: [],
 				fileIds: [],
 				loading: false,
-				characters: "",
 				emojis: [],
 				emojisSuggestions: [],
 				userSuggestions: [],
@@ -526,97 +557,16 @@ const SendForm = memo(() => {
 						/>
 					</div>
 				)}
+
 				<textarea
 					ref={textareaRef}
 					rows={6}
 					name="comment"
-					onPaste={async e => {
-						if (!client) return;
-						if (
-							e.clipboardData &&
-							e.clipboardData.files.length > 0
-						) {
-							e.preventDefault();
-							const files = e.clipboardData?.files;
-
-							try {
-								setCurrentState(s => ({
-									...s,
-									files: [...s.files, ...files],
-									loading: true,
-								}));
-
-								const ids = await Promise.all(
-									[...files].map(async file => {
-										return (await client.uploadMedia(file))
-											.data.id;
-									})
-								);
-								toast.success("Files uploaded!");
-								setCurrentState(s => ({
-									...s,
-									loading: false,
-									fileIds: [...s.fileIds, ...ids],
-								}));
-							} catch (error) {
-								console.error(error);
-								toast.error("Couldn't upload files :(");
-								// Handle error
-							}
-						}
-					}}
-					onChange={async event => {
-						const value: string = (event.target as any).value;
-						setCurrentState(s => ({
-							...s,
-							characters: value,
-						}));
-
-						const emojiMatch = value
-							.match(/:\w+(?<!:)$/g)?.[0]
-							.replace(":", "");
-
-						if (emojiMatch) {
-							setCurrentState(s => ({
-								...s,
-								emojisSuggestions: currentState.emojis.filter(
-									e => e.shortcode.includes(emojiMatch)
-								),
-							}));
-						} else {
-							setCurrentState(s => ({
-								...s,
-								emojisSuggestions: [],
-							}));
-						}
-
-						// Matched: @john or @john@site.com
-						const userMatches = value.match(/@\w+(?:\.\w+)?$/g);
-
-						if (userMatches && userMatches.length > 0)
-							client
-								?.searchAccount(
-									userMatches[userMatches.length - 1],
-									{
-										limit: 5,
-									}
-								)
-								.then(res => {
-									setCurrentState(prev => ({
-										...prev,
-										userSuggestions: res.data,
-									}));
-								});
-						else
-							setCurrentState(prev => ({
-								...prev,
-								userSuggestions: [],
-							}));
-					}}
+					onPaste={handlePaste}
+					onChange={handleChange}
 					disabled={currentState.loading}
 					className="block py-3 no-scroll w-full bg-transparent border-0 resize-none disabled:text-gray-400 focus:ring-0 dark:placeholder:text-gray-400"
 					placeholder="What's happening?"
-					defaultValue={currentState.characters}
 				/>
 
 				{currentState.poll && (
@@ -700,7 +650,7 @@ const SendForm = memo(() => {
 					setCurrentState={setCurrentState}
 					fileInputRef={fileInputRef}
 					client={client}
-					max_chars={max_chars}
+					textareaRef={textareaRef}
 				/>
 			</div>
 		</form>
@@ -886,20 +836,20 @@ function ButtonRow({
 	client,
 	setCurrentState,
 	currentState,
-	max_chars,
+	textareaRef,
 }: {
 	fileInputRef: any;
 	client: any;
 	setCurrentState: StateUpdater<SendFormState>;
 	currentState: SendFormState;
-	max_chars: any;
+	textareaRef: Ref<HTMLTextAreaElement>;
 }) {
-	const [state] = useStore();
+	const { store } = useBackupStore();
 
 	const [defaultVisibility, setDefaultVisibility] = useState<number>(0);
 
 	useEffect(() => {
-		const { replyingTo, quotingTo } = state;
+		const { replyingTo, quotingTo } = store;
 		const otherPost = replyingTo ?? quotingTo ?? null;
 
 		switch (otherPost?.visibility) {
@@ -1014,11 +964,13 @@ function ButtonRow({
 					<span
 						className={classNames(
 							"text-gray-600 dark:text-gray-300",
-							currentState.characters.length > max_chars &&
+							(textareaRef.current?.value.length ?? 0) >
+								(store.auth.instance?.max_toot_chars ?? 500) &&
 								"!text-red-600"
 						)}>
 						{(
-							(max_chars ?? 500) - currentState.characters.length
+							(store.auth.instance?.max_toot_chars ?? 500) -
+							(textareaRef.current?.value.length ?? 0)
 						).toLocaleString("en", {
 							notation: "compact",
 						})}
@@ -1043,8 +995,9 @@ function ButtonRow({
 							strokeDasharray={62.832}
 							strokeDashoffset={
 								(1 -
-									currentState.characters.length /
-										(max_chars ?? 500)) *
+									(textareaRef.current?.value.length ?? 0) /
+										(store.auth.instance?.max_toot_chars ??
+											500)) *
 								62.832
 							}
 							strokeLinecap="round"

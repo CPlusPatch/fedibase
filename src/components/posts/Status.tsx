@@ -22,11 +22,11 @@ interface StatusProps {
 	showInteraction?: boolean;
 }
 
-function Status({
+const Status = memo(({
 	status: statusProp,
 	type,
 	showInteraction = true,
-}: StatusProps) {
+}: StatusProps) => {
 	const [expand, setExpand] = useState(false);
 	const [status, setStatus] = useState(statusProp);
 	const [showText, setShowText] = useState(false);
@@ -135,6 +135,6 @@ function Status({
 			)}
 		</div>
 	);
-}
+});
 
-export default memo(Status);
+export default Status;

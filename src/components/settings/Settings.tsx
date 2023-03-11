@@ -73,7 +73,7 @@ enum SettingType {
 	Input,
 }
 
-function SettingItem({
+const SettingItem = memo(({
 	settingType,
 	name,
 	text,
@@ -83,7 +83,7 @@ function SettingItem({
 	name: string;
 	text: string;
 	description: string;
-}) {
+}) => {
 	const [enabled, setEnabled] = useState<boolean>(
 		getSetting(name) === "on" ? true : false
 	);
@@ -128,7 +128,7 @@ function SettingItem({
 			</div>
 		</div>
 	);
-}
+});
 
 const defaultSettings: any = {
 	blur: "on",

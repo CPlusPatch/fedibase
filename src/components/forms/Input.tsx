@@ -35,17 +35,15 @@ export const Input = memo(
 	}
 );
 
-export function Label({
+export const Label = ({
 	children,
 	...labelProps
 }: {
 	children: any;
-} & JSXInternal.HTMLAttributes<HTMLLabelElement>) {
-	return (
-		<label
-			{...labelProps}
-			className="block text-sm font-medium text-gray-600 dark:text-gray-300">
-			{children}
-		</label>
-	);
-}
+} & JSXInternal.HTMLAttributes<HTMLLabelElement>) => (
+	<label
+		{...labelProps}
+		className="block text-sm font-medium text-gray-600 dark:text-gray-300">
+		{children}
+	</label>
+);

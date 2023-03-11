@@ -17,13 +17,13 @@ export interface SelectItem {
 	description?: string;
 }
 
-function Select2({
+const Select2 = ({
 	items,
 	defaultValue,
 	onChange = () => {
 		//
 	},
-}: SelectOptions) {
+}: SelectOptions) => {
 	const [selected, setSelected] = useState(items[defaultValue]);
 	return (
 		<div className="w-full">
@@ -78,6 +78,6 @@ function Select2({
 			</Listbox>
 		</div>
 	);
-}
+};
 
 export default memo(Select2);

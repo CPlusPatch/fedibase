@@ -1,3 +1,5 @@
+import { memo } from "preact/compat";
+
 const SmallLogo = ({ size }: { size: string }) => (
 	<img
 		src={"/static/branding/logo.png"}
@@ -6,4 +8,4 @@ const SmallLogo = ({ size }: { size: string }) => (
 	/>
 );
 
-export default SmallLogo;
+export default memo(SmallLogo);

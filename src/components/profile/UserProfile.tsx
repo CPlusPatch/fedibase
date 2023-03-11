@@ -3,7 +3,7 @@ import { AuthContext } from "components/context/AuthContext";
 import { useContext, useEffect, useState } from "preact/hooks";
 import { toast } from "react-hot-toast";
 import { withEmojis } from "utils/functions";
-import ProfileActionsDropdown from "./ProfileActionsDropdown";
+import { ProfileActionsDropdown } from "./ProfileActionsDropdown";
 import { ScaleFadeSlide } from "components/transitions/ScaleFadeSlide";
 import { memo } from "preact/compat";
 

@@ -13,7 +13,7 @@
 * <http://www.gnu.org/licenses/>.
 */
 import parse from "html-react-parser";
-import { Entity } from "megalodon";
+import { Entity, MegalodonInterface } from "megalodon";
 import { StateType } from "./store";
 
 /**
@@ -194,4 +194,40 @@ export function modifyStore(setStore: any, newValues: Partial<StateType>) {
 		...prev,
 		...newValues,
 	}));
+}
+
+export async function getCustomEmojis(client: MegalodonInterface): Promise<Entity.Emoji[]> {
+	if (!localStorage.getItem("customEmojis")) {
+		const res = await client?.getInstanceCustomEmojis();
+
+		localStorage.setItem("customEmojis", JSON.stringify(res.data));
+		return res.data;
+
+	} else {
+		return localStorage.getItem("customEmojis") as any;
+	}
+}
+
+export async function getInstanceData(
+	client: MegalodonInterface
+): Promise<Entity.Instance> {
+	if (!localStorage.getItem("instanceData")) {
+		const res = await client?.getInstance();
+
+		localStorage.setItem("instanceData", JSON.stringify(res.data));
+		return res.data;
+	} else {
+		return JSON.parse(localStorage.getItem("instanceData") ?? "") as any;
+	}
+}
+
+export function findMentions(status: Entity.Status, excludeId: string | null) {
+	return [
+		...new Map(
+			status.mentions
+				.concat([status.account])
+				.filter(m => m.id !== excludeId)
+				.map(v => [v.id, v])
+		).values(),
+	].map(m => "@" + m.acct);
 }

@@ -221,7 +221,7 @@ function InteractionBar({
 
 export default memo(InteractionBar);
 
-function InteractionBarIcon({
+const InteractionBarIcon = memo(({
 	children,
 	onClick = () => {
 		//
@@ -233,7 +233,7 @@ function InteractionBarIcon({
 	onClick?: (e: JSXInternal.TargetedMouseEvent<HTMLButtonElement>) => void;
 	title: string;
 	shake?: boolean;
-}) {
+}) => {
 	return (
 		<button
 			title={title}
@@ -245,4 +245,4 @@ function InteractionBarIcon({
 			{children}
 		</button>
 	);
-}
+});

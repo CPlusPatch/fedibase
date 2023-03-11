@@ -8,7 +8,7 @@ export const UserFeed = memo(({ account }: { account: Entity.Account }) => {
 	return (
 		<>
 			{account && (
-				<div className="flex overflow-y-scroll w-full h-full flex-col gap-y-5 px-6 py-4 no-scroll">
+				<div className="flex overflow-y-scroll w-full h-full flex-col gap-y-6 px-6 py-4 no-scroll">
 					<UserProfile user={account} />
 					<Feed<Entity.Status>
 						type={FeedType.User}

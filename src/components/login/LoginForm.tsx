@@ -7,6 +7,7 @@ import Select2, { SelectItem } from "components/forms/Select2";
 import { toast } from "react-hot-toast";
 import { Button } from "components/buttons/Button";
 import { useBackupStore } from "utils/useBackupStore";
+import { memo } from "preact/compat";
 
 const instanceTypes: SelectItem[] = [
 	{
@@ -26,7 +27,7 @@ const instanceTypes: SelectItem[] = [
 	},
 ];
 
-export default function LoginForm({ code }: { code: string }) {
+const LoginForm = ({ code }: { code: string }) => {
 	const [isLoading, setIsLoading] = useState<boolean>(false);
 
 	const [mode] = useState<"login" | "code">(code ? "code" : "login");
@@ -226,4 +227,6 @@ export default function LoginForm({ code }: { code: string }) {
 			</div>
 		</div>
 	);
-}
+};
+
+export default memo(LoginForm);

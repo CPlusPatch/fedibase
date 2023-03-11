@@ -9,6 +9,7 @@ export interface StateType {
 		type: "mastodon" | "pleroma" | "misskey" | "";
 		clientSecret: string;
 		handle: string;
+		instance: Entity.Instance | null;
 	};
 	replyingTo: null | Entity.Status;
 	postComposerOpened: boolean;
@@ -32,6 +33,7 @@ let initialState: StateType = {
 		type: "",
 		clientSecret: "",
 		handle: "",
+		instance: null
 	},
 	theme: "light",
 	replyingTo: null,

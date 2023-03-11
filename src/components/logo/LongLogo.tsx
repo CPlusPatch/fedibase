@@ -1,3 +1,4 @@
+import { memo } from "preact/compat";
 import SmallLogo from "./SmallLogo";
 
 const LongLogo = ({ size }: { size: string }) => (
@@ -8,4 +9,4 @@ const LongLogo = ({ size }: { size: string }) => (
 	</span>
 );
 
-export default LongLogo;
+export default memo(LongLogo);

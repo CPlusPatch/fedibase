@@ -8,7 +8,7 @@ import { Link } from "components/transitions/Link";
 import { useCallback } from "react";
 import { memo } from "preact/compat";
 
-function ReplyTo({ status }: { status: Entity.Status }) {
+const ReplyTo = ({ status }: { status: Entity.Status }) => {
 	const [replyStatus, setReplyStatus] = useState<Entity.Status>();
 	const client = useContext(AuthContext);
 
@@ -18,7 +18,7 @@ function ReplyTo({ status }: { status: Entity.Status }) {
 	const fetchPostData = useCallback(async (): Promise<Entity.Status> => {
 		return (await client?.getStatus(status.in_reply_to_id ?? ""))
 			?.data as Entity.Status;
-	}, []);
+	}, [status.in_reply_to_id]);
 
 	useEffect(() => {
 		// If the post is a reply, get the previous post's contents
@@ -47,6 +47,6 @@ function ReplyTo({ status }: { status: Entity.Status }) {
 			</Link>
 		</div>
 	);
-}
+};
 
 export default memo(ReplyTo);
