@@ -735,10 +735,13 @@ function PollCreator({
 							{index + 1}.
 							<div className="grow">
 								<Input
-									onChange={() => {
+									onChange={(e) => {
+										if (!currentState.poll) return;
+										
 										const pollCopy = currentState.poll;
 
-										pollCopy?.choices.splice(index, 1);
+										pollCopy.choices[index] = (e.target as HTMLInputElement).value;
+
 										setCurrentState(s => ({
 											...s,
 											poll: pollCopy,
