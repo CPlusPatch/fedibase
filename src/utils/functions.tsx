@@ -204,7 +204,7 @@ export async function getCustomEmojis(client: MegalodonInterface): Promise<Entit
 		return res.data;
 
 	} else {
-		return localStorage.getItem("customEmojis") as any;
+		return JSON.parse(localStorage.getItem("customEmojis") ?? "{}") as any;
 	}
 }
 
@@ -217,7 +217,7 @@ export async function getInstanceData(
 		localStorage.setItem("instanceData", JSON.stringify(res.data));
 		return res.data;
 	} else {
-		return JSON.parse(localStorage.getItem("instanceData") ?? "") as any;
+		return JSON.parse(localStorage.getItem("instanceData") ?? "{}") as any;
 	}
 }
 

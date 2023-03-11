@@ -1,5 +1,6 @@
 import { Transition, Dialog, Switch } from "@headlessui/react";
 import {
+	IconAlertTriangle,
 	IconAlignLeft,
 	IconChartBar,
 	IconClock,
@@ -16,12 +17,13 @@ import {
 import { Button } from "components/buttons/Button";
 import { AuthContext } from "components/context/AuthContext";
 import { Conversation } from "components/feed/Conversation";
-import { Input } from "components/forms/Input";
+import { Input, Label } from "components/forms/Input";
 import Select2, { SelectItem } from "components/forms/Select2";
 import SmallSelect from "components/forms/SmallSelect";
 import Status, { StatusType } from "components/posts/Status";
 import { ModalOverlay } from "components/transitions/ModalOverlay";
 import { ScaleFadeSlide } from "components/transitions/ScaleFadeSlide";
+import { v4 as uuidv4 } from "uuid";
 import { Entity } from "megalodon";
 import { ChangeEvent, memo } from "preact/compat";
 import {
@@ -35,7 +37,13 @@ import {
 import { Fragment } from "preact/jsx-runtime";
 import { JSXInternal } from "preact/src/jsx";
 import { toast } from "react-hot-toast";
-import { classNames, findMentions, getCustomEmojis, modifyStore, withEmojis } from "utils/functions";
+import {
+	classNames,
+	findMentions,
+	getCustomEmojis,
+	modifyStore,
+	withEmojis,
+} from "utils/functions";
 import { useBackupStore } from "utils/useBackupStore";
 
 const modes = [
@@ -284,12 +292,15 @@ const renderFilePreview = (file: File) => {
 interface SendFormState {
 	mode: SelectItem;
 	visibility: SelectItem;
-	files: File[];
-	fileIds: string[];
+	files: {
+		uuid: string;
+		metadata: Entity.Attachment;
+		file: File;
+	}[];
 	loading: boolean;
-	emojis: Entity.Emoji[];
 	emojisSuggestions: Entity.Emoji[];
 	userSuggestions: Entity.Account[];
+	contentWarning: null | string;
 	poll: null | {
 		choices: string[];
 		duration: number;
@@ -302,16 +313,16 @@ const SendForm = memo(() => {
 	const client = useContext(AuthContext);
 
 	const { store, setStore } = useBackupStore();
+	const otherPost = store.replyingTo ?? store.quotingTo;
 
 	const [currentState, setCurrentState] = useState<SendFormState>({
 		mode: modes[0],
 		visibility: visibilities[0],
 		files: [],
-		fileIds: [],
 		loading: false,
-		emojis: [],
 		emojisSuggestions: [],
 		userSuggestions: [],
+		contentWarning: otherPost?.sensitive ? `RE: ${otherPost.spoiler_text}` : null,
 		poll: null,
 	});
 
@@ -319,29 +330,41 @@ const SendForm = memo(() => {
 	const fileInputRef = useRef<HTMLInputElement>(null);
 	const textareaRef = useRef<HTMLTextAreaElement>(null);
 
+	const uploadFiles = async (toUpload: FileList) => {
+		setCurrentState(prev => ({
+			...prev,
+			loading: true,
+		}));
+		console.info(`Uploading ${toUpload.length} files`);
+
+		const files = await Promise.all(
+			[...toUpload].map(async file => {
+				const upload = (await client?.uploadMedia(file)) as any;
+
+				return {
+					uuid: uuidv4(),
+					metadata: upload.data,
+					file: file,
+				};
+			})
+		);
+
+		toast.success("Files uploaded!");
+		setCurrentState(prev => ({
+			...prev,
+			loading: false,
+			files: files,
+		}));
+	};
+
 	const handlePaste = async (
 		e: JSXInternal.TargetedClipboardEvent<HTMLTextAreaElement>
 	) => {
 		if (!client || !e.clipboardData) return;
 		e.preventDefault();
-		const files = e.clipboardData.files;
+
 		try {
-			setCurrentState(s => ({
-				...s,
-				files: [...s.files, ...files],
-				loading: true,
-			}));
-			const ids = await Promise.all(
-				[...files].map(f =>
-					client.uploadMedia(f).then(res => res.data.id)
-				)
-			);
-			toast.success("Files uploaded!");
-			setCurrentState(s => ({
-				...s,
-				loading: false,
-				fileIds: [...s.fileIds, ...ids],
-			}));
+			await uploadFiles(e.clipboardData.files);
 		} catch (error) {
 			console.error(error);
 			toast.error("Couldn't upload files :(");
@@ -355,11 +378,12 @@ const SendForm = memo(() => {
 		// Check for emoji mentions
 		setCurrentState(s => ({ ...s, characters: value }));
 		const emojiMatch = value.match(/:\w+(?<!:)$/g)?.[0]?.replace(":", "");
-		setCurrentState(s => ({
-			...s,
-			emojisSuggestions: emojiMatch
-				? s.emojis.filter(e => e.shortcode.includes(emojiMatch))
-				: [],
+		const matchedEmojis = emojiMatch
+			? store.emojis.filter(e => e.shortcode.includes(emojiMatch))
+			: [];
+		setCurrentState(prev => ({
+			...prev,
+			emojisSuggestions: matchedEmojis,
 		}));
 
 		// Check for username mentions
@@ -374,9 +398,7 @@ const SendForm = memo(() => {
 		setCurrentState(s => ({
 			...s,
 			userSuggestions:
-				userMatches && userMatches.length > 0
-					? matches
-					: [],
+				userMatches && userMatches.length > 0 ? matches : [],
 		}));
 	};
 
@@ -399,12 +421,13 @@ const SendForm = memo(() => {
 			}));
 		}
 
-		client && getCustomEmojis(client).then((emojis) => {
-			setCurrentState(s => ({
-				...s,
-				emojis: emojis,
-			}));
-		});
+		client &&
+			getCustomEmojis(client).then(emojis => {
+				setCurrentState(s => ({
+					...s,
+					emojis: emojis,
+				}));
+			});
 
 		const timeout = setTimeout(() => {
 			// Move the cursor to the end of the textarea
@@ -429,6 +452,7 @@ const SendForm = memo(() => {
 		}));
 
 		const text: string = (event.target as HTMLFormElement)["comment"].value;
+		const cw: string = (event.target as HTMLFormElement)["cw"].value;
 		//const text = comment.value;
 		const inReplyToId = store.replyingTo?.id;
 		const quoteId = store.quotingTo?.id;
@@ -447,9 +471,11 @@ const SendForm = memo(() => {
 				in_reply_to_id: inReplyToId,
 				visibility: currentState.visibility.value as any,
 				media_ids:
-					currentState.fileIds.length > 0
-						? currentState.fileIds
+					currentState.files.length > 0
+						? currentState.files.map(f => f.metadata.id)
 						: undefined,
+				spoiler_text: cw,
+				sensitive: currentState.contentWarning !== null,
 				quote_id: quoteId,
 				poll:
 					currentState.poll && currentState.poll.choices.length > 0
@@ -471,12 +497,11 @@ const SendForm = memo(() => {
 				mode: modes[0],
 				visibility: visibilities[0],
 				files: [],
-				fileIds: [],
 				loading: false,
-				emojis: [],
 				emojisSuggestions: [],
 				userSuggestions: [],
 				poll: null,
+				contentWarning: null
 			});
 			modifyStore(setStore, {
 				postComposerOpened: false,
@@ -509,6 +534,8 @@ const SendForm = memo(() => {
 								e.preventDefault();
 								modifyStore(setStore, {
 									postComposerOpened: false,
+									quotingTo: null,
+									replyingTo: null
 								});
 							}}>
 							<IconX className="w-6 h-6" />
@@ -576,8 +603,13 @@ const SendForm = memo(() => {
 					/>
 				)}
 
+				{currentState.contentWarning !== null && (
+					<Input defaultValue={currentState.contentWarning} placeholder="Add content warning" className="border-0 px-6 !bg-orange-500/10" name="cw" id="cw" isLoading={currentState.loading}>
+						
+					</Input>
+				)}
+
 				<Files
-					fileIds={currentState.fileIds}
 					files={currentState.files}
 					setCurrentState={setCurrentState}
 				/>
@@ -592,10 +624,7 @@ const SendForm = memo(() => {
 									key={emoji.shortcode}
 									emoji={emoji}
 									onClick={() => {
-										if (!textareaRef.current) {
-											return;
-										}
-
+										if (!textareaRef.current) return;
 										const val = textareaRef.current.value;
 
 										const matchedEmoji =
@@ -623,9 +652,7 @@ const SendForm = memo(() => {
 								key={user.id}
 								user={user}
 								onClick={() => {
-									if (!textareaRef.current) {
-										return;
-									}
+									if (!textareaRef.current) return;
 
 									const val = textareaRef.current.value;
 
@@ -649,8 +676,8 @@ const SendForm = memo(() => {
 					currentState={currentState}
 					setCurrentState={setCurrentState}
 					fileInputRef={fileInputRef}
-					client={client}
 					textareaRef={textareaRef}
+					uploadFiles={uploadFiles}
 				/>
 			</div>
 		</form>
@@ -785,37 +812,32 @@ function PollCreator({
 
 function Files({
 	files,
-	fileIds,
 	setCurrentState,
 }: {
 	files: SendFormState["files"];
-	fileIds: SendFormState["fileIds"];
 	setCurrentState: StateUpdater<SendFormState>;
 }) {
 	return (
 		<>
 			{files.length > 0 && (
-				<div className="flex flex-wrap gap-4 bottom-0 flex-row px-4 w-full">
-					{files.map((file: File, index: number) => {
+				<div className="flex flex-wrap gap-4 flex-row px-4 w-full mt-4">
+					{files.map((file, index) => {
 						return (
 							<div
-								key={index}
+								key={file.uuid}
 								className="overflow-hidden relative h-24 rounded-lg border-2">
-								{renderFilePreview(file)}
+								{renderFilePreview(file.file)}
 								<Button
 									onClick={(e: any) => {
 										e.preventDefault();
 
 										const newFiles = files;
-										const newFileIds = fileIds;
 
 										newFiles.splice(index, 1);
-										newFileIds.splice(index, 1);
 
 										setCurrentState(s => ({
 											...s,
 											files: newFiles,
-											fileIds: newFileIds,
 										}));
 									}}
 									style="gray"
@@ -833,40 +855,18 @@ function Files({
 
 function ButtonRow({
 	fileInputRef,
-	client,
 	setCurrentState,
 	currentState,
 	textareaRef,
+	uploadFiles,
 }: {
 	fileInputRef: any;
-	client: any;
 	setCurrentState: StateUpdater<SendFormState>;
 	currentState: SendFormState;
 	textareaRef: Ref<HTMLTextAreaElement>;
+	uploadFiles: (toUpload: FileList) => Promise<void>;
 }) {
 	const { store } = useBackupStore();
-
-	const [defaultVisibility, setDefaultVisibility] = useState<number>(0);
-
-	useEffect(() => {
-		const { replyingTo, quotingTo } = store;
-		const otherPost = replyingTo ?? quotingTo ?? null;
-
-		switch (otherPost?.visibility) {
-			case "direct":
-				setDefaultVisibility(3);
-				break;
-			case "private":
-				setDefaultVisibility(2);
-				break;
-			case "unlisted":
-				setDefaultVisibility(1);
-				break;
-			case "public":
-				setDefaultVisibility(0);
-				break;
-		}
-	}, []);
 
 	return (
 		<div className="flex inset-x-0 bottom-0 justify-between py-2 pr-2 pl-3 flex-row">
@@ -874,15 +874,16 @@ function ButtonRow({
 				<button
 					type="button"
 					onClick={() => {
-						if (fileInputRef.current) fileInputRef.current.click();
+						document.getElementById("fileUpload")?.click();
 					}}
 					title="Attach a file"
 					className="flex relative flex-row gap-x-1 items-center p-2 text-gray-600 rounded duration-200 cursor-default dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">
 					<IconPaperclip className="w-6 h-6" aria-hidden="true" />
-					<span className="sr-only">Attach a file</span>
 				</button>
 				<input
 					type="file"
+					id="fileUpload"
+					aria-hidden={true}
 					className="hidden"
 					ref={fileInputRef}
 					multiple
@@ -890,22 +891,7 @@ function ButtonRow({
 						e: JSXInternal.TargetedEvent<HTMLInputElement, Event>
 					) => {
 						try {
-							setCurrentState(s => ({
-								...s,
-								loading: true,
-								files: [...s.files, ...(e.target as any).files],
-							}));
-							const ids = await Promise.all(
-								[...(e.target as any).files].map(async file => {
-									return (await client.uploadMedia(file)).data
-										.id;
-								})
-							);
-							setCurrentState(s => ({
-								...s,
-								loading: false,
-								fileIds: [...s.fileIds, ...ids],
-							}));
+							await uploadFiles((e.target as any).files);
 						} catch (error) {
 							console.error(error);
 							toast.error("Couldn't upload files :(");
@@ -917,18 +903,22 @@ function ButtonRow({
 					items={modes}
 					defaultValue={0}
 					onChange={i => {
-						setCurrentState(s => ({
-							...s,
+						setCurrentState(prev => ({
+							...prev,
 							mode: i,
 						}));
 					}}
 				/>
 				<SmallSelect
 					items={visibilities}
-					defaultValue={defaultVisibility}
+					defaultValue={(store.replyingTo || store.quotingTo) ? visibilities.findIndex(
+						v =>
+							(store.replyingTo ?? store.quotingTo)?.visibility ==
+							v.value
+					): 0}
 					onChange={i => {
-						setCurrentState(s => ({
-							...s,
+						setCurrentState(prev => ({
+							...prev,
 							visibility: i,
 						}));
 					}}
@@ -938,25 +928,34 @@ function ButtonRow({
 					title="Create poll"
 					onClick={e => {
 						e.preventDefault();
-						if (currentState.poll) {
-							setCurrentState(s => ({
-								...s,
-								poll: null,
-							}));
-						} else {
-							setCurrentState(s => ({
-								...s,
-								poll: {
-									choices: [""],
-									duration: 1000,
-									multiple: false,
-								},
-							}));
-						}
+
+						setCurrentState(s => ({
+							...s,
+							poll: currentState.poll
+								? null
+								: {
+										choices: [""],
+										duration: 1000,
+										multiple: false,
+								  },
+						}));
 					}}
 					className="flex relative flex-row gap-x-1 items-center p-2 text-gray-600 rounded duration-200 cursor-default dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">
 					<IconChartBar className="w-6 h-6" aria-hidden="true" />
-					<span className="sr-only">Create a poll</span>
+				</button>
+				<button
+					type="button"
+					title="Add content warning"
+					onClick={e => {
+						e.preventDefault();
+
+						setCurrentState(prev => ({
+							...prev,
+							contentWarning: prev.contentWarning === null ? "" : null,
+						}));
+					}}
+					className="flex relative flex-row gap-x-1 items-center p-2 text-gray-600 rounded duration-200 cursor-default dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">
+					<IconAlertTriangle className="w-6 h-6" aria-hidden="true" />
 				</button>
 			</div>
 			<div className="flex flex-row flex-shrink-0 gap-x-4 items-center">

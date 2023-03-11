@@ -23,7 +23,7 @@ import MainLayout from "./components/layout/MainLayout";
 import Nav from "./components/sidebar/Nav";
 import { StatusType } from "./components/posts/Status";
 import { useBackupStore } from "utils/useBackupStore";
-import { getInstanceData, modifyStore } from "utils/functions";
+import { getCustomEmojis, getInstanceData, modifyStore } from "utils/functions";
 import FastClick from "fastclick";
 import { memo } from "preact/compat";
 
@@ -102,6 +102,14 @@ export const Index = memo(() => {
 				}
 			}));
 		});
+
+		client &&
+			getCustomEmojis(client).then(data => {
+				setStore(prev => ({
+					...prev,
+					emojis: data
+				}));
+			});
 	}, []);
 
 	return (

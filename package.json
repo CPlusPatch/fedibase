@@ -26,7 +26,8 @@
 		"react-hot-toast": "^2.4.0",
 		"react-is-visible": "^1.2.0",
 		"teaful": "^0.11.1",
-		"use-line-clamp": "^1.0.2"
+		"use-line-clamp": "^1.0.2",
+		"uuid": "^9.0.0"
 	},
 	"devDependencies": {
 		"@preact/preset-vite": "^2.5.0",
@@ -38,6 +39,7 @@
 		"@types/fastclick": "^1.0.30",
 		"@types/node": "^18.15.0",
 		"@types/react": "^18.0.28",
+		"@types/uuid": "^9.0.1",
 		"@typescript-eslint/eslint-plugin": "^5.54.1",
 		"@typescript-eslint/parser": "^5.54.1",
 		"autoprefixer": "^10.4.14",
