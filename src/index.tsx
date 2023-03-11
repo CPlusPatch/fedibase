@@ -43,6 +43,7 @@ export const Index = memo(() => {
 
 	useEffect(() => {
 		if (window && store.loaded) {
+
 			if (store.theme === "dark") {
 				document.getElementsByTagName("html")[0].className += " dark";
 			}
@@ -86,8 +87,18 @@ export const Index = memo(() => {
 
 			window.addEventListener("popstate", handlePopState);
 
-			return () => window.removeEventListener("popstate", handlePopState);
+			
 		}
+
+		const timeout = setTimeout(() => {
+			if (!store.auth.token && window.location.pathname !== "/login") window.location.pathname = "/login";
+		}, 1000);
+		
+		return () => {
+			clearTimeout(timeout);
+			window.removeEventListener("popstate", handlePopState);
+		};
+
 	}, [store.path, store.auth.token, store.loaded]);
 
 	useEffect(() => {
