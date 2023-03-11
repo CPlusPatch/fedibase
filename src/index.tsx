@@ -93,21 +93,22 @@ export const Index = memo(() => {
 	useEffect(() => {
 		FastClick(document.body);
 
-		client && getInstanceData(client).then(data => {
-			setStore(prev => ({
-				...prev,
-				auth: {
-					...prev.auth,
-					instance: data
-				}
-			}));
-		});
+		client &&
+			getInstanceData(client).then(data => {
+				setStore(prev => ({
+					...prev,
+					auth: {
+						...prev.auth,
+						instance: data,
+					},
+				}));
+			});
 
 		client &&
 			getCustomEmojis(client).then(data => {
 				setStore(prev => ({
 					...prev,
-					emojis: data
+					emojis: data,
 				}));
 			});
 	}, []);

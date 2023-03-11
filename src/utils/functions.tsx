@@ -196,13 +196,14 @@ export function modifyStore(setStore: any, newValues: Partial<StateType>) {
 	}));
 }
 
-export async function getCustomEmojis(client: MegalodonInterface): Promise<Entity.Emoji[]> {
+export async function getCustomEmojis(
+	client: MegalodonInterface
+): Promise<Entity.Emoji[]> {
 	if (!localStorage.getItem("customEmojis")) {
 		const res = await client?.getInstanceCustomEmojis();
 
 		localStorage.setItem("customEmojis", JSON.stringify(res.data));
 		return res.data;
-
 	} else {
 		return JSON.parse(localStorage.getItem("customEmojis") ?? "{}") as any;
 	}

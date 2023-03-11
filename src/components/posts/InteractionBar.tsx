@@ -221,28 +221,32 @@ function InteractionBar({
 
 export default memo(InteractionBar);
 
-const InteractionBarIcon = memo(({
-	children,
-	onClick = () => {
-		//
-	},
-	title = "",
-	shake = true,
-}: {
-	children: any;
-	onClick?: (e: JSXInternal.TargetedMouseEvent<HTMLButtonElement>) => void;
-	title: string;
-	shake?: boolean;
-}) => {
-	return (
-		<button
-			title={title}
-			className={classNames(
-				"flex justify-center !static",
-				shake && "hover:animate-hithere"
-			)}
-			onClick={onClick}>
-			{children}
-		</button>
-	);
-});
+const InteractionBarIcon = memo(
+	({
+		children,
+		onClick = () => {
+			//
+		},
+		title = "",
+		shake = true,
+	}: {
+		children: any;
+		onClick?: (
+			e: JSXInternal.TargetedMouseEvent<HTMLButtonElement>
+		) => void;
+		title: string;
+		shake?: boolean;
+	}) => {
+		return (
+			<button
+				title={title}
+				className={classNames(
+					"flex justify-center !static",
+					shake && "hover:animate-hithere"
+				)}
+				onClick={onClick}>
+				{children}
+			</button>
+		);
+	}
+);

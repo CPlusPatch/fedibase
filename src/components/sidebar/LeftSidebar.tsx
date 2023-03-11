@@ -322,7 +322,9 @@ const SendForm = memo(() => {
 		loading: false,
 		emojisSuggestions: [],
 		userSuggestions: [],
-		contentWarning: otherPost?.sensitive ? `RE: ${otherPost.spoiler_text}` : null,
+		contentWarning: otherPost?.sensitive
+			? `RE: ${otherPost.spoiler_text}`
+			: null,
 		poll: null,
 	});
 
@@ -501,7 +503,7 @@ const SendForm = memo(() => {
 				emojisSuggestions: [],
 				userSuggestions: [],
 				poll: null,
-				contentWarning: null
+				contentWarning: null,
 			});
 			modifyStore(setStore, {
 				postComposerOpened: false,
@@ -535,7 +537,7 @@ const SendForm = memo(() => {
 								modifyStore(setStore, {
 									postComposerOpened: false,
 									quotingTo: null,
-									replyingTo: null
+									replyingTo: null,
 								});
 							}}>
 							<IconX className="w-6 h-6" />
@@ -604,9 +606,13 @@ const SendForm = memo(() => {
 				)}
 
 				{currentState.contentWarning !== null && (
-					<Input defaultValue={currentState.contentWarning} placeholder="Add content warning" className="border-0 px-6 !bg-orange-500/10" name="cw" id="cw" isLoading={currentState.loading}>
-						
-					</Input>
+					<Input
+						defaultValue={currentState.contentWarning}
+						placeholder="Add content warning"
+						className="border-0 px-6 !bg-orange-500/10"
+						name="cw"
+						id="cw"
+						isLoading={currentState.loading}>{""}</Input>
 				)}
 
 				<Files
@@ -911,11 +917,15 @@ function ButtonRow({
 				/>
 				<SmallSelect
 					items={visibilities}
-					defaultValue={(store.replyingTo || store.quotingTo) ? visibilities.findIndex(
-						v =>
-							(store.replyingTo ?? store.quotingTo)?.visibility ==
-							v.value
-					): 0}
+					defaultValue={
+						store.replyingTo || store.quotingTo
+							? visibilities.findIndex(
+									v =>
+										(store.replyingTo ?? store.quotingTo)
+											?.visibility == v.value
+							  )
+							: 0
+					}
 					onChange={i => {
 						setCurrentState(prev => ({
 							...prev,
@@ -951,7 +961,8 @@ function ButtonRow({
 
 						setCurrentState(prev => ({
 							...prev,
-							contentWarning: prev.contentWarning === null ? "" : null,
+							contentWarning:
+								prev.contentWarning === null ? "" : null,
 						}));
 					}}
 					className="flex relative flex-row gap-x-1 items-center p-2 text-gray-600 rounded duration-200 cursor-default dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">

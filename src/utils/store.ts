@@ -22,7 +22,7 @@ export interface StateType {
 	settingsOpen: boolean;
 	theme: "light" | "dark";
 	loaded: boolean;
-	emojis: Entity.Emoji[]
+	emojis: Entity.Emoji[];
 }
 
 let initialState: StateType = {
@@ -34,7 +34,7 @@ let initialState: StateType = {
 		type: "",
 		clientSecret: "",
 		handle: "",
-		instance: null
+		instance: null,
 	},
 	theme: "light",
 	replyingTo: null,
@@ -47,7 +47,7 @@ let initialState: StateType = {
 	viewingConversation: "",
 	settingsOpen: false,
 	loaded: false,
-	emojis: []
+	emojis: [],
 };
 
 const storedStore = localStorage.getItem("store");

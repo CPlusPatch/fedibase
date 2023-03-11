@@ -259,20 +259,18 @@ function Feed<T>(props: FeedProps) {
 	);
 }
 
-const DummyNotification = memo(({
-	reference,
-}: {
-	reference?: MutableRef<any> | null;
-}) => {
-	return (
-		<>
-			<li
-				ref={reference ?? undefined}
-				className={"flex flex-col gap-y-2 p-2 max-w-full rounded"}>
-				<DummyStatus statusType={StatusType.Notification} />
-			</li>
-		</>
-	);
-});
+const DummyNotification = memo(
+	({ reference }: { reference?: MutableRef<any> | null }) => {
+		return (
+			<>
+				<li
+					ref={reference ?? undefined}
+					className={"flex flex-col gap-y-2 p-2 max-w-full rounded"}>
+					<DummyStatus statusType={StatusType.Notification} />
+				</li>
+			</>
+		);
+	}
+);
 
 export default memo(Feed);

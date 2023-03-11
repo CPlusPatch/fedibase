@@ -19,29 +19,33 @@ interface ButtonProps {
 	spinnerClasses?: string;
 }
 
-export const Button = memo(({
-	className = "",
-	children,
-	ringColor = "",
-	theme = null,
-	loading = false,
-	spinnerClasses = "h-4 text-gray-100 fill-orange-400",
-	...props
-}: ButtonProps &
-	Omit<JSXInternal.HTMLAttributes<HTMLButtonElement>, "loading">) => (
-	<button
-		{...props}
-		className={classNames(
-			"inline-flex justify-center relative ease-in-out items-center no-bad-scale px-4 py-2 text-base font-medium rounded-md border shadow-sm duration-200 font-inter focus:outline-none sm:text-sm",
-			theme && themes[theme],
-			className,
-			loading && "!text-transparent",
-			ringColor !== ""
-				? `focus:ring-2 focus:ring-offset-2 focus:ring-${ringColor}`
-				: "ring-0 focus:ring-0"
-		)}
-		disabled={props.disabled || loading}>
-		{loading && <Spinner className={`absolute w-auto ${spinnerClasses}`} />}
-		{children}
-	</button>
-));
+export const Button = memo(
+	({
+		className = "",
+		children,
+		ringColor = "",
+		theme = null,
+		loading = false,
+		spinnerClasses = "h-4 text-gray-100 fill-orange-400",
+		...props
+	}: ButtonProps &
+		Omit<JSXInternal.HTMLAttributes<HTMLButtonElement>, "loading">) => (
+		<button
+			{...props}
+			className={classNames(
+				"inline-flex justify-center relative ease-in-out items-center no-bad-scale px-4 py-2 text-base font-medium rounded-md border shadow-sm duration-200 font-inter focus:outline-none sm:text-sm",
+				theme && themes[theme],
+				className,
+				loading && "!text-transparent",
+				ringColor !== ""
+					? `focus:ring-2 focus:ring-offset-2 focus:ring-${ringColor}`
+					: "ring-0 focus:ring-0"
+			)}
+			disabled={props.disabled || loading}>
+			{loading && (
+				<Spinner className={`absolute w-auto ${spinnerClasses}`} />
+			)}
+			{children}
+		</button>
+	)
+);

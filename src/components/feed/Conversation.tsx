@@ -126,35 +126,32 @@ type ChildPostProps = {
 	recursionDepth?: number;
 };
 
-const ChildPost = memo(({
-	posts,
-	parentId,
-	mode,
-	recursionDepth = 0,
-}: ChildPostProps) => {
-	const children = posts.filter(post => post.in_reply_to_id === parentId);
+const ChildPost = memo(
+	({ posts, parentId, mode, recursionDepth = 0 }: ChildPostProps) => {
+		const children = posts.filter(post => post.in_reply_to_id === parentId);
 
-	if (recursionDepth > 10) {
+		if (recursionDepth > 10) {
+			return (
+				<div className="flex flex-col gap-y-4 dark:border-gray-500 rounded justify-center items-center p-4 w-full">
+					<IconDots className="w-5 h-5 dark:text-white" />
+				</div>
+			);
+		}
+
 		return (
-			<div className="flex flex-col gap-y-4 dark:border-gray-500 rounded justify-center items-center p-4 w-full">
-				<IconDots className="w-5 h-5 dark:text-white" />
+			<div className="flex flex-col gap-y-4 pl-1.5 border-l-4 dark:border-gray-500 rounded">
+				{children.map(post => (
+					<Fragment key={post.id}>
+						<Post mode={mode} entity={post} />
+						<ChildPost
+							posts={posts}
+							parentId={post.id}
+							mode={mode}
+							recursionDepth={recursionDepth + 1}
+						/>
+					</Fragment>
+				))}
 			</div>
 		);
 	}
-
-	return (
-		<div className="flex flex-col gap-y-4 pl-1.5 border-l-4 dark:border-gray-500 rounded">
-			{children.map(post => (
-				<Fragment key={post.id}>
-					<Post mode={mode} entity={post} />
-					<ChildPost
-						posts={posts}
-						parentId={post.id}
-						mode={mode}
-						recursionDepth={recursionDepth + 1}
-					/>
-				</Fragment>
-			))}
-		</div>
-	);
-});
+);

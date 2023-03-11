@@ -73,62 +73,64 @@ enum SettingType {
 	Input,
 }
 
-const SettingItem = memo(({
-	settingType,
-	name,
-	text,
-	description,
-}: {
-	settingType: SettingType;
-	name: string;
-	text: string;
-	description: string;
-}) => {
-	const [enabled, setEnabled] = useState<boolean>(
-		getSetting(name) === "on" ? true : false
-	);
+const SettingItem = memo(
+	({
+		settingType,
+		name,
+		text,
+		description,
+	}: {
+		settingType: SettingType;
+		name: string;
+		text: string;
+		description: string;
+	}) => {
+		const [enabled, setEnabled] = useState<boolean>(
+			getSetting(name) === "on" ? true : false
+		);
 
-	return (
-		<div className="dark:text-gray-200">
-			<div className="flex items-center justify-between">
-				<span className="flex-grow flex flex-col">
-					<h2
-						as="span"
-						className="text-sm font-medium text-gray-900 dark:text-gray-50">
-						{text}
-					</h2>
-					<p
-						as="span"
-						className="text-sm text-gray-500 dark:text-gray-400">
-						{description}
-					</p>
-				</span>
-				{settingType === SettingType.Switch && (
-					<Switch
-						checked={enabled}
-						onChange={(value: boolean) => {
-							setSetting(name, value ? "on" : "off");
-							setEnabled(value);
-						}}
-						className={classNames(
-							enabled
-								? "bg-orange-600"
-								: "bg-gray-200 dark:bg-dark-600 ",
-							"relative inline-flex flex-shrink-0 h-6 w-11 border-2 border-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:outline-none"
-						)}>
-						<span
-							aria-hidden="true"
+		return (
+			<div className="dark:text-gray-200">
+				<div className="flex items-center justify-between">
+					<span className="flex-grow flex flex-col">
+						<h2
+							as="span"
+							className="text-sm font-medium text-gray-900 dark:text-gray-50">
+							{text}
+						</h2>
+						<p
+							as="span"
+							className="text-sm text-gray-500 dark:text-gray-400">
+							{description}
+						</p>
+					</span>
+					{settingType === SettingType.Switch && (
+						<Switch
+							checked={enabled}
+							onChange={(value: boolean) => {
+								setSetting(name, value ? "on" : "off");
+								setEnabled(value);
+							}}
 							className={classNames(
-								enabled ? "translate-x-5" : "translate-x-0",
-								"pointer-events-none inline-block h-5 w-5 rounded-full bg-white  shadow transform ring-0 transition ease-in-out duration-200"
-							)}
-						/>
-					</Switch>
-				)}
+								enabled
+									? "bg-orange-600"
+									: "bg-gray-200 dark:bg-dark-600 ",
+								"relative inline-flex flex-shrink-0 h-6 w-11 border-2 border-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:outline-none"
+							)}>
+							<span
+								aria-hidden="true"
+								className={classNames(
+									enabled ? "translate-x-5" : "translate-x-0",
+									"pointer-events-none inline-block h-5 w-5 rounded-full bg-white  shadow transform ring-0 transition ease-in-out duration-200"
+								)}
+							/>
+						</Switch>
+					)}
+				</div>
 			</div>
-		</div>
-	);
-});
+		);
+	}
+);
 
 const defaultSettings: any = {
 	blur: "on",
