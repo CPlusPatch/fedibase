@@ -536,7 +536,7 @@ const SendForm = memo((props: SendFormProps = {
 	return (
 		<form
 			action="#"
-			className="relative text-sm font-inter w-full flex h-full min-h-[20rem]"
+			className="relative text-sm font-inter w-full flex h-full min-h-[30rem]"
 			onSubmit={submitForm}
 			onKeyUp={e => {
 				if (e.key === "Enter" && (e.ctrlKey || e.metaKey)) {
@@ -553,11 +553,12 @@ const SendForm = memo((props: SendFormProps = {
 				)}>
 				<div className="flex justify-between p-3 w-full gap-x-2">
 					<div className="flex flex-row items-center gap-x-3">
-						{props.showClose && (
+						{(props.showClose || store.replyingTo || store.quotingTo) && (
 							<button
 								className="mb-1"
 								onClick={e => {
 									e.preventDefault();
+									if (textareaRef.current) textareaRef.current.value = "";
 									modifyStore(setStore, {
 										postComposerOpened: false,
 										quotingTo: null,
@@ -603,7 +604,7 @@ const SendForm = memo((props: SendFormProps = {
 				</div>
 
 				{store.replyingTo && (
-					<div className="px-4 opacity-60">
+					<div className="px-4 opacity-60 max-h-40 no-scroll overflow-scroll">
 						<Status
 							status={store.replyingTo ?? store.quotingTo}
 							type={StatusType.Notification}

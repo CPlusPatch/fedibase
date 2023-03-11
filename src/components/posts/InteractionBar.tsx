@@ -63,7 +63,7 @@ function InteractionBar({
 					setState(prev => ({
 						...prev,
 						replyingTo: status,
-						postComposerOpened: true,
+						postComposerOpened: window.innerWidth < 1400
 					}));
 				}}>
 				<IconMessage aria-hidden={true} className="w-5 h-5" />
