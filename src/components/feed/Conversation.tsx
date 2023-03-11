@@ -1,4 +1,4 @@
-import { IconDots } from "@tabler/icons-preact";
+import { IconDots, IconX } from "@tabler/icons-preact";
 import { AuthContext } from "components/context/AuthContext";
 import DummyStatus from "components/posts/DummyStatus";
 import { StatusType } from "components/posts/Status";
@@ -12,10 +12,14 @@ interface ConversationProps {
 	id: string;
 	mode: StatusType;
 	showTitle?: boolean;
+	onClose?: () => void;
+	showCloseButton?: boolean;
 }
 
 export const Conversation = memo(
-	({ id, mode, showTitle = true }: ConversationProps) => {
+	({ id, mode, showTitle = true, onClose = () => {
+		//
+	}, showCloseButton = false }: ConversationProps) => {
 		const [ancestors, setAncestors] = useState<Entity.Status[]>([]);
 		const [post, setPost] = useState<Entity.Status>();
 		const [descendants, setDescendants] = useState<Entity.Status[]>([]);
@@ -73,9 +77,18 @@ export const Conversation = memo(
 		return (
 			<>
 				{showTitle && (
-					<h3 className="px-5 py-4 text-xl font-bold dark:text-gray-50">
-						Conversation
-					</h3>
+					<div className="flex justify-between px-5 py-4">
+						<h3 className="text-xl font-bold dark:text-gray-50">
+							Conversation
+						</h3>
+						<button className="flex items-center justify-center" onClick={() => {
+							onClose();
+						}}>
+							{showCloseButton && (
+								<IconX className="w-5 h-5 dark:text-gray-50" />
+							)}
+						</button>
+					</div>
 				)}
 				{post ? (
 					<div className="flex overflow-y-scroll flex-col gap-y-5 py-4 w-full h-full no-scroll">

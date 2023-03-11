@@ -95,19 +95,26 @@ export default function LeftSidebar() {
 		<>
 			{store.viewingConversation ? (
 				<Conversation
+					onClose={() => {
+						modifyStore(setStore, {
+							viewingConversation: ""
+						});
+					}}
+					showCloseButton={true}
 					id={store.viewingConversation}
 					mode={StatusType.Notification}
 				/>
 			) : (
-				<div className="p-3 h-full">
-					<label className="flex flex-col items-center justify-center w-full h-full border-2 no-bad-scale duration-200 border-dashed rounded-lg cursor-pointer border-gray-300 hover:border-gray-400 dark:border-gray-600 dark:hover:border-gray-500">
+				<div className="p-3 h-full items-center flex justify-center">
+					{/* <label className="flex flex-col items-center justify-center w-full h-full border-2 no-bad-scale duration-200 border-dashed rounded-lg cursor-pointer border-gray-300 hover:border-gray-400 dark:border-gray-600 dark:hover:border-gray-500">
 						<div className="flex flex-col justify-center items-center p-4">
 							<IconNewSection className="mb-3 w-10 h-10 dark:text-gray-200 text-gray-600" />
 							<p className="mb-2 text-sm dark:text-gray-400 text-gray-500">
 								Click on a conversation and it will appear here
 							</p>
 						</div>
-					</label>
+					</label> */}
+					<SendForm border={false} showClose={false}/>
 				</div>
 			)}
 
@@ -308,7 +315,15 @@ interface SendFormState {
 	};
 }
 
-const SendForm = memo(() => {
+interface SendFormProps {
+	border?: boolean;
+	showClose?: boolean
+}
+
+const SendForm = memo((props: SendFormProps = {
+	border: true,
+	showClose: true
+}) => {
 	// Context stuff
 	const client = useContext(AuthContext);
 
@@ -510,6 +525,7 @@ const SendForm = memo(() => {
 				poll: null,
 				contentWarning: null,
 			});
+			if(textareaRef.current) textareaRef.current.value = "";
 			modifyStore(setStore, {
 				postComposerOpened: false,
 				quotingTo: null,
@@ -520,7 +536,7 @@ const SendForm = memo(() => {
 	return (
 		<form
 			action="#"
-			className="relative text-sm font-inter"
+			className="relative text-sm font-inter w-full flex h-full min-h-[20rem]"
 			onSubmit={submitForm}
 			onKeyUp={e => {
 				if (e.key === "Enter" && (e.ctrlKey || e.metaKey)) {
@@ -528,25 +544,29 @@ const SendForm = memo(() => {
 				}
 			}}>
 			<div
-				className={`px-3 py-2 w-full rounded-2xl border dark:text-gray-100 border-gray-300 dark:border-gray-700 shadow-sm ${
+				className={classNames(
+					"px-3 py-2 w-full flex flex-col rounded-2xl dark:text-gray-100 border-gray-300 dark:border-gray-700 shadow-sm",
+					props.border && "border",
 					currentState.loading
 						? "bg-gray-100 dark:bg-dark-800"
 						: "bg-white dark:bg-dark-800"
-				}`}>
+				)}>
 				<div className="flex justify-between p-3 w-full gap-x-2">
 					<div className="flex flex-row items-center gap-x-3">
-						<button
-							className="mb-1"
-							onClick={e => {
-								e.preventDefault();
-								modifyStore(setStore, {
-									postComposerOpened: false,
-									quotingTo: null,
-									replyingTo: null,
-								});
-							}}>
-							<IconX className="w-6 h-6" />
-						</button>
+						{props.showClose && (
+							<button
+								className="mb-1"
+								onClick={e => {
+									e.preventDefault();
+									modifyStore(setStore, {
+										postComposerOpened: false,
+										quotingTo: null,
+										replyingTo: null,
+									});
+								}}>
+								<IconX className="w-6 h-6" />
+							</button>
+						)}
 						<h1 className="text-xl font-bold dark:text-gray-50">
 							{store.replyingTo && (
 								<>
@@ -594,12 +614,11 @@ const SendForm = memo(() => {
 
 				<textarea
 					ref={textareaRef}
-					rows={6}
 					name="comment"
 					onPaste={handlePaste}
 					onChange={handleChange}
 					disabled={currentState.loading}
-					className="block py-3 no-scroll w-full bg-transparent border-0 resize-none disabled:text-gray-400 focus:ring-0 dark:placeholder:text-gray-400"
+					className="flex py-3 flex-1 no-scroll w-full bg-transparent border-0 resize-none disabled:text-gray-400 focus:ring-0 dark:placeholder:text-gray-400"
 					placeholder="What's happening?"
 				/>
 
@@ -617,7 +636,9 @@ const SendForm = memo(() => {
 						className="border-0 px-6 !bg-orange-500/10"
 						name="cw"
 						id="cw"
-						isLoading={currentState.loading}>{""}</Input>
+						isLoading={currentState.loading}>
+						{""}
+					</Input>
 				)}
 
 				<Files
