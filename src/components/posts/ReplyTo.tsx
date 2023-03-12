@@ -1,7 +1,6 @@
 import { IconMessage } from "@tabler/icons-preact";
 import { AuthContext } from "components/context/AuthContext";
 import { withEmojis } from "utils/functions";
-import { useIsVisible } from "react-is-visible";
 import { Entity } from "megalodon";
 import { useState, useContext, useRef, useEffect } from "preact/hooks";
 import { Link } from "components/transitions/Link";
@@ -13,7 +12,7 @@ const ReplyTo = ({ status }: { status: Entity.Status }) => {
 	const client = useContext(AuthContext);
 
 	const nodeRef = useRef<HTMLDivElement>();
-	const visible = useIsVisible(nodeRef);
+	const visible = true;
 
 	const fetchPostData = useCallback(async (): Promise<Entity.Status> => {
 		return (await client?.getStatus(status.in_reply_to_id ?? ""))

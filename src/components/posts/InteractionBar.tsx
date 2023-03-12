@@ -13,7 +13,7 @@ import { AuthContext } from "components/context/AuthContext";
 import { Input } from "components/forms/Input";
 import { Entity } from "megalodon";
 import { memo } from "preact/compat";
-import { StateUpdater, useContext, useEffect, useState } from "preact/hooks";
+import { StateUpdater, useContext, useState } from "preact/hooks";
 import { Fragment } from "preact/jsx-runtime";
 import { JSXInternal } from "preact/src/jsx";
 import { toast } from "react-hot-toast";
@@ -33,27 +33,8 @@ function InteractionBar({
 }) {
 	const client = useContext(AuthContext);
 	const [showEmojiPicker, setShowEmojiPicker] = useState<boolean>(false);
-	const [instanceEmojis, setInstanceEmojis] = useState<Entity.Emoji[]>([]);
 
 	const [emojiFilter, setEmojiFilter] = useState<string>("");
-
-	useEffect(() => {
-		if (showEmojiPicker) {
-			if (!localStorage.getItem("customEmojis")) {
-				client?.getInstanceCustomEmojis().then(res => {
-					localStorage.setItem(
-						"customEmojis",
-						JSON.stringify(res.data)
-					);
-					setInstanceEmojis(res.data);
-				});
-			} else {
-				setInstanceEmojis(
-					JSON.parse(localStorage.getItem("customEmojis") as any)
-				);
-			}
-		}
-	}, [showEmojiPicker]);
 
 	const { store, setStore } = useBackupStore();
 
