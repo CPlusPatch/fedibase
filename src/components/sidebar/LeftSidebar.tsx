@@ -18,7 +18,7 @@ import { AuthContext } from "components/context/AuthContext";
 import { Conversation } from "components/feed/Conversation";
 import { Input } from "components/forms/Input";
 import Select2, { SelectItem } from "components/forms/Select2";
-import SmallSelect from "components/forms/SmallSelect";
+import SmallSelect, { SelectOrientation } from "components/forms/SmallSelect";
 import Status, { StatusType } from "components/posts/Status";
 import { ModalOverlay } from "components/transitions/ModalOverlay";
 import { ScaleFadeSlide } from "components/transitions/ScaleFadeSlide";
@@ -26,9 +26,11 @@ import { v4 as uuidv4 } from "uuid";
 import { Entity } from "megalodon";
 import { ChangeEvent, memo } from "preact/compat";
 import {
+	Ref,
 	StateUpdater,
 	useContext,
 	useEffect,
+	useMemo,
 	useRef,
 	useState,
 } from "preact/hooks";
@@ -331,7 +333,9 @@ const SendForm = memo(
 		const otherPost = store.replyingTo ?? store.quotingTo ?? null;
 
 		const [, setMode] = useState<SelectItem>(modes[0]);
-		const [visibility, setVisibility] = useState<SelectItem>(visibilities[0]);
+		const [visibility, setVisibility] = useState<SelectItem>(
+			visibilities[0]
+		);
 		const [files, setFiles] = useState<
 			{
 				uuid: string;
@@ -340,7 +344,9 @@ const SendForm = memo(
 			}[]
 		>([]);
 		const [loading, setLoading] = useState<boolean>(false);
-		const [emojisSuggestions, setEmojisSuggestions] = useState<Entity.Emoji[]>([]);
+		const [emojisSuggestions, setEmojisSuggestions] = useState<
+			Entity.Emoji[]
+		>([]);
 		const [userSuggestions, setUserSuggestions] = useState<
 			Entity.Account[]
 		>([]);
@@ -354,8 +360,31 @@ const SendForm = memo(
 		}>(null);
 
 		// Element refs
-		const fileInputRef = useRef<HTMLInputElement>(null);
 		const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+		const emojiSuggestionsComponent = useMemo(
+			() =>
+				emojisSuggestions.length > 0 && (
+					<EmojiSuggestions
+						suggestions={emojisSuggestions}
+						textareaRef={textareaRef}
+						setSuggestions={setEmojisSuggestions}
+					/>
+				),
+			[emojisSuggestions]
+		);
+
+		const userSuggestionsComponent = useMemo(
+			() =>
+				userSuggestions.length > 0 && (
+					<UserSuggestions
+						setSuggestions={setUserSuggestions}
+						suggestions={userSuggestions}
+						textareaRef={textareaRef}
+					/>
+				),
+			[userSuggestions]
+		);
 
 		const uploadFiles = async (toUpload: FileList) => {
 			setLoading(true);
@@ -400,12 +429,12 @@ const SendForm = memo(
 			const value = (event.target as HTMLTextAreaElement).value;
 
 			// Check for emoji mentions
-			const emojiMatch = value
-				.match(/:\w+(?<!:)$/g)?.[0]
-				?.replace(":", "");
-			const matchedEmojis = emojiMatch
-				? store.emojis.filter(e => e.shortcode.includes(emojiMatch))
-				: [];
+			const matchedEmojis = store.emojis.filter(e =>
+				e.shortcode.includes(
+					value.match(/:\w+(?<!:)$/g)?.[0]?.replace(":", "") ??
+						"     "
+				)
+			);
 			setEmojisSuggestions(matchedEmojis);
 
 			// Check for username mentions
@@ -490,13 +519,10 @@ const SendForm = memo(
 					sensitive: contentWarning !== null,
 					quote_id: quoteId,
 					poll:
-						poll &&
-						poll.choices.length > 0
+						poll && poll.choices.length > 0
 							? {
 									options: poll.choices,
-									expires_in: Number(
-										poll.duration
-									),
+									expires_in: Number(poll.duration),
 							  }
 							: undefined,
 				});
@@ -524,7 +550,7 @@ const SendForm = memo(
 				});
 			}
 		};
-		
+
 		return (
 			<form
 				action="#"
@@ -589,21 +615,19 @@ const SendForm = memo(
 								)}
 							</h1>
 						</div>
-						<div>
-							<Button
-								loading={loading}
-								style="orangeLight"
-								type="submit"
-								className="!px-4 !py-2 !text-base text-white dark:text-white !border-none !bg-[radial-gradient(ellipse_at_top_left,_var(--tw-gradient-stops))] !from-pink-500 !via-red-500 !to-yellow-500">
-								Post
-							</Button>
-						</div>
+						<Button
+							loading={loading}
+							style="orangeLight"
+							type="submit"
+							className="!px-4 !py-2 !text-base text-white dark:text-white !border-none !bg-[radial-gradient(ellipse_at_top_left,_var(--tw-gradient-stops))] !from-pink-500 !via-red-500 !to-yellow-500">
+							Post
+						</Button>
 					</div>
 
 					{store.replyingTo && (
 						<div className="px-4 opacity-60 max-h-40 no-scroll overflow-scroll">
 							<Status
-								status={store.replyingTo ?? store.quotingTo}
+								status={store.replyingTo}
 								type={StatusType.Notification}
 								showInteraction={false}
 							/>
@@ -634,164 +658,121 @@ const SendForm = memo(
 						</Input>
 					)}
 
-					<Files files={files} setFiles={setFiles} />
-
-					{emojisSuggestions.length > 0 && (
-						<ScaleFadeSlide show={emojisSuggestions.length > 0}>
-							<div className="flex absolute z-[60] flex-col rounded-lg border dark:bg-dark-800/80 backdrop-blur-md bg-white/80 dark:border-gray-700">
-								{emojisSuggestions.slice(0, 5).map(emoji => (
-									<EmojiItem
-										key={emoji.shortcode}
-										emoji={emoji}
-										onClick={() => {
-											if (!textareaRef.current) return;
-											const val =
-												textareaRef.current.value;
-
-											const matchedEmoji =
-												val.match(/:\w+(?<!:)$/g)?.[0];
-
-											if (!matchedEmoji) return;
-											textareaRef.current.value =
-												val.replace(
-													matchedEmoji,
-													`:${emoji.shortcode}: `
-												);
-											setEmojisSuggestions([]);
-										}}
-									/>
-								))}
-							</div>
-						</ScaleFadeSlide>
+					{files.length > 0 && (
+						<Files files={files} setFiles={setFiles} />
 					)}
 
-					{userSuggestions.length > 0 &&
-					<ScaleFadeSlide show={userSuggestions.length > 0}>
-						<div className="flex absolute z-[60] flex-col rounded-xl border dark:bg-dark-800/80 backdrop-blur-md bg-white/80 dark:border-gray-700">
-							{userSuggestions.slice(0, 5).map(user => (
-								<SuggestionItem
-									key={user.id}
-									user={user}
-									onClick={() => {
-										if (!textareaRef.current) return;
-
-										const val = textareaRef.current.value;
-
-										textareaRef.current.value = val.replace(
-											/@\w+(?:\.\w+)?$/g,
-											"@" + user.acct + " "
-										);
-										textareaRef.current.focus();
-
-										setUserSuggestions([]);
-									}}
-								/>
-							))}
-						</div>
-					</ScaleFadeSlide>}
+					{emojiSuggestionsComponent}
+					{userSuggestionsComponent}
 
 					<div className="flex inset-x-0 bottom-0 justify-between py-2 pr-2 pl-3 flex-row">
 						<div className="flex items-center space-x-1">
-							<button
-								type="button"
-								onClick={() => {
-									document
-										.getElementById("fileUpload")
-										?.click();
-								}}
-								title="Attach a file"
-								className="flex relative flex-row gap-x-1 items-center p-2 text-gray-600 rounded duration-200 cursor-default dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">
-								<IconPaperclip
-									className="w-6 h-6"
-									aria-hidden="true"
-								/>
-							</button>
-							<input
-								type="file"
-								id="fileUpload"
-								aria-hidden={true}
-								className="hidden"
-								ref={fileInputRef}
-								multiple
-								onChange={async (
-									e: JSXInternal.TargetedEvent<
-										HTMLInputElement,
-										Event
-									>
-								) => {
-									try {
-										await uploadFiles(
-											(e.target as any).files
-										);
-									} catch (error) {
-										console.error(error);
-										toast.error("Couldn't upload files :(");
-										// Handle error
-									}
-								}}
-							/>
-							<SmallSelect
-								items={modes}
-								defaultValue={0}
-								onChange={i => {
-									setMode(i);
-								}}
-							/>
-							<SmallSelect
-								items={visibilities}
-								defaultValue={
-									store.replyingTo || store.quotingTo
-										? visibilities.findIndex(
-												v =>
-													(
-														store.replyingTo ??
-														store.quotingTo
-													)?.visibility == v.value
-										  )
-										: 0
-								}
-								onChange={i => {
-									setVisibility(i);
-								}}
-							/>
-							<button
-								type="button"
-								title="Create poll"
-								onClick={e => {
-									e.preventDefault();
+							{useMemo(
+								() => (
+									<>
+										<RowButton
+											type="button"
+											onClick={() => {
+												document
+													.getElementById(
+														"fileUpload"
+													)
+													?.click();
+											}}
+											title="Attach a file">
+											<IconPaperclip
+												className="w-6 h-6"
+												aria-hidden="true"
+											/>
+										</RowButton>
+										<input
+											type="file"
+											id="fileUpload"
+											aria-hidden={true}
+											className="hidden"
+											multiple
+											onChange={async e => {
+												try {
+													await uploadFiles(
+														(e.target as any).files
+													);
+												} catch (error) {
+													console.error(error);
+													toast.error(
+														"Couldn't upload files :("
+													);
+													// Handle error
+												}
+											}}
+										/>
+										<SmallSelect
+											items={modes}
+											defaultValue={0}
+											orientation={SelectOrientation.Up}
+											onChange={i => {
+												setMode(i);
+											}}
+										/>
+										<SmallSelect
+											items={visibilities}
+											orientation={SelectOrientation.Up}
+											defaultValue={
+												store.replyingTo ||
+												store.quotingTo
+													? visibilities.findIndex(
+															v =>
+																(
+																	store.replyingTo ??
+																	store.quotingTo
+																)?.visibility ==
+																v.value
+													  )
+													: 0
+											}
+											onChange={i => {
+												setVisibility(i);
+											}}
+										/>
+										<RowButton
+											type="button"
+											title="Create poll"
+											onClick={e => {
+												e.preventDefault();
 
-									setPoll(prev =>
-										prev
-											? null
-											: {
-													choices: [""],
-													duration: 1000,
-													multiple: false,
-											  }
-									);
-								}}
-								className="flex relative flex-row gap-x-1 items-center p-2 text-gray-600 rounded duration-200 cursor-default dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">
-								<IconChartBar
-									className="w-6 h-6"
-									aria-hidden="true"
-								/>
-							</button>
-							<button
-								type="button"
-								title="Add content warning"
-								onClick={e => {
-									e.preventDefault();
+												setPoll(prev =>
+													prev
+														? null
+														: {
+																choices: [""],
+																duration: 1000,
+																multiple: false,
+														  }
+												);
+											}}>
+											<IconChartBar
+												className="w-6 h-6"
+												aria-hidden="true"
+											/>
+										</RowButton>
+										<RowButton
+											type="button"
+											title="Add content warning"
+											onClick={e => {
+												e.preventDefault();
 
-									setContentWarning(prev =>
-										prev === null ? "" : null
-									);
-								}}
-								className="flex relative flex-row gap-x-1 items-center p-2 text-gray-600 rounded duration-200 cursor-default dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">
-								<IconAlertTriangle
-									className="w-6 h-6"
-									aria-hidden="true"
-								/>
-							</button>
+												setContentWarning(prev =>
+													prev === null ? "" : null
+												);
+											}}>
+											<IconAlertTriangle
+												className="w-6 h-6"
+												aria-hidden="true"
+											/>
+										</RowButton>
+									</>
+								),
+								[]
+							)}
 						</div>
 						<div className="flex flex-row flex-shrink-0 gap-x-4 items-center">
 							<div className="flex flex-row gap-x-2 items-center">
@@ -852,129 +833,204 @@ const SendForm = memo(
 	}
 );
 
-function PollCreator({
-	poll,
-	setPoll,
-}: {
-	poll: null | {
-		choices: string[];
-		duration: number;
-		multiple: boolean;
-	};
-	setPoll: StateUpdater<null | {
+const UserSuggestions = memo(
+	(props: {
+		suggestions: Entity.Account[];
+		setSuggestions: StateUpdater<Entity.Account[]>;
+		textareaRef: Ref<HTMLTextAreaElement>;
+	}) => (
+		<ScaleFadeSlide show={props.suggestions.length > 0}>
+			<div className="flex absolute z-[60] flex-col rounded-xl border dark:bg-dark-800/80 backdrop-blur-md bg-white/80 dark:border-gray-700">
+				{props.suggestions.slice(0, 5).map(user => (
+					<SuggestionItem
+						key={user.id}
+						user={user}
+						onClick={() => {
+							if (!props.textareaRef.current) return;
+
+							const val = props.textareaRef.current.value;
+
+							props.textareaRef.current.value = val.replace(
+								/@\w+(?:\.\w+)?$/g,
+								"@" + user.acct + " "
+							);
+							props.textareaRef.current.focus();
+
+							props.setSuggestions([]);
+						}}
+					/>
+				))}
+			</div>
+		</ScaleFadeSlide>
+	)
+);
+
+const EmojiSuggestions = memo(
+	(props: {
+		suggestions: Entity.Emoji[];
+		setSuggestions: StateUpdater<Entity.Emoji[]>;
+		textareaRef: Ref<HTMLTextAreaElement>;
+	}) => (
+		<ScaleFadeSlide show={props.suggestions.length > 0}>
+			<div className="flex absolute bottom-0 z-[60] flex-col rounded-lg border dark:bg-dark-800/80 backdrop-blur-md bg-white/80 dark:border-gray-700">
+				{props.suggestions.slice(0, 5).map(emoji => (
+					<EmojiItem
+						key={emoji.shortcode}
+						emoji={emoji}
+						onClick={() => {
+							if (!props.textareaRef.current) return;
+							const val = props.textareaRef.current.value;
+
+							const matchedEmoji = val.match(/:\w+(?<!:)$/g)?.[0];
+
+							if (!matchedEmoji) return;
+							props.textareaRef.current.value = val.replace(
+								matchedEmoji,
+								`:${emoji.shortcode}: `
+							);
+							props.setSuggestions([]);
+						}}
+					/>
+				))}
+			</div>
+		</ScaleFadeSlide>
+	)
+);
+
+const RowButton = (props: JSXInternal.HTMLAttributes<HTMLButtonElement>) => {
+	return (
+		<button
+			className="flex relative flex-row gap-x-1 items-center p-2 text-gray-600 rounded duration-200 cursor-default dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+			{...props}></button>
+	);
+};
+
+const PollCreator = memo(
+	({
+		poll,
+		setPoll,
+	}: {
+		poll: null | {
+			choices: string[];
+			duration: number;
+			multiple: boolean;
+		};
+		setPoll: StateUpdater<null | {
 			choices: string[];
 			duration: number;
 			multiple: boolean;
 		}>;
-}) {
-	return (
-		<div className="flex w-full px-4 flex-col gap-y-2">
-			<ol className="flex-col w-full gap-y-4 flex">
-				{poll?.choices.map((choice, index) => (
-					<li
-						key={index}
-						className="inline-flex w-full justify-between items-center gap-x-3">
-						<div className="flex items-center gap-x-2 grow">
-							{index + 1}.
-							<div className="grow">
-								<Input
-									onChange={e => {
-										if (!poll) return;
+	}) => {
+		return (
+			<div className="flex w-full px-4 flex-col gap-y-2">
+				<ol className="flex-col w-full gap-y-4 flex">
+					{poll?.choices.map((choice, index) => (
+						<li
+							key={index}
+							className="inline-flex w-full justify-between items-center gap-x-3">
+							<div className="flex items-center gap-x-2 grow">
+								{index + 1}.
+								<div className="grow">
+									<Input
+										value={choice}
+										onChange={e => {
+											if (!poll) return;
 
-										const pollCopy = poll;
+											const pollCopy = poll;
 
-										pollCopy.choices[index] = (
-											e.target as HTMLInputElement
-										).value;
+											pollCopy.choices[index] = (
+												e.target as HTMLInputElement
+											).value;
 
-										setPoll(pollCopy);
-									}}
-									isLoading={false}
-									className="!w-full"
-									placeholder="Poll choice here"
-									name={"test"}>
-									{""}
-								</Input>
+											setPoll(pollCopy);
+										}}
+										isLoading={false}
+										className="!w-full"
+										placeholder="Poll choice here"
+										name={"test"}>
+										{""}
+									</Input>
+								</div>
 							</div>
-						</div>
-						{poll?.choices &&
-							index === poll?.choices.length - 1 && (
-								<button
-									onClick={e => {
-										e.preventDefault();
-										const pollCopy = poll;
-										pollCopy?.choices.splice(index, 1);
+							{poll?.choices &&
+								index === poll?.choices.length - 1 && (
+									<button
+										onClick={e => {
+											e.preventDefault();
+											const pollCopy = poll;
+											pollCopy?.choices.splice(index, 1);
 
-										setPoll(pollCopy);
-									}}>
-									<IconX className="w-5 h-5" />
-								</button>
-							)}
-					</li>
-				))}
-				<Button
-					onClick={e => {
-						e.preventDefault();
+											setPoll(pollCopy);
+										}}>
+										<IconX className="w-5 h-5" />
+									</button>
+								)}
+						</li>
+					))}
+					<Button
+						onClick={e => {
+							e.preventDefault();
 
-						const pollCopy = poll;
+							const pollCopy = poll;
 
-						pollCopy?.choices.push("");
+							pollCopy?.choices.push("");
 
-						setPoll(pollCopy);
-					}}
-					style="orangeLight"
-					type=""
-					className="w-full">
-					Add answer
-				</Button>
-			</ol>
-			<div className="z-[99] flex items-center gap-x-3 flex-col md:flex-row gap-y-2">
-				<div className="md:w-1/3 w-full">
-					<Select2
-						items={pollDurations}
-						defaultValue={0}
-						onChange={i => {
-							setPoll(prev => ({
-								choices: prev?.choices ?? [""],
-								duration: Number(i.value),
-								multiple: prev?.multiple ?? false,
-							}));
+							setPoll(pollCopy);
 						}}
-					/>
-				</div>
-				<div className="md:w-2/3 w-full flex items-center justify-between">
-					<p className="ml-2">Allow multiple answers</p>
-					<Switch
-						checked={poll?.multiple}
-						onChange={(checked: boolean) => {
-							setPoll(prev => ({
-								choices: prev?.choices ?? [""],
-								duration: prev?.duration ?? 600,
-								multiple: checked,
-							}));
-						}}
-						className={classNames(
-							poll?.multiple
-								? "bg-orange-600"
-								: "bg-gray-200",
-							"relative inline-flex flex-shrink-0 h-6 w-11 border-2 border-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:outline-none"
-						)}>
-						<span className="sr-only">Use setting</span>
-						<span
-							aria-hidden="true"
+						style="orangeLight"
+						type=""
+						className="w-full">
+						Add answer
+					</Button>
+				</ol>
+				<div className="z-[99] flex items-center gap-x-3 flex-col md:flex-row gap-y-2">
+					<div className="md:w-1/3 w-full">
+						<Select2
+							items={pollDurations}
+							defaultValue={0}
+							onChange={i => {
+								setPoll(prev => ({
+									choices: prev?.choices ?? [""],
+									duration: Number(i.value),
+									multiple: prev?.multiple ?? false,
+								}));
+							}}
+						/>
+					</div>
+					<div className="md:w-2/3 w-full flex items-center justify-between">
+						<p className="ml-2">Allow multiple answers</p>
+						<Switch
+							checked={poll?.multiple}
+							onChange={(checked: boolean) => {
+								setPoll(prev => ({
+									choices: prev?.choices ?? [""],
+									duration: prev?.duration ?? 600,
+									multiple: checked,
+								}));
+							}}
 							className={classNames(
 								poll?.multiple
-									? "translate-x-5"
-									: "translate-x-0",
-								"pointer-events-none inline-block h-5 w-5 rounded-full bg-white shadow transform ring-0 transition ease-in-out duration-200"
-							)}
-						/>
-					</Switch>
+									? "bg-orange-600"
+									: "bg-gray-200",
+								"relative inline-flex flex-shrink-0 h-6 w-11 border-2 border-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:outline-none"
+							)}>
+							<span className="sr-only">Use setting</span>
+							<span
+								aria-hidden="true"
+								className={classNames(
+									poll?.multiple
+										? "translate-x-5"
+										: "translate-x-0",
+									"pointer-events-none inline-block h-5 w-5 rounded-full bg-white shadow transform ring-0 transition ease-in-out duration-200"
+								)}
+							/>
+						</Switch>
+					</div>
 				</div>
 			</div>
-		</div>
-	);
-}
+		);
+	}
+);
 
 const Files = memo(
 	({
@@ -985,33 +1041,31 @@ const Files = memo(
 		setFiles: StateUpdater<SendFormState["files"]>;
 	}) => (
 		<>
-			{files.length > 0 && (
-				<div className="flex flex-wrap gap-4 flex-row px-4 w-full mt-4">
-					{files.map((file, index) => {
-						return (
-							<div
-								key={file.uuid}
-								className="overflow-hidden relative h-24 rounded-lg border-2">
-								{renderFilePreview(file.file)}
-								<Button
-									onClick={(e: any) => {
-										e.preventDefault();
+			<div className="flex flex-wrap gap-4 flex-row px-4 w-full mt-4">
+				{files.map((file, index) => {
+					return (
+						<div
+							key={file.uuid}
+							className="overflow-hidden relative h-24 rounded-lg border-2">
+							{renderFilePreview(file.file)}
+							<Button
+								onClick={(e: any) => {
+									e.preventDefault();
 
-										const newFiles = files;
+									const newFiles = files;
 
-										newFiles.splice(index, 1);
+									newFiles.splice(index, 1);
 
-										setFiles(newFiles);
-									}}
-									style="gray"
-									className="!absolute top-2 right-2 !p-2">
-									<IconX className="w-4 h-4" />
-								</Button>
-							</div>
-						);
-					})}
-				</div>
-			)}
+									setFiles(newFiles);
+								}}
+								style="gray"
+								className="!absolute top-2 right-2 !p-2">
+								<IconX className="w-4 h-4" />
+							</Button>
+						</div>
+					);
+				})}
+			</div>
 		</>
 	)
 );

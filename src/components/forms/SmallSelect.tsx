@@ -3,17 +3,24 @@ import { ScaleFadeSlide } from "components/transitions/ScaleFadeSlide";
 import { SlideFade } from "components/transitions/SlideFade";
 import { memo } from "preact/compat";
 import { useState } from "preact/hooks";
+import { classNames } from "utils/functions";
 
 interface SelectOptions {
 	items: SelectItem[];
 	defaultValue: number;
 	onChange: (item: SelectItem) => void;
 	direction?: SelectDirection;
+	orientation?: SelectOrientation;
 }
 
 export enum SelectDirection {
 	Right = "right",
 	Left = "left",
+}
+
+export enum SelectOrientation {
+	Up,
+	Down,
 }
 
 interface SelectItem {
@@ -26,6 +33,7 @@ interface SelectItem {
 const SmallSelect = ({
 	items,
 	defaultValue,
+	orientation = SelectOrientation.Down,
 	onChange = () => {
 		//
 	},
@@ -56,10 +64,12 @@ const SmallSelect = ({
 			</Listbox.Button>
 			<SlideFade>
 				<Listbox.Options
-					className={`overflow-auto absolute z-30 shadow-lg mt-1 w-64 text-base bg-gray-100/75 rounded-md border dark:border-gray-700 dark:bg-dark-800/75 backdrop-blur-md font-inter ${
+					className={classNames(
+						"overflow-auto absolute z-30 shadow-lg mt-1 w-64 text-base bg-gray-100/75 rounded-md border dark:border-gray-700 dark:bg-dark-800/75 backdrop-blur-md font-inter",
 						direction == SelectDirection.Left &&
-						"right-0 origin-top-right"
-					}`}>
+							"right-0 origin-top-right",
+						orientation === SelectOrientation.Up && "bottom-[110%]"
+					)}>
 					{items.map(item => (
 						<Listbox.Option
 							key={item.value}
