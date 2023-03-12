@@ -926,7 +926,7 @@ const PollCreator = memo(
 				<ol className="flex-col w-full gap-y-4 flex">
 					{poll?.choices.map((choice, index) => (
 						<li
-							key={index}
+							key={choice}
 							className="inline-flex w-full justify-between items-center gap-x-3">
 							<div className="flex items-center gap-x-2 grow">
 								{index + 1}.
@@ -957,10 +957,11 @@ const PollCreator = memo(
 									<button
 										onClick={e => {
 											e.preventDefault();
-											const pollCopy = poll;
-											pollCopy?.choices.splice(index, 1);
 
-											setPoll(pollCopy);
+											setPoll({
+												...poll,
+												choices: poll.choices.slice(0, index)
+											});
 										}}>
 										<IconX className="w-5 h-5" />
 									</button>
@@ -970,12 +971,15 @@ const PollCreator = memo(
 					<Button
 						onClick={e => {
 							e.preventDefault();
+							if (!poll) return;
 
-							const pollCopy = poll;
-
-							pollCopy?.choices.push("");
-
-							setPoll(pollCopy);
+							setPoll(({
+								...poll,
+								choices: [
+									...poll.choices,
+									""
+								]
+							}));
 						}}
 						style="orangeLight"
 						type=""
