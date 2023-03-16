@@ -13,7 +13,7 @@ const props = defineProps<{
 	<div class="flex flex-col gap-y-2">
 		<Link
 			v-if="status.reblog"
-			:href="`/users/${status.account.id}`"
+			:href="`/user/${status.account.id}`"
 			class="overflow-hidden gap-x-1 max-w-full font-semibold text-gray-500 overflow-ellipsis dark:text-gray-400 hover:underline">
 			<svg
 				aria-hidden="true"

@@ -70,7 +70,7 @@ const toggleTheme = () => {
 				<IconPlus class="w-5 h-5" aria-hidden="true" />
 				<span class="sr-only">Compose new post</span>
 			</button>
-			<Link :href="`/users/${store.auth.data?.id}`" class="flex justify-center items-center">
+			<Link :href="`/user/${store.auth.data?.id}`" class="flex justify-center items-center">
 				<img :src="store.auth.data?.avatar ?? ''" class="w-9 h-9 rounded border dark:border-gray-700" alt="" />
 				<span class="sr-only">
 					Your avatar, click to visit your profile

@@ -60,6 +60,7 @@ const getNewEntities = async (since_id: string) => {
 			})) as any;
 			break;
 		}
+
 		case FeedType.Notifications: {
 			res = (await store.client?.getNotifications({
 				limit: DEFAULT_LOAD,
@@ -67,6 +68,7 @@ const getNewEntities = async (since_id: string) => {
 			})) as any;
 			break;
 		}
+
 		case FeedType.Local: {
 			res = (await store.client?.getLocalTimeline({
 				limit: DEFAULT_LOAD,
@@ -90,6 +92,9 @@ onUnmounted(() => {
 
 <template>
 	<template v-if="entities.length > 0 && type === FeedType.Home" v-for="entity of entities" :key="entity.id">
+		<Post :status="entity" :interaction="true" />
+	</template>
+	<template v-if="entities.length > 0 && type === FeedType.User" v-for="entity of entities" :key="entity.id">
 		<Post :status="entity" :interaction="true" />
 	</template>
 	<template v-if="entities.length > 0 && type === FeedType.Notifications" v-for="entity of entities.filter(e => {

@@ -9,6 +9,8 @@ import LeftSidebar from './components/sidebar/LeftSidebar.vue';
 import EditorModal from './components/editor/EditorModal.vue';
 import Snackbar from './components/snackbar/Snackbar.vue';
 import MobileNavbar from './components/layout/MobileNavbar.vue';
+import UserFeed from './components/feed/UserFeed.vue';
+import { ref, watch } from 'vue';
 
 store.auth.token = "LlYdRjLMbYahtW3Com0P0WwS5IOVgyCJge1yXZsHTIE";
 store.client = generator("pleroma", "https://fedi.cpluspatch.com", store.auth.token);
@@ -27,12 +29,11 @@ if (store.theme === "dark") {
 	document.getElementsByTagName("html")[0].classList.add("dark");
 }
 
-let paths: string[];
-if (store.path === window.location.pathname) {
-	paths = store.path.split("/");
-} else {
-	paths = window.location.pathname.split("/");
-}
+const paths = ref(window.location.pathname.split("/"))
+
+watch(() => store.path, () => {
+	paths.value = store.path.split("/");
+})
 </script>
 
 <template>
@@ -47,8 +48,9 @@ if (store.path === window.location.pathname) {
 				</div>
 				<div
 					class="overflow-x-hidden overflow-y-hidden md:col-span-5 col-span-6 max-h-screen md:border-x dark:border-gray-700 md:pt-0">
-					<HomeFeed v-if="paths[1] === ''" />
-					<Conversation v-if="paths[1] === 'posts'" :id="paths[2]" />
+					<HomeFeed v-if="paths[1] === ''" :key="paths[1]" />
+					<Conversation v-if="paths[1] === 'posts'" :id="paths[2]" :key="paths[2]" />
+					<UserFeed v-if="paths[1] === 'user'" :id="paths[2]" :key="paths[2]" />
 				</div>
 				<div class="hidden overflow-x-hidden p-4 max-h-screen md:col-span-3 md:flex">
 					<NotificationsFeed :title="true" v-if="width > 768" />

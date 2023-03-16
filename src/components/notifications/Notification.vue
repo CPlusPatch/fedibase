@@ -15,7 +15,7 @@ const props = defineProps<{
 		props.notification.type === 'favourite' && 'bg-yellow-500/10',
 		props.notification.type === 'reblog' && 'bg-blue-500/10',
 		props.notification.type === 'emoji_reaction' && 'bg-red-500/10']">
-		<Link v-if="props.notification.type === 'favourite'" :href="`/users/${notification.account.id}`"
+		<Link v-if="props.notification.type === 'favourite'" :href="`/user/${notification.account.id}`"
 			class=" overflow-hidden gap-x-1 max-w-full font-semibold text-gray-500 overflow-ellipsis dark:text-gray-400 hover:underline">
 		<IconStarFilled aria-hidden="true" class="inline mr-1 w-[1em] pb-0.5 text-yellow-500 hover:animate-spin" />
 		<img loading="lazy" :src="props.notification.account.avatar" alt=""
@@ -23,7 +23,7 @@ const props = defineProps<{
 		<span v-html="withEmojis(props.notification.account.display_name, props.notification.account.emojis)"></span>
 		favourited your post
 		</Link>
-		<Link :href="`/users/${notification.account.id}`" v-if="props.notification.type === 'emoji_reaction'"
+		<Link :href="`/user/${notification.account.id}`" v-if="props.notification.type === 'emoji_reaction'"
 			class="overflow-hidden gap-x-1 max-w-full font-semibold text-gray-500 overflow-ellipsis dark:text-gray-400 hover:underline">
 		<img loading="lazy" :src="props.notification.account.avatar" alt=""
 			class="h-[1em] w-[1em] inline rounded mb-0.5 mr-2" />
@@ -33,7 +33,7 @@ const props = defineProps<{
 		<span
 			v-html="props.notification.status?.emoji_reactions && withEmojiReactions(props.notification.emoji ?? '', props.notification.status?.emoji_reactions)"></span>
 		</Link>
-		<Link v-if="props.notification.type === 'reblog'" :href="`/users/${notification.account.id}`"
+		<Link v-if="props.notification.type === 'reblog'" :href="`/user/${notification.account.id}`"
 			class=" overflow-hidden gap-x-1 max-w-full font-semibold text-gray-500 overflow-ellipsis dark:text-gray-400 hover:underline">
 
 		<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
@@ -52,7 +52,7 @@ const props = defineProps<{
 			:status="props.notification.status" />
 	</li>
 	<li v-else class="flex flex-col gap-y-2 p-2 max-w-full rounded bg-green-500/10">
-		<Link :href="`/users/${notification.account.id}`"
+		<Link :href="`/user/${notification.account.id}`"
 			class="overflow-hidden gap-x-2 max-w-full text-base text-gray-800 dark:text-gray-100 hover:underline">
 
 		<img loading="lazy" :src="props.notification.account.avatar" alt=""
