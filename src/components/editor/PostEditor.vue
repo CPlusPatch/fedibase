@@ -207,7 +207,7 @@ const submit = (e: Event) => {
 		}
 	}" @submit="submit">
 		<div
-			:class="['px-3 border py-2 w-full duration-200 flex flex-col rounded-2xl dark:text-gray-100 border-gray-300 dark:border-gray-700 shadow-sm',
+			:class="['px-3 border py-2 w-full duration-200 flex flex-col rounded-lg dark:text-gray-100 border-gray-300 dark:border-gray-700 shadow-sm',
 			loading ? 'bg-gray-100 dark:bg-dark-800/75' : 'bg-white dark:bg-dark-800']">
 			<div class="flex justify-between p-3 w-full gap-x-2">
 				<div class="flex flex-row items-center gap-x-3">
