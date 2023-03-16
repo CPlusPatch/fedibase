@@ -1,22 +1,31 @@
-import createStore from "teaful";
+import { reactive, watch } from "vue";
+import { Entity, MegalodonInterface } from "megalodon";
 
 export interface StateType {
 	auth: {
 		token: string | null;
 		clientId: string;
-		id: string;
+		data: Entity.Account | null;
 		url: string;
 		type: "mastodon" | "pleroma" | "misskey" | "";
 		clientSecret: string;
-		handle: string;
 		instance: Entity.Instance | null;
 	};
+	state: {
+		composer: boolean;
+		notifications: boolean;
+		postViewer: boolean;
+		sidebar: boolean;
+	},
+	notifications: {
+		uuid: string,
+		content: string,
+		icon?: any,
+		show: boolean
+	}[],
+	client: MegalodonInterface | null;
 	replyingTo: null | Entity.Status;
-	postComposerOpened: boolean;
-	notificationsOpened: boolean;
-	mobilePostViewer: boolean;
 	path: string;
-	sidebarOpened: boolean;
 	quotingTo: null | Entity.Status;
 	viewingConversation: string;
 	settingsOpen: boolean;
@@ -25,24 +34,27 @@ export interface StateType {
 	emojis: Entity.Emoji[];
 }
 
-let initialState: StateType = {
+let initialData: StateType = {
 	auth: {
 		token: null,
-		id: "",
+		data: null,
 		clientId: "",
 		url: "",
 		type: "",
 		clientSecret: "",
-		handle: "",
 		instance: null,
 	},
+	notifications: [],
+	client: null,
 	theme: "light",
 	replyingTo: null,
-	postComposerOpened: false,
-	notificationsOpened: false,
-	mobilePostViewer: false,
+	state: {
+		composer: false,
+		notifications: false,
+		postViewer: false,
+		sidebar: false,
+	},
 	path: "",
-	sidebarOpened: false,
 	quotingTo: null,
 	viewingConversation: "",
 	settingsOpen: false,
@@ -50,12 +62,14 @@ let initialState: StateType = {
 	emojis: [],
 };
 
-const storedStore = localStorage.getItem("store");
+if (localStorage.getItem("store")) {
+	initialData = JSON.parse(localStorage.getItem("store") as any ?? initialData);
+}
 
-if (storedStore)
-	initialState = {
-		...JSON.parse(storedStore),
-		loaded: true,
-	};
+export const store = reactive<StateType>(initialData);
 
-export const { useStore, getStore, withStore } = createStore(initialState);
+watch(store, () => {
+	localStorage.setItem("store", JSON.stringify(store));
+}, {
+	deep: true
+})

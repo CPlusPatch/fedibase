@@ -1,14 +1,12 @@
-import { defineConfig } from "vite";
-import preact from "@preact/preset-vite";
-import tsconfigPaths from "vite-tsconfig-paths";
+import { defineConfig } from 'vite'
+import vue from '@vitejs/plugin-vue';
 import { VitePWA } from "vite-plugin-pwa";
 import { ViteImageOptimizer } from "vite-plugin-image-optimizer";
 
 // https://vitejs.dev/config/
 export default defineConfig({
 	plugins: [
-		preact(),
-		tsconfigPaths(),
+		vue(),
 		ViteImageOptimizer(),
 		VitePWA({
 			registerType: "autoUpdate",
@@ -71,27 +69,27 @@ export default defineConfig({
 						src: "images/screenshots/dark1.webp",
 						sizes: "1170x2532",
 						type: "image/webp",
-						platform: "narrow"
+						platform: "narrow",
 					},
 					{
 						src: "images/screenshots/dark2.webp",
 						sizes: "1170x2532",
 						type: "image/webp",
-						platform: "narrow"
+						platform: "narrow",
 					},
 					{
 						src: "images/screenshots/light1.webp",
 						sizes: "1170x2532",
 						type: "image/webp",
-						platform: "narrow"
+						platform: "narrow",
 					},
 					{
 						src: "images/screenshots/light2.webp",
 						sizes: "1170x2532",
 						type: "image/webp",
-						platform: "narrow"
-					}
-				]
+						platform: "narrow",
+					},
+				],
 			},
 		}),
 	],
@@ -102,7 +100,7 @@ export default defineConfig({
 		alias: {
 			querystring: "querystring-es3",
 			react: "preact/compat",
-			"react-dom": "preact/compat"
+			"react-dom": "preact/compat",
 		},
-	}
+	},
 });
