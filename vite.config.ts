@@ -10,9 +10,6 @@ export default defineConfig({
 		ViteImageOptimizer(),
 		VitePWA({
 			registerType: "autoUpdate",
-			devOptions: {
-				enabled: true,
-			},
 			manifest: {
 				name: "Fedibase",
 				short_name: "Fedibase",

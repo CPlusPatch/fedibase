@@ -37,15 +37,15 @@ const closeNotifications = () => {
 
 <template>
 	<header
-		class="flex fixed inset-x-0 bottom-0 z-30 justify-between items-center px-6 py-2 bg-white border-b dark:border-gray-700 dark:bg-dark-800 md:hidden">
+		class="flex fixed inset-x-0 bottom-0 z-[999999] justify-between items-center px-6 py-2 bg-white border-b dark:border-gray-700 dark:bg-dark-800 md:hidden">
 		<Button theme="gray" class="!p-3 !border-none !shadow-none !bg-white dark:!bg-transparent" @click="toggleTheme">
 			<IconSun v-if="store.theme === 'light'" aria-hidden="true" />
 			<IconMoon v-if="store.theme === 'dark'" aria-hidden="true" />
 		</Button>
 		<Link href="/">
-		<Button theme="gray" class="!p-3 !border-none !shadow-none !bg-white dark:!bg-transparent" title="Visit main feed">
-			<IconHome aria-hidden="true" />
-		</Button>
+			<Button theme="gray" class="!p-3 !border-none !shadow-none !bg-white dark:!bg-transparent" title="Visit main feed">
+				<IconHome aria-hidden="true" />
+			</Button>
 		</Link>
 		<Button theme="gray" title="Compose new post" @click="composeNewPost"
 			class="!p-3 !border-none !shadow-none !bg-white dark:!bg-transparent">
