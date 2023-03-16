@@ -40,9 +40,9 @@ const submit = async (e: Event) => {
 	}
 
 	store.auth.url = `https://${domain}`;
-	store.auth.type = await detector(store.auth.url);
+	store.auth.type = ((e.target as HTMLFormElement)["type"] as HTMLInputElement).value as any;
 
-	const client = generator(store.auth.type, store.auth.url);
+	const client = generator(store.auth.type as any, store.auth.url);
 
 	let scope = ["read", "write", "follow"];
 	if (store.auth.type === "misskey")
@@ -98,31 +98,40 @@ const submit = async (e: Event) => {
 </script>
 
 <template>
-	<div class="flex justify-center min-h-screen">
-		<div class="py-12 w-[30rem] flex flex-col justify-center sm:px-6 lg:px-8">
+	<div class="flex justify-center min-h-screen items-center bg-cover bg-center" :style="{
+		backgroundImage: 'url(/static/wallpaper.webp)'
+	}">
+		<div class="py-6 w-[23rem] flex flex-col lg:px-0 bg-gray-100 border-2 shadow-lg backdrop-blur-lg rounded-md">
 			<div class="sm:mx-auto sm:w-full sm:max-w-md">
 				<div class="flex justify-center w-auto">
 
 				</div>
-				<h2 class="mt-6 text-3xl font-extrabold text-center text-gray-900 dark:text-gray-50 font-poppins">
+				<h2 class="mt-6 text-3xl font-extrabold text-center text-gray-900 font-poppins">
 					Login
 				</h2>
 			</div>
 
-			<div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-				<div class="px-4 py-8 sm:px-10 font-inter">
+			<div class="mt-12 sm:mx-auto sm:w-full font-inter">
+				<div class="py-4 px-6 font-inter">
 					<h4 v-if="token" class="dark:text-gray-100">
 						Validating...
 					</h4>
 
 					<form v-else class="space-y-6" action="#" method="POST" @submit="submit">
-						<label htmlFor="handle">Fedi handle</label>
+						<div class="flex flex-col gap-y-2">
 						<input id="handle" name="handle" type="handle" autoComplete="url" required
 							placeholder="@cpluspatch@fedi.cpluspatch.com" isLoading={isLoading}
-							class="block px-3 py-2 w-full outline-none placeholder-gray-400 rounded-md border-2 border-gray-300 shadow-sm duration-200 appearance-none dark:placeholder-gray-500 dark:border-gray-600 disabled:bg-gray-100 disabled:dark:bg-gray-800 focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm"/>
+							class="block px-3 py-2 w-full border-2 outline-none rounded-md shadow-sm duration-200 appearance-none placeholder-gray-700 bg-gray-100 focus:outline-none focus:ring-orange-500 focus:border-orange-500 focus:ring-1 sm:text-sm"/>
+						</div>
+
+						<select name="type" class="w-full rounded p-2 focus:outline-none text-sm bg-gray-100 border-2 shadow-sm">
+							<option value="mastodon">Mastodon</option>
+							<option value="pleroma">Pleroma / Akkoma</option>
+							<option value="misskey">Misskey / *key</option>
+						</select>
 
 						<div>
-							<Button type="submit" ringColor="orange-500" theme="orange" class="w-full" :loading="loading">
+							<Button type="submit" ringColor="orange-500" theme="gray" class="w-full text-white !bg-[radial-gradient(ellipse_at_top_left,_var(--tw-gradient-stops))] !from-pink-500 !via-red-500 !to-yellow-500" :loading="loading">
 								Sign in
 							</Button>
 						</div>

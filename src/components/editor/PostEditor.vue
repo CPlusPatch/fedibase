@@ -131,15 +131,28 @@ onMounted(() => {
 		if (mentions) {
 			characters.value = `${mentions} `;
 		}
-
-		textareaRef.value?.setSelectionRange(
-			textareaRef.value?.value.length,
-			textareaRef.value?.value.length
-		);
-
-		textareaRef.value?.focus();
 	}
+
+	textareaRef.value?.setSelectionRange(
+		textareaRef.value?.value.length,
+		textareaRef.value?.value.length
+	);
+
+	textareaRef.value?.focus();
 });
+
+const onPasteFile = async (event: ClipboardEvent) => {
+	if (!event.clipboardData || event.clipboardData.files.length < 1) return;
+	event.preventDefault();
+
+	try {
+		await uploadFiles(event.clipboardData.files);
+	} catch (error) {
+		addNotification("Error uploading images");
+		console.error(error);
+		// Handle error
+	}
+}
 
 const uploadFiles = async (toUpload: FileList) => {
 	console.log(toUpload);
@@ -236,7 +249,7 @@ const submit = (e: Event) => {
 				<Status :type="PostType.Normal" :status="store.replyingTo" :interaction="false" />
 			</div>
 
-			<textarea name="comment" v-model="characters" ref="textareaRef"
+			<textarea @paste="onPasteFile" name="comment" v-model="characters" ref="textareaRef"
 				class="flex p-3 text-base outline-none flex-1 no-scroll w-full bg-transparent border-0 resize-none disabled:text-gray-400 focus:ring-0 dark:placeholder:text-gray-400"
 				placeholder="What's happening?" />
 
