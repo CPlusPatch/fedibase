@@ -81,6 +81,59 @@ const getNewEntities = async (since_id: string) => {
 	return res.data;
 }
 
+const getMoreEntities = async (before_id: string) => {
+	let res;
+	loading.value = true;
+
+	switch (props.type) {
+		case FeedType.Home: {
+			res = (await store.client?.getHomeTimeline({
+				limit: DEFAULT_LOAD,
+				max_id: before_id,
+			})) as any;
+			break;
+		}
+		case FeedType.User: {
+			if (!props.id)
+				throw Error(
+					"Feed needs a user ID to work in user mode!"
+				);
+			res = (await store.client?.getAccountStatuses(props.id, {
+				limit: DEFAULT_LOAD,
+				max_id: before_id,
+			})) as any;
+			break;
+		}
+		case FeedType.Notifications: {
+			res = (await store.client?.getNotifications({
+				limit: DEFAULT_LOAD,
+				max_id: before_id,
+			})) as any;
+			break;
+		}
+		case FeedType.Local: {
+			res = (await store.client?.getLocalTimeline({
+				limit: DEFAULT_LOAD,
+				max_id: before_id,
+			})) as any;
+			break;
+		}
+	}
+
+	loading.value = false;
+	return res.data;
+}
+
+const loadMoreEntities = async () => {
+	if (loading.value) return false;
+	const before_id = (entities.value[entities.value.length - 1] as any).id;
+
+	entities.value = [
+		...entities.value,
+		...await getMoreEntities(before_id)
+	] as any
+}
+
 onMounted(async () => {
 	entities.value = await getNewEntities("");
 });
@@ -119,6 +172,7 @@ onUnmounted(() => {
 	})" :key="entity.id">
 		<Notification :notification="entity" />
 	</template>
+	<DummyStatus v-if="!loading" v-is-visible="loadMoreEntities"/>
 	<DummyStatus />
 	<DummyStatus />
 	<DummyStatus />
