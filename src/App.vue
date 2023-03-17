@@ -24,7 +24,6 @@ if (!store.auth.instance) store.client?.getInstance().then(res => {
 });
 
 store.client?.verifyAccountCredentials().then(res => {
-	console.log(res)
 	store.auth.data = res.data;
 }).catch(err => {
 	store.client = null;

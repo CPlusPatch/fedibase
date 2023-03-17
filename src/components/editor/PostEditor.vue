@@ -163,7 +163,6 @@ const onPasteFile = async (event: ClipboardEvent) => {
 }
 
 const uploadFiles = async (toUpload: FileList) => {
-	console.log(toUpload);
 	loading.value = true;
 	console.info(`Uploading ${toUpload.length} files`);
 
