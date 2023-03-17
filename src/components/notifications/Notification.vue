@@ -51,7 +51,7 @@ const props = defineProps<{
 		<Status :type="PostType.Small" v-if="props.notification.status" :interaction="props.notification.type === 'mention'"
 			:status="props.notification.status" />
 	</li>
-	<li v-else class="flex flex-col gap-y-2 p-2 max-w-full rounded bg-green-500/10">
+	<li v-if="props.notification.type === 'follow'" class="flex flex-col gap-y-2 p-2 max-w-full rounded bg-green-500/10">
 		<Link :href="`/user/${notification.account.id}`"
 			class="overflow-hidden gap-x-2 max-w-full text-base text-gray-800 dark:text-gray-100 hover:underline">
 

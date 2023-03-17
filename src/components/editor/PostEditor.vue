@@ -15,6 +15,8 @@ import { addNotification } from '../snackbar/Snackbar.vue';
 import { IconSend } from '@tabler/icons-vue';
 import { IconForbid2 } from '@tabler/icons-vue';
 import { IconFileUpload } from '@tabler/icons-vue';
+import Input from '../input/Input.vue';
+import ScaleFadeSlide from '../transitions/ScaleFadeSlide.vue';
 
 const pollDurations = [
 	{
@@ -108,9 +110,11 @@ const closeModal = (e: Event) => {
 	store.replyingTo = null;
 }
 
+const otherPost = store.replyingTo ?? store.quotingTo ?? null;
 const characters = ref<string>("");
 const textareaRef = ref<HTMLTextAreaElement | null>(null);
 const loading = ref<boolean>(false);
+const contentWarning = ref<boolean>((otherPost?.sensitive ?? false) || (otherPost?.spoiler_text !== "" ?? false))
 const files = ref<{
 	uuid: string;
 	metadata: Entity.Attachment;
@@ -140,6 +144,10 @@ onMounted(() => {
 
 	textareaRef.value?.focus();
 });
+
+const toggleCW = () => {
+	contentWarning.value = !contentWarning.value;
+}
 
 const onPasteFile = async (event: ClipboardEvent) => {
 	if (!event.clipboardData || event.clipboardData.files.length < 1) return;
@@ -192,6 +200,12 @@ const submit = (e: Event) => {
 
 	loading.value = true;
 	const visibility = (e.target as any)["visibility[value]"].value;
+	let cw = "";
+	try {
+		cw = (e.target as any)["cw"].value;
+	} catch {
+		//
+	}
 	// Waiting for megalodon to implement this
 	const mode = (e.target as any)["mode[value]"].value;
 
@@ -199,6 +213,8 @@ const submit = (e: Event) => {
 		visibility: visibility,
 		in_reply_to_id: store.replyingTo?.id ?? undefined,
 		quote_id: store.quotingTo?.id ?? undefined,
+		spoiler_text: cw.length > 0 ? cw : undefined,
+		sensitive: cw.length > 0,
 		media_ids:
 			files.value.length > 0
 				? files.value.map(f => f.metadata.id)
@@ -257,6 +273,14 @@ const submit = (e: Event) => {
 				files = files.filter(f => f.uuid !== uuid);
 			}" />
 
+			<ScaleFadeSlide :open="contentWarning" v-if="contentWarning">
+				<Input name="cw"
+					:loading="loading" 
+					placeholder="Add content warning"
+					class="!bg-orange-500/10 border-none"
+					:value="otherPost?.spoiler_text"/>
+			</ScaleFadeSlide>
+
 			<div class="flex inset-x-0 bottom-0 justify-between py-2 pr-2 pl-3 flex-row">
 				<div class="flex items-center space-x-1">
 					<button @click="clickOnFileInput" type="button" title="Attach a file"
@@ -286,6 +310,7 @@ const submit = (e: Event) => {
 					</button>
 
 					<button type="button" title="Add content warning"
+						@click="toggleCW"
 						class="flex relative flex-row gap-x-1 items-center p-2 text-gray-600 rounded duration-200 cursor-default dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">
 						<IconAlertTriangle class="w-6 h-6" aria-hidden="true" />
 					</button>
