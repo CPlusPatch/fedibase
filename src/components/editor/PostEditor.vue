@@ -114,7 +114,7 @@ const otherPost = store.replyingTo ?? store.quotingTo ?? null;
 const characters = ref<string>("");
 const textareaRef = ref<HTMLTextAreaElement | null>(null);
 const loading = ref<boolean>(false);
-const contentWarning = ref<boolean>((otherPost?.sensitive ?? false) || (otherPost?.spoiler_text !== "" ?? false))
+const contentWarning = ref<boolean>((otherPost?.sensitive ?? false) || (((otherPost?.spoiler_text.length ?? 0) > 0) ?? false))
 const files = ref<{
 	uuid: string;
 	metadata: Entity.Attachment;
@@ -276,7 +276,7 @@ const submit = (e: Event) => {
 				<Input name="cw"
 					:loading="loading" 
 					placeholder="Add content warning"
-					class="!bg-orange-500/10 border-none"
+					class="!bg-orange-500/10 border-none tetx-sm !px-3"
 					:value="otherPost?.spoiler_text"/>
 			</ScaleFadeSlide>
 
