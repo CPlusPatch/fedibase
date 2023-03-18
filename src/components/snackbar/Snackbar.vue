@@ -21,7 +21,7 @@ export const addNotification = (content: string, icon?: any) => {
 	  <div aria-live="assertive" class="fixed inset-0 flex items-end px-4 py-6 pointer-events-none sm:p-6 sm:items-start z-[99999999]">
 	    <div class="w-full flex flex-col items-center space-y-3 sm:items-start">
 	      <!-- Notification panel, dynamically insert this into the live region when it needs to be displayed -->
-	      <Notification v-for="notif, index of store.notifications" :appear="true" :notif="notif">
+	      <Notification v-for="notif, index of store.notifications.reverse()" :appear="true" :notif="notif">
 	      </Notification>
 	    </div>
 	  </div>

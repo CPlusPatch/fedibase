@@ -33,6 +33,8 @@ if (store.theme === "dark") {
 	document.getElementsByTagName("html")[0].classList.add("dark");
 }
 
+store.notifications = [];
+
 const paths = ref(window.location.pathname.split("/"))
 
 watch(() => store.path, () => {
