@@ -80,7 +80,7 @@ onUnmounted(() => {
 
 				</div>
 			</div>
-			<div v-html="withEmojis(account.note, account.emojis)" class="p-3 mx-4 text-sm rounded-md dark:text-gray-50 font-inter break-all">
+			<div v-html="withEmojis(account.note, account.emojis)" class="p-3 bio mx-4 text-sm rounded-md dark:text-gray-50 font-inter break-all">
 			</div>
 
 			<div class="md:flex grow md:flex-row mx-6 text-gray-600 dark:text-gray-300 font-inter items-center justify-between grid grid-cols-2 gap-y-3">
@@ -103,7 +103,7 @@ onUnmounted(() => {
 			</div>
 
 			<div
-				class="gap-y-2 md:gap-y-0 flex flex-col md:divide-y mx-4 dark:divide-gray-700 text-sm rounded-md border dark:border-gray-700 dark:text-gray-50 font-inter">
+				class="gap-y-2 md:gap-y-0 flex flex-col bio md:divide-y mx-4 dark:divide-gray-700 text-sm rounded-md border dark:border-gray-700 dark:text-gray-50 font-inter">
 				<div v-for="field of account.fields" :key="field.name" class="flex px-3 md:flex-row gap-x-3 flex-col py-2">
 					<div class="w-1/3 font-bold text-xs md:text-sm" v-html="withEmojis(field.name, account.emojis)">
 					</div>

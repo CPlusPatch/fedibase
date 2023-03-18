@@ -37,8 +37,38 @@ a {
 	text-decoration: none;
 }
 
-.status-text a {
-	@apply hover:underline text-orange-400;
+.status-text a,
+.bio a {
+	@apply text-orange-400;
+	text-decoration: none;
+	position: relative;
+	display: inline-block;
+}
+
+.bio a:hover,
+.bio a:active,
+.status-text a:hover,
+.status-text a:active {
+	text-decoration: none;
+}
+
+.bio a::after,
+.status-text a::after {
+	content: "";
+	position: absolute;
+	bottom: 10%;
+	height: 1.2em;
+	width: 0%;
+	left: -5%;
+	background-color: rgba(251, 146, 60, 0.3);
+	transition: 0.5s ease all 0.3s;
+	border-radius: 2px;
+}
+
+.bio a:hover::after,
+.status-text a:hover::after {
+	width: 110%;
+	transition: 0.3s ease all;
 }
 
 .bg-gradient-light {
