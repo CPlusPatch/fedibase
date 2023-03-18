@@ -4,6 +4,7 @@ import { store } from '../../utils/store';
 import Status, { PostType } from '../status/Status.vue';
 import DummyStatus from '../status/DummyStatus.vue';
 import { IconX } from '@tabler/icons-vue';
+import ConversationChildPost from '../status/ConversationChildPost.vue';
 
 const props = withDefaults(defineProps<{
 	id: string,
@@ -75,7 +76,7 @@ onUnmounted(() => {
 			<Status :type="type" :interaction="true" :status="post" />
 		</div>
 		<div class="flex flex-col gap-y-4 pr-6 pl-4 mb-20">
-			
+			<ConversationChildPost :key="JSON.stringify(descendants)" :posts="descendants" :mode="PostType.Normal" :parentId="post.id" />
 		</div>
 	</div>
 

@@ -40,19 +40,22 @@ const handleReblog = () => {
 		<button @click="e => {
 			store.replyingTo = status;
 			store.state.composer = true;
-		}" title="Reply to this post" class="flex justify-center !static hover:animate-hithere">
+		}" title="Reply to this post" class="flex justify-center gap-x-2 !static hover:animate-hithere">
 			<IconMessage aria-hidden="true" class="w-5 h-5" />
+			{{ status.replies_count > 0 ? status.replies_count : "" }}
 		</button>
-		<button @click="handleFavourite" title="Favourite this post" class="flex justify-center !static hover:animate-hithere">
+		<button @click="handleFavourite" title="Favourite this post" class="gap-x-2 flex justify-center !static hover:animate-hithere">
 			<IconStarFilled v-if="status.favourited" aria-hidden="true"
 				class="w-5 h-5 text-yellow-400 animate-[spin_1s_ease-in-out]" />
 			<IconStar v-else aria-hidden="true" class="w-5 h-5" />
+			{{ status.favourites_count > 0 ? status.favourites_count : "" }}
 		</button>
-		<button @click="handleReblog" title="Boost this post" class="flex justify-center !static hover:animate-hithere">
+		<button @click="handleReblog" title="Boost this post" class="gap-x-2 flex justify-center !static hover:animate-hithere">
 			<template v-if="status.visibility !== 'private' && status.visibility !== 'direct'">
 				<IconRocket v-if="status.reblogged" aria-hidden="true"
 					class="w-5 h-5 text-green-400 animate-[spin_1s_ease-in-out]" />
 				<IconRocket v-else aria-hidden="true" class="w-5 h-5" />
+				{{ status.reblogs_count > 0 ? status.reblogs_count : "" }}
 			</template>
 			<template v-else>
 				<IconLock aria-hidden="true" class="w-5 h-5 text-gray-300" />

@@ -17,8 +17,10 @@ store.client?.getAccount(props.id).then(res => {
 </script>
 
 <template>
-	<div v-if="account" class="flex overflow-y-scroll w-full h-full flex-col gap-y-6 px-6 py-4 no-scroll">
+	<div v-if="account" id="userview" class="flex overflow-y-scroll w-full h-full flex-col gap-y-6 no-scroll">
 		<UserProfile :account="account" />
+		<div class="px-6 py-4 flex flex-col gap-y-6 no-scroll">
 		<Feed :type="FeedType.User" :id="account.id"/>
+		</div>
 	</div>
 </template>

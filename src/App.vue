@@ -47,7 +47,7 @@ watch(() => store.auth.token, () => {
 <template>
 	<template v-if="store.client">
 		<EditorModal />
-		<div class="relative duration-200 font-inter dark:bg-dark-800 flex overflow-hidden h-screen w-screen">
+		<div class="relative duration-200 font-inter dark:bg-dark-800 flex h-screen w-screen">
 			<Nav />
 
 			<div class="flex overflow-hidden h-screen duration-200 grow flex-col relative">
