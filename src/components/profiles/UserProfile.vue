@@ -103,6 +103,7 @@ onUnmounted(() => {
 			</div>
 
 			<div
+				v-if="account.fields.length > 0"
 				class="gap-y-2 md:gap-y-0 flex flex-col bio md:divide-y mx-4 dark:divide-gray-700 text-sm rounded-md border dark:border-gray-700 dark:text-gray-50 font-inter">
 				<div v-for="field of account.fields" :key="field.name" class="flex px-3 md:flex-row gap-x-3 flex-col py-2">
 					<div class="w-1/3 font-bold text-xs md:text-sm" v-html="withEmojis(field.name, account.emojis)">

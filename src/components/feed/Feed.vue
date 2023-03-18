@@ -13,6 +13,7 @@ import { store } from '../../utils/store';
 import DummyStatus from '../status/DummyStatus.vue';
 import Post from './Post.vue';
 import Notification from '../notifications/Notification.vue';
+import { IconHandStop } from '@tabler/icons-vue';
 
 const props = withDefaults(defineProps<{
 	type: FeedType,
@@ -28,6 +29,7 @@ const entities = ref([]);
 
 const DEFAULT_LOAD = 20;
 const loading = ref(false);
+const reachedEnd = ref<boolean>(false);
 
 const interval = window.setInterval(async () => {
 	const latestEntities = await getNewEntities((entities.value[0] as any).id)
@@ -120,12 +122,15 @@ const getMoreEntities = async (before_id: string) => {
 		}
 	}
 
+	if (res.data.length === 0) reachedEnd.value = true;
+
 	loading.value = false;
 	return res.data;
 }
 
 const loadMoreEntities = async () => {
 	if (loading.value) return false;
+	if (reachedEnd.value) return false;
 	const before_id = (entities.value[entities.value.length - 1] as any).id;
 
 	entities.value = [
@@ -172,10 +177,17 @@ onUnmounted(() => {
 	})" :key="entity.id">
 		<Notification :notification="entity" />
 	</template>
-	<DummyStatus v-if="!loading" v-is-visible="loadMoreEntities"/>
-	<DummyStatus />
-	<DummyStatus />
-	<DummyStatus />
-	<DummyStatus />
-	<DummyStatus />
+	<DummyStatus v-if="!loading && !reachedEnd" v-is-visible="loadMoreEntities"/>
+	<DummyStatus v-if="!reachedEnd" />
+	<DummyStatus v-if="!reachedEnd" />
+	<DummyStatus v-if="!reachedEnd" />
+	<DummyStatus v-if="!reachedEnd" />
+	<DummyStatus v-if="!reachedEnd" />
+	<div v-if="reachedEnd" class="flex justify-center">
+		<div class="mx-4 flex flex-col dark:text-gray-300 items-center gap-y-3">
+			<IconHandStop class="w-10 h-10" />
+			<span>No more posts!</span>
+			<span>You've reached the end of this timeline</span>
+		</div>
+	</div>
 </template>
