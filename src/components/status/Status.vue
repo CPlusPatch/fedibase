@@ -24,12 +24,11 @@ const textRef = ref<HTMLParagraphElement>();
 
 onMounted(() => {
 	if (textRef.value) {
-		const lineHeight = parseInt(getComputedStyle(textRef.value).lineHeight) / 2;
-		const height = textRef.value.clientHeight
-		const maxLines = 6;
-		const maxAllowedHeight = lineHeight * maxLines;
-		const isOverflowing = height > maxAllowedHeight;
-		clamps.value = isOverflowing;
+		const lineHeight = parseInt(getComputedStyle(textRef.value).lineHeight);
+		const overflowHeight = lineHeight * 6;
+		const elementHeight = textRef.value.clientHeight;
+
+		clamps.value  = elementHeight > overflowHeight;
 	}
 });
 
@@ -85,7 +84,7 @@ export enum PostType {
 					</div>
 
 					<p ref="textRef" v-html="withEmojis(status.content, status.emojis)"
-						:class="classNames('mt-1 status-text rounded text-sm duration-200 status-text dark:text-gray-50 break-words w-full', status.sensitive && !show && 'filter blur-lg', clamps && !expand && 'line-clamp-6')">
+						:class="classNames('mt-1 status-text rounded text-sm duration-200 status-text dark:text-gray-50 break-words max-w-full', status.sensitive && !show && 'filter blur-lg', clamps && !expand && 'line-clamp-6')">
 
 					</p>
 
