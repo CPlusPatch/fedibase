@@ -64,7 +64,7 @@ onUnmounted(() => {
 						backgroundImage: `url(${account.header})`
 					}" class="w-full h-full bg-center bg-cover" alt="" loading="lazy" />
 				</div>
-				<img loading="lazy" class="absolute -bottom-5 left-5 w-20 h-20 rounded-lg border dark:border-gray-700"
+				<img loading="lazy" class="absolute -bottom-5 left-5 w-20 h-20 rounded border dark:border-dark-700"
 					:src="account.avatar" :alt="account.acct" />
 			</div>
 			<div class="flex flex-row gap-x-2 justify-between mt-4 w-full">

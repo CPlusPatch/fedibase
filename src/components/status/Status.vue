@@ -56,7 +56,7 @@ export enum PostType {
 				<div class="flex flex-row overflow-hidden text-[0.95rem] text-ellipsis whitespace-nowrap w-full">
 					<Link :href="`/user/${status.account.id}`" class="flex-shrink-0 mr-2" :title="`${status.account.display_name}'s profile'`">
 						<img loading="lazy" alt="" :src="status.account.avatar"
-							:class="['bg-white overflow-hidden dark:dark:bg-dark-800-800 rounded border border-gray-300 dark:border-gray-700',
+							:class="['bg-white overflow-hidden dark:bg-dark-800-800 rounded border border-gray-300 dark:border-dark-700',
 							type === PostType.Normal ? 'w-12 h-12' : 'w-10 h-10']" />
 					</Link>
 					<div :class="['flex flex-col grow', type === PostType.Small && 'text-sm']">
