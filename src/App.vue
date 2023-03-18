@@ -15,6 +15,8 @@ import Login from './components/login/Login.vue';
 
 if(store.auth.type && store.auth.url && store.auth.token) {
 	store.client = generator(store.auth.type, store.auth.url, store.auth.token)
+} else {
+	store.client = null;
 }
 
 const width = window.innerWidth;
@@ -47,7 +49,7 @@ watch(() => store.auth.token, () => {
 </script>
 
 <template>
-	<template v-if="store.client">
+	<template v-if="store.client && store.auth.token" :key="store.auth.token">
 		<EditorModal />
 		<div class="relative duration-200 font-inter dark:bg-dark-800 flex h-screen w-screen">
 			<Nav />

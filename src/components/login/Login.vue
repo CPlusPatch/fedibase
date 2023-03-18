@@ -3,6 +3,8 @@ import generator, { detector } from 'megalodon';
 import { store } from '../../utils/store';
 import Button from '../button/Button.vue';
 import { ref } from 'vue';
+import Input from '../input/Input.vue';
+import { IconUser } from '@tabler/icons-vue';
 
 const loading = ref<boolean>(false);
 
@@ -101,12 +103,12 @@ const submit = async (e: Event) => {
 	<div class="flex justify-center min-h-screen items-center bg-cover bg-center" :style="{
 		backgroundImage: 'url(/static/wallpaper.webp)'
 	}">
-		<div class="py-6 w-[23rem] flex flex-col lg:px-0 bg-gray-100 border-2 shadow-lg backdrop-blur-lg rounded-md">
+		<div class="py-6 w-[23rem] flex flex-col lg:px-0 bg-gray-100 dark:bg-dark-800 border-2 dark:border-dark-700 shadow-lg backdrop-blur-lg rounded-md">
 			<div class="sm:mx-auto sm:w-full sm:max-w-md">
 				<div class="flex justify-center w-auto">
 
 				</div>
-				<h2 class="mt-6 text-3xl font-extrabold text-center text-gray-900 font-poppins">
+				<h2 class="mt-6 text-3xl font-extrabold text-center text-gray-900 dark:text-gray-50 font-poppins">
 					Login
 				</h2>
 			</div>
@@ -119,12 +121,12 @@ const submit = async (e: Event) => {
 
 					<form v-else class="space-y-6" action="#" method="POST" @submit="submit">
 						<div class="flex flex-col gap-y-2">
-						<input id="handle" name="handle" type="handle" autoComplete="url" required
-							placeholder="@cpluspatch@fedi.cpluspatch.com" isLoading={isLoading}
-							class="block px-3 py-2 w-full border-2 outline-none rounded-md shadow-sm duration-200 appearance-none placeholder-gray-700 bg-gray-100 focus:outline-none focus:ring-orange-500 focus:border-orange-500 focus:ring-1 sm:text-sm"/>
+						<Input :icon="IconUser" id="handle" name="handle" type="handle" autoComplete="url" required
+							placeholder="@username@instance.com" isLoading={isLoading}
+							class="block focus:outline-none sm:text-sm" :loading="loading"/>
 						</div>
 
-						<select name="type" class="w-full rounded p-2 focus:outline-none text-sm bg-gray-100 border-2 shadow-sm">
+						<select name="type" class="w-full px-3 py-2 placeholder-gray-500 dark:border-dark-700 bg-white rounded-md border border-gray-300 shadow-sm duration-200 appearance-none outline-none dark:text-gray-100 dark:bg-dark-800 disabled:bg-gray-100 focus:outline-none sm:text-sm">
 							<option value="mastodon">Mastodon</option>
 							<option value="pleroma">Pleroma / Akkoma</option>
 							<option value="misskey">Misskey / *key</option>

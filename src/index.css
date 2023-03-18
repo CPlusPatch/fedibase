@@ -56,8 +56,8 @@ a {
 .status-text a::after {
 	content: "";
 	position: absolute;
-	bottom: 10%;
-	height: 1.2em;
+	bottom: -0.1em;
+	height: 104%;
 	width: 0%;
 	left: -5%;
 	background-color: rgba(251, 146, 60, 0.3);

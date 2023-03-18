@@ -4,6 +4,7 @@ import NavElement, { NavigationItem } from "./NavElement.vue";
 import { store } from "../utils/store";
 import { IconMoon } from "@tabler/icons-vue";
 import Link from "./transitions/Link.vue";
+import { IconLogout } from "@tabler/icons-vue";
 
 const navigation: NavigationItem[] = [
 	{
@@ -37,6 +38,13 @@ const toggleTheme = () => {
 		document.getElementsByTagName("html")[0].classList.add("dark");
 	}
 }
+
+const logout = () => {
+	store.auth.token = "";
+	store.auth.url = "";
+	store.auth.instance = null;
+	store.client = null;
+}
 </script>
 
 <template>
@@ -68,7 +76,11 @@ const toggleTheme = () => {
 				@click="() => store.state.composer = true"
 				class="flex justify-center items-center p-2 mb-3 text-sm font-medium rounded-md duration-200 dark:text-gray-300 bg-orange-300/20 hover:bg-orange-300/40 hover:bg-opacity-75 group">
 				<IconPlus class="w-5 h-5" aria-hidden="true" />
-				<span class="sr-only">Compose new post</span>
+			</button>
+			<button title="Logout"
+				@click="logout"
+				class="flex justify-center items-center p-2 mb-3 text-sm font-medium rounded-md duration-200 dark:text-gray-300 bg-red-300/20 hover:bg-red-300/40 hover:bg-opacity-75 group">
+				<IconLogout class="w-5 h-5" aria-hidden="true" />
 			</button>
 			<Link :href="`/user/${store.auth.data?.id}`" class="flex justify-center items-center">
 				<img :src="store.auth.data?.avatar ?? ''" class="w-9 h-9 rounded border dark:border-gray-700" alt="" />
