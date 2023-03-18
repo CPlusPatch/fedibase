@@ -60,7 +60,7 @@ export default defineComponent({
 		className,
 		loading && '!text-transparent',
 		ringColor !== '' ? `focus:ring-2 focus:ring-offset-2 focus:ring-${ringColor}` : 'ring-0 focus:ring-0'
-	]" :disabled="disabled || loading">
+	]" :disabled="disabled || loading" type="button">
 		<svg v-if="loading" role="status" :class="['animate-spin absolute w-auto', spinnerClasses]" viewBox="0 0 100 101"
 			fill="none" xmlns="http://www.w3.org/2000/svg">
 			<path
