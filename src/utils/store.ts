@@ -25,6 +25,7 @@ export interface StateType {
 	}[];
 	client: MegalodonInterface | null;
 	replyingTo: null | Entity.Status;
+	editing: null | Entity.Status;
 	path: string;
 	quotingTo: null | Entity.Status;
 	viewingConversation: string;
@@ -48,6 +49,7 @@ let initialData: StateType = {
 	client: null,
 	theme: "light",
 	replyingTo: null,
+	editing: null,
 	state: {
 		composer: false,
 		notifications: false,

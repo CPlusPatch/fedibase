@@ -75,7 +75,7 @@ const onSubmit = (e: Event) => {
 				class="z-10 focus:outline-none focus:ring-0 rounded outline-none m-0 p-0 mr-2"
 				:value="index" />
 
-			{{ option.title }}
+			<span class="z-10">{{ option.title }}</span>
 		</li>
 
 		<div class="text-sm text-gray-500 dark:text-gray-400">
