@@ -57,9 +57,9 @@ a {
 	content: "";
 	position: absolute;
 	bottom: -0.1em;
-	height: 104%;
+	height: calc(100% + 0.1em);
 	width: 0%;
-	left: -5%;
+	left: -0.3em;
 	background-color: rgba(251, 146, 60, 0.3);
 	transition: 0.5s ease all 0.3s;
 	border-radius: 2px;
@@ -67,7 +67,7 @@ a {
 
 .bio a:hover::after,
 .status-text a:hover::after {
-	width: 110%;
+	width: calc(100% + 0.6em);
 	transition: 0.3s ease all;
 }
 

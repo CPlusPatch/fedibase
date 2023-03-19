@@ -7,7 +7,8 @@ import { ref } from 'vue';
 <script lang="ts">
 export enum NotificationType {
 	Normal,
-	NewMention
+	NewMention,
+	Error
 }
 
 const notifications = ref<{

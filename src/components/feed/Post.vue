@@ -10,7 +10,7 @@ const props = defineProps<{
 </script>
 
 <template>
-	<div class="flex flex-col gap-y-2">
+	<div class="flex flex-col gap-y-2 hover:scale-[98%] duration-200 ease-in-out">
 		<Link
 			v-if="status.reblog"
 			:href="`/user/${status.account.id}`"
