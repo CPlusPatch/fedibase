@@ -1,57 +1,70 @@
 <script setup lang="ts">
-import { IconStar } from "@tabler/icons-vue";
-import { IconRocket } from "@tabler/icons-vue";
-import { IconMoodHappy } from "@tabler/icons-vue";
-import { IconQuote } from "@tabler/icons-vue";
-import { IconLock } from "@tabler/icons-vue";
-import { IconStarFilled } from "@tabler/icons-vue";
-import { IconMessage } from "@tabler/icons-vue";
+import { IconStar, IconRocket, IconMoodHappy, IconQuote, IconLock, IconStarFilled, IconMessage, IconPin, IconEdit, IconForbid, IconCheck, IconDots } from "@tabler/icons-vue";
 import { Entity } from "megalodon";
 import { store } from "../../utils/store";
-import { IconDots } from "@tabler/icons-vue";
 import InteractionBarButton from "./InteractionBarButton.vue";
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/vue";
 import ScaleFadeSlide from "../transitions/ScaleFadeSlide.vue";
-import { IconEye } from "@tabler/icons-vue";
-import { IconForbid2 } from "@tabler/icons-vue";
-import { IconHandOff } from "@tabler/icons-vue";
-import { IconEdit } from "@tabler/icons-vue";
-import { IconForbid } from "@tabler/icons-vue";
 import { NotificationType, addNotification } from "../snackbar/Snackbar.vue";
-import { IconCheck } from "@tabler/icons-vue";
+import { ref } from "vue";
+import { IconPinFilled } from "@tabler/icons-vue";
 
 const props = defineProps<{
 	status: Entity.Status;
 }>();
 
-const handleFavourite = () => {
-	if (props.status.favourited) {
-		props.status.favourited = false;
-		store.client?.unfavouriteStatus(props.status.id);
-	} else if (!props.status.favourited) {
-		props.status.favourited = true;
-		store.client?.favouriteStatus(props.status.id);
+const _status = ref<Entity.Status>(props.status);
+
+const handleFavourite = async () => {
+	if (_status.value.favourited) {
+		_status.value.favourited = false;
+		store.client?.unfavouriteStatus(_status.value.id).then(res => {
+			_status.value = res.data
+		});
+	} else if (!_status.value.favourited) {
+		_status.value.favourited = true;
+		store.client?.favouriteStatus(_status.value.id).then(res => {
+			_status.value = res.data
+		});
 	}
 };
 
 const handleReblog = () => {
-	if (props.status.reblogged) {
-		props.status.reblogged = false;
-		store.client?.reblogStatus(props.status.id);
-	} else if (!props.status.reblogged) {
-		props.status.reblogged = true;
-		store.client?.reblogStatus(props.status.id);
+	if (_status.value.reblogged) {
+		_status.value.reblogged = false;
+		store.client?.reblogStatus(_status.value.id).then(res => {
+			_status.value = res.data
+		});
+	} else if (!_status.value.reblogged) {
+		_status.value.reblogged = true;
+		store.client?.reblogStatus(_status.value.id).then(res => {
+			_status.value = res.data
+		});
 	}
 };
 
 const block = () => {
-	store.client?.blockAccount(props.status.account.id).then(res => {
+	store.client?.blockAccount(_status.value.account.id).then(res => {
 		addNotification("Blocked account!", NotificationType.Normal, IconCheck);
 	})
 }
 
+const togglePin = () => {
+	if (_status.value.pinned) {
+		store.client?.unpinStatus(_status.value.id).then(res => {
+			addNotification("Unpinned status!", NotificationType.Normal, IconPin);
+			_status.value = res.data
+		});
+	} else {
+		store.client?.pinStatus(_status.value.id).then(res => {
+			addNotification("Pinned status!", NotificationType.Normal, IconPinFilled);
+			_status.value = res.data
+		});
+	}
+}
+
 const edit = () => {
-	store.editing = props.status;
+	store.editing = _status.value;
 }
 </script>
 
@@ -71,36 +84,36 @@ const edit = () => {
 		<InteractionBarButton
 			@click="
 				e => {
-					store.replyingTo = status;
+					store.replyingTo = _status;
 					store.state.composer = true;
 				}
 			"
 			title="Reply to this post">
 			<IconMessage aria-hidden="true" class="w-5 h-5" />
-			{{ status.replies_count > 0 ? status.replies_count : "" }}
+			{{ _status.replies_count > 0 ? _status.replies_count : "" }}
 		</InteractionBarButton>
 		<InteractionBarButton
 			@click="handleFavourite"
 			title="Favourite this post">
 			<IconStarFilled
-				v-if="status.favourited"
+				v-if="_status.favourited"
 				aria-hidden="true"
 				class="w-5 h-5 text-yellow-400 animate-[spin_1s_ease-in-out]" />
 			<IconStar v-else aria-hidden="true" class="w-5 h-5" />
-			{{ status.favourites_count > 0 ? status.favourites_count : "" }}
+			{{ _status.favourites_count > 0 ? _status.favourites_count : "" }}
 		</InteractionBarButton>
 		<InteractionBarButton @click="handleReblog" title="Boost this post">
 			<template
 				v-if="
-					status.visibility !== 'private' &&
-					status.visibility !== 'direct'
+					_status.visibility !== 'private' &&
+					_status.visibility !== 'direct'
 				">
 				<IconRocket
-					v-if="status.reblogged"
+					v-if="_status.reblogged"
 					aria-hidden="true"
 					class="w-5 h-5 text-green-400 animate-[spin_1s_ease-in-out]" />
 				<IconRocket v-else aria-hidden="true" class="w-5 h-5" />
-				{{ status.reblogs_count > 0 ? status.reblogs_count : "" }}
+				{{ _status.reblogs_count > 0 ? _status.reblogs_count : "" }}
 			</template>
 			<template v-else>
 				<IconLock aria-hidden="true" class="w-5 h-5 text-gray-300" />
@@ -112,7 +125,7 @@ const edit = () => {
 		<InteractionBarButton
 			@click="
 				e => {
-					store.quotingTo = status;
+					store.quotingTo = _status;
 					store.state.composer = true;
 				}
 			"
@@ -133,7 +146,7 @@ const edit = () => {
 				<MenuItems
 					class="origin-top-right outline-none text-base absolute right-0 w-44 overflow-hidden sm:text-sm rounded-md shadow-lg bg-white/80 dark:bg-dark-800/80 backdrop-blur-lg focus:outline-none">
 					<MenuItem
-						v-if="status.account.id === store.auth.data?.id"
+						v-if="_status.account.id === store.auth.data?.id"
 						as="button"
 						class="menu-item">
 						<IconEdit
@@ -142,7 +155,27 @@ const edit = () => {
 						Edit
 					</MenuItem>
 					<MenuItem
-						v-if="status.account.id !== store.auth.data?.id"
+						v-if="(_status.account.id === store.auth.data?.id) && !_status.pinned"
+						@click="togglePin"
+						as="button"
+						class="menu-item">
+						<IconPin
+							class="menu-icon"
+							aria-hidden="true" />
+						Pin
+					</MenuItem>
+					<MenuItem
+						v-if="(_status.account.id === store.auth.data?.id) && _status.pinned"
+						@click="togglePin"
+						as="button"
+						class="menu-item">
+						<IconPinFilled
+							class="menu-icon"
+							aria-hidden="true" />
+						Unpin
+					</MenuItem>
+					<MenuItem
+						v-if="_status.account.id !== store.auth.data?.id"
 						@click="block"
 						as="button"
 						class="menu-item">
