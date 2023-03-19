@@ -3,46 +3,45 @@ export enum FeedType {
 	Home,
 	User,
 	Notifications,
-	Local
+	Local,
 }
 </script>
 
 <script setup lang="ts">
-import { onMounted, onUnmounted, ref } from 'vue';
-import { store } from '../../utils/store';
-import DummyStatus from '../status/DummyStatus.vue';
-import Post from './Post.vue';
-import Notification from '../notifications/Notification.vue';
-import { IconHandStop } from '@tabler/icons-vue';
-import { NotificationType, addNotification } from '../snackbar/Snackbar.vue';
+import { onMounted, onUnmounted, ref } from "vue";
+import { store } from "../../utils/store";
+import DummyStatus from "../status/DummyStatus.vue";
+import Post from "./Post.vue";
+import Notification from "../notifications/Notification.vue";
+import { IconHandStop } from "@tabler/icons-vue";
+import { NotificationType, addNotification } from "../snackbar/Snackbar.vue";
 
-const props = withDefaults(defineProps<{
-	type: FeedType,
-	mode?: string,
-	id?: string,
-}>(), {
-	mode: "all",
-	id: "",
-});
+const props = withDefaults(
+	defineProps<{
+		type: FeedType;
+		mode?: string;
+		id?: string;
+	}>(),
+	{
+		mode: "all",
+		id: "",
+	}
+);
 
 const entities = ref([]);
-
 
 const DEFAULT_LOAD = 20;
 const loading = ref(false);
 const reachedEnd = ref<boolean>(false);
 
 const interval = window.setInterval(async () => {
-	const latestEntities = await getNewEntities((entities.value[0] as any).id)
-	entities.value = [
-		...latestEntities,
-		...entities.value
-	] as any;
+	const latestEntities = await getNewEntities((entities.value[0] as any).id);
+	entities.value = [...latestEntities, ...entities.value] as any;
 
 	/* if (props.type === FeedType.Notifications) latestEntities.map((entity: Entity.Notification) => {
 		addNotification(entity, NotificationType.NewMention)
 	}) */
-}, 15000)
+}, 15000);
 
 const getNewEntities = async (since_id: string) => {
 	if (loading.value) return;
@@ -58,9 +57,7 @@ const getNewEntities = async (since_id: string) => {
 		}
 		case FeedType.User: {
 			if (!props.id)
-				throw Error(
-					"Feed needs a user ID to work in user mode!"
-				);
+				throw Error("Feed needs a user ID to work in user mode!");
 			res = (await store.client?.getAccountStatuses(props.id, {
 				limit: DEFAULT_LOAD,
 				since_id: since_id,
@@ -86,7 +83,7 @@ const getNewEntities = async (since_id: string) => {
 	}
 	loading.value = false;
 	return res.data;
-}
+};
 
 const getMoreEntities = async (before_id: string) => {
 	let res;
@@ -102,9 +99,7 @@ const getMoreEntities = async (before_id: string) => {
 		}
 		case FeedType.User: {
 			if (!props.id)
-				throw Error(
-					"Feed needs a user ID to work in user mode!"
-				);
+				throw Error("Feed needs a user ID to work in user mode!");
 			res = (await store.client?.getAccountStatuses(props.id, {
 				limit: DEFAULT_LOAD,
 				max_id: before_id,
@@ -131,7 +126,7 @@ const getMoreEntities = async (before_id: string) => {
 
 	loading.value = false;
 	return res.data;
-}
+};
 
 const loadMoreEntities = async () => {
 	if (loading.value) return false;
@@ -140,9 +135,9 @@ const loadMoreEntities = async () => {
 
 	entities.value = [
 		...entities.value,
-		...await getMoreEntities(before_id)
-	] as any
-}
+		...(await getMoreEntities(before_id)),
+	] as any;
+};
 
 onMounted(async () => {
 	entities.value = await getNewEntities("");
@@ -150,17 +145,25 @@ onMounted(async () => {
 
 onUnmounted(() => {
 	window.clearInterval(interval);
-})
+});
 </script>
 
 <template>
-	<template v-if="entities.length > 0 && type === FeedType.Home" v-for="entity of entities" :key="entity.id">
+	<template
+		v-if="entities.length > 0 && type === FeedType.Home"
+		v-for="entity of entities"
+		:key="entity.id">
 		<Post :status="entity" :interaction="true" />
 	</template>
-	<template v-if="entities.length > 0 && type === FeedType.User" v-for="entity of entities" :key="entity.id">
+	<template
+		v-if="entities.length > 0 && type === FeedType.User"
+		v-for="entity of entities"
+		:key="entity.id">
 		<Post :status="entity" :interaction="true" />
 	</template>
-	<template v-if="entities.length > 0 && type === FeedType.Notifications" v-for="entity of entities.filter(e => {
+	<template
+		v-if="entities.length > 0 && type === FeedType.Notifications"
+		v-for="entity of entities.filter(e => {
 		switch (props.mode) {
 			case 'all':
 				return true;
@@ -179,10 +182,13 @@ onUnmounted(() => {
 					'favourite'
 				);
 		}
-	})" :key="entity.id">
+	})"
+		:key="entity.id">
 		<Notification :notification="entity" />
 	</template>
-	<DummyStatus v-if="!loading && !reachedEnd" v-is-visible="loadMoreEntities"/>
+	<DummyStatus
+		v-if="!loading && !reachedEnd"
+		v-is-visible="loadMoreEntities" />
 	<DummyStatus v-if="!reachedEnd" />
 	<DummyStatus v-if="!reachedEnd" />
 	<DummyStatus v-if="!reachedEnd" />

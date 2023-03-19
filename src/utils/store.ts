@@ -16,13 +16,13 @@ export interface StateType {
 		notifications: boolean;
 		postViewer: boolean;
 		sidebar: boolean;
-	},
+	};
 	notifications: {
-		uuid: string,
-		content: string,
-		icon?: any,
-		show: boolean
-	}[],
+		uuid: string;
+		content: string;
+		icon?: any;
+		show: boolean;
+	}[];
 	client: MegalodonInterface | null;
 	replyingTo: null | Entity.Status;
 	path: string;
@@ -63,13 +63,19 @@ let initialData: StateType = {
 };
 
 if (localStorage.getItem("store")) {
-	initialData = JSON.parse(localStorage.getItem("store") as any ?? initialData);
+	initialData = JSON.parse(
+		(localStorage.getItem("store") as any) ?? initialData
+	);
 }
 
 export const store = reactive<StateType>(initialData);
 
-watch(store, () => {
-	localStorage.setItem("store", JSON.stringify(store));
-}, {
-	deep: true
-})
+watch(
+	store,
+	() => {
+		localStorage.setItem("store", JSON.stringify(store));
+	},
+	{
+		deep: true,
+	}
+);

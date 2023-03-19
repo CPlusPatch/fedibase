@@ -5,12 +5,12 @@
 </template>
 
 <script setup lang="ts">
-import { store } from '../../utils/store';
+import { store } from "../../utils/store";
 
 const props = defineProps<{
 	sidebar?: string;
 	href: string;
-}>()
+}>();
 
 const handleClick = (e: MouseEvent) => {
 	if (!e.ctrlKey && !e.metaKey) {
@@ -18,7 +18,7 @@ const handleClick = (e: MouseEvent) => {
 
 		if (props.sidebar) {
 			store.state.postViewer = true;
-			store.viewingConversation = props.sidebar
+			store.viewingConversation = props.sidebar;
 		} else {
 			store.state.notifications = false;
 			store.state.postViewer = false;

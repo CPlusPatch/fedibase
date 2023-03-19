@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { Entity } from 'megalodon';
-import { withEmojis } from '../../utils/functions';
-import Status, { PostType } from '../status/Status.vue';
-import Link from '../transitions/Link.vue';
+import { Entity } from "megalodon";
+import { withEmojis } from "../../utils/functions";
+import Status, { PostType } from "../status/Status.vue";
+import Link from "../transitions/Link.vue";
 
 const props = defineProps<{
-	status: Entity.Status
+	status: Entity.Status;
 }>();
 </script>
 
@@ -28,11 +28,19 @@ const props = defineProps<{
 				loading="lazy"
 				:src="status.account.avatar"
 				alt=""
-				class="h-[1em] w-[1em] inline rounded mb-0.5 mr-2"
-			/>
-			<span v-html="withEmojis(status.account.display_name, status.account.emojis)"></span>
+				class="h-[1em] w-[1em] inline rounded mb-0.5 mr-2" />
+			<span
+				v-html="
+					withEmojis(
+						status.account.display_name,
+						status.account.emojis
+					)
+				"></span>
 			boosted
 		</Link>
-		<Status :type="PostType.Normal" :status="status.reblog !== null ? status.reblog: status" :interaction="true" />
+		<Status
+			:type="PostType.Normal"
+			:status="status.reblog !== null ? status.reblog : status"
+			:interaction="true" />
 	</div>
 </template>
