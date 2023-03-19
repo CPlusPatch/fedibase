@@ -11,7 +11,7 @@ import { IconChartBar } from '@tabler/icons-vue';
 import { IconAlertTriangle } from '@tabler/icons-vue';
 import { v4 as uuidv4 } from "uuid";
 import Files from './Files.vue';
-import { addNotification } from '../snackbar/Snackbar.vue';
+import { NotificationType, addNotification } from '../snackbar/Snackbar.vue';
 import { IconSend } from '@tabler/icons-vue';
 import { IconForbid2 } from '@tabler/icons-vue';
 import { IconFileUpload } from '@tabler/icons-vue';
@@ -178,7 +178,7 @@ const uploadFiles = async (toUpload: FileList) => {
 		})
 	);
 
-	addNotification("Files uploaded!", IconFileUpload)
+	addNotification("Files uploaded!", NotificationType.Normal, IconFileUpload)
 	loading.value = false;
 	files.value = [...files.value, ...newFiles]
 };
@@ -219,11 +219,11 @@ const submit = (e: Event) => {
 				? files.value.map(f => f.metadata.id)
 				: undefined,
 	}).then(res => {
-		addNotification("Post sent!", IconSend)
+		addNotification("Post sent!", NotificationType.Normal, IconSend)
 		closeModal(e);
 	}).catch(err => {
 		console.error(err);
-		addNotification("Error sending post", IconForbid2);
+		addNotification("Error sending post", NotificationType.Normal, IconForbid2);
 	})
 }
 </script>

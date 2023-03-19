@@ -14,6 +14,7 @@ import DummyStatus from '../status/DummyStatus.vue';
 import Post from './Post.vue';
 import Notification from '../notifications/Notification.vue';
 import { IconHandStop } from '@tabler/icons-vue';
+import { NotificationType, addNotification } from '../snackbar/Snackbar.vue';
 
 const props = withDefaults(defineProps<{
 	type: FeedType,
@@ -36,7 +37,11 @@ const interval = window.setInterval(async () => {
 	entities.value = [
 		...latestEntities,
 		...entities.value
-	] as any
+	] as any;
+
+	/* if (props.type === FeedType.Notifications) latestEntities.map((entity: Entity.Notification) => {
+		addNotification(entity, NotificationType.NewMention)
+	}) */
 }, 15000)
 
 const getNewEntities = async (since_id: string) => {
