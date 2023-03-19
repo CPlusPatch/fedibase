@@ -1,7 +1,4 @@
-<script lang="ts">
-import { defineComponent, PropType } from "vue";
-import { classNames } from "../../utils/functions";
-
+<script setup lang="ts">
 const themes: { [key: string]: string } = {
 	gray: "dark:text-gray-200 bg-gray-100 text-black dark:bg-dark-800 dark:border-gray-600 outline-none hover:scale-105",
 	orange: "bg-orange-600 hover:bg-orange-700 text-white border-transparent",
@@ -9,57 +6,20 @@ const themes: { [key: string]: string } = {
 };
 
 interface ButtonProps {
-	className?: string;
-	ringColor?: string;
-	theme?: "gray" | "orange" | "orangeLight" | null;
-	loading?: boolean;
-	spinnerClasses?: string;
+	theme?: "gray" | "orange" | "orangeLight",
+	loading?: boolean,
+	spinnerClasses?: string,
+	disabled?: boolean,
 }
+const props = defineProps<ButtonProps>();
 
-export default defineComponent({
-	name: "Button",
-	props: {
-		className: {
-			type: String,
-			default: "",
-		},
-		ringColor: {
-			type: String,
-			default: "",
-		},
-		theme: {
-			type: String as PropType<ButtonProps["theme"]>,
-			default: null,
-		},
-		loading: {
-			type: Boolean as PropType<ButtonProps["loading"]>,
-			default: false,
-		},
-		spinnerClasses: {
-			type: String,
-			default: "h-4 text-gray-100 fill-orange-400",
-		},
-		disabled: {
-			type: Boolean,
-			default: false,
-		},
-	},
-	setup(props: ButtonProps) {
-		return {
-			themes,
-			classNames,
-		};
-	},
-});
 </script>
 
 <template>
 	<button :class="[
 		'inline-flex justify-center relative ease-in-out items-center no-bad-scale px-4 py-2 text-base font-medium rounded-md border shadow-sm duration-200 font-inter focus:outline-none sm:text-sm',
 		theme && themes[theme],
-		className,
-		loading && '!text-transparent',
-		ringColor !== '' ? `focus:ring-2 focus:ring-offset-2 focus:ring-${ringColor}` : 'ring-0 focus:ring-0'
+		loading && '!text-transparent'
 	]" :disabled="disabled || loading" type="button">
 		<svg v-if="loading" role="status" :class="['animate-spin absolute w-auto', spinnerClasses]" viewBox="0 0 100 101"
 			fill="none" xmlns="http://www.w3.org/2000/svg">

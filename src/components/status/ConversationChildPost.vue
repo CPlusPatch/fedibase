@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { defineProps } from 'vue';
 import Status, { PostType } from './Status.vue';
 import { IconDots } from '@tabler/icons-vue';
 import { Entity } from 'megalodon';
