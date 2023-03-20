@@ -25,6 +25,8 @@ export interface StateType {
 	}[];
 	client: MegalodonInterface | null;
 	replyingTo: null | Entity.Status;
+	savedFeed: Entity.Status[];
+	feedScroll: number;
 	editing: null | Entity.Status;
 	path: string;
 	quotingTo: null | Entity.Status;
@@ -50,6 +52,8 @@ let initialData: StateType = {
 	theme: "light",
 	replyingTo: null,
 	editing: null,
+	savedFeed: [],
+	feedScroll: 0,
 	state: {
 		composer: false,
 		notifications: false,

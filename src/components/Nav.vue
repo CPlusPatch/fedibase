@@ -59,15 +59,15 @@ const logout = () => {
 		class="hidden h-full dark:bg-dark-800 bg-white flex-col bg-gradient-to-b border-r dark:border-gray-700 bg-light dark:dark:bg-dark-800 lg:flex">
 		<div
 			class="flex overflow-y-auto flex-col flex-1 items-center pt-5 pb-4">
-			<Link
-				href="/"
+			<RouterLink
+				to="/"
 				class="flex flex-shrink-0 justify-center items-center px-2">
 				<img
 					:src="store.auth.instance?.thumbnail ?? ''"
 					class="w-8 h-8 rounded"
 					alt="" />
 				<span class="sr-only">{{ store.auth.instance?.title }}</span>
-			</Link>
+			</RouterLink>
 			<nav class="flex-1 px-2 mt-5 space-y-1" aria-label="Sidebar">
 				<div v-for="nav in navigation" :key="nav.name">
 					<NavElement :element="nav" />
@@ -103,8 +103,8 @@ const logout = () => {
 				class="flex justify-center items-center p-2 mb-3 text-sm font-medium rounded-md duration-200 dark:text-gray-300 bg-red-300/20 hover:bg-red-300/40 hover:bg-opacity-75 group">
 				<IconLogout class="w-5 h-5" aria-hidden="true" />
 			</button>
-			<Link
-				:href="`/user/${store.auth.data?.id}`"
+			<RouterLink
+				:to="`/user/${store.auth.data?.id}`"
 				class="flex justify-center items-center">
 				<img
 					:src="store.auth.data?.avatar ?? ''"
@@ -113,7 +113,7 @@ const logout = () => {
 				<span class="sr-only">
 					Your avatar, click to visit your profile
 				</span>
-			</Link>
+			</RouterLink>
 		</div>
 	</div>
 </template>

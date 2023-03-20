@@ -67,14 +67,14 @@ const closePostViewer = () => {
 			<IconSun v-if="store.theme === 'light'" aria-hidden="true" />
 			<IconMoon v-if="store.theme === 'dark'" aria-hidden="true" />
 		</Button>
-		<Link href="/">
+		<RouterLink to="/">
 			<Button
 				theme="gray"
 				class="!p-3 !border-none !shadow-none !bg-white dark:!bg-transparent"
 				title="Visit main feed">
 				<IconHome aria-hidden="true" />
 			</Button>
-		</Link>
+		</RouterLink>
 		<Button
 			theme="gray"
 			title="Compose new post"

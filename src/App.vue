@@ -10,7 +10,7 @@ import EditorModal from "./components/editor/EditorModal.vue";
 import Snackbar from "./components/snackbar/Snackbar.vue";
 import MobileNavbar from "./components/layout/MobileNavbar.vue";
 import UserFeed from "./components/feed/UserFeed.vue";
-import { ref, watch } from "vue";
+import { onUnmounted, ref, watch } from "vue";
 import Login from "./components/login/Login.vue";
 import LocalFeed from "./components/feed/LocalFeed.vue";
 import FederatedFeed from "./components/feed/FederatedFeed.vue";
@@ -46,6 +46,8 @@ if (store.theme === "dark") {
 }
 
 store.notifications = [];
+store.savedFeed = [];
+store.feedScroll = 0;
 
 const paths = ref(window.location.pathname.split("/"));
 
@@ -66,6 +68,16 @@ watch(
 		);
 	}
 );
+
+const updatePath = () => {
+	paths.value = window.location.pathname.split("/");
+}
+
+window.addEventListener("popstate", updatePath);
+
+onUnmounted(() => {
+	window.removeEventListener("popstate", updatePath);
+});
 </script>
 
 <template>
@@ -85,17 +97,7 @@ watch(
 					</div>
 					<div
 						class="overflow-x-hidden overflow-y-hidden md:col-span-5 col-span-6 max-h-screen md:border-x dark:border-gray-700 md:pt-0">
-						<HomeFeed v-if="paths[1] === ''" :key="paths[1]" />
-						<LocalFeed v-if="paths[1] === 'local'" :key="paths[1]" />
-						<FederatedFeed v-if="paths[1] === 'federated'" :key="paths[1]" />
-						<Conversation
-							v-if="paths[1] === 'posts'"
-							:id="paths[2]"
-							:key="paths[2]" />
-						<UserFeed
-							v-if="paths[1] === 'user'"
-							:id="paths[2]"
-							:key="paths[2]" />
+						<RouterView />
 					</div>
 					<div
 						class="hidden overflow-x-hidden p-4 max-h-screen md:col-span-3 md:flex">

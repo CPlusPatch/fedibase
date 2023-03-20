@@ -11,9 +11,9 @@ const props = defineProps<{
 
 <template>
 	<div class="flex flex-col gap-y-2 duration-200 ease-in-out">
-		<Link
+		<RouterLink
 			v-if="status.reblog"
-			:href="`/user/${status.account.id}`"
+			:to="`/user/${status.account.id}`"
 			class="overflow-hidden gap-x-1 max-w-full font-semibold text-gray-500 overflow-ellipsis dark:text-gray-400 hover:underline">
 			<svg
 				aria-hidden="true"
@@ -37,7 +37,7 @@ const props = defineProps<{
 					)
 				"></span>
 			boosted
-		</Link>
+		</RouterLink>
 		<Status
 			:type="PostType.Normal"
 			:status="status.reblog !== null ? status.reblog : status"

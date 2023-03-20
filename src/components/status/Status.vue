@@ -54,8 +54,8 @@ export enum PostType {
 			<div class="flex flex-col min-w-0 grow gap-y-1">
 				<div
 					class="flex flex-row overflow-hidden text-[0.95rem] text-ellipsis whitespace-nowrap w-full">
-					<Link
-						:href="`/user/${status.account.id}`"
+					<RouterLink
+						:to="`/user/${status.account.id}`"
 						class="flex-shrink-0 mr-2"
 						:title="`${status.account.display_name}'s profile'`">
 						<img
@@ -68,7 +68,7 @@ export enum PostType {
 									? 'w-12 h-12'
 									: 'w-10 h-10',
 							]" />
-					</Link>
+					</RouterLink>
 					<div
 						:class="[
 							'flex flex-col grow',

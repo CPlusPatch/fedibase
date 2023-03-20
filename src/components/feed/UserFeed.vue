@@ -1,24 +1,38 @@
 <script setup lang="ts">
 import { Entity } from "megalodon";
-import { ref } from "vue";
+import { ref, watch } from "vue";
 import { store } from "../../utils/store";
 import Feed, { FeedType } from "./Feed.vue";
 import UserProfile from "../profiles/UserProfile.vue";
 import StatusVue, { PostType } from "../status/Status.vue";
 import { IconPinFilled } from "@tabler/icons-vue";
+import { useRoute } from "vue-router";
 
-const props = defineProps<{
-	id: string;
-}>();
+const route = useRoute();
 
 const account = ref<Entity.Account | null>(null);
 const pinned = ref<Entity.Status[]>([]);
+const id = ref<string>(route.params.id as string);
 
-store.client?.getAccount(props.id).then(res => {
+watch(() => route.params.id, (newId) => {
+	id.value = newId as string;
+
+	store.client?.getAccount(id.value).then(res => {
+		account.value = res.data;
+	});
+
+	store.client?.getAccountStatuses(id.value, {
+		pinned: true
+	}).then(res => {
+		pinned.value = res.data;
+	})
+})
+
+store.client?.getAccount(id.value).then(res => {
 	account.value = res.data;
 });
 
-store.client?.getAccountStatuses(props.id, {
+store.client?.getAccountStatuses(id.value, {
 	pinned: true
 }).then(res => {
 	pinned.value = res.data;

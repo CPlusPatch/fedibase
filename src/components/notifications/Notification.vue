@@ -23,9 +23,9 @@ const props = defineProps<{
 			props.notification.type === 'reblog' && 'bg-blue-500/10',
 			props.notification.type === 'emoji_reaction' && 'bg-red-500/10',
 		]">
-		<Link
+		<RouterLink
 			v-if="props.notification.type === 'favourite'"
-			:href="`/user/${notification.account.id}`"
+			:to="`/user/${notification.account.id}`"
 			class="overflow-hidden gap-x-1 max-w-full font-semibold text-gray-500 overflow-ellipsis dark:text-gray-400 hover:underline">
 			<IconStarFilled
 				aria-hidden="true"
@@ -43,9 +43,9 @@ const props = defineProps<{
 					)
 				"></span>
 			favourited your post
-		</Link>
-		<Link
-			:href="`/user/${notification.account.id}`"
+		</RouterLink>
+		<RouterLink
+			:to="`/user/${notification.account.id}`"
 			v-if="props.notification.type === 'emoji_reaction'"
 			class="overflow-hidden gap-x-1 max-w-full font-semibold text-gray-500 overflow-ellipsis dark:text-gray-400 hover:underline">
 			<img
@@ -70,10 +70,10 @@ const props = defineProps<{
 						props.notification.status?.emoji_reactions
 					)
 				"></span>
-		</Link>
-		<Link
+		</RouterLink>
+		<RouterLink
 			v-if="props.notification.type === 'reblog'"
-			:href="`/user/${notification.account.id}`"
+			:to="`/user/${notification.account.id}`"
 			class="overflow-hidden gap-x-1 max-w-full font-semibold text-gray-500 overflow-ellipsis dark:text-gray-400 hover:underline">
 			<svg
 				aria-hidden="true"
@@ -98,7 +98,7 @@ const props = defineProps<{
 					)
 				"></span>
 			boosted your post
-		</Link>
+		</RouterLink>
 		<Status
 			:type="PostType.Small"
 			v-if="props.notification.status"
@@ -108,8 +108,8 @@ const props = defineProps<{
 	<li
 		v-if="props.notification.type === 'follow'"
 		class="flex flex-col gap-y-2 p-2 max-w-full rounded bg-green-500/10">
-		<Link
-			:href="`/user/${notification.account.id}`"
+		<RouterLink
+			:to="`/user/${notification.account.id}`"
 			class="overflow-hidden gap-x-2 max-w-full text-base text-gray-800 dark:text-gray-100 hover:underline">
 			<img
 				loading="lazy"
@@ -124,6 +124,6 @@ const props = defineProps<{
 					)
 				"></span>
 			followed you
-		</Link>
+		</RouterLink>
 	</li>
 </template>

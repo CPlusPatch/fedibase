@@ -1,14 +1,15 @@
 <script setup lang="ts">
-import { onUnmounted, ref } from "vue";
+import { onUnmounted, ref, watch } from "vue";
 import { store } from "../../utils/store";
 import Status, { PostType } from "../status/Status.vue";
 import DummyStatus from "../status/DummyStatus.vue";
 import { IconX } from "@tabler/icons-vue";
 import ConversationChildPost from "../status/ConversationChildPost.vue";
+import { useRoute } from "vue-router";
 
 const props = withDefaults(
 	defineProps<{
-		id: string;
+		id?: string;
 		title?: boolean;
 		closeButton?: boolean;
 		onClose?: () => void;
@@ -22,9 +23,12 @@ const props = withDefaults(
 	}
 );
 
+const route = useRoute();
+
 let ancestors = ref<Entity.Status[]>([]);
 let post = ref<Entity.Status | null>(null);
 let descendants = ref<Entity.Status[]>([]);
+const id = ref<string>(props.id ?? (route.params.id as string))
 
 // Finds all the parent elements of a post in a list of statuses
 function findParentElements(array: Entity.Status[], elementId: string) {
@@ -40,10 +44,30 @@ function findParentElements(array: Entity.Status[], elementId: string) {
 	return parentElements;
 }
 
-store.client?.getStatus(props.id).then(res => {
+watch(() => route.params.id, (newId) => {
+	id.value = newId as string;
+
+	store.client?.getStatus(id.value).then(res => {
+		post.value = res.data;
+
+		store.client?.getStatusContext(id.value).then(res => {
+			if (!post.value) return;
+
+			ancestors.value = findParentElements(
+				[...res.data.ancestors, post.value],
+				post.value.id
+			)
+				.reverse()
+				.slice(0, -1); // Slice because it includes the post, so remove last element
+			descendants.value = res.data.descendants;
+		});
+	});
+})
+
+store.client?.getStatus(id.value).then(res => {
 	post.value = res.data;
 
-	store.client?.getStatusContext(props.id).then(res => {
+	store.client?.getStatusContext(id.value).then(res => {
 		if (!post.value) return;
 
 		ancestors.value = findParentElements(

@@ -15,6 +15,7 @@ import DummyStatus from "../status/DummyStatus.vue";
 import Post from "./Post.vue";
 import Notification from "../notifications/Notification.vue";
 import { IconHandStop } from "@tabler/icons-vue";
+import { NavigationGuard, onBeforeRouteLeave, onBeforeRouteUpdate } from "vue-router";
 
 const props = withDefaults(
 	defineProps<{
@@ -35,7 +36,7 @@ const loading = ref(false);
 const reachedEnd = ref<boolean>(false);
 
 const interval = window.setInterval(async () => {
-	const latestEntities = await getNewEntities((entities.value[0] as any).id);
+	const latestEntities = await getEntitiesSinceId((entities.value[0] as any).id);
 	entities.value = [...latestEntities, ...entities.value] as any;
 
 	/* if (props.type === FeedType.Notifications) latestEntities.map((entity: Entity.Notification) => {
@@ -43,7 +44,7 @@ const interval = window.setInterval(async () => {
 	}) */
 }, 15000);
 
-const getNewEntities = async (since_id: string) => {
+const getEntitiesSinceId = async (since_id: string) => {
 	if (loading.value) return;
 	loading.value = true;
 	let res;
@@ -93,7 +94,7 @@ const getNewEntities = async (since_id: string) => {
 	return res.data;
 };
 
-const getMoreEntities = async (before_id: string) => {
+const getEntitiesBeforeId = async (before_id: string) => {
 	let res;
 	loading.value = true;
 
@@ -101,7 +102,7 @@ const getMoreEntities = async (before_id: string) => {
 		case FeedType.Home: {
 			res = (await store.client?.getHomeTimeline({
 				limit: DEFAULT_LOAD,
-				max_id: before_id,
+				max_id: before_id
 			})) as any;
 			break;
 		}
@@ -148,17 +149,51 @@ const loadMoreEntities = async () => {
 	if (reachedEnd.value) return false;
 	const before_id = (entities.value[entities.value.length - 1] as any).id;
 
+	const newEntities = (await getEntitiesBeforeId(before_id));	
+
+	/* if (props.type === FeedType.Home) {
+		store.beforeId = (newEntities[newEntities.length - 1] as any).id;
+		console.log(store.beforeId)
+	} */
+
 	entities.value = [
 		...entities.value,
-		...(await getMoreEntities(before_id)),
+		...newEntities,
 	] as any;
+
+	store.savedFeed = entities.value;
 };
 
+const onScroll = () => {
+	store.feedScroll = document.getElementById("homefeed")?.scrollTop ?? 0;
+}
+
 onMounted(async () => {
-	entities.value = await getNewEntities("");
+	document.getElementById("homefeed")?.addEventListener("scroll", onScroll, {
+		passive: true,
+		capture: true
+	});
+	if (loading.value) return;
+	let id = ""
+
+	if (props.type === FeedType.Home) {
+		if (store.savedFeed && store.savedFeed.length > 0) {
+			entities.value = store.savedFeed as any;
+			id = store.savedFeed[0].id;
+		} else {
+			store.savedFeed = []
+		}
+	}
+
+	entities.value = [
+		...await getEntitiesSinceId(id),
+		...entities.value
+	] as any;
+	if (store.feedScroll && document.getElementById("homefeed")) document.getElementById("homefeed")!.scrollTop = store.feedScroll;
 });
 
 onUnmounted(() => {
+	document.getElementById("homefeed")?.removeEventListener("scroll", onScroll);
 	window.clearInterval(interval);
 });
 </script>
