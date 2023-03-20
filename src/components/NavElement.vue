@@ -19,6 +19,7 @@ const props = defineProps<{
 <template>
 	<div class="flex flex-row items-center">
 		<Link
+			:title="element.name"
 			:href="props.element.href"
 			class="flex justify-center items-center p-2 mx-1 text-sm font-medium rounded-md duration-200 group">
 			<props.element.icon
