@@ -7,12 +7,12 @@
 ⚠️ No promises will be made on ETA for missing features
 ```
 
-![Dark mode for Desktop](assets/desktop-dark.webp)
-![Dark mode for Desktop](assets/desktop-light.webp)
+![Dark mode for Desktop](screenshots/fedibase-dark1.webp)
+![Dark mode for Desktop](screenshots/fedibase-light1.webp)
 
 ## Technologies used
 
-- [Next.js](https://nextjs.org/) for the web app
+- [Vue.js](https://vuejs.org/) for the web app
 - [TailwindCSS](https://tailwindcss.com) for styling
 - [Megalodon](https://github.com/h3poteto/megalodon) for the Fediverse API
 - [PNPM](https://pnpm.io/) for package distribution
