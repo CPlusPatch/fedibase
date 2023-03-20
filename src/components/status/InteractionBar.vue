@@ -3,17 +3,20 @@ import { IconStar, IconRocket, IconMoodHappy, IconQuote, IconLock, IconStarFille
 import { Entity } from "megalodon";
 import { store } from "../../utils/store";
 import InteractionBarButton from "./InteractionBarButton.vue";
-import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/vue";
+import { Dialog, DialogPanel, Menu, MenuButton, MenuItem, MenuItems, TransitionRoot } from "@headlessui/vue";
 import ScaleFadeSlide from "../transitions/ScaleFadeSlide.vue";
 import { NotificationType, addNotification } from "../snackbar/Snackbar.vue";
 import { ref } from "vue";
 import { IconPinFilled } from "@tabler/icons-vue";
+import Input from "../input/Input.vue";
 
 const props = defineProps<{
 	status: Entity.Status;
 }>();
 
 const _status = ref<Entity.Status>(props.status);
+const reacting = ref<boolean>(false);
+const reactionFilter = ref<Entity.Emoji[]>(store.emojis);
 
 const handleFavourite = async () => {
 	if (_status.value.favourited) {
@@ -61,6 +64,24 @@ const togglePin = () => {
 			_status.value = res.data
 		});
 	}
+}
+
+const toggleReaction = () => {
+	if (store.auth.type === "mastodon") return addNotification("Mastodon does not support reactions!");
+	reacting.value = !reacting.value;
+}
+
+const filterReactions = (event: Event) => {
+	console.log("gay")
+	reactionFilter.value = store.emojis.filter(e => e.shortcode.includes((event.target as HTMLInputElement).value)) ;
+}
+
+const react = (emoji: Entity.Emoji) => {
+	store.client?.createEmojiReaction(_status.value.id, emoji.shortcode).then(res => {
+		_status.value = res.data;
+		addNotification("Added reaction!", NotificationType.Normal, IconMoodHappy);
+		reacting.value = false;
+	})
 }
 
 const edit = () => {
@@ -119,8 +140,25 @@ const edit = () => {
 				<IconLock aria-hidden="true" class="w-5 h-5 text-gray-300" />
 			</template>
 		</InteractionBarButton>
-		<InteractionBarButton title="Add reaction">
+		<InteractionBarButton title="Add reaction" @click="toggleReaction">
 			<IconMoodHappy aria-hidden="true" class="w-5 h-5" />
+
+			<TransitionRoot appear :show="reacting">
+			<Dialog @close="() => reacting = false" class="z-50 fixed bottom-0">
+				<ScaleFadeSlide>
+					<DialogPanel>
+						<div class="w-80 flex flex-col bottom-0 left-0 m-4 p-3 absolute z-50 bg-orange-100/50 backdrop-blur-md dark:bg-dark-800/75 border dark:border-gray-700 shadow rounded-xl h-72">
+							<Input @input="filterReactions" autofocus="true" :icon="IconMoodHappy" class="dark:border-gray-700" placeholder="Search for emoji here" name="emoji" />
+							<div className="grid grid-cols-6 justify-around no-scroll p-3 gap-4 overflow-scroll">
+								<button @click="() => react(emoji)" v-for="emoji of reactionFilter" :key="emoji.url" title={emoji.shortcode} class="flex items-center justify-center w-full">
+									<img :src="emoji.url" className="w-7 h-7 rounded" />
+								</button>
+							</div>
+						</div>
+					</DialogPanel>
+				</ScaleFadeSlide>
+			</Dialog>
+			</TransitionRoot>
 		</InteractionBarButton>
 		<InteractionBarButton
 			@click="

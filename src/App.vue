@@ -12,6 +12,8 @@ import MobileNavbar from "./components/layout/MobileNavbar.vue";
 import UserFeed from "./components/feed/UserFeed.vue";
 import { ref, watch } from "vue";
 import Login from "./components/login/Login.vue";
+import LocalFeed from "./components/feed/LocalFeed.vue";
+import FederatedFeed from "./components/feed/FederatedFeed.vue";
 
 if (store.auth.type && store.auth.url && store.auth.token) {
 	store.client = generator(store.auth.type, store.auth.url, store.auth.token);
@@ -25,6 +27,10 @@ if (!store.auth.instance)
 	store.client?.getInstance().then(res => {
 		store.auth.instance = res.data;
 	});
+
+store.client?.getInstanceCustomEmojis().then(res => {
+	store.emojis = res.data;
+})
 
 store.client
 	?.verifyAccountCredentials()
@@ -80,6 +86,8 @@ watch(
 					<div
 						class="overflow-x-hidden overflow-y-hidden md:col-span-5 col-span-6 max-h-screen md:border-x dark:border-gray-700 md:pt-0">
 						<HomeFeed v-if="paths[1] === ''" :key="paths[1]" />
+						<LocalFeed v-if="paths[1] === 'local'" :key="paths[1]" />
+						<FederatedFeed v-if="paths[1] === 'federated'" :key="paths[1]" />
 						<Conversation
 							v-if="paths[1] === 'posts'"
 							:id="paths[2]"

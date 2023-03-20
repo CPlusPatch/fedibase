@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { IconUser } from "@tabler/icons-vue";
-
 interface InputProps {
 	loading?: boolean;
 	name: string;
@@ -9,6 +7,12 @@ interface InputProps {
 }
 
 const props = defineProps<InputProps>();
+</script>
+
+<script lang="ts">
+export default {
+  inheritAttrs: false
+}
 </script>
 
 <template>

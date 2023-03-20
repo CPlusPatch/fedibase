@@ -4,6 +4,7 @@ export enum FeedType {
 	User,
 	Notifications,
 	Local,
+	Federated,
 }
 </script>
 
@@ -14,7 +15,6 @@ import DummyStatus from "../status/DummyStatus.vue";
 import Post from "./Post.vue";
 import Notification from "../notifications/Notification.vue";
 import { IconHandStop } from "@tabler/icons-vue";
-import { NotificationType, addNotification } from "../snackbar/Snackbar.vue";
 
 const props = withDefaults(
 	defineProps<{
@@ -80,6 +80,14 @@ const getNewEntities = async (since_id: string) => {
 			})) as any;
 			break;
 		}
+
+		case FeedType.Federated: {
+			res = (await store.client?.getPublicTimeline({
+				limit: DEFAULT_LOAD,
+				since_id: since_id,
+			})) as any;
+			break;
+		}
 	}
 	loading.value = false;
 	return res.data;
@@ -120,6 +128,13 @@ const getMoreEntities = async (before_id: string) => {
 			})) as any;
 			break;
 		}
+		case FeedType.Federated: {
+			res = (await store.client?.getPublicTimeline({
+				limit: DEFAULT_LOAD,
+				max_id: before_id,
+			})) as any;
+			break;
+		}
 	}
 
 	if (res.data.length === 0) reachedEnd.value = true;
@@ -150,13 +165,7 @@ onUnmounted(() => {
 
 <template>
 	<template
-		v-if="entities.length > 0 && type === FeedType.Home"
-		v-for="entity of entities"
-		:key="entity.id">
-		<Post :status="entity" :interaction="true" />
-	</template>
-	<template
-		v-if="entities.length > 0 && type === FeedType.User"
+		v-if="entities.length > 0 && type !== FeedType.Notifications"
 		v-for="entity of entities"
 		:key="entity.id">
 		<Post :status="entity" :interaction="true" />
