@@ -14,10 +14,12 @@ const closeModal = () => {
 	store.quotingTo = null;
 	store.replyingTo = null;
 };
+
+const _window = window;
 </script>
 
 <template>
-	<TransitionRoot :show="store.state.composer" as="template">
+	<TransitionRoot :show="store.state.composer && (store.viewingConversation !== '' || _window.innerWidth < 768)" as="template">
 		<Dialog as="div" class="block relative z-40" @close="closeModal">
 			<ModalOverlay />
 

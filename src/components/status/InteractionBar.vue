@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { IconStar, IconRocket, IconMoodHappy, IconQuote, IconLock, IconStarFilled, IconMessage, IconPin, IconEdit, IconForbid, IconCheck, IconDots } from "@tabler/icons-vue";
+import { IconStar, IconRocket, IconMoodHappy, IconQuote, IconLock, IconStarFilled, IconMessage, IconPin, IconEdit, IconForbid, IconCheck, IconDots, IconCopy } from "@tabler/icons-vue";
 import { Entity } from "megalodon";
 import { store } from "../../utils/store";
 import InteractionBarButton from "./InteractionBarButton.vue";
@@ -86,6 +86,10 @@ const react = (emoji: Entity.Emoji) => {
 
 const edit = () => {
 	store.editing = _status.value;
+}
+
+const copyUrl = () => {
+	navigator.clipboard.writeText(_status.value.url);
 }
 </script>
 
@@ -191,6 +195,15 @@ const edit = () => {
 							class="menu-icon"
 							aria-hidden="true" />
 						Edit
+					</MenuItem>
+					<MenuItem
+						@click="copyUrl"
+						as="button"
+						class="menu-item">
+						<IconCopy
+							class="menu-icon"
+							aria-hidden="true" />
+						Copy post URL
 					</MenuItem>
 					<MenuItem
 						v-if="(_status.account.id === store.auth.data?.id) && !_status.pinned"

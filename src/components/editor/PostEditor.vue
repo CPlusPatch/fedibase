@@ -27,6 +27,14 @@ import { IconFileUpload } from "@tabler/icons-vue";
 import Input from "../input/Input.vue";
 import ScaleFadeSlide from "../transitions/ScaleFadeSlide.vue";
 
+const props = withDefaults(defineProps<{
+	closeButton: boolean,
+	reRender: () => void
+}>(), {
+	closeButton: true,
+	reRender: () => {}
+})
+
 const pollDurations = [
 	{
 		icon: IconClock,
@@ -235,6 +243,7 @@ const submit = (e: Event) => {
 		.then(res => {
 			addNotification("Post sent!", NotificationType.Normal, IconSend);
 			closeModal(e);
+			props.reRender();
 		})
 		.catch(err => {
 			console.error(err);
@@ -266,7 +275,7 @@ const submit = (e: Event) => {
 			]">
 			<div class="flex justify-between p-3 w-full gap-x-2">
 				<div class="flex flex-row items-center gap-x-3">
-					<button @click="closeModal" class="mb-1">
+					<button v-if="closeButton" @click="closeModal" class="mb-1">
 						<IconX class="w-6 h-6" />
 					</button>
 

@@ -1,6 +1,15 @@
 <script setup lang="ts">
+import { ref } from "vue";
 import { store } from "../../utils/store";
+import PostEditor from "../editor/PostEditor.vue";
 import Conversation from "../feed/Conversation.vue";
+import { v4 } from "uuid";
+
+const uuid = ref<string>(v4());
+
+const reRender = () => {
+	uuid.value = v4();
+}
 </script>
 
 <template>
@@ -14,4 +23,7 @@ import Conversation from "../feed/Conversation.vue";
 				store.viewingConversation = '';
 			}
 		" />
+	<div v-else class="p-3">
+		<PostEditor :key="uuid" :close-button="false" :re-render="reRender" />
+	</div>
 </template>
