@@ -8,7 +8,6 @@ import {
 	IconPencilPlus,
 } from "@tabler/icons-vue";
 import Button from "../button/Button.vue";
-import Link from "../transitions/Link.vue";
 import {
 	Dialog,
 	DialogPanel,
@@ -19,6 +18,7 @@ import {
 import { IconX } from "@tabler/icons-vue";
 import NotificationsFeed from "../feed/NotificationsFeed.vue";
 import Conversation from "../feed/Conversation.vue";
+import { IconChevronDown } from "@tabler/icons-vue";
 
 const toggleTheme = () => {
 	if (store.theme === "dark") {
@@ -51,10 +51,16 @@ const closePostViewer = () => {
 };
 </script>
 
+<style scoped lang="postcss">
+.element {
+	@apply !p-3 grow dark:hover:!bg-dark-600 hover:!bg-gray-300 !bg-transparent
+}
+</style>
+
 <template>
 	<header
 		:class="[
-			'flex fixed inset-x-0 bottom-0 z-[999999] justify-between items-center px-6 py-2 bg-white border-b dark:border-gray-700 dark:bg-dark-800 md:hidden',
+			'fixed inset-x-0 bottom-0 px-1 z-[999999] items-center grid grid-cols-4 h-16 bg-white border-b dark:border-gray-700 dark:bg-dark-800 md:hidden',
 			(store.state.postViewer ||
 				store.state.notifications ||
 				store.state.composer) &&
@@ -62,15 +68,15 @@ const closePostViewer = () => {
 		]">
 		<Button
 			theme="gray"
-			class="!p-3 !border-none !shadow-none !bg-white dark:!bg-transparent"
+			class="element !border-none !shadow-none !bg-white dark:!bg-transparent"
 			@click="toggleTheme">
 			<IconSun v-if="store.theme === 'light'" aria-hidden="true" />
 			<IconMoon v-if="store.theme === 'dark'" aria-hidden="true" />
 		</Button>
-		<RouterLink to="/">
+		<RouterLink to="/" :custom="true">
 			<Button
 				theme="gray"
-				class="!p-3 !border-none !shadow-none !bg-white dark:!bg-transparent"
+				class="element !border-none !shadow-none !bg-white dark:!bg-transparent"
 				title="Visit main feed">
 				<IconHome aria-hidden="true" />
 			</Button>
@@ -79,24 +85,15 @@ const closePostViewer = () => {
 			theme="gray"
 			title="Compose new post"
 			@click="composeNewPost"
-			class="!p-3 !border-none !shadow-none !bg-white dark:!bg-transparent">
+			class="element !border-none !shadow-none !bg-white dark:!bg-transparent">
 			<IconPencilPlus aria-hidden="true" />
 		</Button>
 		<Button
 			theme="gray"
 			title="Open notifications"
 			@click="openNotifications"
-			class="!p-3 !border-none !shadow-none !bg-white dark:!bg-transparent">
+			class="element !border-none !shadow-none !bg-white dark:!bg-transparent">
 			<IconBell aria-hidden="true" />
-		</Button>
-		<Button
-			theme="gray"
-			title="Your avatar"
-			class="!p-0 !border-none !shadow-none !bg-white dark:!bg-transparent">
-			<img
-				:src="store.auth.data?.avatar"
-				class="w-9 h-9 rounded border-2"
-				alt="Your avatar" />
 		</Button>
 	</header>
 
@@ -110,12 +107,12 @@ const closePostViewer = () => {
 			<TransitionChild
 				:unmount="false"
 				as="template"
-				enter="ease-out duration-100"
-				enterFrom="opacity-0 translate-y-4 translate-y-0 scale-95"
+				enter="ease-out duration-300"
+				enterFrom="opacity-60 translate-y-full scale-95"
 				enterTo="opacity-100 translate-y-0 scale-100"
-				leave="ease-in duration-100"
+				leave="ease-in duration-300"
 				leaveFrom="opacity-100 translate-y-0 scale-100"
-				leaveTo="opacity-0 translate-y-4 translate-y-0 scale-95">
+				leaveTo="opacity-60 translate-y-full scale-95">
 				<DialogPanel
 					class="overflow-hidden relative w-screen max-w-md pointer-events-auto">
 					<div
@@ -130,7 +127,7 @@ const closePostViewer = () => {
 								@click="closeNotifications"
 								class="text-gray-300 rounded-md dark:hover:text-white focus:outline-none">
 								<span class="sr-only"> Close panel </span>
-								<IconX class="w-6 h-6" aria-hidden="true" />
+								<IconChevronDown class="w-6 h-6" aria-hidden="true" />
 							</button>
 						</div>
 						<div
@@ -153,12 +150,12 @@ const closePostViewer = () => {
 			<TransitionChild
 				:unmount="false"
 				as="template"
-				enter="ease-out duration-100"
-				enterFrom="opacity-0 translate-y-4 translate-y-0 scale-95"
+				enter="ease-out duration-300"
+				enterFrom="opacity-60 translate-y-full scale-95"
 				enterTo="opacity-100 translate-y-0 scale-100"
-				leave="ease-in duration-100"
+				leave="ease-in duration-300"
 				leaveFrom="opacity-100 translate-y-0 scale-100"
-				leaveTo="opacity-0 translate-y-4 translate-y-0 scale-95">
+				leaveTo="opacity-60 translate-y-full scale-95">
 				<DialogPanel
 					class="overflow-hidden relative w-screen max-w-md pointer-events-auto">
 					<div
@@ -173,7 +170,7 @@ const closePostViewer = () => {
 								@click="closePostViewer"
 								class="text-gray-300 rounded-md dark:hover:text-white focus:outline-none">
 								<span class="sr-only"> Close panel </span>
-								<IconX class="w-6 h-6" aria-hidden="true" />
+								<IconChevronDown class="w-6 h-6" aria-hidden="true" />
 							</button>
 						</div>
 						<div

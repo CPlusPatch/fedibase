@@ -73,7 +73,7 @@ onUnmounted(() => {
 			class="flex flex-col gap-y-4 w-full bg-gray-50 pb-5 dark:bg-dark-800 rounded-b">
 			<div class="w-full relative">
 				<div
-					class="flex overflow-hidden justify-center items-center w-full h-56 bg-gray-200 border dark:bg-dark-800 dark:border-gray-700">
+					class="flex overflow-hidden justify-center items-center w-full h-56 bg-gray-200 dark:bg-dark-800">
 					<div
 						:style="{
 							backgroundImage: `url(${account.header})`,

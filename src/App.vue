@@ -2,18 +2,14 @@
 import generator from "megalodon";
 import Nav from "./components/Nav.vue";
 import { store } from "./utils/store";
-import HomeFeed from "./components/feed/HomeFeed.vue";
+import { FastClick } from "fastclick";
 import NotificationsFeed from "./components/feed/NotificationsFeed.vue";
-import Conversation from "./components/feed/Conversation.vue";
 import LeftSidebar from "./components/sidebar/LeftSidebar.vue";
 import EditorModal from "./components/editor/EditorModal.vue";
 import Snackbar from "./components/snackbar/Snackbar.vue";
 import MobileNavbar from "./components/layout/MobileNavbar.vue";
-import UserFeed from "./components/feed/UserFeed.vue";
 import { onUnmounted, ref, watch } from "vue";
 import Login from "./components/login/Login.vue";
-import LocalFeed from "./components/feed/LocalFeed.vue";
-import FederatedFeed from "./components/feed/FederatedFeed.vue";
 
 if (store.auth.type && store.auth.url && store.auth.token) {
 	store.client = generator(store.auth.type, store.auth.url, store.auth.token);
@@ -74,6 +70,8 @@ const updatePath = () => {
 }
 
 window.addEventListener("popstate", updatePath);
+
+FastClick.attach(document.body);
 
 onUnmounted(() => {
 	window.removeEventListener("popstate", updatePath);
