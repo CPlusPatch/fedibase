@@ -163,7 +163,7 @@ const loadMoreEntities = async () => {
 	if (props.type === FeedType.Home) store.savedFeed = entities.value;
 };
 
-let allowScroll = true;
+/* let allowScroll = true;
 
 const onScroll = (e: Event) => {
 	if (!allowScroll) return;
@@ -173,29 +173,29 @@ const onScroll = (e: Event) => {
 
 const scrollInterval = setInterval(() => {
 	allowScroll = true;
-}, 1000);
+}, 1000); */
 
 onMounted(async () => {
 	if (loading.value) return;
 	let id = ""
 
-	if (props.type === FeedType.Home) {
+	/* if (props.type === FeedType.Home) {
 		if (store.savedFeed && store.savedFeed.length > 0) {
 			entities.value = store.savedFeed as any;
 			id = store.savedFeed[0].id;
 		} else {
 			store.savedFeed = []
 		}
-	}
+	} */
 
-	if (store.feedScroll && document.getElementById("homefeed")) document.getElementById("homefeed")!.scrollTop = store.feedScroll;
+	//if (store.feedScroll && document.getElementById("homefeed")) document.getElementById("homefeed")!.scrollTop = store.feedScroll;
 
 	entities.value = [
 		...await getEntitiesSinceId(id),
 		...entities.value
 	] as any;
 
-	if (props.type === FeedType.Home) store.savedFeed = entities.value;
+	//if (props.type === FeedType.Home) store.savedFeed = entities.value;
 
 	// Restore scroll position on page when using the browser's back button
 	/* document.getElementById("homefeed")?.addEventListener("scroll", onScroll, {
@@ -204,9 +204,9 @@ onMounted(async () => {
 });
 
 onUnmounted(() => {
-	document.getElementById("homefeed")?.removeEventListener("scroll", onScroll);
+	//document.getElementById("homefeed")?.removeEventListener("scroll", onScroll);
 	window.clearInterval(interval);
-	window.clearInterval(scrollInterval);
+	//window.clearInterval(scrollInterval);
 });
 </script>
 
@@ -242,16 +242,18 @@ onUnmounted(() => {
 		:key="entity.id">
 		<Notification :notification="entity" />
 	</template>
+
+	<div v-if="entities.length === 0 && !reachedEnd" class="grow w-full h-full flex items-center justify-center">
+		<img src="/images/icons/logo.svg" class="w-20 h-20 animate-hithere" />
+	</div>
+
 	<DummyStatus
-		v-if="!loading && !reachedEnd"
+		v-if="!loading && !reachedEnd && entities.length > 0"
 		v-is-visible="loadMoreEntities" />
-	<DummyStatus v-if="!reachedEnd" />
-	<DummyStatus v-if="!reachedEnd" />
+	<DummyStatus v-if="!reachedEnd && entities.length > 0" />
+	<DummyStatus v-if="!reachedEnd && entities.length > 0" />
 	<!-- Only show 3 dummy statuses once posts are loaded to prevent the user from scrolling too far
 		down and loading posts infinitely without seeing them -->
-	<DummyStatus v-if="!reachedEnd && entities.length === 0" />
-	<DummyStatus v-if="!reachedEnd && entities.length === 0" />
-	<DummyStatus v-if="!reachedEnd && entities.length === 0" />
 	<div v-if="reachedEnd" class="flex justify-center">
 		<div class="mx-4 flex flex-col dark:text-gray-300 items-center gap-y-3">
 			<IconHandStop class="w-10 h-10" />

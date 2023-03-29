@@ -28,8 +28,8 @@ import Input from "../input/Input.vue";
 import ScaleFadeSlide from "../transitions/ScaleFadeSlide.vue";
 
 const props = withDefaults(defineProps<{
-	closeButton: boolean,
-	reRender: () => void
+	closeButton?: boolean,
+	reRender?: () => void
 }>(), {
 	closeButton: true,
 	reRender: () => {}

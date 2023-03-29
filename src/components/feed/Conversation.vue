@@ -49,35 +49,27 @@ watch(() => route.params.id, (newId) => {
 
 	store.client?.getStatus(id.value).then(res => {
 		post.value = res.data;
+	});
 
-		store.client?.getStatusContext(id.value).then(res => {
-			if (!post.value) return;
-
-			ancestors.value = findParentElements(
-				[...res.data.ancestors, post.value],
-				post.value.id
-			)
-				.reverse()
-				.slice(0, -1); // Slice because it includes the post, so remove last element
-			descendants.value = res.data.descendants;
-		});
+	store.client?.getStatusContext(id.value).then(res => {
+		ancestors.value = findParentElements(
+			res.data.ancestors,
+			id.value
+		)
+		descendants.value = res.data.descendants;
 	});
 })
 
 store.client?.getStatus(id.value).then(res => {
 	post.value = res.data;
+});
 
-	store.client?.getStatusContext(id.value).then(res => {
-		if (!post.value) return;
-
-		ancestors.value = findParentElements(
-			[...res.data.ancestors, post.value],
-			post.value.id
-		)
-			.reverse()
-			.slice(0, -1); // Slice because it includes the post, so remove last element
-		descendants.value = res.data.descendants;
-	});
+store.client?.getStatusContext(id.value).then(res => {
+	ancestors.value = findParentElements(
+		res.data.ancestors,
+		id.value
+	)
+	descendants.value = res.data.descendants;
 });
 
 onUnmounted(() => {
@@ -120,14 +112,7 @@ onUnmounted(() => {
 		</div>
 	</div>
 
-	<div
-		v-else
-		class="flex overflow-y-auto flex-col gap-y-4 px-6 py-4 w-full h-full no-scroll">
-		<DummyStatus />
-		<DummyStatus />
-		<DummyStatus />
-		<DummyStatus />
-		<DummyStatus />
-		<DummyStatus />
+	<div v-else class="grow w-full h-full flex items-center justify-center">
+		<img src="/images/icons/logo.svg" class="w-20 h-20 animate-hithere" />
 	</div>
 </template>

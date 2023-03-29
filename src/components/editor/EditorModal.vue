@@ -19,27 +19,19 @@ const _window = window;
 </script>
 
 <template>
-	<TransitionRoot :show="store.state.composer && (store.viewingConversation !== '' || _window.innerWidth < 768)" as="template">
+	<TransitionRoot :show="store.state.composer && (store.viewingConversation !== '' || _window.innerWidth < 768)"
+		as="template">
 		<Dialog as="div" class="block relative z-40" @close="closeModal">
 			<ModalOverlay />
-
-			<div class="overflow-y-auto fixed inset-0 no-scroll py-5">
-				<div
-					class="flex justify-center items-start md:p-4 p-2 min-h-full text-center md:items-center sm:p-0">
-					<TransitionChild
-						as="template"
-						enter="ease-in-out duration-300"
-						enterFrom="opacity-0 scale-95"
-						enterTo="opacity-100 scale-100"
-						leave="ease-in duration-300"
-						leaveFrom="opacity-100 scale-100"
-						leaveTo="opacity-0 scale-95">
-						<DialogPanel
-							class="relative w-full text-left transition-all transform sm:max-w-xl">
-							<PostEditor />
-						</DialogPanel>
-					</TransitionChild>
-				</div>
+			<div
+				class="flex justify-center fixed inset-0 no-scroll py-5 items-start p-2 md:items-center">
+				<TransitionChild as="template" enter="ease-in-out duration-300" enterFrom="opacity-0 scale-95"
+					enterTo="opacity-100 scale-100" leave="ease-in duration-300" leaveFrom="opacity-100 scale-100"
+					leaveTo="opacity-0 scale-95">
+					<DialogPanel class="relative w-full text-left transition-all transform sm:max-w-xl">
+						<PostEditor/>
+					</DialogPanel>
+				</TransitionChild>
 			</div>
 		</Dialog>
 	</TransitionRoot>

@@ -81,25 +81,23 @@ onUnmounted(() => {
 <template>
 	<template v-if="store.client && store.auth.token" :key="store.auth.token">
 		<EditorModal />
-		<div
-			class="relative duration-200 font-inter dark:bg-dark-800 flex h-screen w-screen">
+		<div class="relative duration-200 font-inter dark:bg-dark-800 flex h-screen w-screen">
 			<Nav />
 
-			<div
-					class="grid grid-cols-6 justify-between h-full grid-flow-row md:grid-cols-12">
-					<div
-						class="hidden h-full md:col-span-3 md:block overflow-hidden no-scroll md:border-r dark:border-gray-700">
-						<LeftSidebar />
-					</div>
-					<div
-						class="overflow-x-hidden overflow-y-hidden md:col-span-6 col-span-6 max-h-screen md:border-x dark:border-gray-700 md:pt-0">
-						<RouterView />
-					</div>
-					<div
-						class="hidden overflow-x-hidden p-4 max-h-screen md:col-span-3 md:flex md:border-l dark:border-gray-700">
-						<NotificationsFeed :title="true" v-if="width > 768" />
-					</div>
+			<div class="grid grid-cols-6 justify-between h-full grid-flow-row md:grid-cols-12 w-full">
+				<div
+					class="hidden h-full md:col-span-3 md:block overflow-hidden no-scroll md:border-r dark:border-gray-700">
+					<LeftSidebar />
 				</div>
+				<div
+					class="overflow-x-hidden overflow-y-hidden md:col-span-6 col-span-6 max-h-screen md:border-x dark:border-gray-700 md:pt-0">
+					<RouterView />
+				</div>
+				<div
+					class="hidden overflow-x-hidden p-4 max-h-screen md:col-span-3 md:flex md:border-l dark:border-gray-700">
+					<NotificationsFeed :title="true" v-if="width > 768" />
+				</div>
+			</div>
 		</div>
 		<MobileNavbar />
 		<Snackbar />
