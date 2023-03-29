@@ -7,7 +7,6 @@ import FederatedFeed from "./components/feed/FederatedFeed.vue";
 import UserFeed from "./components/feed/UserFeed.vue";
 import Conversation from "./components/feed/Conversation.vue";
 import { createRouter, createWebHistory } from "vue-router";
-import { store } from "./utils/store";
 
 const routes = [
 	{

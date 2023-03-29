@@ -17,7 +17,7 @@ const props = withDefaults(
 	}>(),
 	{
 		title: true,
-		onClose: () => {},
+		onClose: () => { },
 		closeButton: false,
 		type: PostType.Normal,
 	}
@@ -49,27 +49,35 @@ watch(() => route.params.id, (newId) => {
 
 	store.client?.getStatus(id.value).then(res => {
 		post.value = res.data;
-	});
 
-	store.client?.getStatusContext(id.value).then(res => {
-		ancestors.value = findParentElements(
-			res.data.ancestors,
-			id.value
-		)
-		descendants.value = res.data.descendants;
+		store.client?.getStatusContext(id.value).then(res => {
+			if (!post.value) return;
+
+			ancestors.value = findParentElements(
+				[...res.data.ancestors, post.value],
+				post.value.id
+			)
+				.reverse()
+				.slice(0, -1); // Slice because it includes the post, so remove last element
+			descendants.value = res.data.descendants;
+		});
 	});
 })
 
 store.client?.getStatus(id.value).then(res => {
 	post.value = res.data;
-});
 
-store.client?.getStatusContext(id.value).then(res => {
-	ancestors.value = findParentElements(
-		res.data.ancestors,
-		id.value
-	)
-	descendants.value = res.data.descendants;
+	store.client?.getStatusContext(id.value).then(res => {
+		if (!post.value) return;
+
+		ancestors.value = findParentElements(
+			[...res.data.ancestors, post.value],
+			post.value.id
+		)
+			.reverse()
+			.slice(0, -1); // Slice because it includes the post, so remove last element
+		descendants.value = res.data.descendants;
+	});
 });
 
 onUnmounted(() => {
@@ -82,37 +90,25 @@ onUnmounted(() => {
 <template>
 	<div class="flex justify-between px-5 py-4" v-if="title">
 		<h3 class="text-xl font-bold dark:text-gray-50">Conversation</h3>
-		<button
-			class="flex items-center justify-center"
-			@click="onClose"
-			title="Close conversation">
+		<button class="flex items-center justify-center" @click="onClose" title="Close conversation">
 			<IconX v-if="closeButton" class="w-5 h-5 dark:text-gray-50" />
 		</button>
 	</div>
 
-	<div
-		v-if="post"
-		class="flex overflow-y-scroll flex-col gap-y-5 py-4 w-full h-full no-scroll">
+	<div v-if="post" class="flex overflow-y-scroll flex-col gap-y-5 py-4 w-full h-full no-scroll">
 		<div class="flex flex-col gap-y-4 px-6">
-			<Status
-				:type="type"
-				v-for="ancestor of ancestors"
-				:status="ancestor"
-				:interaction="true" />
+			<Status :type="type" v-for="ancestor of ancestors" :status="ancestor" :interaction="true" />
 		</div>
 		<div class="px-6 py-4 border-y-2 dark:border-gray-700 bg-gray-300/10">
 			<Status :type="type" :interaction="true" :status="post" />
 		</div>
 		<div class="flex flex-col gap-y-4 pr-6 pl-4 mb-20">
-			<ConversationChildPost
-				:key="JSON.stringify(descendants)"
-				:posts="descendants"
-				:mode="PostType.Normal"
+			<ConversationChildPost :key="JSON.stringify(descendants)" :posts="descendants" :mode="PostType.Normal"
 				:parentId="post.id" />
 		</div>
 	</div>
 
 	<div v-else class="grow w-full h-full flex items-center justify-center">
-		<img src="/images/icons/logo.svg" class="w-20 h-20 animate-hithere" />
-	</div>
+			<img src="/images/icons/logo.svg" class="w-20 h-20 animate-hithere" />
+		</div>
 </template>
