@@ -60,7 +60,7 @@ const closePostViewer = () => {
 <template>
 	<header
 		:class="[
-			'fixed inset-x-0 bottom-0 px-1 z-[999999] items-center grid grid-cols-4 h-16 bg-white border-b dark:border-gray-700 dark:bg-dark-800 md:hidden',
+			'fixed inset-x-0 bottom-0 px-1 z-[999999] border-t items-center grid grid-cols-4 h-16 bg-white border-b dark:border-gray-700 dark:bg-dark-800 md:hidden',
 			(store.state.postViewer ||
 				store.state.notifications ||
 				store.state.composer) &&
@@ -107,10 +107,10 @@ const closePostViewer = () => {
 			<TransitionChild
 				:unmount="false"
 				as="template"
-				enter="ease-out duration-300"
+				enter="ease-out duration-150"
 				enterFrom="opacity-60 translate-y-full scale-95"
 				enterTo="opacity-100 translate-y-0 scale-100"
-				leave="ease-in duration-300"
+				leave="ease-in duration-150"
 				leaveFrom="opacity-100 translate-y-0 scale-100"
 				leaveTo="opacity-60 translate-y-full scale-95">
 				<DialogPanel
