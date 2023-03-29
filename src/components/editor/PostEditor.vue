@@ -125,6 +125,7 @@ const closeModal = (e: Event) => {
 	store.state.composer = false;
 	store.quotingTo = null;
 	store.replyingTo = null;
+	props.reRender();
 };
 
 const otherPost = store.replyingTo ?? store.quotingTo ?? null;
@@ -243,7 +244,6 @@ const submit = (e: Event) => {
 		.then(res => {
 			addNotification("Post sent!", NotificationType.Normal, IconSend);
 			closeModal(e);
-			props.reRender();
 		})
 		.catch(err => {
 			console.error(err);
@@ -259,7 +259,7 @@ const submit = (e: Event) => {
 <template>
 	<form
 		action="#"
-		class="relative text-sm font-inter w-full flex h-full min-h-[30rem]"
+		class="relative text-sm font-inter w-full flex h-full"
 		@keyup="e => {
 		if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
 			(e.currentTarget as any).requestSubmit();
@@ -268,20 +268,20 @@ const submit = (e: Event) => {
 		@submit="submit">
 		<div
 			:class="[
-				'px-3 border py-2 w-full duration-200 flex flex-col rounded-lg dark:text-gray-100 border-gray-300 dark:border-gray-700 shadow-sm',
+				'px-1 border py-1 w-full duration-200 flex flex-col rounded-lg dark:text-gray-100 border-gray-300 dark:border-gray-700 focus-within:ring-2 ring-orange-500 shadow-sm',
 				loading
 					? 'bg-gray-100 dark:bg-dark-800/75'
 					: 'bg-white dark:bg-dark-800',
 			]">
 			<div class="flex justify-between p-3 w-full gap-x-2">
 				<div class="flex flex-row items-center gap-x-3">
-					<button v-if="closeButton" @click="closeModal" class="mb-1">
-						<IconX class="w-6 h-6" />
+					<button v-if="closeButton" @click="closeModal">
+						<IconX class="w-5 h-5" />
 					</button>
 
 					<h1
 						v-if="store.replyingTo"
-						class="text-xl font-bold dark:text-gray-50">
+						class="text-lg font-bold dark:text-gray-50">
 						Replying to
 						<span
 							v-html="
@@ -293,7 +293,7 @@ const submit = (e: Event) => {
 					</h1>
 					<h1
 						v-if="store.quotingTo"
-						class="text-xl font-bold dark:text-gray-50">
+						class="text-lg font-bold dark:text-gray-50">
 						Quoting
 						<span
 							v-html="
@@ -305,7 +305,7 @@ const submit = (e: Event) => {
 					</h1>
 					<h1
 						v-if="!store.replyingTo && !store.quotingTo"
-						class="text-xl font-bold dark:text-gray-50">
+						class="text-lg font-bold dark:text-gray-50">
 						Compose
 					</h1>
 				</div>
@@ -332,8 +332,9 @@ const submit = (e: Event) => {
 				@paste="onPasteFile"
 				name="comment"
 				v-model="characters"
+				rows="7"
 				ref="textareaRef"
-				class="flex p-3 text-base outline-none flex-1 no-scroll w-full bg-transparent border-0 resize-none disabled:text-gray-400 focus:ring-0 dark:placeholder:text-gray-400"
+				class="flex p-3 text-base outline-none no-scroll w-full bg-transparent border-0 resize-none disabled:text-gray-400 focus:ring-0 dark:placeholder:text-gray-400"
 				placeholder="What's happening?" />
 
 			<Files
@@ -355,7 +356,7 @@ const submit = (e: Event) => {
 			</ScaleFadeSlide>
 
 			<div
-				class="flex inset-x-0 bottom-0 justify-between py-2 pr-2 pl-3 flex-row">
+				class="flex inset-x-0 bottom-0 justify-between py-2 px-2 flex-row">
 				<div class="flex items-center space-x-1">
 					<button
 						@click="clickOnFileInput"
@@ -411,7 +412,7 @@ const submit = (e: Event) => {
 					</button>
 				</div>
 
-				<div class="flex flex-row flex-shrink-0 gap-x-4 items-center">
+				<div class="flex flex-row flex-shrink-0 gap-x-4 pr-1 items-center">
 					<div class="flex flex-row gap-x-2 items-center">
 						<span
 							:class="[

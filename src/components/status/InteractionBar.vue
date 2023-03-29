@@ -18,13 +18,13 @@ const _status = ref<Entity.Status>(props.status);
 const reacting = ref<boolean>(false);
 const reactionFilter = ref<Entity.Emoji[]>(store.emojis);
 
-const handleFavourite = async () => {
+const toggleFavourite = async () => {
 	if (_status.value.favourited) {
 		_status.value.favourited = false;
 		store.client?.unfavouriteStatus(_status.value.id).then(res => {
 			_status.value = res.data
 		});
-	} else if (!_status.value.favourited) {
+	} else {
 		_status.value.favourited = true;
 		store.client?.favouriteStatus(_status.value.id).then(res => {
 			_status.value = res.data
@@ -32,13 +32,13 @@ const handleFavourite = async () => {
 	}
 };
 
-const handleReblog = () => {
+const toggleReblog = () => {
 	if (_status.value.reblogged) {
 		_status.value.reblogged = false;
-		store.client?.reblogStatus(_status.value.id).then(res => {
+		store.client?.unreblogStatus(_status.value.id).then(res => {
 			_status.value = res.data
 		});
-	} else if (!_status.value.reblogged) {
+	} else {
 		_status.value.reblogged = true;
 		store.client?.reblogStatus(_status.value.id).then(res => {
 			_status.value = res.data
@@ -95,7 +95,7 @@ const copyUrl = () => {
 
 <style scoped lang="postcss">
 .menu-item {
-	@apply text-gray-700 w-full dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-200/10 flex items-center px-4 py-3;
+	@apply text-gray-700 duration-300 w-full dark:text-gray-200 hover:bg-gray-200 text-sm md:text-base dark:hover:bg-gray-200/10 flex items-center px-3 py-3;
 }
 
 .menu-icon {
@@ -118,7 +118,7 @@ const copyUrl = () => {
 			{{ _status.replies_count > 0 ? _status.replies_count : "" }}
 		</InteractionBarButton>
 		<InteractionBarButton
-			@click="handleFavourite"
+			@click="toggleFavourite"
 			title="Favourite this post">
 			<IconStarFilled
 				v-if="_status.favourited"
@@ -127,7 +127,7 @@ const copyUrl = () => {
 			<IconStar v-else aria-hidden="true" class="w-5 h-5" />
 			{{ _status.favourites_count > 0 ? _status.favourites_count : "" }}
 		</InteractionBarButton>
-		<InteractionBarButton @click="handleReblog" title="Boost this post">
+		<InteractionBarButton @click="toggleReblog" title="Boost this post">
 			<template
 				v-if="
 					_status.visibility !== 'private' &&
@@ -186,7 +186,7 @@ const copyUrl = () => {
 
 			<ScaleFadeSlide>
 				<MenuItems
-					class="origin-top-right outline-none text-base absolute right-0 w-44 overflow-hidden sm:text-sm rounded-md shadow-lg bg-white/80 dark:bg-dark-800/80 backdrop-blur-lg focus:outline-none">
+					class="origin-top-right border dark:border-gray-600 outline-none text-base absolute right-0 w-44 overflow-hidden sm:text-sm rounded-md shadow-lg bg-white/80 dark:bg-dark-800/80 backdrop-blur-lg focus:outline-none">
 					<MenuItem
 						v-if="_status.account.id === store.auth.data?.id"
 						as="button"

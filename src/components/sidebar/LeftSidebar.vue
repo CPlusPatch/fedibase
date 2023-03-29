@@ -24,6 +24,6 @@ const reRender = () => {
 			}
 		" />
 	<div v-else class="p-3">
-		<PostEditor :key="uuid" :close-button="false" :re-render="reRender" />
+		<PostEditor :key="uuid" :close-button="true" :re-render="reRender" />
 	</div>
 </template>

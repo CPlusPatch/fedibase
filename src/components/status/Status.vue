@@ -4,7 +4,6 @@ import { onMounted, ref } from "vue";
 import { classNames, withEmojis, fromNow } from "../../utils/functions";
 import InteractionBar from "./InteractionBar.vue";
 import Button from "../button/Button.vue";
-import ScaleFadeSlide from "../transitions/ScaleFadeSlide.vue";
 import StatusAttachments from "./StatusAttachments.vue";
 import Link from "../transitions/Link.vue";
 import ReplyTo from "./ReplyTo.vue";
@@ -49,7 +48,6 @@ export enum PostType {
 </script>
 
 <template>
-	<ScaleFadeSlide>
 		<div class="flex flex-col max-w-full font-inter cursor-pointer">
 			<div class="flex flex-col min-w-0 grow gap-y-1">
 				<div
@@ -63,17 +61,15 @@ export enum PostType {
 							alt=""
 							:src="status.account.avatar"
 							:class="[
-								'bg-white overflow-hidden dark:bg-dark-800-800 rounded border border-gray-300 dark:border-dark-700',
+								'bg-white overflow-hidden w-10 h-10 dark:bg-dark-800-800 rounded border border-gray-300 dark:border-dark-700',
 								type === PostType.Normal
-									? 'w-12 h-12'
-									: 'w-10 h-10',
+									? 'md:w-12 md:h-12'
+									: 'md:w-10 md:h-10',
 							]" />
 					</RouterLink>
 					<div
 						:class="[
-							'flex flex-col grow',
-							type === PostType.Small && 'text-sm',
-						]">
+							'flex flex-col grow text-sm']">
 						<h4
 							class="font-bold dark:text-gray-200"
 							:title="status.account.display_name"
@@ -96,7 +92,7 @@ export enum PostType {
 						v-html="fromNow(new Date(status.created_at))">
 					</Link>
 				</div>
-				<div class="flex flex-col gap-y-1">
+				<div class="flex flex-col gap-y-1 text-sm">
 					<ReplyTo v-if="status.in_reply_to_id" :status="status" />
 
 					<div
@@ -149,5 +145,4 @@ export enum PostType {
 
 			<InteractionBar v-if="props.interaction" :status="status" />
 		</div>
-	</ScaleFadeSlide>
 </template>

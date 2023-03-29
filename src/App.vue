@@ -86,23 +86,20 @@ onUnmounted(() => {
 			<Nav />
 
 			<div
-				class="flex overflow-hidden h-screen duration-200 grow flex-col relative">
-				<div
-					class="grid grid-cols-6 bg-gradient-light h-full md:grid-cols-11 rounded-t-lg">
+					class="grid grid-cols-6 justify-between h-full grid-flow-row md:grid-cols-12">
 					<div
-						class="hidden h-full md:col-span-3 md:block overflow-hidden no-scroll">
+						class="hidden h-full md:col-span-3 md:block overflow-hidden no-scroll md:border-r dark:border-gray-700">
 						<LeftSidebar />
 					</div>
 					<div
-						class="overflow-x-hidden overflow-y-hidden md:col-span-5 col-span-6 max-h-screen md:border-x dark:border-gray-700 md:pt-0">
+						class="overflow-x-hidden overflow-y-hidden md:col-span-6 col-span-6 max-h-screen md:border-x dark:border-gray-700 md:pt-0">
 						<RouterView />
 					</div>
 					<div
-						class="hidden overflow-x-hidden p-4 max-h-screen md:col-span-3 md:flex">
+						class="hidden overflow-x-hidden p-4 max-h-screen md:col-span-3 md:flex md:border-l dark:border-gray-700">
 						<NotificationsFeed :title="true" v-if="width > 768" />
 					</div>
 				</div>
-			</div>
 		</div>
 		<MobileNavbar />
 		<Snackbar />
