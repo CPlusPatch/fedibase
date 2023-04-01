@@ -2,6 +2,7 @@
 export enum SelectDirection {
 	Right = "right",
 	Left = "left",
+	Center = "center"
 }
 
 export enum SelectOrientation {
@@ -62,6 +63,8 @@ const selected = ref<SelectItem>(props.items[props.defaultValue]);
 					'overflow-auto absolute z-30 dark:border-gray-700 shadow-lg mt-1 w-64 text-base rounded-md border font-inter bg-gray-100/75 dark:bg-dark-800/75 backdrop-blur-md',
 					direction === SelectDirection.Left &&
 						'right-0 origin-top-right',
+					direction === SelectDirection.Center &&
+					'right-0 origin-top-right translate-x-[50%]',
 					orientation === SelectOrientation.Up && 'bottom-[110%]',
 				]">
 				<ListboxOption
@@ -71,7 +74,7 @@ const selected = ref<SelectItem>(props.items[props.defaultValue]);
 					:class="[
 						item.value === selected.value &&
 							'bg-orange-100 dark:bg-orange-500/10',
-						'flex relative flex-row gap-x-3 items-center py-2 px-3 text-gray-800 dark:text-gray-100 duration-200 cursor-default select-none hover:bg-gray-200 dark:hover:bg-gray-700',
+						'm-2 rounded flex relative flex-row gap-x-3 items-center py-2 px-3 text-gray-800 dark:text-gray-100 duration-200 cursor-default select-none hover:bg-gray-200 dark:hover:bg-gray-700',
 					]"
 					:title="item.description">
 					<component

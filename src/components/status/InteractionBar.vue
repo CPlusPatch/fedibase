@@ -2,7 +2,6 @@
 import { IconStar, IconRocket, IconMoodHappy, IconQuote, IconLock, IconStarFilled, IconMessage, IconPin, IconEdit, IconForbid, IconCheck, IconDots, IconCopy } from "@tabler/icons-vue";
 import { Entity } from "megalodon";
 import { store } from "../../utils/store";
-import InteractionBarButton from "./InteractionBarButton.vue";
 import { Dialog, DialogPanel, Menu, MenuButton, MenuItem, MenuItems, TransitionRoot } from "@headlessui/vue";
 import ScaleFadeSlide from "../transitions/ScaleFadeSlide.vue";
 import { NotificationType, addNotification } from "../snackbar/Snackbar.vue";
@@ -95,20 +94,25 @@ const copyUrl = () => {
 
 <style scoped lang="postcss">
 .menu-item {
-	@apply text-gray-700 duration-300 w-full dark:text-gray-200 hover:bg-gray-200 text-sm md:text-base dark:hover:bg-gray-200/10 flex items-center px-3 py-3;
+	@apply text-gray-700 duration-300 w-full dark:text-gray-200 hover:bg-gray-200 text-sm md:text-base dark:hover:bg-gray-200/10 flex items-center py-3;
 }
 
 .menu-icon {
 	@apply mr-3 h-5 w-5 text-gray-400 dark:text-gray-500;
 }
+
+.button {
+	@apply gap-x-2 flex justify-center static hover:animate-hithere border-none focus:outline-none outline-none shadow-none px-0
+}
 </style>
 
 <template>
 	<div
-		class="flex justify-between px-5 mt-3 w-full text-gray-700 dark:text-gray-400">
-		<InteractionBarButton
+		class="flex justify-between mt-3 w-full text-gray-700 dark:text-gray-400 px-4">
+		<button
+			class="button"
 			@click="
-				e => {
+				() => {
 					store.replyingTo = _status;
 					store.state.composer = true;
 				}
@@ -116,8 +120,9 @@ const copyUrl = () => {
 			title="Reply to this post">
 			<IconMessage aria-hidden="true" class="w-5 h-5" />
 			{{ _status.replies_count > 0 ? _status.replies_count : "" }}
-		</InteractionBarButton>
-		<InteractionBarButton
+		</button>
+		<button
+			class="button"
 			@click="toggleFavourite"
 			title="Favourite this post">
 			<IconStarFilled
@@ -126,8 +131,8 @@ const copyUrl = () => {
 				class="w-5 h-5 text-yellow-400 animate-[spin_1s_ease-in-out]" />
 			<IconStar v-else aria-hidden="true" class="w-5 h-5" />
 			{{ _status.favourites_count > 0 ? _status.favourites_count : "" }}
-		</InteractionBarButton>
-		<InteractionBarButton @click="toggleReblog" title="Boost this post">
+		</button>
+		<button @click="toggleReblog" title="Boost this post" class="button">
 			<template
 				v-if="
 					_status.visibility !== 'private' &&
@@ -143,8 +148,8 @@ const copyUrl = () => {
 			<template v-else>
 				<IconLock aria-hidden="true" class="w-5 h-5 text-gray-300" />
 			</template>
-		</InteractionBarButton>
-		<InteractionBarButton title="Add reaction" @click="toggleReaction">
+		</button>
+		<button class="button" title="Add reaction" @click="toggleReaction">
 			<IconMoodHappy aria-hidden="true" class="w-5 h-5" />
 
 			<TransitionRoot appear :show="reacting">
@@ -163,8 +168,9 @@ const copyUrl = () => {
 				</ScaleFadeSlide>
 			</Dialog>
 			</TransitionRoot>
-		</InteractionBarButton>
-		<InteractionBarButton
+		</button>
+		<button
+			class="button"
 			@click="
 				e => {
 					store.quotingTo = _status;
@@ -173,19 +179,19 @@ const copyUrl = () => {
 			"
 			title="Quote this post">
 			<IconQuote aria-hidden="true" class="w-5 h-5" />
-		</InteractionBarButton>
+		</button>
 		<Menu as="button" class="relative">
 			<MenuButton>
-				<InteractionBarButton
-					is="div"
-					title="Quote this post"
-					class="hover:!animate-none">
+				<div
+					class="button hover:!animate-none"
+					title="Quote this post">
 					<IconDots aria-hidden="true" class="w-5 h-5" />
-				</InteractionBarButton>
+				</div>
 			</MenuButton>
 
 			<ScaleFadeSlide>
 				<MenuItems
+					:unmount="true"
 					class="origin-top-right border dark:border-gray-600 outline-none text-base absolute right-0 w-44 overflow-hidden sm:text-sm rounded-md shadow-lg bg-white/80 dark:bg-dark-800/80 backdrop-blur-lg focus:outline-none">
 					<MenuItem
 						v-if="_status.account.id === store.auth.data?.id"

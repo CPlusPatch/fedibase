@@ -26,13 +26,14 @@ import { IconForbid2 } from "@tabler/icons-vue";
 import { IconFileUpload } from "@tabler/icons-vue";
 import Input from "../input/Input.vue";
 import ScaleFadeSlide from "../transitions/ScaleFadeSlide.vue";
+import { SelectDirection } from "../select/SmallSelect.vue";
 
 const props = withDefaults(defineProps<{
 	closeButton?: boolean,
 	reRender?: () => void
 }>(), {
 	closeButton: true,
-	reRender: () => {}
+	reRender: () => { }
 })
 
 const pollDurations = [
@@ -134,7 +135,7 @@ const textareaRef = ref<HTMLTextAreaElement | null>(null);
 const loading = ref<boolean>(false);
 const contentWarning = ref<boolean>(
 	(otherPost?.sensitive ?? false) ||
-		((otherPost?.spoiler_text.length ?? 0) > 0 ?? false)
+	((otherPost?.spoiler_text.length ?? 0) > 0 ?? false)
 );
 const files = ref<
 	{
@@ -257,212 +258,139 @@ const submit = (e: Event) => {
 </script>
 
 <template>
-	<form
-		action="#"
-		class="relative text-sm font-inter w-full flex h-full"
-		@keyup="e => {
+	<form action="#" class="relative text-sm font-inter w-full flex h-full" @keyup="e => {
 		if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
 			(e.currentTarget as any).requestSubmit();
 		}
-	}"
-		@submit="submit">
-		<div
-			:class="[
-				'px-1 border py-1 w-full duration-200 flex flex-col rounded-lg dark:text-gray-100 border-gray-300 dark:border-gray-700 focus-within:ring-2 ring-orange-500 shadow-sm',
-				loading
-					? 'bg-gray-100 dark:bg-dark-800/75'
-					: 'bg-white dark:bg-dark-800',
-			]">
+	}" @submit="submit">
+		<div :class="[
+			'px-1 border py-1 w-full duration-200 flex flex-col rounded-lg dark:text-gray-100 border-gray-300 dark:border-gray-700 focus-within:ring-2 ring-orange-500 shadow-sm',
+			loading
+				? 'bg-gray-100 dark:bg-dark-800/75'
+				: 'bg-white dark:bg-dark-800',
+		]">
 			<div class="flex justify-between p-3 w-full gap-x-2">
 				<div class="flex flex-row items-center gap-x-3">
 					<button v-if="closeButton" @click="closeModal">
 						<IconX class="w-5 h-5" />
 					</button>
 
-					<h1
-						v-if="store.replyingTo"
-						class="text-lg font-bold dark:text-gray-50">
+					<h1 v-if="store.replyingTo" class="text-lg font-bold dark:text-gray-50">
 						Replying to
-						<span
-							v-html="
-								withEmojis(
-									store.replyingTo.account.display_name,
-									store.replyingTo.account.emojis
-								)
-							"></span>
+						<span v-html="
+							withEmojis(
+								store.replyingTo.account.display_name,
+								store.replyingTo.account.emojis
+							)
+						"></span>
 					</h1>
-					<h1
-						v-if="store.quotingTo"
-						class="text-lg font-bold dark:text-gray-50">
+					<h1 v-if="store.quotingTo" class="text-lg font-bold dark:text-gray-50">
 						Quoting
-						<span
-							v-html="
-								withEmojis(
-									store.quotingTo.account.display_name,
-									store.quotingTo.account.emojis
-								)
-							"></span>
+						<span v-html="
+							withEmojis(
+								store.quotingTo.account.display_name,
+								store.quotingTo.account.emojis
+							)
+						"></span>
 					</h1>
-					<h1
-						v-if="!store.replyingTo && !store.quotingTo"
-						class="text-lg font-bold dark:text-gray-50">
+					<h1 v-if="!store.replyingTo && !store.quotingTo" class="text-lg font-bold dark:text-gray-50">
 						Compose
 					</h1>
 				</div>
-
-				<Button
-					:loading="loading"
-					theme="orangeLight"
-					type="submit"
-					class="!px-4 !py-2 !text-base text-white dark:text-white !border-none !bg-[radial-gradient(ellipse_at_top_left,_var(--tw-gradient-stops))] !from-pink-500 !via-red-500 !to-yellow-500">
-					Post
-				</Button>
 			</div>
 
-			<div
-				class="px-4 opacity-60 max-h-40 no-scroll overflow-scroll"
-				v-if="store.replyingTo">
-				<Status
-					:type="PostType.Normal"
-					:status="store.replyingTo"
-					:interaction="false" />
+			<div class="px-4 opacity-60 max-h-40 no-scroll overflow-scroll" v-if="store.replyingTo">
+				<Status :type="PostType.Normal" :status="store.replyingTo" :interaction="false" />
 			</div>
 
-			<textarea
-				@paste="onPasteFile"
-				name="comment"
-				v-model="characters"
-				rows="7"
-				ref="textareaRef"
-				class="flex p-3 text-base outline-none no-scroll w-full bg-transparent border-0 resize-none disabled:text-gray-400 focus:ring-0 dark:placeholder:text-gray-400"
-				placeholder="What's happening?" />
+			<div class="relative">
+				<textarea @paste="onPasteFile" name="comment" v-model="characters" rows="7" ref="textareaRef"
+					class="flex p-3 text-base outline-none no-scroll w-full bg-transparent border-0 resize-none disabled:text-gray-400 focus:ring-0 dark:placeholder:text-gray-400"
+					placeholder="What's happening?" />
 
-			<Files
-				v-if="files.length > 0"
-				:files="files"
-				:on-remove="
-					uuid => {
-						files = files.filter(f => f.uuid !== uuid);
-					}
-				" />
+				<div class="absolute flex-row bottom-0 right-0 pr-2 items-center flex">
+					<span :class="[
+						'text-gray-600 dark:text-gray-300',
+						(characters.length ?? 0) >
+						(store.auth.instance?.configuration.statuses
+							.max_characters ?? 500) &&
+						'!text-red-600',
+					]">
+						<!-- {{
+							(
+								(store.auth.instance?.configuration.statuses
+									.max_characters ?? 500) -
+								(characters.length ?? 0)
+							).toLocaleString("en", {
+								notation: "compact",
+							})
+						}} -->
+						{{ (store.auth.instance?.configuration.statuses
+							.max_characters ?? 500) -
+							(characters.length ?? 0) }}
+					</span>
+					<!-- <svg width="27" height="27" class="scale-75" view-box="0 0 27 27" aria-hidden="true">
+						<circle cx="13.5" cy="13.5" r="10" fill="none" stroke-width="3"
+							class="stroke-gray-500 dark:stroke-white/80"></circle>
+						<circle cx="13.5" cy="13.5" r="10" fill="none" stroke-dasharray="62.832" :stroke-dashoffset="
+							(1 -
+								(characters.length ?? 0) /
+								(store.auth.instance?.configuration
+									.statuses.max_characters ??
+									500)) *
+							62.832
+						" stroke-width="3.5" class="stroke-orange-500"></circle>
+					</svg> -->
+				</div>
+			</div>
+
+			<Files v-if="files.length > 0" :files="files" :on-remove="
+				uuid => {
+					files = files.filter(f => f.uuid !== uuid);
+				}
+			" />
 
 			<ScaleFadeSlide :open="contentWarning" v-if="contentWarning">
-				<Input
-					name="cw"
-					:loading="loading"
-					placeholder="Add content warning"
-					class="!bg-orange-500/10 border-none tetx-sm !px-3"
-					:value="otherPost?.spoiler_text" />
+				<Input name="cw" :loading="loading" placeholder="Add content warning"
+					class="!bg-orange-500/10 border-none tetx-sm !px-3" :value="otherPost?.spoiler_text" />
 			</ScaleFadeSlide>
 
-			<div
-				class="flex inset-x-0 bottom-0 justify-between py-2 px-2 flex-row">
-				<div class="flex items-center space-x-1">
-					<button
-						@click="clickOnFileInput"
-						type="button"
-						title="Attach a file"
+			<div class="flex inset-x-0 bottom-0 py-2 px-2 flex-row space-x-1 items-center">
+					<button @click="clickOnFileInput" type="button" title="Attach a file"
 						class="flex relative flex-row gap-x-1 items-center p-2 text-gray-600 rounded duration-200 cursor-default dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">
 						<IconPaperclip class="w-6 h-6" aria-hidden="true" />
 					</button>
 
-					<input
-						@change="clickOnFiles"
-						type="file"
-						id="fileUpload"
-						aria-hidden="true"
-						class="hidden"
-						multiple />
+					<input @change="clickOnFiles" type="file" id="fileUpload" aria-hidden="true" class="hidden" multiple />
 
-					<SmallSelect
-						:items="modes"
-						:defaultValue="0"
-						:orientation="SelectOrientation.Up"
-						name="mode" />
+					<SmallSelect :items="modes" :defaultValue="0" :direction="SelectDirection.Center" :orientation="SelectOrientation.Up" name="mode" />
 
-					<SmallSelect
-						:items="visibilities"
-						:defaultValue="
-							store.replyingTo || store.quotingTo
-								? visibilities.findIndex(
-										v =>
-											(
-												store.replyingTo ??
-												store.quotingTo
-											)?.visibility == v.value
-								  )
-								: 0
-						"
-						:orientation="SelectOrientation.Up"
-						name="visibility" />
+					<SmallSelect :items="visibilities" :defaultValue="
+						store.replyingTo || store.quotingTo
+							? visibilities.findIndex(
+								v =>
+									(
+										store.replyingTo ??
+										store.quotingTo
+									)?.visibility == v.value
+							)
+							: 0
+					" :orientation="SelectOrientation.Up" name="visibility" />
 
-					<button
-						type="button"
-						title="Create poll"
+					<button type="button" title="Create poll"
 						class="flex relative flex-row gap-x-1 items-center p-2 text-gray-600 rounded duration-200 cursor-default dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">
 						<IconChartBar class="w-6 h-6" aria-hidden="true" />
 					</button>
 
-					<button
-						type="button"
-						title="Add content warning"
-						@click="toggleCW"
+					<button type="button" title="Add content warning" @click="toggleCW"
 						class="flex relative flex-row gap-x-1 items-center p-2 text-gray-600 rounded duration-200 cursor-default dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">
 						<IconAlertTriangle class="w-6 h-6" aria-hidden="true" />
 					</button>
-				</div>
 
-				<div class="flex flex-row flex-shrink-0 gap-x-4 pr-1 items-center">
-					<div class="flex flex-row gap-x-2 items-center">
-						<span
-							:class="[
-								'text-gray-600 dark:text-gray-300',
-								(characters.length ?? 0) >
-									(store.auth.instance?.configuration.statuses
-										.max_characters ?? 500) &&
-									'!text-red-600',
-							]">
-							{{
-								(
-									(store.auth.instance?.configuration.statuses
-										.max_characters ?? 500) -
-									(characters.length ?? 0)
-								).toLocaleString("en", {
-									notation: "compact",
-								})
-							}}
-						</span>
-						<svg
-							width="27"
-							height="27"
-							view-box="0 0 27 27"
-							aria-hidden="true">
-							<circle
-								cx="13.5"
-								cy="13.5"
-								r="10"
-								fill="none"
-								stroke-width="3"
-								class="stroke-gray-500 dark:stroke-white/80"></circle>
-							<circle
-								cx="13.5"
-								cy="13.5"
-								r="10"
-								fill="none"
-								stroke-dasharray="62.832"
-								:stroke-dashoffset="
-									(1 -
-										(characters.length ?? 0) /
-											(store.auth.instance?.configuration
-												.statuses.max_characters ??
-												500)) *
-									62.832
-								"
-								stroke-width="3.5"
-								class="stroke-orange-500"></circle>
-						</svg>
-					</div>
-				</div>
+					<Button :loading="loading" theme="orangeLight" type="submit"
+							class="!px-4 !py-2 !text-base !ml-auto text-white dark:text-white !border-none !bg-[radial-gradient(ellipse_at_top_left,_var(--tw-gradient-stops))] !from-pink-500 !via-red-500 !to-yellow-500">
+							Post
+						</Button>
 			</div>
 		</div>
 	</form>

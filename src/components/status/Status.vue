@@ -9,6 +9,7 @@ import Link from "../transitions/Link.vue";
 import ReplyTo from "./ReplyTo.vue";
 import Poll from "./Poll.vue";
 import Reactions from "./Reactions.vue";
+import { store } from "../../utils/store";
 
 const props = defineProps<{
 	status: Entity.Status;
@@ -61,7 +62,7 @@ export enum PostType {
 							alt=""
 							:src="status.account.avatar"
 							:class="[
-								'bg-white overflow-hidden w-10 h-10 dark:bg-dark-800-800 rounded border border-gray-300 dark:border-dark-700',
+								'bg-white overflow-hidden w-10 h-10 dark:bg-dark-800-800 rounded-lg	 border border-gray-300 dark:border-dark-700',
 								type === PostType.Normal
 									? 'md:w-12 md:h-12'
 									: 'md:w-10 md:h-10',
@@ -69,7 +70,7 @@ export enum PostType {
 					</RouterLink>
 					<div
 						:class="[
-							'flex flex-col grow text-sm']">
+							'flex flex-col grow text-sm justify-around']">
 						<h4
 							class="font-bold dark:text-gray-200"
 							:title="status.account.display_name"
@@ -89,7 +90,7 @@ export enum PostType {
 						:href="`/posts/${status.id}`"
 						:sidebar="status.id"
 						class="text-sm text-gray-700 dark:text-gray-300 hover:underline"
-						v-html="fromNow(new Date(status.created_at))">
+						v-html="fromNow(new Date(status.created_at)) ">
 					</Link>
 				</div>
 				<div class="flex flex-col gap-y-1 text-sm">
@@ -143,6 +144,6 @@ export enum PostType {
 				</div>
 			</div>
 
-			<InteractionBar v-if="props.interaction" :status="status" />
+			<InteractionBar v-once v-if="props.interaction" :status="status" />
 		</div>
 </template>

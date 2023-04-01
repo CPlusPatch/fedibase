@@ -85,7 +85,7 @@ export function fromNow(
 	date: any,
 	rft = new Intl.RelativeTimeFormat(undefined, {
 		numeric: "auto",
-		style: "narrow",
+		style: "short",
 	})
 ) {
 	const SECOND = 1000;

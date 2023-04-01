@@ -145,7 +145,7 @@ onUnmounted(() => {
 						class="w-1/3 font-bold text-xs md:text-sm"
 						v-html="withEmojis(field.name, account.emojis)"></div>
 					<div
-						class="w-2/3"
+						class="w-2/3 break-all"
 						v-html="withEmojis(field.value, account.emojis)"></div>
 				</div>
 			</div>

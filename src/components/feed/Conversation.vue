@@ -88,7 +88,7 @@ onUnmounted(() => {
 </script>
 
 <template>
-	<div class="flex justify-between px-5 py-4" v-if="title">
+	<div class="flex justify-between px-2 py-4" v-if="title">
 		<h3 class="text-xl font-bold dark:text-gray-50">Conversation</h3>
 		<button class="flex items-center justify-center" @click="onClose" title="Close conversation">
 			<IconX v-if="closeButton" class="w-5 h-5 dark:text-gray-50" />
@@ -96,13 +96,13 @@ onUnmounted(() => {
 	</div>
 
 	<div v-if="post" class="flex overflow-y-scroll flex-col gap-y-5 py-4 w-full h-full no-scroll">
-		<div class="flex flex-col gap-y-4 px-6">
+		<div class="flex flex-col gap-y-4 px-2">
 			<Status :type="type" v-for="ancestor of ancestors" :status="ancestor" :interaction="true" />
 		</div>
-		<div class="px-6 py-4 border-y-2 dark:border-gray-700 bg-gray-300/10">
+		<div class="px-4 py-4 border-2 dark:border-gray-700 bg-gray-300/10 rounded-md">
 			<Status :type="type" :interaction="true" :status="post" />
 		</div>
-		<div class="flex flex-col gap-y-4 pr-6 pl-4 mb-20">
+		<div class="flex flex-col gap-y-4 mb-20">
 			<ConversationChildPost :key="JSON.stringify(descendants)" :posts="descendants" :mode="PostType.Normal"
 				:parentId="post.id" />
 		</div>
