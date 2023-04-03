@@ -8,7 +8,9 @@ const props = defineProps<{
 	reaction: Entity.Reaction;
 }>();
 
-const _reaction = ref(props.reaction);
+console.log(props.status)
+
+const _reaction = ref<Entity.Reaction>(props.reaction);
 
 const react = () => {
 	if (_reaction.value.me) return addNotification("Already reacted to this!");
@@ -33,11 +35,13 @@ const react = () => {
 		]">
 		<img
 			loading="lazy"
-			v-if="(_reaction as any).url"
-			:src="(_reaction as any).url"
+			v-if="_reaction.name.includes('@')"
+			:src="status.emojis.find(e => `:${e.shortcode}:` == _reaction.name)?.static_url"
 			class="w-[1em] h-[1em]"
 			:alt="`Emoji reaction ${_reaction.name}`" />
-		<span v-else>{{ _reaction.name }}</span>
+		<span v-else>
+			{{ _reaction.name }}
+		</span>
 		{{ _reaction.count }}
 	</button>
 </template>

@@ -20,28 +20,20 @@ const reactionFilter = ref<Entity.Emoji[]>(store.emojis);
 const toggleFavourite = async () => {
 	if (_status.value.favourited) {
 		_status.value.favourited = false;
-		store.client?.unfavouriteStatus(_status.value.id).then(res => {
-			_status.value = res.data
-		});
+		store.client?.unfavouriteStatus(_status.value.id);
 	} else {
 		_status.value.favourited = true;
-		store.client?.favouriteStatus(_status.value.id).then(res => {
-			_status.value = res.data
-		});
+		store.client?.favouriteStatus(_status.value.id);
 	}
 };
 
 const toggleReblog = () => {
 	if (_status.value.reblogged) {
 		_status.value.reblogged = false;
-		store.client?.unreblogStatus(_status.value.id).then(res => {
-			_status.value = res.data
-		});
+		store.client?.unreblogStatus(_status.value.id);
 	} else {
 		_status.value.reblogged = true;
-		store.client?.reblogStatus(_status.value.id).then(res => {
-			_status.value = res.data
-		});
+		store.client?.reblogStatus(_status.value.id);
 	}
 };
 
@@ -55,12 +47,10 @@ const togglePin = () => {
 	if (_status.value.pinned) {
 		store.client?.unpinStatus(_status.value.id).then(res => {
 			addNotification("Unpinned status!", NotificationType.Normal, IconPin);
-			_status.value = res.data
 		});
 	} else {
 		store.client?.pinStatus(_status.value.id).then(res => {
 			addNotification("Pinned status!", NotificationType.Normal, IconPinFilled);
-			_status.value = res.data
 		});
 	}
 }
