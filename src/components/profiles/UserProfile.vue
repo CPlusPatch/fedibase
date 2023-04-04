@@ -42,7 +42,7 @@ onUnmounted(() => {
 	<TransitionRoot
 		as="template"
 		:appear="true"
-		:show="showHeader"
+		:show="showHeader && !store.viewingConversation"
 		enter="transform ease-out duration-300 transition"
 		enter-from="-translate-y-2 opacity-0"
 		enter-to="translate-y-0 opacity-100"
@@ -73,7 +73,7 @@ onUnmounted(() => {
 			class="flex flex-col gap-y-4 w-full bg-gray-50 pb-5 dark:bg-dark-800 rounded-b">
 			<div class="w-full relative">
 				<div
-					class="flex overflow-hidden justify-center items-center w-full h-56 bg-gray-200 dark:bg-dark-800">
+					class="flex overflow-hidden justify-center items-center w-full h-56 bg-gray-200 dark:bg-dark-800 rounded-t">
 					<div
 						:style="{
 							backgroundImage: `url(${account.header})`,

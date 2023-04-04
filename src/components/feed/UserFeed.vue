@@ -19,6 +19,7 @@ watch(() => route.params.id, (newId) => {
 
 	store.client?.getAccount(id.value).then(res => {
 		account.value = res.data;
+
 	});
 
 	store.client?.getAccountStatuses(id.value, {
@@ -43,7 +44,7 @@ store.client?.getAccountStatuses(id.value, {
 <template>
 	<div
 		v-if="account"
-		id="userview"
+		id="feed"
 		class="flex overflow-y-scroll w-full h-full flex-col gap-y-4 no-scroll">
 		<UserProfile :account="account" />
 		<div class="px-6 pb-2 flex flex-col gap-y-6 no-scroll">

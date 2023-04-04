@@ -13,6 +13,7 @@ export function classNames(...classes: any) {
  * @returns Stripped text
  */
 export function stripNonPrintableAndNormalize(text: string) {
+	if (!text) return "";
 	// strip control chars
 	text = text.replace(/\p{C}/gu, "");
 

@@ -8,8 +8,6 @@ const props = defineProps<{
 	reaction: Entity.Reaction;
 }>();
 
-console.log(props.status)
-
 const _reaction = ref<Entity.Reaction>(props.reaction);
 
 const react = () => {

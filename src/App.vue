@@ -8,7 +8,7 @@ import LeftSidebar from "./components/sidebar/LeftSidebar.vue";
 import EditorModal from "./components/editor/EditorModal.vue";
 import Snackbar from "./components/snackbar/Snackbar.vue";
 import MobileNavbar from "./components/layout/MobileNavbar.vue";
-import { onUnmounted, ref, watch } from "vue";
+import { onMounted, onUnmounted, ref, watch } from "vue";
 import Login from "./components/login/Login.vue";
 
 if (store.auth.type && store.auth.url && store.auth.token) {
@@ -45,15 +45,6 @@ store.notifications = [];
 store.savedFeed = [];
 store.feedScroll = 0;
 
-const paths = ref(window.location.pathname.split("/"));
-
-watch(
-	() => store.path,
-	() => {
-		paths.value = store.path.split("/");
-	}
-);
-
 watch(
 	() => store.auth.token,
 	() => {
@@ -65,16 +56,22 @@ watch(
 	}
 );
 
-const updatePath = () => {
-	paths.value = window.location.pathname.split("/");
-}
-
-window.addEventListener("popstate", updatePath);
-
 FastClick.attach(document.body);
 
+const updateOffset = (event: any) => {
+	window.pageYOffset = (event.target as HTMLDivElement).scrollTop;
+}
+
+onMounted(() => {
+	setTimeout(() => {
+		document.getElementById("feed")?.addEventListener("scroll", updateOffset, {
+			passive: true,
+		})
+	}, 1000);
+})
+
 onUnmounted(() => {
-	window.removeEventListener("popstate", updatePath);
+	document.getElementById("feed")?.removeEventListener("scroll", updateOffset);
 });
 </script>
 
@@ -84,17 +81,21 @@ onUnmounted(() => {
 		<div class="relative duration-200 font-inter dark:bg-dark-800 flex h-screen w-screen bg-gradient-light">
 			<Nav />
 
-			<div class="grid grid-cols-6 justify-between h-full grid-flow-row md:grid-cols-12 w-full max-w-[90rem] mx-auto p-3">
+			<div class="grid grid-cols-6 justify-between grid-flow-row md:grid-cols-12 w-full max-w-[90rem] mx-auto">
 				<div
-					:class="['hidden h-full md:col-span-3 md:block no-scroll overflow-y-hidden', store.viewingConversation && 'dark:bg-dark-800 bg-gray-50 rounded-md border dark:border-gray-700 px-2']">
+					:class="['hidden md:col-span-3 md:block m-3 no-scroll overflow-y-hidden', store.viewingConversation && 'dark:bg-dark-800 bg-gray-50 rounded-md border dark:border-gray-700 px-2']">
 					<LeftSidebar />
 				</div>
 				<div
-					class="overflow-x-hidden overflow-y-hidden md:col-span-5 col-span-6 max-h-screen md:pt-0">
-					<RouterView />
+					class="overflow-x-hidden md:col-span-5 col-span-6 pt-3">
+					<router-view v-slot="{ Component }: any">
+						<keep-alive>
+							<component :is="Component" />
+						</keep-alive>
+					</router-view>
 				</div>
 				<div
-					class="hidden overflow-x-hidden p-4 max-h-screen md:col-span-4 md:flex dark:bg-dark-800 bg-gray-50 rounded-md border dark:border-gray-700">
+					class="hidden overflow-x-hidden p-4 m-3 max-h-screen md:col-span-4 md:flex dark:bg-dark-800 bg-gray-50 rounded-md border dark:border-gray-700">
 					<NotificationsFeed :title="true" v-if="width > 768" />
 				</div>
 			</div>

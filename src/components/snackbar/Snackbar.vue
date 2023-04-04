@@ -26,7 +26,6 @@ export const addNotification = (
 	type?: NotificationType,
 	icon?: any
 ) => {
-	console.log(content);
 	const uuid = v4();
 	notifications.value.push({
 		type: type ?? NotificationType.Normal,

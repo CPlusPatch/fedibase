@@ -34,6 +34,25 @@ const routes = [
 const router = createRouter({
 	history: createWebHistory(),
 	routes, // short for `routes: routes`,
+	scrollBehavior: (to, _from, savedPosition) => {
+		return new Promise(resolve => {
+			setTimeout(() => {
+				const feed = document.getElementById("feed")
+				if (!feed) return;
+				feed.scrollTop = savedPosition?.top ?? 0;
+				/* console.log({
+					...savedPosition,
+					el: document.getElementById("feed") ?? "",
+				});
+				resolve(
+					{
+						...savedPosition,
+						el: document.getElementById("feed") ?? "",
+					} || { left: 0, top: 0}
+				); */
+			}, 100);
+		});
+	},
 });
 
 createApp(App)

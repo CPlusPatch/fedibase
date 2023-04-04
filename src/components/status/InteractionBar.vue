@@ -61,7 +61,6 @@ const toggleReaction = () => {
 }
 
 const filterReactions = (event: Event) => {
-	console.log("gay")
 	reactionFilter.value = store.emojis.filter(e => e.shortcode.includes((event.target as HTMLInputElement).value)) ;
 }
 
@@ -147,7 +146,7 @@ const copyUrl = () => {
 				<ScaleFadeSlide>
 					<DialogPanel>
 						<div class="w-80 flex flex-col bottom-0 left-0 m-4 p-3 absolute z-50 bg-orange-100/50 backdrop-blur-md dark:bg-dark-800/75 border dark:border-gray-700 shadow rounded-xl h-72">
-							<Input @input="filterReactions" autofocus="true" :icon="IconMoodHappy" class="dark:border-gray-700" placeholder="Search for emoji here" name="emoji" />
+							<Input @input="filterReactions" :icon="IconMoodHappy" class="dark:border-gray-700" placeholder="Search for emoji here" name="emoji" />
 							<div className="grid grid-cols-6 justify-around no-scroll p-3 gap-4 overflow-scroll">
 								<button @click="() => react(emoji)" v-for="emoji of reactionFilter" :key="emoji.url" title={emoji.shortcode} class="flex items-center justify-center w-full">
 									<img :src="emoji.url" className="w-7 h-7 rounded" />
