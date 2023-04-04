@@ -139,6 +139,7 @@ export enum PostType {
 						v-if="status.emoji_reactions.length > 0" />
 
 					<StatusAttachments
+						:type="type"
 						:status="status"
 						v-if="status.media_attachments.length > 0" />
 				</div>

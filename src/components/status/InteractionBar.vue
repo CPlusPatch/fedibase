@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { IconStar, IconRocket, IconMoodHappy, IconQuote, IconLock, IconStarFilled, IconMessage, IconPin, IconEdit, IconForbid, IconCheck, IconDots, IconCopy } from "@tabler/icons-vue";
+import { IconStar, IconRocket, IconMoodHappy, IconQuote, IconLock, IconStarFilled, IconMessage, IconPin, IconEdit, IconForbid, IconCheck, IconDots, IconCopy, IconLink } from "@tabler/icons-vue";
 import { Entity } from "megalodon";
 import { store } from "../../utils/store";
 import { Dialog, DialogPanel, Menu, MenuButton, MenuItem, MenuItems, TransitionRoot } from "@headlessui/vue";
@@ -83,11 +83,11 @@ const copyUrl = () => {
 
 <style scoped lang="postcss">
 .menu-item {
-	@apply text-gray-700 duration-300 w-full dark:text-gray-200 hover:bg-gray-200 text-sm md:text-base dark:hover:bg-gray-200/10 flex items-center py-3;
+	@apply text-gray-700 duration-300 w-full dark:text-gray-50 hover:bg-orange-200 rounded-lg text-sm dark:hover:bg-orange-700/20 flex flex-row items-center py-2;
 }
 
 .menu-icon {
-	@apply mr-3 h-5 w-5 text-gray-400 dark:text-gray-500;
+	@apply mx-2 h-[1.2em] w-[1.2em] mb-0.5;
 }
 
 .button {
@@ -181,7 +181,7 @@ const copyUrl = () => {
 			<ScaleFadeSlide>
 				<MenuItems
 					:unmount="true"
-					class="origin-top-right border dark:border-gray-600 outline-none text-base absolute right-0 w-44 overflow-hidden sm:text-sm rounded-md shadow-lg bg-white/80 dark:bg-dark-800/80 backdrop-blur-lg focus:outline-none">
+					class="p-1.5 gap-x-4 origin-top-right outline-none text-base absolute right-0 w-44 overflow-hidden sm:text-sm rounded-xl shadow-lg bg-white/80 dark:bg-dark-700 backdrop-blur-lg focus:outline-none">
 					<MenuItem
 						v-if="_status.account.id === store.auth.data?.id"
 						as="button"
@@ -195,10 +195,10 @@ const copyUrl = () => {
 						@click="copyUrl"
 						as="button"
 						class="menu-item">
-						<IconCopy
+						<IconLink
 							class="menu-icon"
 							aria-hidden="true" />
-						Copy post URL
+						Copy link
 					</MenuItem>
 					<MenuItem
 						v-if="(_status.account.id === store.auth.data?.id) && !_status.pinned"

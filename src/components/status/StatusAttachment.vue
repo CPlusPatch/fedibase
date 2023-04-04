@@ -2,10 +2,12 @@
 import { ref } from "vue";
 import Button from "../button/Button.vue";
 import { IconX } from "@tabler/icons-vue";
+import { PostType } from "./Status.vue";
 
 const props = defineProps<{
-	status: Entity.Status;
-	media: Entity.Attachment;
+	status: Entity.Status,
+	media: Entity.Attachment,
+	type: PostType,
 }>();
 
 const revealed = ref<boolean>(!props.status.sensitive);
@@ -17,12 +19,13 @@ const toggleRevealed = () => {
 
 <template>
 	<div
-		class="relative rounded grow-0 mx-auto overflow-hidden flex items-center">
+		:class="['relative rounded grow-0 mx-auto overflow-hidden flex items-center',
+			type === PostType.Small && 'h-44 w-44 border dark:border-dark-700']">
 		<img
 			loading="lazy"
 			v-if="media.type === 'image'"
 			:class="[
-				'filter duration-500 rounded max-h-[80vh]',
+				'filter duration-500 rounded object-cover max-h-[80vh]',
 				!revealed && 'filter blur-2xl',
 			]"
 			:src="media.url"
