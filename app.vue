@@ -6,4 +6,5 @@ import "./styles/index.css"
 	<NuxtLayout>
 		<NuxtPage />
 	</NuxtLayout>
+	<VitePwaManifest />
 </template>
