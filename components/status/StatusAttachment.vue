@@ -17,6 +17,12 @@ const toggleRevealed = () => {
 };
 </script>
 
+<style scoped lang="postcss">
+.media {
+	@apply filter duration-500 rounded max-h-[80vh]
+}
+</style>
+
 <template>
 	<div
 		:class="['relative rounded grow-0 mx-auto overflow-hidden flex items-center',
@@ -25,8 +31,8 @@ const toggleRevealed = () => {
 			loading="lazy"
 			v-if="media.type === 'image'"
 			:class="[
-				'filter duration-500 rounded object-cover max-h-[80vh]',
-				!revealed && 'filter blur-2xl',
+				'media object-cover',
+				!revealed && 'blur-2xl',
 			]"
 			:src="media.url"
 			:alt="media.description ?? ''" />
@@ -34,8 +40,8 @@ const toggleRevealed = () => {
 		<audio
 			v-if="media.type === 'audio'"
 			:class="[
-				'filter duration-500 rounded max-h-[80vh]',
-				!revealed && 'filter blur-2xl',
+				'media',
+				!revealed && 'blur-2xl',
 			]"
 			:src="media.url"
 			:alt="media.description ?? ''" />
@@ -43,8 +49,8 @@ const toggleRevealed = () => {
 		<video
 			v-if="media.type === 'video'"
 			:class="[
-				'filter duration-500 object-contain h-full rounded',
-				!revealed && 'filter blur-2xl',
+				'object-contain h-full media',
+				!revealed && 'blur-2xl',
 			]"
 			:src="media.url"
 			controls="true" />

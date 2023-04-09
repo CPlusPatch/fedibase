@@ -103,6 +103,7 @@ const copyUrl = () => {
 			@click="
 				() => {
 					store.replyingTo = _status;
+					store.quotingTo = null;
 					store.state.composer = true;
 				}
 			"
@@ -163,6 +164,7 @@ const copyUrl = () => {
 			@click="
 				e => {
 					store.quotingTo = _status;
+					store.replyingTo = null;
 					store.state.composer = true;
 				}
 			"

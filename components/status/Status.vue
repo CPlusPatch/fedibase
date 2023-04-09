@@ -45,6 +45,7 @@ const toggleShow = () => {
 export enum PostType {
 	Normal,
 	Small,
+	Tiny
 }
 </script>
 
@@ -52,6 +53,7 @@ export enum PostType {
 		<div class="flex flex-col max-w-full font-inter cursor-pointer">
 			<div class="flex flex-col min-w-0 grow gap-y-1">
 				<div
+					v-if="type !== PostType.Tiny"
 					class="flex flex-row overflow-hidden text-[0.95rem] text-ellipsis whitespace-nowrap w-full">
 					<NuxtLink
 						:to="`/user/${status.account.id}`"
@@ -91,6 +93,30 @@ export enum PostType {
 						class="text-sm text-gray-700 dark:text-gray-300 hover:underline"
 						v-html="fromNow(new Date(status.created_at)) ">
 					</RouterLink>
+				</div>
+				<div v-else class="flex flex-row items-center gap-x-1 whitespace-nowrap overflow-hidden text-ellipsis">
+					<img
+						loading="lazy"
+						alt=""
+						:src="status.account.avatar"
+						:class="[
+							'bg-white overflow-hidden w-4 h-4 dark:bg-dark-800-800 rounded border border-gray-300 dark:border-dark-700',
+						]" />
+					<h4
+						class="font-bold dark:text-gray-200"
+						:title="status.account.display_name"
+						v-html="
+						withEmojis(
+							status.account.display_name,
+							status.account.emojis
+						)
+							"></h4>
+					<h5
+						:title="status.account.acct"
+						class="overflow-hidden ml-0 text-gray-500 overflow-ellipsis dark:text-gray-400">
+						@{{ status.account.acct.split("@")[0] }}
+					</h5>
+
 				</div>
 				<div class="flex flex-col gap-y-1 text-sm">
 					<ReplyTo v-if="status.in_reply_to_id" :status="status" />

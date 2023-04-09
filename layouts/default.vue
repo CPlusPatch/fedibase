@@ -79,7 +79,7 @@ onUnmounted(() => {
 
 			<div class="grid grid-cols-6 justify-between grid-flow-row md:grid-cols-12 w-full max-w-[90rem] mx-auto">
 				<div
-					:class="['hidden md:col-span-3 md:block m-3 no-scroll overflow-y-hidden', store.viewingConversation && 'dark:bg-dark-800 bg-gray-50 rounded-md border dark:border-gray-700']">
+					:class="['hidden md:col-span-3 md:block my-3 no-scroll overflow-y-hidden', store.viewingConversation && 'dark:bg-dark-800 bg-gray-50 rounded-md border dark:border-gray-700']">
 					<LeftSidebar />
 				</div>
 				<div class="overflow-x-hidden md:col-span-5 col-span-6 pt-3">
