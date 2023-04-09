@@ -1,11 +1,9 @@
 <script setup lang="ts">
-import { onUnmounted, ref, watch } from "vue";
 import { store } from "../../utils/store";
 import Status, { PostType } from "../status/Status.vue";
 import DummyStatus from "../status/DummyStatus.vue";
 import { IconX } from "@tabler/icons-vue";
 import ConversationChildPost from "../status/ConversationChildPost.vue";
-import { useRoute } from "vue-router";
 
 const props = withDefaults(
 	defineProps<{
@@ -88,7 +86,7 @@ onUnmounted(() => {
 </script>
 
 <template>
-	<div class="flex overflow-y-hidden flex-col pt-6 h-full bg-white shadow-xl dark:bg-dark-800">
+	<div class="flex overflow-y-hidden flex-col pt-6 h-full">
 		<div class="flex justify-between px-4 sm:px-6">
 			<h1 class="text-lg font-medium text-gray-900 dark:text-gray-50">
 				Conversation

@@ -6,7 +6,6 @@ import Feed, { FeedType } from "./Feed.vue";
 import UserProfile from "../profiles/UserProfile.vue";
 import StatusVue, { PostType } from "../status/Status.vue";
 import { IconPinFilled } from "@tabler/icons-vue";
-import { useRoute } from "vue-router";
 
 const route = useRoute();
 

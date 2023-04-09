@@ -1,55 +1,35 @@
 {
-	"name": "fedibase",
-	"private": true,
-	"version": "0.1.0",
-	"type": "module",
-	"license": "GPL-3.0",
-	"scripts": {
-		"dev": "vite",
-		"build": "vue-tsc && vite build",
-		"lint": "eslint --ext .js,.ts src",
-		"format": "prettier --write src/",
-		"preview": "vite preview"
-	},
-	"dependencies": {
-		"@headlessui/vue": "^1.7.12",
-		"@tabler/icons-vue": "^2.11.0",
-		"events": "^3.3.0",
-		"fastclick": "^1.0.6",
-		"megalodon": "^5.4.2",
-		"querystring-es3": "^0.2.1",
-		"uuid": "^9.0.0",
-		"vue": "^3.2.47",
-		"vue-router": "^4.1.6"
-	},
-	"devDependencies": {
-		"@tailwindcss/line-clamp": "^0.4.2",
-		"@types/events": "^3.0.0",
-		"@types/fastclick": "^1.0.30",
-		"@types/uuid": "^9.0.1",
-		"@typescript-eslint/eslint-plugin": "^5.56.0",
-		"@typescript-eslint/parser": "^5.56.0",
-		"@vitejs/plugin-vue": "^4.1.0",
-		"autoprefixer": "^10.4.14",
-		"eslint": "^8.36.0",
-		"eslint-config-prettier": "^8.8.0",
-		"eslint-plugin-prettier-vue": "^4.2.0",
-		"eslint-plugin-vue": "^9.9.0",
-		"postcss": "^8.4.21",
-		"prettier": "^2.8.5",
-		"sharp": "^0.31.3",
-		"svgo": "^3.0.2",
-		"tailwindcss": "^3.2.7",
-		"typescript": "^5.0.2",
-		"vite": "^4.2.1",
-		"vite-plugin-image-optimizer": "^1.1.2",
-		"vite-plugin-pwa": "^0.14.4",
-		"vue-tsc": "^1.2.0"
-	},
-	"browser": {
-		"fs": false
-	},
-	"eslintConfig": {
-		"extends": "vue"
-	}
+  "name": "nuxt-app",
+  "private": true,
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare"
+  },
+  "devDependencies": {
+    "@nuxt/image-edge": "1.0.0-28008586.381b906",
+    "@nuxtjs/tailwindcss": "^6.6.5",
+    "@types/events": "^3.0.0",
+    "@types/fastclick": "^1.0.30",
+    "@types/node": "^18.15.11",
+    "@types/uuid": "^9.0.1",
+    "nuxt": "^3.3.3"
+  },
+  "dependencies": {
+    "@headlessui/vue": "^1.7.12",
+    "@nuxtjs/robots": "^3.0.0",
+    "@tabler/icons-vue": "^2.14.0",
+    "@tailwindcss/forms": "^0.5.3",
+    "@tailwindcss/typography": "^0.5.9",
+    "events": "^3.3.0",
+    "fastclick": "^1.0.6",
+    "megalodon": "^5.4.3",
+    "querystring-es3": "^0.2.1",
+    "uuid": "^9.0.0"
+  },
+  "browser": {
+	"fs": false
+  }
 }

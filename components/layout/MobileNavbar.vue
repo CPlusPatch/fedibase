@@ -64,7 +64,7 @@ const closePostViewer = () => {
 <template>
 	<header
 		:class="[
-			'fixed inset-x-0 bottom-0  z-[999999] border-t p-0 overflow-hidden rounded-t items-center justify-around grid grid-cols-4 h-16 bg-white border-b dark:border-gray-700 dark:bg-dark-800 md:hidden'
+			'fixed inset-x-0 -bottom-1 z-[999999] border-t p-0 overflow-hidden rounded-t items-center justify-around grid grid-cols-4 h-16 bg-white border-b dark:border-gray-700 dark:bg-dark-800 md:hidden'
 		]">
 		<Button
 			theme="gray"

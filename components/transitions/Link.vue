@@ -5,15 +5,12 @@
 </template>
 
 <script setup lang="ts">
-import { useRouter } from "vue-router";
 import { store } from "../../utils/store";
 
 const props = defineProps<{
 	sidebar?: string;
 	href: string;
 }>();
-
-const router = useRouter();
 
 const handleClick = (e: MouseEvent) => {
 	if (!e.ctrlKey && !e.metaKey) {

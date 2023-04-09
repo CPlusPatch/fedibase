@@ -9,7 +9,6 @@ export enum FeedType {
 </script>
 
 <script setup lang="ts">
-import { onMounted, onUnmounted, ref } from "vue";
 import { store } from "../../utils/store";
 import DummyStatus from "../status/DummyStatus.vue";
 import Post from "./Post.vue";
@@ -45,6 +44,7 @@ const interval = window.setInterval(async () => {
 
 const getEntitiesSinceId = async (since_id: string) => {
 	if (loading.value) return;
+	if (!store.client?.getLocalTimeline) return;
 	loading.value = true;
 	let res;
 	switch (props.type) {
@@ -150,11 +150,6 @@ const loadMoreEntities = async () => {
 
 	const newEntities = (await getEntitiesBeforeId(before_id));	
 
-	/* if (props.type === FeedType.Home) {
-		store.beforeId = (newEntities[newEntities.length - 1] as any).id;
-		console.log(store.beforeId)
-	} */
-
 	entities.value = [
 		...entities.value,
 		...newEntities,
@@ -163,32 +158,18 @@ const loadMoreEntities = async () => {
 	if (props.type === FeedType.Home) store.savedFeed = entities.value;
 };
 
-/* let allowScroll = true;
-
-const onScroll = (e: Event) => {
-	if (!allowScroll) return;
-	store.feedScroll = (e.target as HTMLDivElement).scrollTop;
-	allowScroll = false;
-}
-
-const scrollInterval = setInterval(() => {
-	allowScroll = true;
-}, 1000); */
 
 onMounted(async () => {
 	if (loading.value) return;
-	let id = ""
 
 	entities.value = [
-		...await getEntitiesSinceId(id),
+		...await getEntitiesSinceId(""),
 		...entities.value
 	] as any;
 });
 
 onUnmounted(() => {
-	//document.getElementById("homefeed")?.removeEventListener("scroll", onScroll);
 	window.clearInterval(interval);
-	//window.clearInterval(scrollInterval);
 });
 </script>
 
