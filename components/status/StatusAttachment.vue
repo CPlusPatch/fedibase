@@ -5,9 +5,9 @@ import { IconX } from "@tabler/icons-vue";
 import { PostType } from "./Status.vue";
 
 const props = defineProps<{
-	status: Entity.Status,
-	media: Entity.Attachment,
-	type: PostType,
+	status: Entity.Status;
+	media: Entity.Attachment;
+	type: PostType;
 }>();
 
 const revealed = ref<boolean>(!props.status.sensitive);
@@ -19,39 +19,32 @@ const toggleRevealed = () => {
 
 <style scoped lang="postcss">
 .media {
-	@apply filter duration-500 rounded max-h-[80vh]
+	@apply filter duration-500 rounded max-h-[80vh];
 }
 </style>
 
 <template>
 	<div
-		:class="['relative rounded grow-0 mx-auto overflow-hidden flex items-center',
-			type === PostType.Small && 'h-44 w-44 border dark:border-dark-700']">
+		:class="[
+			'relative rounded grow-0 mx-auto overflow-hidden flex items-center',
+			type === PostType.Small && 'h-44 w-44 border dark:border-dark-700',
+		]">
 		<img
 			loading="lazy"
 			v-if="media.type === 'image'"
-			:class="[
-				'media object-cover',
-				!revealed && 'blur-2xl',
-			]"
+			:class="['media object-cover', !revealed && 'blur-2xl']"
 			:src="media.url"
 			:alt="media.description ?? ''" />
 
 		<audio
 			v-if="media.type === 'audio'"
-			:class="[
-				'media',
-				!revealed && 'blur-2xl',
-			]"
+			:class="['media', !revealed && 'blur-2xl']"
 			:src="media.url"
 			:alt="media.description ?? ''" />
 
 		<video
 			v-if="media.type === 'video'"
-			:class="[
-				'object-contain h-full media',
-				!revealed && 'blur-2xl',
-			]"
+			:class="['object-contain h-full media', !revealed && 'blur-2xl']"
 			:src="media.url"
 			controls="true" />
 

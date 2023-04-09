@@ -34,7 +34,10 @@ const react = () => {
 		<img
 			loading="lazy"
 			v-if="_reaction.name.includes('@')"
-			:src="status.emojis.find(e => `:${e.shortcode}:` == _reaction.name)?.static_url"
+			:src="
+				status.emojis.find(e => `:${e.shortcode}:` == _reaction.name)
+					?.static_url
+			"
 			class="w-[1em] h-[1em]"
 			:alt="`Emoji reaction ${_reaction.name}`" />
 		<span v-else>

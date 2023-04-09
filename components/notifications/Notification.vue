@@ -19,9 +19,12 @@ const props = defineProps<{
 		"
 		:class="[
 			'flex flex-col gap-y-2 p-2 max-w-full rounded duration-200 ease-in-out',
-			props.notification.type === 'favourite' && 'border-yellow-500 border-l-2 opacity-75',
-			props.notification.type === 'reblog' && 'border-blue-500 border-l-2 opacity-75',
-			props.notification.type === 'emoji_reaction' && 'border-red-500 border-l-2 opacity-75',
+			props.notification.type === 'favourite' &&
+				'border-yellow-500 border-l-2 opacity-75',
+			props.notification.type === 'reblog' &&
+				'border-blue-500 border-l-2 opacity-75',
+			props.notification.type === 'emoji_reaction' &&
+				'border-red-500 border-l-2 opacity-75',
 		]">
 		<RouterLink
 			v-if="props.notification.type === 'favourite'"

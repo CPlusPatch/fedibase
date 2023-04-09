@@ -1,8 +1,31 @@
 <script setup lang="ts">
-import { IconStar, IconRocket, IconMoodHappy, IconQuote, IconLock, IconStarFilled, IconMessage, IconPin, IconEdit, IconForbid, IconCheck, IconDots, IconCopy, IconLink } from "@tabler/icons-vue";
+import {
+	IconStar,
+	IconRocket,
+	IconMoodHappy,
+	IconQuote,
+	IconLock,
+	IconStarFilled,
+	IconMessage,
+	IconPin,
+	IconEdit,
+	IconForbid,
+	IconCheck,
+	IconDots,
+	IconCopy,
+	IconLink,
+} from "@tabler/icons-vue";
 import { Entity } from "megalodon";
 import { store } from "../../utils/store";
-import { Dialog, DialogPanel, Menu, MenuButton, MenuItem, MenuItems, TransitionRoot } from "@headlessui/vue";
+import {
+	Dialog,
+	DialogPanel,
+	Menu,
+	MenuButton,
+	MenuItem,
+	MenuItems,
+	TransitionRoot,
+} from "@headlessui/vue";
 import ScaleFadeSlide from "../transitions/ScaleFadeSlide.vue";
 import { NotificationType, addNotification } from "../snackbar/Snackbar.vue";
 import { ref } from "vue";
@@ -40,45 +63,62 @@ const toggleReblog = () => {
 const block = () => {
 	store.client?.blockAccount(_status.value.account.id).then(res => {
 		addNotification("Blocked account!", NotificationType.Normal, IconCheck);
-	})
-}
+	});
+};
 
 const togglePin = () => {
 	if (_status.value.pinned) {
 		store.client?.unpinStatus(_status.value.id).then(res => {
-			addNotification("Unpinned status!", NotificationType.Normal, IconPin);
+			addNotification(
+				"Unpinned status!",
+				NotificationType.Normal,
+				IconPin
+			);
 		});
 	} else {
 		store.client?.pinStatus(_status.value.id).then(res => {
-			addNotification("Pinned status!", NotificationType.Normal, IconPinFilled);
+			addNotification(
+				"Pinned status!",
+				NotificationType.Normal,
+				IconPinFilled
+			);
 		});
 	}
-}
+};
 
 const toggleReaction = () => {
-	if (store.auth.type === "mastodon") return addNotification("Mastodon does not support reactions!");
+	if (store.auth.type === "mastodon")
+		return addNotification("Mastodon does not support reactions!");
 	reacting.value = !reacting.value;
-}
+};
 
 const filterReactions = (event: Event) => {
-	reactionFilter.value = store.emojis.filter(e => e.shortcode.includes((event.target as HTMLInputElement).value)) ;
-}
+	reactionFilter.value = store.emojis.filter(e =>
+		e.shortcode.includes((event.target as HTMLInputElement).value)
+	);
+};
 
 const react = (emoji: Entity.Emoji) => {
-	store.client?.createEmojiReaction(_status.value.id, emoji.shortcode).then(res => {
-		_status.value = res.data;
-		addNotification("Added reaction!", NotificationType.Normal, IconMoodHappy);
-		reacting.value = false;
-	})
-}
+	store.client
+		?.createEmojiReaction(_status.value.id, emoji.shortcode)
+		.then(res => {
+			_status.value = res.data;
+			addNotification(
+				"Added reaction!",
+				NotificationType.Normal,
+				IconMoodHappy
+			);
+			reacting.value = false;
+		});
+};
 
 const edit = () => {
 	store.editing = _status.value;
-}
+};
 
 const copyUrl = () => {
 	navigator.clipboard.writeText(_status.value.url);
-}
+};
 </script>
 
 <style scoped lang="postcss">
@@ -91,7 +131,7 @@ const copyUrl = () => {
 }
 
 .button {
-	@apply gap-x-2 flex justify-center static hover:animate-hithere border-none focus:outline-none outline-none shadow-none px-0
+	@apply gap-x-2 flex justify-center static hover:animate-hithere border-none focus:outline-none outline-none shadow-none px-0;
 }
 </style>
 
@@ -143,20 +183,36 @@ const copyUrl = () => {
 			<IconMoodHappy aria-hidden="true" class="w-5 h-5" />
 
 			<TransitionRoot appear :show="reacting">
-			<Dialog @close="() => reacting = false" class="z-50 fixed bottom-0">
-				<ScaleFadeSlide>
-					<DialogPanel>
-						<div class="w-80 flex flex-col bottom-0 left-0 m-4 p-3 absolute z-50 bg-orange-100/50 backdrop-blur-md dark:bg-dark-800/75 border dark:border-gray-700 shadow rounded-xl h-72">
-							<Input @input="filterReactions" :icon="IconMoodHappy" class="dark:border-gray-700" placeholder="Search for emoji here" name="emoji" />
-							<div className="grid grid-cols-6 justify-around no-scroll p-3 gap-4 overflow-scroll">
-								<button @click="() => react(emoji)" v-for="emoji of reactionFilter" :key="emoji.url" title={emoji.shortcode} class="flex items-center justify-center w-full">
-									<img :src="emoji.url" className="w-7 h-7 rounded" />
-								</button>
+				<Dialog
+					@close="() => (reacting = false)"
+					class="z-50 fixed bottom-0">
+					<ScaleFadeSlide>
+						<DialogPanel>
+							<div
+								class="w-80 flex flex-col bottom-0 left-0 m-4 p-3 absolute z-50 bg-orange-100/50 backdrop-blur-md dark:bg-dark-800/75 border dark:border-gray-700 shadow rounded-xl h-72">
+								<Input
+									@input="filterReactions"
+									:icon="IconMoodHappy"
+									class="dark:border-gray-700"
+									placeholder="Search for emoji here"
+									name="emoji" />
+								<div
+									className="grid grid-cols-6 justify-around no-scroll p-3 gap-4 overflow-scroll">
+									<button
+										@click="() => react(emoji)"
+										v-for="emoji of reactionFilter"
+										:key="emoji.url"
+										title="{emoji.shortcode}"
+										class="flex items-center justify-center w-full">
+										<img
+											:src="emoji.url"
+											className="w-7 h-7 rounded" />
+									</button>
+								</div>
 							</div>
-						</div>
-					</DialogPanel>
-				</ScaleFadeSlide>
-			</Dialog>
+						</DialogPanel>
+					</ScaleFadeSlide>
+				</Dialog>
 			</TransitionRoot>
 		</button>
 		<button
@@ -173,9 +229,7 @@ const copyUrl = () => {
 		</button>
 		<Menu as="button" class="relative">
 			<MenuButton>
-				<div
-					class="button hover:!animate-none"
-					title="Quote this post">
+				<div class="button hover:!animate-none" title="Quote this post">
 					<IconDots aria-hidden="true" class="w-5 h-5" />
 				</div>
 			</MenuButton>
@@ -183,43 +237,38 @@ const copyUrl = () => {
 			<ScaleFadeSlide>
 				<MenuItems
 					:unmount="true"
-					class="p-1.5 gap-x-4 origin-top-right outline-none text-base absolute right-0 w-44 overflow-hidden sm:text-sm rounded-xl shadow-lg bg-white/80 dark:bg-dark-700 backdrop-blur-lg focus:outline-none">
+					class="p-1.5 gap-x-4 origin-top-right outline-none text-base absolute right-0 w-44 overflow-hidden sm:text-sm rounded-lg shadow-lg bg-white/60 dark:bg-dark-700/60 backdrop-blur-lg focus:outline-none">
 					<MenuItem
 						v-if="_status.account.id === store.auth.data?.id"
 						as="button"
 						class="menu-item">
-						<IconEdit
-							class="menu-icon"
-							aria-hidden="true" />
+						<IconEdit class="menu-icon" aria-hidden="true" />
 						Edit
 					</MenuItem>
-					<MenuItem
-						@click="copyUrl"
-						as="button"
-						class="menu-item">
-						<IconLink
-							class="menu-icon"
-							aria-hidden="true" />
+					<MenuItem @click="copyUrl" as="button" class="menu-item">
+						<IconLink class="menu-icon" aria-hidden="true" />
 						Copy link
 					</MenuItem>
 					<MenuItem
-						v-if="(_status.account.id === store.auth.data?.id) && !_status.pinned"
+						v-if="
+							_status.account.id === store.auth.data?.id &&
+							!_status.pinned
+						"
 						@click="togglePin"
 						as="button"
 						class="menu-item">
-						<IconPin
-							class="menu-icon"
-							aria-hidden="true" />
+						<IconPin class="menu-icon" aria-hidden="true" />
 						Pin
 					</MenuItem>
 					<MenuItem
-						v-if="(_status.account.id === store.auth.data?.id) && _status.pinned"
+						v-if="
+							_status.account.id === store.auth.data?.id &&
+							_status.pinned
+						"
 						@click="togglePin"
 						as="button"
 						class="menu-item">
-						<IconPinFilled
-							class="menu-icon"
-							aria-hidden="true" />
+						<IconPinFilled class="menu-icon" aria-hidden="true" />
 						Unpin
 					</MenuItem>
 					<MenuItem
@@ -227,9 +276,7 @@ const copyUrl = () => {
 						@click="block"
 						as="button"
 						class="menu-item">
-						<IconForbid
-							class="menu-icon"
-							aria-hidden="true" />
+						<IconForbid class="menu-icon" aria-hidden="true" />
 						Block
 					</MenuItem>
 				</MenuItems>

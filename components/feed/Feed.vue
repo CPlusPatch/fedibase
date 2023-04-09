@@ -34,7 +34,9 @@ const loading = ref(false);
 const reachedEnd = ref<boolean>(false);
 
 const interval = window.setInterval(async () => {
-	const latestEntities = await getEntitiesSinceId((entities.value[0] as any).id);
+	const latestEntities = await getEntitiesSinceId(
+		(entities.value[0] as any).id
+	);
 	entities.value = [...latestEntities, ...entities.value] as any;
 
 	/* if (props.type === FeedType.Notifications) latestEntities.map((entity: Entity.Notification) => {
@@ -101,7 +103,7 @@ const getEntitiesBeforeId = async (before_id: string) => {
 		case FeedType.Home: {
 			res = (await store.client?.getHomeTimeline({
 				limit: DEFAULT_LOAD,
-				max_id: before_id
+				max_id: before_id,
 			})) as any;
 			break;
 		}
@@ -148,23 +150,19 @@ const loadMoreEntities = async () => {
 	if (reachedEnd.value) return false;
 	const before_id = (entities.value[entities.value.length - 1] as any).id;
 
-	const newEntities = (await getEntitiesBeforeId(before_id));	
+	const newEntities = await getEntitiesBeforeId(before_id);
 
-	entities.value = [
-		...entities.value,
-		...newEntities,
-	] as any;
+	entities.value = [...entities.value, ...newEntities] as any;
 
 	if (props.type === FeedType.Home) store.savedFeed = entities.value;
 };
-
 
 onMounted(async () => {
 	if (loading.value) return;
 
 	entities.value = [
-		...await getEntitiesSinceId(""),
-		...entities.value
+		...(await getEntitiesSinceId("")),
+		...entities.value,
 	] as any;
 });
 
@@ -206,7 +204,9 @@ onUnmounted(() => {
 		<Notification :notification="entity" />
 	</template>
 
-	<div v-if="entities.length === 0 && !reachedEnd" class="grow w-full h-full flex items-center justify-center">
+	<div
+		v-if="entities.length === 0 && !reachedEnd"
+		class="grow w-full h-full flex items-center justify-center">
 		<img src="/images/icons/logo.svg" class="w-20 h-20 animate-hithere" />
 	</div>
 

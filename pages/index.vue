@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import HomeFeed from '~/components/feed/HomeFeed.vue';
+import HomeFeed from "~/components/feed/HomeFeed.vue";
 </script>
 
 <template>

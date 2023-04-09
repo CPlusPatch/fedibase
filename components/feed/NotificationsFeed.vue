@@ -13,8 +13,8 @@ import Feed, { FeedType } from "./Feed.vue";
 import { Ref, ref } from "vue";
 
 const props = defineProps<{
-	title: boolean,
-	id?: string,
+	title: boolean;
+	id?: string;
 }>();
 
 const modes: SelectItem[] = [
@@ -63,7 +63,8 @@ const mode: Ref<string> = ref(modes[0].value);
 		</div>
 
 		<ul
-			class="flex overflow-y-scroll flex-col gap-y-3 max-w-full h-full no-scroll" :id="id">
+			class="flex overflow-y-scroll flex-col gap-y-3 max-w-full h-full no-scroll"
+			:id="id">
 			<Feed :type="FeedType.Notifications" :mode="mode" />
 		</ul>
 	</div>

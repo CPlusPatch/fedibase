@@ -11,8 +11,8 @@ const props = defineProps<InputProps>();
 
 <script lang="ts">
 export default {
-  inheritAttrs: false
-}
+	inheritAttrs: false,
+};
 </script>
 
 <template>

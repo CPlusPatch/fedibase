@@ -9,7 +9,7 @@ const uuid = ref<string>(v4());
 
 const reRender = () => {
 	uuid.value = v4();
-}
+};
 </script>
 
 <template>

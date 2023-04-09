@@ -2,7 +2,7 @@
 export enum SelectDirection {
 	Right = "right",
 	Left = "left",
-	Center = "center"
+	Center = "center",
 }
 
 export enum SelectOrientation {
@@ -64,7 +64,7 @@ const selected = ref<SelectItem>(props.items[props.defaultValue]);
 					direction === SelectDirection.Left &&
 						'right-0 origin-top-right',
 					direction === SelectDirection.Center &&
-					'right-0 origin-top-right translate-x-[50%]',
+						'right-0 origin-top-right translate-x-[50%]',
 					orientation === SelectOrientation.Up && 'bottom-[110%]',
 				]">
 				<ListboxOption

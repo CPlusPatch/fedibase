@@ -1,36 +1,40 @@
 {
-  "name": "nuxt-app",
-  "private": true,
-  "scripts": {
-    "build": "nuxt build",
-    "dev": "nuxt dev",
-    "generate": "nuxt generate",
-    "preview": "nuxt preview",
-    "postinstall": "nuxt prepare"
-  },
-  "devDependencies": {
-    "@nuxt/image-edge": "1.0.0-28008586.381b906",
-    "@nuxtjs/tailwindcss": "^6.6.5",
-    "@types/events": "^3.0.0",
-    "@types/fastclick": "^1.0.30",
-    "@types/node": "^18.15.11",
-    "@types/uuid": "^9.0.1",
-    "@vite-pwa/nuxt": "^0.0.7",
-    "nuxt": "^3.3.3"
-  },
-  "dependencies": {
-    "@headlessui/vue": "^1.7.12",
-    "@nuxtjs/robots": "^3.0.0",
-    "@tabler/icons-vue": "^2.14.0",
-    "@tailwindcss/forms": "^0.5.3",
-    "@tailwindcss/typography": "^0.5.9",
-    "events": "^3.3.0",
-    "fastclick": "^1.0.6",
-    "megalodon": "^5.4.3",
-    "querystring-es3": "^0.2.1",
-    "uuid": "^9.0.0"
-  },
-  "browser": {
-    "fs": false
-  }
+	"name": "nuxt-app",
+	"private": true,
+	"scripts": {
+		"build": "nuxt build",
+		"dev": "nuxt dev",
+		"generate": "nuxt generate",
+		"preview": "nuxt preview",
+		"postinstall": "nuxt prepare",
+		"lint": "eslint --ext .js,.ts src",
+		"format": "prettier --write components/ layouts/ pages/"
+	},
+	"devDependencies": {
+		"@nuxt/image-edge": "1.0.0-28008586.381b906",
+		"@nuxtjs/tailwindcss": "^6.6.5",
+		"@types/events": "^3.0.0",
+		"@types/fastclick": "^1.0.30",
+		"@types/node": "^18.15.11",
+		"@types/uuid": "^9.0.1",
+		"@vite-pwa/nuxt": "^0.0.7",
+		"eslint": "^8.38.0",
+		"nuxt": "^3.3.3",
+		"prettier": "^2.8.7"
+	},
+	"dependencies": {
+		"@headlessui/vue": "^1.7.12",
+		"@nuxtjs/robots": "^3.0.0",
+		"@tabler/icons-vue": "^2.14.0",
+		"@tailwindcss/forms": "^0.5.3",
+		"@tailwindcss/typography": "^0.5.9",
+		"events": "^3.3.0",
+		"fastclick": "^1.0.6",
+		"megalodon": "^5.4.3",
+		"querystring-es3": "^0.2.1",
+		"uuid": "^9.0.0"
+	},
+	"browser": {
+		"fs": false
+	}
 }
