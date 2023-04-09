@@ -179,28 +179,10 @@ onMounted(async () => {
 	if (loading.value) return;
 	let id = ""
 
-	/* if (props.type === FeedType.Home) {
-		if (store.savedFeed && store.savedFeed.length > 0) {
-			entities.value = store.savedFeed as any;
-			id = store.savedFeed[0].id;
-		} else {
-			store.savedFeed = []
-		}
-	} */
-
-	//if (store.feedScroll && document.getElementById("homefeed")) document.getElementById("homefeed")!.scrollTop = store.feedScroll;
-
 	entities.value = [
 		...await getEntitiesSinceId(id),
 		...entities.value
 	] as any;
-
-	//if (props.type === FeedType.Home) store.savedFeed = entities.value;
-
-	// Restore scroll position on page when using the browser's back button
-	/* document.getElementById("homefeed")?.addEventListener("scroll", onScroll, {
-		passive: true
-	}); */
 });
 
 onUnmounted(() => {

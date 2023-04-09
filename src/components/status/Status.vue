@@ -86,12 +86,11 @@ export enum PostType {
 							@{{ status.account.acct }}
 						</h5>
 					</div>
-					<Link
-						:href="`/posts/${status.id}`"
-						:sidebar="status.id"
+					<RouterLink
+						:to="`/posts/${status.id}`"
 						class="text-sm text-gray-700 dark:text-gray-300 hover:underline"
 						v-html="fromNow(new Date(status.created_at)) ">
-					</Link>
+					</RouterLink>
 				</div>
 				<div class="flex flex-col gap-y-1 text-sm">
 					<ReplyTo v-if="status.in_reply_to_id" :status="status" />

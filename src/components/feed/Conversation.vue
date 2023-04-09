@@ -88,27 +88,32 @@ onUnmounted(() => {
 </script>
 
 <template>
-	<div class="flex justify-between px-2 py-4" v-if="title">
-		<h3 class="text-xl font-bold dark:text-gray-50">Conversation</h3>
-		<button class="flex items-center justify-center" @click="onClose" title="Close conversation">
-			<IconX v-if="closeButton" class="w-5 h-5 dark:text-gray-50" />
-		</button>
-	</div>
+	<div class="flex overflow-y-hidden flex-col pt-6 h-full bg-white shadow-xl dark:bg-dark-800">
+		<div class="flex justify-between px-4 sm:px-6">
+			<h1 class="text-lg font-medium text-gray-900 dark:text-gray-50">
+				Conversation
+			</h1>
+			<button class="flex items-center justify-center" @click="onClose" title="Close conversation">
+				<IconX v-if="closeButton" class="w-5 h-5 dark:text-gray-50" />
+			</button>
+		</div>
+		<div class="flex overflow-hidden relative px-4 mt-6 max-w-full grow sm:px-6">
+			<div v-if="post" class="flex overflow-y-scroll flex-col gap-y-5 py-4 w-full h-full no-scroll">
+				<div class="flex flex-col gap-y-4 px-2">
+					<Status :type="type" v-for="ancestor of ancestors" :status="ancestor" :interaction="true" />
+				</div>
+				<div class="px-4 py-4 border-2 dark:border-gray-700 bg-gray-300/10 rounded-md">
+					<Status :type="type" :interaction="true" :status="post" />
+				</div>
+				<div class="flex flex-col gap-y-4 mb-20">
+					<ConversationChildPost :key="JSON.stringify(descendants)" :posts="descendants" :mode="PostType.Normal"
+						:parentId="post.id" />
+				</div>
+			</div>
 
-	<div v-if="post" class="flex overflow-y-scroll flex-col gap-y-5 py-4 w-full h-full no-scroll">
-		<div class="flex flex-col gap-y-4 px-2">
-			<Status :type="type" v-for="ancestor of ancestors" :status="ancestor" :interaction="true" />
-		</div>
-		<div class="px-4 py-4 border-2 dark:border-gray-700 bg-gray-300/10 rounded-md">
-			<Status :type="type" :interaction="true" :status="post" />
-		</div>
-		<div class="flex flex-col gap-y-4 mb-20">
-			<ConversationChildPost :key="JSON.stringify(descendants)" :posts="descendants" :mode="PostType.Normal"
-				:parentId="post.id" />
+			<div v-else class="grow w-full h-full flex items-center justify-center">
+				<img src="/images/icons/logo.svg" class="w-20 h-20 animate-hithere" />
+			</div>
 		</div>
 	</div>
-
-	<div v-else class="grow w-full h-full flex items-center justify-center">
-			<img src="/images/icons/logo.svg" class="w-20 h-20 animate-hithere" />
-		</div>
 </template>

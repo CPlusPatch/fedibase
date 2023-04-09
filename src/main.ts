@@ -6,6 +6,7 @@ import LocalFeed from "./components/feed/LocalFeed.vue";
 import FederatedFeed from "./components/feed/FederatedFeed.vue";
 import UserFeed from "./components/feed/UserFeed.vue";
 import Conversation from "./components/feed/Conversation.vue";
+import Notifications from "./components/layout/Notifications.vue";
 import { createRouter, createWebHistory } from "vue-router";
 
 const routes = [
@@ -29,6 +30,10 @@ const routes = [
 		path: "/posts/:id",
 		component: Conversation,
 	},
+	{
+		path: "/notifications",
+		component: Notifications
+	}
 ];
 
 const router = createRouter({

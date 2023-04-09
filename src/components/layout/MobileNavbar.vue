@@ -53,14 +53,18 @@ const closePostViewer = () => {
 
 <style scoped lang="postcss">
 .element {
-	@apply !p-3 grow dark:hover:!bg-dark-600 hover:!bg-gray-300 !bg-transparent
+	@apply !px-0 !py-0 !p-3 h-full !rounded-none grow dark:hover:!bg-dark-600 hover:!bg-gray-300 !bg-transparent !border-none !shadow-none !bg-white dark:!bg-transparent
+}
+
+.element a, .element {
+	@apply flex items-center justify-center text-xs flex-col gap-y-1
 }
 </style>
 
 <template>
 	<header
 		:class="[
-			'fixed inset-x-0 bottom-0 px-1 z-[999999] border-t items-center grid grid-cols-4 h-16 bg-white border-b dark:border-gray-700 dark:bg-dark-800 md:hidden',
+			'fixed inset-x-0 bottom-0  z-[999999] border-t p-0 overflow-hidden rounded-t items-center justify-around grid grid-cols-4 h-16 bg-white border-b dark:border-gray-700 dark:bg-dark-800 md:hidden',
 			(store.state.postViewer ||
 				store.state.notifications ||
 				store.state.composer) &&
@@ -68,120 +72,37 @@ const closePostViewer = () => {
 		]">
 		<Button
 			theme="gray"
-			class="element !border-none !shadow-none !bg-white dark:!bg-transparent"
+			class="element"
 			@click="toggleTheme">
 			<IconSun v-if="store.theme === 'light'" aria-hidden="true" />
 			<IconMoon v-if="store.theme === 'dark'" aria-hidden="true" />
+			<span>Theme</span>
 		</Button>
 		<Button
 		theme="gray"
-		class="element !border-none !shadow-none !bg-white dark:!bg-transparent"
+		class="element"
 		title="Visit main feed">
 				<RouterLink to="/">
 					<IconHome aria-hidden="true" />
+					<span>Home</span>
 				</RouterLink>
 			</Button>
 		<Button
 			theme="gray"
 			title="Compose new post"
 			@click="composeNewPost"
-			class="element !border-none !shadow-none !bg-white dark:!bg-transparent">
+			class="element">
 			<IconPencilPlus aria-hidden="true" />
+			<span>Compose</span>
 		</Button>
 		<Button
 			theme="gray"
 			title="Open notifications"
-			@click="openNotifications"
-			class="element !border-none !shadow-none !bg-white dark:!bg-transparent">
-			<IconBell aria-hidden="true" />
+			class="element">
+			<RouterLink to="/notifications">
+				<IconBell aria-hidden="true" />
+				<span>Notifications</span>
+			</RouterLink>
 		</Button>
 	</header>
-
-	<TransitionRoot
-		as="template"
-		:show="store.state.notifications && _window.innerWidth < 768">
-		<Dialog
-			as="div"
-			:unmount="false"
-			class="flex fixed inset-0 max-w-full pointer-events-none">
-			<TransitionChild
-				:unmount="false"
-				as="template"
-				enter="ease-out duration-150"
-				enterFrom="opacity-60 translate-y-full scale-95"
-				enterTo="opacity-100 translate-y-0 scale-100"
-				leave="ease-in duration-150"
-				leaveFrom="opacity-100 translate-y-0 scale-100"
-				leaveTo="opacity-60 translate-y-full scale-95">
-				<DialogPanel
-					class="overflow-hidden relative w-screen max-w-md pointer-events-auto">
-					<div
-						class="flex overflow-y-hidden flex-col pt-6 h-full bg-white shadow-xl dark:bg-dark-800">
-						<div class="flex justify-between px-4 sm:px-6">
-							<DialogTitle
-								class="text-lg font-medium text-gray-900 dark:text-gray-50">
-								Notifications
-							</DialogTitle>
-							<button
-								type="button"
-								@click="closeNotifications"
-								class="text-gray-300 rounded-md dark:hover:text-white focus:outline-none">
-								<span class="sr-only"> Close panel </span>
-								<IconChevronDown class="w-6 h-6" aria-hidden="true" />
-							</button>
-						</div>
-						<div
-							class="flex overflow-hidden relative px-4 mt-6 max-w-full grow sm:px-6">
-							<NotificationsFeed :title="false" />
-						</div>
-					</div>
-				</DialogPanel>
-			</TransitionChild>
-		</Dialog>
-	</TransitionRoot>
-
-	<TransitionRoot
-		as="template"
-		:show="store.state.postViewer && _window.innerWidth < 768">
-		<Dialog
-			as="div"
-			:unmount="false"
-			class="flex fixed inset-0 max-w-full pointer-events-none">
-			<TransitionChild
-				:unmount="false"
-				as="template"
-				enter="ease-out duration-300"
-				enterFrom="opacity-60 translate-y-full scale-95"
-				enterTo="opacity-100 translate-y-0 scale-100"
-				leave="ease-in duration-300"
-				leaveFrom="opacity-100 translate-y-0 scale-100"
-				leaveTo="opacity-60 translate-y-full scale-95">
-				<DialogPanel
-					class="overflow-hidden relative w-screen max-w-md pointer-events-auto">
-					<div
-						class="flex overflow-y-hidden flex-col pt-6 h-full bg-white shadow-xl dark:bg-dark-800">
-						<div class="flex justify-between px-4 sm:px-6">
-							<DialogTitle
-								class="text-lg font-medium text-gray-900 dark:text-gray-50">
-								Conversation
-							</DialogTitle>
-							<button
-								type="button"
-								@click="closePostViewer"
-								class="text-gray-300 rounded-md dark:hover:text-white focus:outline-none">
-								<span class="sr-only"> Close panel </span>
-								<IconChevronDown class="w-6 h-6" aria-hidden="true" />
-							</button>
-						</div>
-						<div
-							class="flex overflow-hidden relative mt-6 max-w-full grow sm:px-6">
-							<Conversation
-								:title="false"
-								:id="store.viewingConversation" />
-						</div>
-					</div>
-				</DialogPanel>
-			</TransitionChild>
-		</Dialog>
-	</TransitionRoot>
 </template>
