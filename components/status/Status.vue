@@ -53,7 +53,7 @@ export enum PostType {
 			<div class="flex flex-col min-w-0 grow gap-y-1">
 				<div
 					class="flex flex-row overflow-hidden text-[0.95rem] text-ellipsis whitespace-nowrap w-full">
-					<RouterLink
+					<NuxtLink
 						:to="`/user/${status.account.id}`"
 						class="flex-shrink-0 mr-2"
 						:title="`${status.account.display_name}'s profile'`">
@@ -67,7 +67,7 @@ export enum PostType {
 									? 'md:w-12 md:h-12'
 									: 'md:w-10 md:h-10',
 							]" />
-					</RouterLink>
+					</NuxtLink>
 					<div
 						:class="[
 							'flex flex-col grow text-sm justify-around']">
