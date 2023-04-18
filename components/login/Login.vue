@@ -135,8 +135,8 @@ const submit = async (e: Event) => {
 				</h2>
 			</div>
 
-			<div class="mt-12 sm:mx-auto sm:w-full font-inter">
-				<div class="py-4 px-6 font-inter">
+			<div class="mt-12 sm:mx-auto sm:w-full">
+				<div class="py-4 px-6">
 					<h4 v-if="token" class="dark:text-gray-100">
 						Validating...
 					</h4>

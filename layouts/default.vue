@@ -77,24 +77,25 @@ onUnmounted(() => {
 	<template v-if="store.client && store.auth.token" :key="store.auth.token">
 		<EditorModal />
 		<div
-			class="relative duration-200 font-inter dark:bg-dark-800 flex h-screen w-screen bg-gradient-light">
+			class="relative duration-200 dark:bg-dark-800 flex h-screen w-screen">
 			<Nav />
 
 			<div
-				class="grid grid-cols-6 justify-between grid-flow-row md:grid-cols-12 w-full max-w-[90rem] mx-auto">
+				class="grid grid-cols-6 justify-between overflow-hidden pt-4 gap-x-4 px-4 grid-flow-row md:grid-cols-8 xl:grid-cols-12 w-full max-w-[90rem] mx-auto">
 				<div
 					:class="[
-						'hidden md:col-span-3 md:block my-3 no-scroll overflow-y-hidden',
+						'hidden md:col-span-3 md:block no-scroll overflow-y-scroll',
 						store.viewingConversation &&
-							'dark:bg-dark-800 bg-gray-50 rounded-md border dark:border-gray-700',
+							'dark:bg-dark-800 bg-gray-50 rounded-md border dark:border-dark-700',
 					]">
 					<LeftSidebar />
 				</div>
-				<div class="overflow-x-hidden md:col-span-5 col-span-6 pt-3">
+				<div
+					class="overflow-x-hidden md:col-span-5 col-span-6 border dark:border-dark-700 rounded-xl shadow-lg dark:bg-dark-800">
 					<slot />
 				</div>
 				<div
-					class="hidden overflow-x-hidden p-4 m-3 max-h-screen md:col-span-4 md:flex dark:bg-dark-800 bg-gray-50 rounded-md border dark:border-gray-700">
+					class="hidden overflow-x-hidden p-4 md:col-span-0 max-h-screen xl:col-span-4 xl:flex dark:bg-dark-800 bg-gray-50 rounded-md border dark:border-dark-700">
 					<NotificationsFeed :title="true" />
 				</div>
 			</div>

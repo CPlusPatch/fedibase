@@ -50,14 +50,14 @@ export enum PostType {
 </script>
 
 <template>
-	<div class="flex flex-col max-w-full gap-y-1 font-inter cursor-pointer">
+	<div
+		class="flex flex-col max-w-full gap-y-1 cursor-pointer p-4 rounded fill-red-400">
 		<div
 			v-if="type !== PostType.Tiny"
 			class="flex flex-row overflow-hidden text-[0.95rem] text-ellipsis whitespace-nowrap w-full">
 			<NuxtLink
 				:to="`/user/${status.account.id}`"
-				class="flex-shrink-0 mr-2"
-				:title="`${status.account.display_name}'s profile'`">
+				class="flex-shrink-0 mr-2">
 				<img
 					loading="lazy"
 					alt=""

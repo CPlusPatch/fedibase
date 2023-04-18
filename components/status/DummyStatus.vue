@@ -1,9 +1,7 @@
 <script setup lang="ts"></script>
 
 <template>
-	<div
-		class="flex flex-col max-w-full font-inter cursor-pointer"
-		aria-hidden="true">
+	<div class="flex flex-col max-w-full cursor-pointer" aria-hidden="true">
 		<div class="flex flex-col min-w-0 grow gap-y-2">
 			<div
 				class="flex flex-row overflow-hidden text-[0.95rem] text-ellipsis whitespace-nowrap w-full">

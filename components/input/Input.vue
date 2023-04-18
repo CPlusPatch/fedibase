@@ -1,5 +1,7 @@
 <script setup lang="ts">
-interface InputProps {
+import { InputHTMLAttributes } from "nuxt/dist/app/compat/capi";
+
+interface InputProps extends InputHTMLAttributes {
 	loading?: boolean;
 	name: string;
 	class?: string;

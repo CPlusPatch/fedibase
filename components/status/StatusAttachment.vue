@@ -51,7 +51,7 @@ const toggleRevealed = () => {
 		<div
 			@click="toggleRevealed"
 			v-if="status.sensitive && !revealed"
-			class="flex absolute inset-0 z-20 justify-center p-3 items-center text-lg font-bold text-white font-inter">
+			class="flex absolute inset-0 z-20 justify-center p-3 items-center text-lg font-bold text-white">
 			{{
 				status.spoiler_text !== ""
 					? status.spoiler_text

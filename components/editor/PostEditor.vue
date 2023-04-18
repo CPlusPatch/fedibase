@@ -258,6 +258,9 @@ const submit = (e: Event) => {
 				NotificationType.Normal,
 				IconForbid2
 			);
+		})
+		.finally(() => {
+			loading.value = false;
 		});
 };
 </script>
@@ -265,7 +268,7 @@ const submit = (e: Event) => {
 <template>
 	<form
 		action="#"
-		class="relative text-sm font-inter w-full flex h-full"
+		class="relative text-sm w-full flex h-full"
 		@keyup="e => {
 		if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
 			(e.currentTarget as any).requestSubmit();
@@ -274,7 +277,7 @@ const submit = (e: Event) => {
 		@submit="submit">
 		<div
 			:class="[
-				'px-1 border py-1 w-full duration-200 flex flex-col rounded-lg dark:text-gray-100 border-gray-300 dark:border-gray-700 focus-within:ring-2 ring-orange-500 shadow-sm',
+				'px-1 border py-1 w-full duration-200 flex flex-col rounded-lg dark:text-gray-100 border-gray-300 dark:border-dark-700 focus-within:ring-2 ring-orange-500 shadow-sm',
 				loading
 					? 'bg-gray-100 dark:bg-dark-800/75'
 					: 'bg-white dark:bg-dark-800',
@@ -372,8 +375,9 @@ const submit = (e: Event) => {
 					}
 				" />
 
-			<ScaleFadeSlide :open="contentWarning" v-if="contentWarning">
+			<ScaleFadeSlide>
 				<Input
+					v-if="contentWarning"
 					name="cw"
 					:loading="loading"
 					placeholder="Add content warning"

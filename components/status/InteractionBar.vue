@@ -13,6 +13,7 @@ import {
 	IconCheck,
 	IconDots,
 	IconLink,
+	IconMessageCircle2,
 } from "@tabler/icons-vue";
 import { Entity } from "megalodon";
 import { store } from "../../utils/store";
@@ -21,6 +22,7 @@ import { NotificationType, addNotification } from "../snackbar/Snackbar.vue";
 import { ref } from "vue";
 import { IconPinFilled } from "@tabler/icons-vue";
 import Input from "../input/Input.vue";
+import Button from "../button/Button.vue";
 
 const props = defineProps<{
 	status: Entity.Status;
@@ -102,7 +104,8 @@ const react = (emoji: Entity.Emoji) => {
 				IconMoodHappy
 			);
 			reacting.value = false;
-		}).finally(() => {
+		})
+		.finally(() => {
 			emojiDialog.value = false;
 		});
 };
@@ -126,14 +129,13 @@ const copyUrl = () => {
 }
 
 .button {
-	@apply gap-x-2 flex justify-center static hover:animate-hithere border-none focus:outline-none outline-none shadow-none px-0;
+	@apply gap-x-2 flex justify-center static shadow-none w-full border-none outline-none focus:outline-none;
 }
 </style>
 
 <template>
-	<div
-		class="flex justify-between mt-3 w-full text-gray-700 dark:text-gray-400 px-4">
-		<button
+	<div class="grid grid-cols-6 mt-3 w-full text-gray-700 dark:text-gray-400">
+		<Button
 			class="button"
 			@click="
 				() => {
@@ -143,11 +145,11 @@ const copyUrl = () => {
 				}
 			"
 			title="Reply to this post">
-			<IconMessage aria-hidden="true" class="w-5 h-5" />
+			<IconMessageCircle2 aria-hidden="true" class="w-5 h-5" />
 			{{ _status.replies_count > 0 ? _status.replies_count : "" }}
-		</button>
-		<button
-			class="button"
+		</Button>
+		<Button
+			class="button hover:text-yellow-400"
 			@click="toggleFavourite"
 			title="Favourite this post">
 			<IconStarFilled
@@ -156,8 +158,8 @@ const copyUrl = () => {
 				class="w-5 h-5 text-yellow-400 animate-[spin_1s_ease-in-out]" />
 			<IconStar v-else aria-hidden="true" class="w-5 h-5" />
 			{{ _status.favourites_count > 0 ? _status.favourites_count : "" }}
-		</button>
-		<button @click="toggleReblog" title="Boost this post" class="button">
+		</Button>
+		<Button @click="toggleReblog" title="Boost this post" class="button">
 			<template
 				v-if="
 					_status.visibility !== 'private' &&
@@ -167,19 +169,27 @@ const copyUrl = () => {
 					v-if="_status.reblogged"
 					aria-hidden="true"
 					class="w-5 h-5 text-green-400 animate-[spin_1s_ease-in-out]" />
-				<IconRocket v-else aria-hidden="true" class="w-5 h-5" />
+				<IconRocket
+					v-else
+					aria-hidden="true"
+					class="w-5 h-5 hover:text-green-400" />
 				{{ _status.reblogs_count > 0 ? _status.reblogs_count : "" }}
 			</template>
 			<IconLock v-else aria-hidden="true" class="w-5 h-5 text-gray-300" />
-		</button>
+		</Button>
 
 		<div class="relative">
-			<button class="button" title="Add reaction" @click="emojiDialog = !emojiDialog">
+			<button
+				class="button"
+				title="Add reaction"
+				@click="emojiDialog = !emojiDialog">
 				<IconMoodHappy aria-hidden="true" class="w-5 h-5" />
 			</button>
 
 			<ScaleFadeSlide>
-				<div class="z-50 absolute bottom-6 -translate-x-1/2" v-if="emojiDialog">
+				<div
+					class="z-50 absolute bottom-6 -translate-x-1/2"
+					v-if="emojiDialog">
 					<div
 						class="w-80 flex flex-col m-4 p-3 z-50 bg-orange-100/50 backdrop-blur-md dark:bg-dark-800/75 border dark:border-gray-700 shadow rounded-xl h-72">
 						<Input
@@ -205,7 +215,7 @@ const copyUrl = () => {
 				</div>
 			</ScaleFadeSlide>
 		</div>
-		<button
+		<Button
 			class="button"
 			@click="
 				e => {
@@ -216,15 +226,15 @@ const copyUrl = () => {
 			"
 			title="Quote this post">
 			<IconQuote aria-hidden="true" class="w-5 h-5" />
-		</button>
+		</Button>
 
 		<div class="relative">
-			<button
+			<Button
 				@click="menu = !menu"
 				class="button hover:!animate-none"
 				title="Quote this post">
 				<IconDots aria-hidden="true" class="w-5 h-5" />
-			</button>
+			</Button>
 
 			<ScaleFadeSlide>
 				<div

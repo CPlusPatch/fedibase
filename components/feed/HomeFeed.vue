@@ -6,7 +6,7 @@ import Feed, { FeedType } from "./Feed.vue";
 <template>
 	<div
 		id="feed"
-		class="flex overflow-x-hidden flex-col gap-y-6 px-6 py-4 pb-20 h-full w-full no-scroll">
+		class="flex overflow-x-hidden flex-col px-2 py-4 pb-20 h-full w-full no-scroll">
 		<Feed :type="FeedType.Home" />
 	</div>
 </template>

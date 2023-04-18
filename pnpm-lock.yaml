@@ -31,6 +31,9 @@ dependencies:
   uuid:
     specifier: ^9.0.0
     version: 9.0.0
+  v-wave:
+    specifier: ^1.5.0
+    version: 1.5.0(vue@3.2.47)
 
 devDependencies:
   '@nuxt/devtools':
@@ -39,6 +42,9 @@ devDependencies:
   '@nuxt/image-edge':
     specifier: 1.0.0-28008586.381b906
     version: 1.0.0-28008586.381b906(rollup@2.79.1)
+  '@nuxtjs/google-fonts':
+    specifier: ^3.0.0
+    version: 3.0.0(rollup@2.79.1)
   '@nuxtjs/tailwindcss':
     specifier: ^6.6.5
     version: 6.6.5(rollup@2.79.1)(webpack@5.78.0)
@@ -2032,6 +2038,17 @@ packages:
       - vls
       - vti
       - vue-tsc
+    dev: true
+
+  /@nuxtjs/google-fonts@3.0.0(rollup@2.79.1):
+    resolution: {integrity: sha512-knP2CJFkMHGQ9pepVNwquXvqiIHDma/6yZNXiYk7WWatRbbQUPf2423vXiBYu267Mff2KMuDLoAJ1Dsv2ymhdQ==}
+    dependencies:
+      '@nuxt/kit': 3.3.3(rollup@2.79.1)
+      google-fonts-helper: 3.2.4
+      pathe: 1.1.0
+    transitivePeerDependencies:
+      - rollup
+      - supports-color
     dev: true
 
   /@nuxtjs/robots@3.0.0(rollup@2.79.1):
@@ -4755,6 +4772,15 @@ packages:
       ignore: 5.2.4
       merge2: 1.4.1
       slash: 4.0.0
+
+  /google-fonts-helper@3.2.4:
+    resolution: {integrity: sha512-M740UjqBOxmG2qFUW7Lhgak9WDpsT18zxLJuG+MP4r+G1vhqbWm3x3D40xFEzhveQAneaEr8WjPxf+vcx9Xohg==}
+    dependencies:
+      deepmerge: 4.3.1
+      hookable: 5.5.3
+      ofetch: 1.0.1
+      ufo: 1.1.1
+    dev: true
 
   /gopd@1.0.1:
     resolution: {integrity: sha512-d65bNlIadxvpb/A2abVdlqKqV563juRnZ1Wtk6s1sIR8uNsXR70xqIzVqxVf1eTqDunwT2MkczEeaezCKTZhwA==}
@@ -8773,6 +8799,14 @@ packages:
   /uuid@9.0.0:
     resolution: {integrity: sha512-MXcSTerfPa4uqyzStbRoTgt5XIe3x5+42+q1sDuy3R5MDk66URdLMOZe5aPX/SQd+kuYAh0FdP/pO28IkQyTeg==}
     hasBin: true
+    dev: false
+
+  /v-wave@1.5.0(vue@3.2.47):
+    resolution: {integrity: sha512-msda5EzJEH94NZQz4acsETnAiB3Q3+ADvIEi59ekDW3bYLCCCHE4RXOD9qqEzx9NOUJlI4pO8R/29SokouyG4A==}
+    peerDependencies:
+      vue: ^2.0.0 || ^3.0.0
+    dependencies:
+      vue: 3.2.47
     dev: false
 
   /validate-npm-package-license@3.0.4:

@@ -20,9 +20,8 @@ if (props.status.in_reply_to_id && !replyStatus.value) {
 
 <template>
 	<div class="inline">
-		<Link
-			:href="`/posts/${status.id}`"
-			:sidebar="status.id"
+		<NuxtLink
+			:to="`/posts/${status.id}`"
 			class="text-xs text-gray-600 hover:underline dark:text-gray-300">
 			<IconMessage class="inline mr-1 w-4 h-4" />
 			Replying to
@@ -34,6 +33,6 @@ if (props.status.in_reply_to_id && !replyStatus.value) {
 						replyStatus.account.emojis
 					)
 				"></span>
-		</Link>
+		</NuxtLink>
 	</div>
 </template>

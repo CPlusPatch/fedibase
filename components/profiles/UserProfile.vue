@@ -39,17 +39,9 @@ onUnmounted(() => {
 </script>
 
 <template>
-	<TransitionRoot
-		as="template"
-		:appear="true"
-		:show="showHeader && !store.viewingConversation"
-		enter="transform ease-out duration-300 transition"
-		enter-from="-translate-y-2 opacity-0"
-		enter-to="translate-y-0 opacity-100"
-		leave="transition ease-in duration-100"
-		leave-from="opacity-100 translate-y-0"
-		leave-to="opacity-0 -translate-y-2">
+	<ScaleFadeSlide>
 		<div
+			v-if="showHeader && !store.viewingConversation"
 			class="fixed md:hidden top-0 inset-x-0 bg-gray-50/75 dark:bg-dark-800/75 backdrop-blur-lg items-center z-10 flex p-4 gap-x-4">
 			<img
 				:src="account.avatar"
@@ -62,13 +54,13 @@ onUnmounted(() => {
 					"></h4>
 				<h6
 					:title="account.acct"
-					class="text-sm text-gray-500 dark:text-gray-400 font-inter">
+					class="text-sm text-gray-500 dark:text-gray-400">
 					@{{ account.acct }}
 				</h6>
 			</div>
 		</div>
-	</TransitionRoot>
-	<ScaleFadeSlide :appear="true">
+	</ScaleFadeSlide>
+	<ScaleFadeSlide>
 		<div
 			class="flex flex-col gap-y-4 w-full bg-gray-50 pb-5 dark:bg-dark-800 rounded-b">
 			<div class="w-full relative">
@@ -98,7 +90,7 @@ onUnmounted(() => {
 						"></h4>
 					<h6
 						:title="account.acct"
-						class="text-sm text-gray-500 dark:text-gray-400 font-inter">
+						class="text-sm text-gray-500 dark:text-gray-400">
 						@{{ account.acct }}
 					</h6>
 				</div>
@@ -106,10 +98,10 @@ onUnmounted(() => {
 			</div>
 			<div
 				v-html="withEmojis(account.note, account.emojis)"
-				class="p-3 bio mx-4 text-sm rounded-md dark:text-gray-50 font-inter break-all"></div>
+				class="p-3 bio mx-4 text-sm rounded-md dark:text-gray-50 break-all"></div>
 
 			<div
-				class="md:flex grow md:flex-row mx-6 text-gray-600 dark:text-gray-300 font-inter items-center justify-between grid grid-cols-2 gap-y-3">
+				class="md:flex grow md:flex-row mx-6 text-gray-600 dark:text-gray-300 items-center justify-between grid grid-cols-2 gap-y-3">
 				<div class="flex items-center gap-x-1 justify-center">
 					<IconCake class="inline w-5 h-5 mb-0.5" />
 					{{
@@ -136,7 +128,7 @@ onUnmounted(() => {
 
 			<div
 				v-if="account.fields.length > 0"
-				class="gap-y-2 md:gap-y-0 flex flex-col bio md:divide-y mx-4 dark:divide-gray-700 text-sm rounded-md border dark:border-gray-700 dark:text-gray-50 font-inter">
+				class="gap-y-2 md:gap-y-0 flex flex-col bio md:divide-y mx-4 dark:divide-gray-700 text-sm rounded-md border dark:border-gray-700 dark:text-gray-50">
 				<div
 					v-for="field of account.fields"
 					:key="field.name"

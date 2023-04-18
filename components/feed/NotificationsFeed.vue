@@ -48,7 +48,7 @@ const mode: Ref<string> = ref(modes[0].value);
 </script>
 
 <template>
-	<div class="flex flex-col gap-y-6 w-full max-w-full min-h-full font-inter">
+	<div class="flex flex-col gap-y-6 w-full max-w-full min-h-full">
 		<div
 			v-if="props.title"
 			class="flex flex-row justify-between items-center">
@@ -63,7 +63,7 @@ const mode: Ref<string> = ref(modes[0].value);
 		</div>
 
 		<ul
-			class="flex overflow-y-scroll flex-col gap-y-3 max-w-full h-full no-scroll"
+			class="flex overflow-y-scroll flex-col max-w-full h-full no-scroll"
 			:id="id">
 			<Feed :type="FeedType.Notifications" :mode="mode" />
 		</ul>

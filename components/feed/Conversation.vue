@@ -90,7 +90,7 @@ onUnmounted(() => {
 
 <template>
 	<div class="flex overflow-y-hidden flex-col pt-6 h-full">
-		<div class="flex justify-between px-4 sm:px-6">
+		<div class="flex justify-between px-4">
 			<h1 class="text-lg font-medium text-gray-900 dark:text-gray-50">
 				Conversation
 			</h1>
@@ -101,8 +101,7 @@ onUnmounted(() => {
 				<IconX v-if="closeButton" class="w-5 h-5 dark:text-gray-50" />
 			</button>
 		</div>
-		<div
-			class="flex overflow-hidden relative px-4 mt-6 max-w-full grow sm:px-6">
+		<div class="flex overflow-hidden relative mt-6 max-w-full grow">
 			<div
 				v-if="post"
 				class="flex overflow-y-scroll flex-col gap-y-5 py-4 w-full h-full no-scroll">
@@ -114,7 +113,7 @@ onUnmounted(() => {
 						:interaction="true" />
 				</div>
 				<div
-					class="px-4 py-4 border-2 dark:border-gray-700 bg-gray-300/10 rounded-md">
+					class="px-4 py-4 border-y-2 dark:border-gray-700 bg-gray-300/10">
 					<Status :type="type" :interaction="true" :status="post" />
 				</div>
 				<div class="flex flex-col gap-y-4 mb-20">

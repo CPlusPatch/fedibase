@@ -46,10 +46,9 @@ const selected = ref<SelectItem>(props.items[props.defaultValue]);
 		:name="name"
 		v-model="selected"
 		as="div"
-		class="relative font-inter"
+		class="relative"
 		@update:modelValue="value => emit('update:modelValue', value)">
 		<ListboxButton
-			title="Open select menu"
 			class="flex relative flex-row gap-x-1 items-center p-2 text-gray-600 rounded duration-200 cursor-default dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">
 			<component
 				:is="selected.icon"
@@ -60,7 +59,7 @@ const selected = ref<SelectItem>(props.items[props.defaultValue]);
 		<ScaleFadeSlide>
 			<ListboxOptions
 				:class="[
-					'overflow-auto absolute z-30 dark:border-gray-700 shadow-lg mt-1 w-64 text-base rounded-md border font-inter bg-gray-100/75 dark:bg-dark-800/75 backdrop-blur-md',
+					'overflow-auto absolute z-30 dark:border-gray-700 shadow-lg mt-1 w-64 text-base rounded-md border bg-gray-100/75 dark:bg-dark-800/75 backdrop-blur-md',
 					direction === SelectDirection.Left &&
 						'right-0 origin-top-right',
 					direction === SelectDirection.Center &&
@@ -75,8 +74,7 @@ const selected = ref<SelectItem>(props.items[props.defaultValue]);
 						item.value === selected.value &&
 							'bg-orange-100 dark:bg-orange-500/10',
 						'm-2 rounded flex relative flex-row gap-x-3 items-center py-2 px-3 text-gray-800 dark:text-gray-100 duration-200 cursor-default select-none hover:bg-gray-200 dark:hover:bg-gray-700',
-					]"
-					:title="item.description">
+					]">
 					<component
 						:is="item.icon"
 						class="w-5 h-auto text-gray-500"

@@ -6,6 +6,7 @@ import {
 	IconHome,
 	IconUsers,
 	IconWorld,
+	IconHome2,
 } from "@tabler/icons-vue";
 import NavElement, { NavigationItem } from "./NavElement.vue";
 import { store } from "../utils/store";
@@ -16,7 +17,7 @@ import { IconLogout } from "@tabler/icons-vue";
 const navigation: NavigationItem[] = [
 	{
 		name: "Home",
-		icon: IconHome,
+		icon: IconHome2,
 		href: "/",
 		type: "",
 	},
@@ -56,22 +57,15 @@ const logout = () => {
 
 <template>
 	<div
-		class="hidden h-full dark:bg-dark-800 bg-white flex-col bg-gradient-to-b border-r dark:border-gray-700 bg-light dark:dark:bg-dark-800 lg:flex">
-		<div
-			class="flex overflow-y-auto flex-col flex-1 items-center pt-5 pb-4">
-			<RouterLink
-				to="/"
-				class="flex flex-shrink-0 justify-center items-center px-2">
-				<img
-					:src="store.auth.instance?.thumbnail ?? ''"
-					class="w-8 h-8 rounded"
-					alt="" />
-				<span class="sr-only">{{ store.auth.instance?.title }}</span>
-			</RouterLink>
-			<nav class="flex-1 px-2 mt-5 space-y-1" aria-label="Sidebar">
-				<div v-for="nav in navigation" :key="nav.name">
-					<NavElement :element="nav" />
-				</div>
+		class="hidden h-full dark:bg-dark-800 bg-white flex-col bg-gradient-to-b border-r dark:border-dark-700 bg-light dark:dark:bg-dark-800 lg:flex">
+		<div class="flex overflow-y-auto flex-col flex-1 items-center pb-4">
+			<nav
+				class="flex-col flex gap-y-2 grow px-2 mt-5"
+				aria-label="Sidebar">
+				<NavElement
+					:element="nav"
+					v-for="nav in navigation"
+					:key="nav.name" />
 			</nav>
 			<button
 				title="Toggle light/dark mode"
