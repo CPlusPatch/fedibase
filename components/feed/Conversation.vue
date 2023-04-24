@@ -128,9 +128,7 @@ onUnmounted(() => {
 			<div
 				v-else
 				class="grow w-full h-full flex items-center justify-center">
-				<img
-					src="/images/icons/logo.svg"
-					class="w-20 h-20 animate-hithere" />
+				<Spinner class="w-10 h-10" />
 			</div>
 		</div>
 	</div>

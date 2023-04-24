@@ -172,47 +172,38 @@ onUnmounted(() => {
 </script>
 
 <template>
-	<template
-		v-if="entities.length > 0 && type !== FeedType.Notifications"
-		v-for="entity of entities"
-		:key="entity.id">
+	<template v-if="entities.length > 0 && type !== FeedType.Notifications" v-for="entity of entities" :key="entity.id">
 		<Post :status="entity" :interaction="true" />
 	</template>
-	<template
-		v-if="entities.length > 0 && type === FeedType.Notifications"
-		v-for="entity of entities.filter(e => {
-		switch (props.mode) {
-			case 'all':
-				return true;
-			case 'reblogs':
-				return (
-					(e as Entity.Notification).type === 'reblog'
-				);
-			case 'mention':
-				return (
-					(e as Entity.Notification).type ===
-					'mention'
-				);
-			case 'favourites':
-				return (
-					(e as Entity.Notification).type ===
-					'favourite'
-				);
-		}
-	})"
-		:key="entity.id">
+	<template v-if="entities.length > 0 && type === FeedType.Notifications" v-for="entity of entities.filter(e => {
+			switch (props.mode) {
+				case 'all':
+					return true;
+				case 'reblogs':
+					return (
+						(e as Entity.Notification).type === 'reblog'
+					);
+				case 'mention':
+					return (
+						(e as Entity.Notification).type ===
+						'mention'
+					);
+				case 'favourites':
+					return (
+						(e as Entity.Notification).type ===
+						'favourite'
+					);
+			}
+		})" :key="entity.id">
 		<Notification :notification="entity" />
 	</template>
 
-	<div
-		v-if="entities.length === 0 && !reachedEnd"
-		class="grow w-full h-full flex items-center justify-center">
-		<img src="/images/icons/logo.svg" class="w-20 h-20 animate-hithere" />
+	<div v-if="entities.length === 0 && !reachedEnd" class="grow w-full h-full flex items-center justify-center">
+		<!-- <img src="/images/icons/logo.svg" class="w-20 h-20 animate-hithere" /> -->
+		<Spinner class="w-10 h-10"/>
 	</div>
 
-	<DummyStatus
-		v-if="!loading && !reachedEnd && entities.length > 0"
-		v-is-visible="loadMoreEntities" />
+	<DummyStatus v-if="!loading && !reachedEnd && entities.length > 0" v-is-visible="loadMoreEntities" />
 	<DummyStatus v-if="!reachedEnd && entities.length > 0" />
 	<DummyStatus v-if="!reachedEnd && entities.length > 0" />
 	<!-- Only show 3 dummy statuses once posts are loaded to prevent the user from scrolling too far

@@ -81,21 +81,17 @@ onUnmounted(() => {
 			<Nav />
 
 			<div
-				class="grid grid-cols-6 justify-between overflow-hidden pt-4 gap-x-4 px-4 grid-flow-row md:grid-cols-8 xl:grid-cols-12 w-full max-w-[90rem] mx-auto">
+				class="grid grid-cols-6 justify-between overflow-hidden gap-x-4 px-4 grid-flow-row md:grid-cols-8 xl:grid-cols-12 w-full max-w-[90rem] mx-auto">
 				<div
-					:class="[
-						'hidden md:col-span-3 md:block no-scroll overflow-y-scroll',
-						store.viewingConversation &&
-							'dark:bg-dark-800 bg-gray-50 rounded-md border dark:border-dark-700',
-					]">
+					:class="['hidden md:col-span-3 md:block no-scroll overflow-y-scroll',]">
 					<LeftSidebar />
 				</div>
 				<div
-					class="overflow-x-hidden md:col-span-5 col-span-6 border dark:border-dark-700 rounded-md dark:bg-dark-800">
+					class="overflow-x-hidden md:col-span-5 col-span-6 border-x dark:border-dark-700 dark:bg-dark-800">
 					<slot />
 				</div>
 				<div
-					class="hidden overflow-x-hidden p-4 md:col-span-0 max-h-screen xl:col-span-4 xl:flex dark:bg-dark-800 rounded-md border dark:border-dark-700">
+					class="hidden overflow-x-hidden p-4 md:col-span-0 max-h-screen xl:col-span-4 xl:flex dark:bg-dark-800 rounded-md dark:border-dark-700">
 					<NotificationsFeed :title="true" />
 				</div>
 			</div>

@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import {
 	IconAlignLeft,
-	IconClock,
 	IconLock,
 	IconLockOpen,
 	IconMail,
@@ -41,50 +40,21 @@ const props = withDefaults(
 	}
 );
 
-const pollDurations = [
-	{
-		icon: IconClock,
-		text: "5 minutes",
-		value: "300",
-	},
-	{
-		icon: IconClock,
-		text: "30 minutes",
-		value: "1800",
-	},
-	{
-		icon: IconClock,
-		text: "1 hour",
-		value: "3600",
-	},
-	{
-		icon: IconClock,
-		text: "6 hours",
-		value: "21600",
-	},
-	{
-		icon: IconClock,
-		text: "12 hours",
-		value: "43200",
-	},
-	{
-		icon: IconClock,
-		text: "1 day",
-		value: "86400",
-	},
-	{
-		icon: IconClock,
-		text: "3 days",
-		value: "259200",
-	},
-	{
-		icon: IconClock,
-		text: "7 days",
-		value: "604800",
-	},
-];
+interface PostMode {
+	text: string;
+	value: string;
+	description: string;
+	icon: any;
+}
 
-const modes = [
+interface PostVisibility {
+	text: string;
+	value: string;
+	description: string;
+	icon: any;
+}
+
+const modes: PostMode[] = [
 	{
 		text: "Plaintext",
 		value: "text",
@@ -99,7 +69,7 @@ const modes = [
 	},
 ];
 
-const visibilities = [
+const visibilities: PostVisibility[] = [
 	{
 		text: "Public",
 		value: "public",
@@ -126,7 +96,7 @@ const visibilities = [
 	},
 ];
 
-const closeModal = (e: Event) => {
+const closeModal = (e: Event): void => {
 	e.preventDefault();
 	store.state.composer = false;
 	store.quotingTo = null;
@@ -140,17 +110,15 @@ const textareaRef = ref<HTMLTextAreaElement | null>(null);
 const loading = ref<boolean>(false);
 const contentWarning = ref<boolean>(
 	(otherPost?.sensitive ?? false) ||
-		((otherPost?.spoiler_text.length ?? 0) > 0 ?? false)
+	((otherPost?.spoiler_text?.length ?? 0) > 0)
 );
-const files = ref<
-	{
-		uuid: string;
-		metadata: Entity.Attachment;
-		file: File;
-	}[]
->([]);
+const files = ref<{
+	uuid: string;
+	metadata: Entity.Attachment;
+	file: File;
+}[]>([]);
 
-const clickOnFileInput = () => {
+const clickOnFileInput = (): void => {
 	document.getElementById("fileUpload")?.click();
 };
 
