@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import Status, { PostType } from "./Status.vue";
 import { IconDots } from "@tabler/icons-vue";
 import { Entity } from "megalodon";
+import Status, { PostType } from "./Status.vue";
 
 interface ChildPostProps {
 	posts: Entity.Status[];
@@ -37,9 +37,9 @@ const children = props.posts.filter(
 					:type="PostType.Normal" />
 				<ConversationChildPost
 					:posts="posts"
-					:parentId="post.id"
+					:parent-id="post.id"
 					:mode="mode"
-					:recursionDepth="recursionDepth + 1" />
+					:recursion-depth="recursionDepth + 1" />
 			</template>
 		</div>
 	</template>

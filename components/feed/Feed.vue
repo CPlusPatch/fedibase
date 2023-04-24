@@ -1,4 +1,9 @@
 <script lang="ts">
+import { IconHandStop } from "@tabler/icons-vue";
+import { store } from "../../utils/store";
+import DummyStatus from "../status/DummyStatus.vue";
+import Notification from "../notifications/Notification.vue";
+import Post from "./Post.vue";
 export enum FeedType {
 	Home,
 	User,
@@ -9,12 +14,6 @@ export enum FeedType {
 </script>
 
 <script setup lang="ts">
-import { store } from "../../utils/store";
-import DummyStatus from "../status/DummyStatus.vue";
-import Post from "./Post.vue";
-import Notification from "../notifications/Notification.vue";
-import { IconHandStop } from "@tabler/icons-vue";
-
 const props = withDefaults(
 	defineProps<{
 		type: FeedType;
@@ -44,7 +43,7 @@ const interval = window.setInterval(async () => {
 	}) */
 }, 15000);
 
-const getEntitiesSinceId = async (since_id: string) => {
+const getEntitiesSinceId = async (sinceId: string) => {
 	if (loading.value) return;
 	if (!store.client?.getLocalTimeline) return;
 	loading.value = true;
@@ -53,16 +52,16 @@ const getEntitiesSinceId = async (since_id: string) => {
 		case FeedType.Home: {
 			res = (await store.client?.getHomeTimeline({
 				limit: DEFAULT_LOAD,
-				since_id: since_id,
+				since_id: sinceId,
 			})) as any;
 			break;
 		}
 		case FeedType.User: {
 			if (!props.id)
-				throw Error("Feed needs a user ID to work in user mode!");
+				throw new Error("Feed needs a user ID to work in user mode!");
 			res = (await store.client?.getAccountStatuses(props.id, {
 				limit: DEFAULT_LOAD,
-				since_id: since_id,
+				since_id: sinceId,
 			})) as any;
 			break;
 		}
@@ -70,7 +69,7 @@ const getEntitiesSinceId = async (since_id: string) => {
 		case FeedType.Notifications: {
 			res = (await store.client?.getNotifications({
 				limit: DEFAULT_LOAD,
-				since_id: since_id,
+				since_id: sinceId,
 			})) as any;
 			break;
 		}
@@ -78,7 +77,7 @@ const getEntitiesSinceId = async (since_id: string) => {
 		case FeedType.Local: {
 			res = (await store.client?.getLocalTimeline({
 				limit: DEFAULT_LOAD,
-				since_id: since_id,
+				since_id: sinceId,
 			})) as any;
 			break;
 		}
@@ -86,7 +85,7 @@ const getEntitiesSinceId = async (since_id: string) => {
 		case FeedType.Federated: {
 			res = (await store.client?.getPublicTimeline({
 				limit: DEFAULT_LOAD,
-				since_id: since_id,
+				since_id: sinceId,
 			})) as any;
 			break;
 		}
@@ -95,7 +94,7 @@ const getEntitiesSinceId = async (since_id: string) => {
 	return res.data;
 };
 
-const getEntitiesBeforeId = async (before_id: string) => {
+const getEntitiesBeforeId = async (beforeId: string) => {
 	let res;
 	loading.value = true;
 
@@ -103,37 +102,37 @@ const getEntitiesBeforeId = async (before_id: string) => {
 		case FeedType.Home: {
 			res = (await store.client?.getHomeTimeline({
 				limit: DEFAULT_LOAD,
-				max_id: before_id,
+				max_id: beforeId,
 			})) as any;
 			break;
 		}
 		case FeedType.User: {
 			if (!props.id)
-				throw Error("Feed needs a user ID to work in user mode!");
+				throw new Error("Feed needs a user ID to work in user mode!");
 			res = (await store.client?.getAccountStatuses(props.id, {
 				limit: DEFAULT_LOAD,
-				max_id: before_id,
+				max_id: beforeId,
 			})) as any;
 			break;
 		}
 		case FeedType.Notifications: {
 			res = (await store.client?.getNotifications({
 				limit: DEFAULT_LOAD,
-				max_id: before_id,
+				max_id: beforeId,
 			})) as any;
 			break;
 		}
 		case FeedType.Local: {
 			res = (await store.client?.getLocalTimeline({
 				limit: DEFAULT_LOAD,
-				max_id: before_id,
+				max_id: beforeId,
 			})) as any;
 			break;
 		}
 		case FeedType.Federated: {
 			res = (await store.client?.getPublicTimeline({
 				limit: DEFAULT_LOAD,
-				max_id: before_id,
+				max_id: beforeId,
 			})) as any;
 			break;
 		}
@@ -148,9 +147,9 @@ const getEntitiesBeforeId = async (before_id: string) => {
 const loadMoreEntities = async () => {
 	if (loading.value) return false;
 	if (reachedEnd.value) return false;
-	const before_id = (entities.value[entities.value.length - 1] as any).id;
+	const beforeId = (entities.value[entities.value.length - 1] as any).id;
 
-	const newEntities = await getEntitiesBeforeId(before_id);
+	const newEntities = await getEntitiesBeforeId(beforeId);
 
 	entities.value = [...entities.value, ...newEntities] as any;
 
@@ -172,38 +171,49 @@ onUnmounted(() => {
 </script>
 
 <template>
-	<template v-if="entities.length > 0 && type !== FeedType.Notifications" v-for="entity of entities" :key="entity.id">
-		<Post :status="entity" :interaction="true" />
+	<template v-if="entities.length > 0 && type !== FeedType.Notifications">
+		<Post
+			v-for="entity of entities"
+			:key="(entity as any).id"
+			:status="entity"
+			:interaction="true" />
 	</template>
-	<template v-if="entities.length > 0 && type === FeedType.Notifications" v-for="entity of entities.filter(e => {
-			switch (props.mode) {
-				case 'all':
-					return true;
-				case 'reblogs':
-					return (
-						(e as Entity.Notification).type === 'reblog'
-					);
-				case 'mention':
-					return (
-						(e as Entity.Notification).type ===
-						'mention'
-					);
-				case 'favourites':
-					return (
-						(e as Entity.Notification).type ===
-						'favourite'
-					);
-			}
-		})" :key="entity.id">
-		<Notification :notification="entity" />
+	<template v-if="entities.length > 0 && type === FeedType.Notifications">
+		<Notification
+			v-for="entity of entities.filter(e => {
+				switch (props.mode) {
+					case 'all':
+						return true;
+					case 'reblogs':
+						return (
+							(e as Entity.Notification).type === 'reblog'
+						);
+					case 'mention':
+						return (
+							(e as Entity.Notification).type ===
+							'mention'
+						);
+					case 'favourites':
+						return (
+							(e as Entity.Notification).type ===
+							'favourite'
+						);
+				}
+			})"
+			:key="(entity as any).id"
+			:notification="entity" />
 	</template>
 
-	<div v-if="entities.length === 0 && !reachedEnd" class="grow w-full h-full flex items-center justify-center">
+	<div
+		v-if="entities.length === 0 && !reachedEnd"
+		class="grow w-full h-full flex items-center justify-center">
 		<!-- <img src="/images/icons/logo.svg" class="w-20 h-20 animate-hithere" /> -->
-		<Spinner class="w-10 h-10"/>
+		<Spinner class="w-10 h-10" />
 	</div>
 
-	<DummyStatus v-if="!loading && !reachedEnd && entities.length > 0" v-is-visible="loadMoreEntities" />
+	<DummyStatus
+		v-if="!loading && !reachedEnd && entities.length > 0"
+		v-is-visible="loadMoreEntities" />
 	<DummyStatus v-if="!reachedEnd && entities.length > 0" />
 	<DummyStatus v-if="!reachedEnd && entities.length > 0" />
 	<!-- Only show 3 dummy statuses once posts are loaded to prevent the user from scrolling too far

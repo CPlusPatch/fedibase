@@ -24,7 +24,8 @@
 			</div>
 			<div class="flex flex-col gap-y-2">
 				<p
-					v-for="_ of Math.ceil(Math.random() * 4)"
+					v-for="chance of Math.ceil(Math.random() * 4)"
+					:key="chance"
 					class="w-full bg-gray-300 rounded h-5 dark:bg-gray-500/40 animate-pulse"></p>
 				<p
 					:style="{

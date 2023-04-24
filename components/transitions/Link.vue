@@ -1,5 +1,5 @@
 <template>
-	<a v-bind="$attrs" @click="handleClick" :href="props.href">
+	<a v-bind="$attrs" :href="props.href" @click="handleClick">
 		<slot />
 	</a>
 </template>

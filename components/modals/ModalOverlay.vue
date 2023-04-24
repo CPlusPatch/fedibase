@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { TransitionChild, DialogBackdrop } from "@headlessui/vue";
+import { TransitionChild } from "@headlessui/vue";
 </script>
 
 <template>

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { v4 } from "uuid";
-import Notification from "./Notification.vue";
 import { ref } from "vue";
+import Notification from "./Notification.vue";
 </script>
 
 <script lang="ts">
@@ -29,14 +29,14 @@ export const addNotification = (
 	const uuid = v4();
 	notifications.value.push({
 		type: type ?? NotificationType.Normal,
-		uuid: uuid,
-		content: content,
+		uuid,
+		content,
 		show: true,
 		icon: icon ?? undefined,
 	});
 
 	setTimeout(() => {
-		let notif = notifications.value.find(n => n.uuid === uuid);
+		const notif = notifications.value.find(n => n.uuid === uuid);
 		if (notif) notif.show = false;
 		setTimeout(() => {
 			notifications.value = notifications.value.filter(
@@ -56,8 +56,8 @@ export const addNotification = (
 			<!-- Notification panel, dynamically insert this into the live region when it needs to be displayed -->
 			<Notification
 				v-for="notif of notifications"
-				:appear="true"
 				:key="notif.uuid"
+				:appear="true"
 				:notif="notif">
 			</Notification>
 		</div>

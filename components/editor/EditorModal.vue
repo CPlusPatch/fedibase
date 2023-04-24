@@ -6,8 +6,8 @@ import {
 	DialogPanel,
 } from "@headlessui/vue";
 import { store } from "../../utils/store";
-import PostEditor from "./PostEditor.vue";
 import ModalOverlay from "../modals/ModalOverlay.vue";
+import PostEditor from "./PostEditor.vue";
 
 const closeModal = () => {
 	store.state.composer = false;
@@ -32,11 +32,11 @@ const _window = window;
 				<TransitionChild
 					as="template"
 					enter="ease-in-out duration-300"
-					enterFrom="opacity-0 scale-95"
-					enterTo="opacity-100 scale-100"
+					enter-from="opacity-0 scale-95"
+					enter-to="opacity-100 scale-100"
 					leave="ease-in duration-300"
-					leaveFrom="opacity-100 scale-100"
-					leaveTo="opacity-0 scale-95">
+					leave-from="opacity-100 scale-100"
+					leave-to="opacity-0 scale-95">
 					<DialogPanel
 						class="relative w-full text-left transition-all transform sm:max-w-xl">
 						<PostEditor />

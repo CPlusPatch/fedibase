@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { IconMessage } from "@tabler/icons-vue";
-import Link from "../transitions/Link.vue";
 import { ref } from "vue";
 import { withEmojis } from "../../utils/functions";
 import { store } from "../../utils/store";

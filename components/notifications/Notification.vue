@@ -3,7 +3,6 @@ import { IconStarFilled } from "@tabler/icons-vue";
 import { Entity } from "megalodon";
 import { withEmojis, withEmojiReactions } from "../../utils/functions";
 import Status, { PostType } from "../status/Status.vue";
-import Link from "../transitions/Link.vue";
 
 const props = defineProps<{
 	notification: Entity.Notification;
@@ -48,8 +47,8 @@ const props = defineProps<{
 			favourited
 		</RouterLink>
 		<RouterLink
-			:to="`/user/${notification.account.id}`"
 			v-if="props.notification.type === 'emoji_reaction'"
+			:to="`/user/${notification.account.id}`"
 			class="overflow-hidden px-4 gap-x-1 max-w-full font-semibold text-gray-500 overflow-ellipsis dark:text-gray-400 hover:underline">
 			<img
 				loading="lazy"
@@ -103,8 +102,8 @@ const props = defineProps<{
 			boosted
 		</RouterLink>
 		<Status
-			:type="PostType.Small"
 			v-if="props.notification.status"
+			:type="PostType.Small"
 			:interaction="props.notification.type === 'mention'"
 			:status="props.notification.status" />
 	</li>

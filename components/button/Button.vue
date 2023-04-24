@@ -14,18 +14,18 @@ interface ButtonProps extends ButtonHTMLAttributes {
 	spinnerClasses?: string;
 	disabled?: boolean;
 }
-const props = defineProps<ButtonProps>();
+defineProps<ButtonProps>();
 </script>
 
 <template>
 	<button
+		v-ripple
 		:class="[
 			'inline-flex justify-center relative ease-in-out items-center no-bad-scale px-4 py-2 text-base font-medium rounded-md border shadow-sm duration-200 focus:outline-none sm:text-sm',
 			theme && themes[theme],
 			loading && '!text-transparent',
 		]"
 		:disabled="disabled || loading"
-		v-ripple
 		type="button">
 		<svg
 			v-if="loading"

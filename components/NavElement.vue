@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import Link from "./transitions/Link.vue";
 
 export type NavigationItem = {
 	name: string;
@@ -8,8 +7,6 @@ export type NavigationItem = {
 	href: string;
 	type: string;
 };
-
-let current = ref<boolean>(false);
 
 const props = defineProps<{
 	element: NavigationItem;
@@ -26,7 +23,7 @@ watch(
 </script>
 
 <template>
-	<RouterLink
+	<NuxtLink
 		:to="props.element.href"
 		:class="[
 			'flex justify-center items-center p-2.5 mx-1 text-sm font-medium rounded-md group hover:translate-x-1 duration-200 ease-in-out',
@@ -36,5 +33,5 @@ watch(
 			class="flex-shrink-0 w-5 h-5 text-black dark:text-[#fffbded6]"
 			aria-hidden="true" />
 		<span class="sr-only"> Visit the {{ props.element.name }} feed </span>
-	</RouterLink>
+	</NuxtLink>
 </template>

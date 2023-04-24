@@ -2,9 +2,8 @@
 import { Entity } from "megalodon";
 import { withEmojis } from "../../utils/functions";
 import Status, { PostType } from "../status/Status.vue";
-import Link from "../transitions/Link.vue";
 
-const props = defineProps<{
+defineProps<{
 	status: Entity.Status;
 }>();
 </script>

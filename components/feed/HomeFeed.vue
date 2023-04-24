@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { onUnmounted } from "vue";
 import Feed, { FeedType } from "./Feed.vue";
 </script>
 

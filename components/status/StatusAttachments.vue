@@ -3,7 +3,7 @@ import { Entity } from "megalodon";
 import StatusAttachment from "./StatusAttachment.vue";
 import { PostType } from "./Status.vue";
 
-const props = defineProps<{
+defineProps<{
 	status: Entity.Status;
 	type: PostType;
 }>();
@@ -21,8 +21,8 @@ const props = defineProps<{
 		]">
 		<StatusAttachment
 			v-for="attachment in status.media_attachments"
-			:type="type"
 			:key="attachment.id"
+			:type="type"
 			:status="status"
 			:media="attachment" />
 	</div>

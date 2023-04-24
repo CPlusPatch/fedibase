@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { ref } from "vue";
+import { v4 } from "uuid";
 import { store } from "../../utils/store";
 import PostEditor from "../editor/PostEditor.vue";
 import Conversation from "../feed/Conversation.vue";
-import { v4 } from "uuid";
 import NotificationsFeed from "../feed/NotificationsFeed.vue";
 
 const uuid = ref<string>(v4());
@@ -16,9 +16,9 @@ const reRender = () => {
 <template>
 	<Conversation
 		v-if="store.viewingConversation"
+		:id="store.viewingConversation"
 		:key="store.viewingConversation"
 		:close-button="true"
-		:id="store.viewingConversation"
 		:on-close="
 			() => {
 				store.viewingConversation = '';

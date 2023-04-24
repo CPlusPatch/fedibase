@@ -15,7 +15,7 @@ const react = () => {
 
 	store.client
 		?.createEmojiReaction(props.status.id, _reaction.value.name)
-		.then(res => {
+		.then(_ => {
 			_reaction.value.me = true;
 			_reaction.value.count++;
 		});
@@ -24,16 +24,16 @@ const react = () => {
 
 <template>
 	<button
-		@click="react"
 		:class="[
 			'text-lg flex items-center dark:text-gray-200 gap-x-2 rounded duration-200 justify-center bg-orange-400/40 dark:bg-orange-800/40 px-3 py-1',
 			_reaction.me
 				? 'bg-orange-700/40 dark:bg-orange-300/40 cursor-not-allowed'
 				: 'no-bad-scale hover:scale-95',
-		]">
+		]"
+		@click="react">
 		<img
-			loading="lazy"
 			v-if="_reaction.name.includes('@')"
+			loading="lazy"
 			:src="
 				status.emojis.find(e => `:${e.shortcode}:` == _reaction.name)
 					?.static_url

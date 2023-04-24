@@ -1,8 +1,7 @@
 <script setup lang="ts">
+import { IconX } from "@tabler/icons-vue";
 import { store } from "../../utils/store";
 import Status, { PostType } from "../status/Status.vue";
-import DummyStatus from "../status/DummyStatus.vue";
-import { IconX } from "@tabler/icons-vue";
 import ConversationChildPost from "../status/ConversationChildPost.vue";
 
 const props = withDefaults(
@@ -14,6 +13,7 @@ const props = withDefaults(
 		type?: PostType;
 	}>(),
 	{
+		id: undefined,
 		title: true,
 		onClose: () => {},
 		closeButton: false,
@@ -23,9 +23,9 @@ const props = withDefaults(
 
 const route = useRoute();
 
-let ancestors = ref<Entity.Status[]>([]);
-let post = ref<Entity.Status | null>(null);
-let descendants = ref<Entity.Status[]>([]);
+const ancestors = ref<Entity.Status[]>([]);
+const post = ref<Entity.Status | null>(null);
+const descendants = ref<Entity.Status[]>([]);
 const id = ref<string>(props.id ?? (route.params.id as string));
 
 // Finds all the parent elements of a post in a list of statuses
@@ -96,8 +96,8 @@ onUnmounted(() => {
 			</h1>
 			<button
 				class="flex items-center justify-center"
-				@click="onClose"
-				title="Close conversation">
+				title="Close conversation"
+				@click="onClose">
 				<IconX v-if="closeButton" class="w-5 h-5 dark:text-gray-50" />
 			</button>
 		</div>
@@ -107,8 +107,9 @@ onUnmounted(() => {
 				class="flex overflow-y-scroll flex-col gap-y-5 py-4 w-full h-full no-scroll">
 				<div class="flex flex-col gap-y-4 px-2">
 					<Status
-						:type="type"
 						v-for="ancestor of ancestors"
+						:key="ancestor.id"
+						:type="type"
 						:status="ancestor"
 						:interaction="true" />
 				</div>
@@ -121,7 +122,7 @@ onUnmounted(() => {
 						:key="JSON.stringify(descendants)"
 						:posts="descendants"
 						:mode="PostType.Normal"
-						:parentId="post.id" />
+						:parent-id="post.id" />
 				</div>
 			</div>
 

@@ -1,16 +1,22 @@
-<script setup lang="ts">
+<script lang="ts">
 import { Entity } from "megalodon";
 import { onMounted, ref } from "vue";
 import { classNames, withEmojis, fromNow } from "../../utils/functions";
-import InteractionBar from "./InteractionBar.vue";
 import Button from "../button/Button.vue";
+import InteractionBar from "./InteractionBar.vue";
 import StatusAttachments from "./StatusAttachments.vue";
-import Link from "../transitions/Link.vue";
 import ReplyTo from "./ReplyTo.vue";
 import Poll from "./Poll.vue";
 import Reactions from "./Reactions.vue";
-import { store } from "../../utils/store";
 
+export enum PostType {
+	Normal,
+	Small,
+	Tiny,
+}
+</script>
+
+<script setup lang="ts">
 const props = defineProps<{
 	status: Entity.Status;
 	interaction: boolean;
@@ -39,14 +45,6 @@ const toggleExpand = () => {
 const toggleShow = () => {
 	show.value = !show.value;
 };
-</script>
-
-<script lang="ts">
-export enum PostType {
-	Normal,
-	Small,
-	Tiny,
-}
 </script>
 
 <template>
@@ -83,11 +81,11 @@ export enum PostType {
 								status.account.emojis
 							)
 						"></h4>
-					<RouterLink
+					<NuxtLink
 						:to="`/posts/${status.id}`"
 						class="text-sm text-gray-700 dark:text-gray-300 hover:underline"
 						v-html="fromNow(new Date(status.created_at))">
-					</RouterLink>
+					</NuxtLink>
 				</div>
 				<h5
 					:title="status.account.acct"
@@ -133,42 +131,42 @@ export enum PostType {
 						: withEmojis(status.spoiler_text, status.emojis)
 				}}
 
-				<Button class="!py-1 !px-2" @click="toggleShow" theme="gray">
+				<Button class="!py-1 !px-2" theme="gray" @click="toggleShow">
 					{{ show ? "Hide" : "Show" }}
 				</Button>
 			</div>
 
 			<p
 				ref="textRef"
-				v-html="withEmojis(status.content, status.emojis)"
 				:class="
 					classNames(
 						'mt-1 status-text rounded text-sm duration-200 status-text dark:text-gray-50 break-words max-w-full',
 						status.sensitive && !show && 'filter blur-lg',
 						clamps && !expand && 'line-clamp-6'
 					)
-				"></p>
+				"
+				v-html="withEmojis(status.content, status.emojis)"></p>
 
 			<button
 				v-if="clamps"
-				@click="toggleExpand"
-				class="mx-auto w-full text-sm text-blue-800 dark:text-blue-100 hover:underline">
+				class="mx-auto w-full text-sm text-blue-800 dark:text-blue-100 hover:underline"
+				@click="toggleExpand">
 				<template v-if="expand">Less</template>
-				<template v-else="expand">More</template>
+				<template v-else>More</template>
 			</button>
 
 			<Poll v-if="status.poll" :status="status" />
 
 			<Reactions
-				:status="status"
-				v-if="status.emoji_reactions.length > 0" />
+				v-if="status.emoji_reactions.length > 0"
+				:status="status" />
 
 			<StatusAttachments
+				v-if="status.media_attachments.length > 0"
 				:type="type"
-				:status="status"
-				v-if="status.media_attachments.length > 0" />
+				:status="status" />
 		</div>
 
-		<InteractionBar v-once v-if="props.interaction" :status="status" />
+		<InteractionBar v-if="props.interaction" v-once :status="status" />
 	</div>
 </template>

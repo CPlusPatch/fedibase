@@ -1,10 +1,8 @@
 <script setup lang="ts">
-import { IconX } from "@tabler/icons-vue";
+import { IconX, IconFile, IconMovie } from "@tabler/icons-vue";
 import Button from "../button/Button.vue";
-import { IconFile } from "@tabler/icons-vue";
-import { IconMovie } from "@tabler/icons-vue";
 
-const props = defineProps<{
+defineProps<{
 	onRemove: (uuid: string) => void;
 	files: {
 		uuid: string;

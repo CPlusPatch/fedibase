@@ -1,11 +1,13 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
 	modules: [
-		"@nuxtjs/tailwindcss",
 		"@nuxtjs/robots",
 		"@nuxt/image-edge",
 		"@vite-pwa/nuxt",
 		"@nuxtjs/google-fonts",
+		"@unocss/nuxt",
+		"@nuxtjs/eslint-module",
+		"nuxt-headlessui",
 	],
 	ssr: false,
 	app: {
@@ -24,10 +26,10 @@ export default defineNuxtConfig({
 	},
 	googleFonts: {
 		families: {
-			NotoSans: [100, 300, 400, 600, 700, 900]
+			NotoSans: [100, 300, 400, 600, 700, 900],
 		},
 		subsets: "latin",
-		preload: true
+		preload: true,
 	},
 	vite: {
 		resolve: {

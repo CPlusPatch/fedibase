@@ -5,12 +5,12 @@ import {
 	IconRocket,
 	IconStarFilled,
 } from "@tabler/icons-vue";
+import { Ref, ref } from "vue";
 import SmallSelect, {
 	SelectDirection,
 	SelectItem,
 } from "../select/SmallSelect.vue";
 import Feed, { FeedType } from "./Feed.vue";
-import { Ref, ref } from "vue";
 
 const props = defineProps<{
 	title: boolean;
@@ -54,17 +54,17 @@ const mode: Ref<string> = ref(modes[0].value);
 			class="flex flex-row justify-between items-center">
 			<h3 class="text-lg font-bold dark:text-gray-50">Notifications</h3>
 			<SmallSelect
-				@update:modelValue="(item: SelectItem)=> {
-					mode = item.value
-				}"
 				:items="modes"
-				:defaultValue="0"
-				:direction="SelectDirection.Left" />
+				:default-value="0"
+				:direction="SelectDirection.Left"
+				@update:model-value="(item: SelectItem)=> {
+					mode = item.value
+				}" />
 		</div>
 
 		<ul
-			class="flex overflow-y-scroll flex-col max-w-full h-full no-scroll"
-			:id="id">
+			:id="id"
+			class="flex overflow-y-scroll flex-col max-w-full h-full no-scroll">
 			<Feed :type="FeedType.Notifications" :mode="mode" />
 		</ul>
 	</div>

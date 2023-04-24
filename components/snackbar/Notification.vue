@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { TransitionRoot } from "@headlessui/vue";
-import { NotificationType } from "./Snackbar.vue";
 import { Entity } from "megalodon";
 import { withEmojis } from "../../utils/functions";
+import { NotificationType } from "./Snackbar.vue";
 
-const props = defineProps<{
+defineProps<{
 	notif: {
 		uuid: string;
 		type: NotificationType;
@@ -25,13 +25,13 @@ const playSound = () => {
 		as="template"
 		:appear="true"
 		:show="notif.show"
-		@before-enter="playSound"
 		enter="transform ease-out duration-300 transition"
 		enter-from="translate-y-2 opacity-0 sm:translate-y-0 sm:-translate-x-2"
 		enter-to="translate-y-0 opacity-100 sm:translate-x-0"
 		leave="transition ease-in duration-100"
 		leave-from="opacity-100 sm:translate-x-0"
-		leave-to="opacity-0 sm:-translate-x-2">
+		leave-to="opacity-0 sm:-translate-x-2"
+		@before-enter="playSound">
 		<div>
 			<div
 				v-if="notif.type === NotificationType.Normal"

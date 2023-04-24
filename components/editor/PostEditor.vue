@@ -9,25 +9,27 @@ import {
 	IconQuote,
 	IconWorld,
 	IconX,
+	IconPaperclip,
+	IconChartBar,
+	IconAlertTriangle,
+	IconSend,
+	IconForbid2,
+	IconFileUpload,
 } from "@tabler/icons-vue";
+import { onMounted, ref } from "vue";
+import { v4 as uuidv4 } from "uuid";
 import { withEmojis, findMentions } from "../../utils/functions";
 import { store } from "../../utils/store";
 import Button from "../button/Button.vue";
 import Status, { PostType } from "../status/Status.vue";
-import { onMounted, ref } from "vue";
-import SmallSelect, { SelectOrientation } from "../select/SmallSelect.vue";
-import { IconPaperclip } from "@tabler/icons-vue";
-import { IconChartBar } from "@tabler/icons-vue";
-import { IconAlertTriangle } from "@tabler/icons-vue";
-import { v4 as uuidv4 } from "uuid";
-import Files from "./Files.vue";
+import SmallSelect, {
+	SelectOrientation,
+	SelectDirection,
+} from "../select/SmallSelect.vue";
 import { NotificationType, addNotification } from "../snackbar/Snackbar.vue";
-import { IconSend } from "@tabler/icons-vue";
-import { IconForbid2 } from "@tabler/icons-vue";
-import { IconFileUpload } from "@tabler/icons-vue";
 import Input from "../input/Input.vue";
 import ScaleFadeSlide from "../transitions/ScaleFadeSlide.vue";
-import { SelectDirection } from "../select/SmallSelect.vue";
+import Files from "./Files.vue";
 
 const props = withDefaults(
 	defineProps<{
@@ -110,13 +112,15 @@ const textareaRef = ref<HTMLTextAreaElement | null>(null);
 const loading = ref<boolean>(false);
 const contentWarning = ref<boolean>(
 	(otherPost?.sensitive ?? false) ||
-	((otherPost?.spoiler_text?.length ?? 0) > 0)
+		(otherPost?.spoiler_text?.length ?? 0) > 0
 );
-const files = ref<{
-	uuid: string;
-	metadata: Entity.Attachment;
-	file: File;
-}[]>([]);
+const files = ref<
+	{
+		uuid: string;
+		metadata: Entity.Attachment;
+		file: File;
+	}[]
+>([]);
 
 const clickOnFileInput = (): void => {
 	document.getElementById("fileUpload")?.click();
@@ -170,7 +174,7 @@ const uploadFiles = async (toUpload: FileList) => {
 			return {
 				uuid: uuidv4(),
 				metadata: upload.data,
-				file: file,
+				file,
 			};
 		})
 	);
@@ -196,16 +200,16 @@ const submit = (e: Event) => {
 	const visibility = (e.target as any)["visibility[value]"].value;
 	let cw = "";
 	try {
-		cw = (e.target as any)["cw"].value;
+		cw = (e.target as any).cw.value;
 	} catch {
 		//
 	}
 	// Waiting for megalodon to implement this
-	const mode = (e.target as any)["mode[value]"].value;
+	// const mode = (e.target as any)["mode[value]"].value;
 
 	store.client
 		?.postStatus(characters.value, {
-			visibility: visibility,
+			visibility,
 			in_reply_to_id: store.replyingTo?.id ?? undefined,
 			quote_id: store.quotingTo?.id ?? undefined,
 			spoiler_text: cw.length > 0 ? cw : undefined,
@@ -215,7 +219,7 @@ const submit = (e: Event) => {
 					? files.value.map(f => f.metadata.id)
 					: undefined,
 		})
-		.then(res => {
+		.then(_ => {
 			addNotification("Post sent!", NotificationType.Normal, IconSend);
 			closeModal(e);
 		})
@@ -289,8 +293,8 @@ const submit = (e: Event) => {
 			</div>
 
 			<div
-				class="px-4 opacity-60 max-h-40 no-scroll overflow-scroll"
-				v-if="store.replyingTo">
+				v-if="store.replyingTo"
+				class="px-4 opacity-60 max-h-40 no-scroll overflow-scroll">
 				<Status
 					:type="PostType.Tiny"
 					:status="store.replyingTo"
@@ -298,8 +302,8 @@ const submit = (e: Event) => {
 			</div>
 
 			<div
-				class="px-4 opacity-60 max-h-40 no-scroll overflow-scroll"
-				v-if="store.quotingTo">
+				v-if="store.quotingTo"
+				class="px-4 opacity-60 max-h-40 no-scroll overflow-scroll">
 				<Status
 					:type="PostType.Tiny"
 					:status="store.quotingTo"
@@ -308,13 +312,13 @@ const submit = (e: Event) => {
 
 			<div class="relative">
 				<textarea
-					@paste="onPasteFile"
-					name="comment"
-					v-model="characters"
-					rows="7"
 					ref="textareaRef"
+					v-model="characters"
+					name="comment"
+					rows="7"
 					class="flex p-3 text-base outline-none no-scroll w-full bg-transparent border-0 resize-none disabled:text-gray-400 focus:ring-0 dark:placeholder:text-gray-400"
-					placeholder="What's happening?" />
+					placeholder="What's happening?"
+					@paste="onPasteFile" />
 
 				<div
 					class="absolute flex-row bottom-0 right-0 pr-2 items-center flex">
@@ -356,31 +360,31 @@ const submit = (e: Event) => {
 			<div
 				class="flex inset-x-0 bottom-0 py-2 px-2 flex-row space-x-1 items-center">
 				<button
-					@click="clickOnFileInput"
 					type="button"
 					title="Attach a file"
-					class="flex relative flex-row gap-x-1 items-center p-2 text-gray-600 rounded duration-200 cursor-default dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">
+					class="flex relative flex-row gap-x-1 items-center p-2 text-gray-600 rounded duration-200 cursor-default dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+					@click="clickOnFileInput">
 					<IconPaperclip class="w-6 h-6" aria-hidden="true" />
 				</button>
 
 				<input
-					@change="clickOnFiles"
-					type="file"
 					id="fileUpload"
+					type="file"
 					aria-hidden="true"
 					class="hidden"
-					multiple />
+					multiple
+					@change="clickOnFiles" />
 
 				<SmallSelect
 					:items="modes"
-					:defaultValue="0"
+					:default-value="0"
 					:direction="SelectDirection.Center"
 					:orientation="SelectOrientation.Up"
 					name="mode" />
 
 				<SmallSelect
 					:items="visibilities"
-					:defaultValue="
+					:default-value="
 						store.replyingTo || store.quotingTo
 							? visibilities.findIndex(
 									v =>
@@ -402,8 +406,8 @@ const submit = (e: Event) => {
 				<button
 					type="button"
 					title="Add content warning"
-					@click="toggleCW"
-					class="flex relative flex-row gap-x-1 items-center p-2 text-gray-600 rounded duration-200 cursor-default dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">
+					class="flex relative flex-row gap-x-1 items-center p-2 text-gray-600 rounded duration-200 cursor-default dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+					@click="toggleCW">
 					<IconAlertTriangle class="w-6 h-6" aria-hidden="true" />
 				</button>
 

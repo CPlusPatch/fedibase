@@ -4,8 +4,8 @@ import Feed, { FeedType } from "../feed/Feed.vue";
 
 <template>
 	<ul
-		class="flex overflow-x-hidden flex-col gap-y-6 px-6 py-4 pb-20 h-full w-full no-scroll"
-		id="feed">
+		id="feed"
+		class="flex overflow-x-hidden flex-col gap-y-6 px-6 py-4 pb-20 h-full w-full no-scroll">
 		<Feed :type="FeedType.Notifications" />
 	</ul>
 </template>

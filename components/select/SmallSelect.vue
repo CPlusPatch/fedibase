@@ -1,4 +1,12 @@
 <script lang="ts">
+import {
+	Listbox,
+	ListboxButton,
+	ListboxOption,
+	ListboxOptions,
+} from "@headlessui/vue";
+import ScaleFadeSlide from "../transitions/ScaleFadeSlide.vue";
+
 export enum SelectDirection {
 	Right = "right",
 	Left = "left",
@@ -17,16 +25,8 @@ export interface SelectItem {
 	description?: string;
 }
 </script>
-<script setup lang="ts">
-import {
-	Listbox,
-	ListboxButton,
-	ListboxOption,
-	ListboxOptions,
-} from "@headlessui/vue";
-import { ref } from "vue";
-import ScaleFadeSlide from "../transitions/ScaleFadeSlide.vue";
 
+<script setup lang="ts">
 interface SelectProps {
 	items: SelectItem[];
 	defaultValue: number;
@@ -36,23 +36,23 @@ interface SelectProps {
 }
 
 const props = defineProps<SelectProps>();
-const emit = defineEmits(["update:modelValue"]);
+const emit = defineEmits(["update:model-value"]);
 
 const selected = ref<SelectItem>(props.items[props.defaultValue]);
 </script>
 
 <template>
 	<Listbox
-		:name="name"
 		v-model="selected"
+		:name="name"
 		as="div"
 		class="relative"
-		@update:modelValue="value => emit('update:modelValue', value)">
+		@update:model-value="value => emit('update:model-value', value)">
 		<ListboxButton
 			class="flex relative flex-row gap-x-1 items-center p-2 text-gray-600 rounded duration-200 cursor-default dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">
 			<component
 				:is="selected.icon"
-				:strokeWidth="2"
+				:stroke-width="2"
 				class="w-6 h-6"
 				aria-hidden="true" />
 		</ListboxButton>

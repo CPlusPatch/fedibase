@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import Button from "../button/Button.vue";
 import { IconX } from "@tabler/icons-vue";
+import Button from "../button/Button.vue";
 import { PostType } from "./Status.vue";
 
 const props = defineProps<{
@@ -17,12 +17,6 @@ const toggleRevealed = () => {
 };
 </script>
 
-<style scoped lang="postcss">
-.media {
-	@apply filter duration-500 rounded max-h-[80vh];
-}
-</style>
-
 <template>
 	<div
 		:class="[
@@ -30,8 +24,8 @@ const toggleRevealed = () => {
 			type === PostType.Small && 'h-44 w-44 border dark:border-dark-700',
 		]">
 		<img
-			loading="lazy"
 			v-if="media.type === 'image'"
+			loading="lazy"
 			:class="['media object-cover', !revealed && 'blur-2xl']"
 			:src="media.url"
 			:alt="media.description ?? ''" />
@@ -49,9 +43,9 @@ const toggleRevealed = () => {
 			controls="true" />
 
 		<div
-			@click="toggleRevealed"
 			v-if="status.sensitive && !revealed"
-			class="flex absolute inset-0 z-20 justify-center p-3 items-center text-lg font-bold text-white">
+			class="flex absolute inset-0 z-20 justify-center p-3 items-center text-lg font-bold text-white"
+			@click="toggleRevealed">
 			{{
 				status.spoiler_text !== ""
 					? status.spoiler_text
@@ -61,11 +55,17 @@ const toggleRevealed = () => {
 
 		<Button
 			v-if="status.sensitive && revealed"
-			@click="toggleRevealed"
 			theme="gray"
 			class="!px-1 !py-1 mt-2 mr-2 !absolute top-0 right-0 !bg-opacity-70"
-			title="Hide this media">
+			title="Hide this media"
+			@click="toggleRevealed">
 			<IconX class="w-4 h-4" aria-hidden="true" />
 		</Button>
 	</div>
 </template>
+
+<style scoped lang="postcss">
+.media {
+	@apply filter duration-500 rounded max-h-[80vh];
+}
+</style>

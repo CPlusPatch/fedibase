@@ -3,16 +3,14 @@ import {
 	IconSun,
 	IconSettings,
 	IconPlus,
-	IconHome,
 	IconUsers,
 	IconWorld,
 	IconHome2,
+	IconMoon,
+	IconLogout,
 } from "@tabler/icons-vue";
-import NavElement, { NavigationItem } from "./NavElement.vue";
 import { store } from "../utils/store";
-import { IconMoon } from "@tabler/icons-vue";
-import Link from "./transitions/Link.vue";
-import { IconLogout } from "@tabler/icons-vue";
+import NavElement, { NavigationItem } from "./NavElement.vue";
 
 const navigation: NavigationItem[] = [
 	{
@@ -63,22 +61,22 @@ const logout = () => {
 				class="flex-col flex gap-y-2 grow px-2 mt-5"
 				aria-label="Sidebar">
 				<NavElement
-					:element="nav"
 					v-for="nav in navigation"
-					:key="nav.name" />
+					:key="nav.name"
+					:element="nav" />
 			</nav>
 			<button
 				title="Toggle light/dark mode"
-				@click="toggleTheme"
-				class="flex justify-center items-center p-2 mb-3 text-sm font-medium rounded-md duration-200 dark:text-gray-300 hover:bg-gray-300/40 hover:dark:bg-gray-700/40 hover:bg-opacity-75 group">
+				class="flex justify-center items-center p-2 mb-3 text-sm font-medium rounded-md duration-200 dark:text-gray-300 hover:bg-gray-300/40 hover:dark:bg-gray-700/40 hover:bg-opacity-75 group"
+				@click="toggleTheme">
 				<IconSun
+					v-if="store.theme === 'light'"
 					class="w-5 h-5"
-					aria-hidden="true"
-					v-if="store.theme === 'light'" />
+					aria-hidden="true" />
 				<IconMoon
+					v-if="store.theme === 'dark'"
 					class="w-5 h-5"
-					aria-hidden="true"
-					v-if="store.theme === 'dark'" />
+					aria-hidden="true" />
 			</button>
 			<button
 				title="Open settings"
@@ -87,14 +85,14 @@ const logout = () => {
 			</button>
 			<button
 				title="Compose new post"
-				@click="() => (store.state.composer = true)"
-				class="flex justify-center items-center p-2 mb-3 text-sm font-medium rounded-md duration-200 dark:text-gray-300 bg-orange-300/20 hover:bg-orange-300/40 hover:bg-opacity-75 group">
+				class="flex justify-center items-center p-2 mb-3 text-sm font-medium rounded-md duration-200 dark:text-gray-300 bg-orange-300/20 hover:bg-orange-300/40 hover:bg-opacity-75 group"
+				@click="() => (store.state.composer = true)">
 				<IconPlus class="w-5 h-5" aria-hidden="true" />
 			</button>
 			<button
 				title="Logout"
-				@click="logout"
-				class="flex justify-center items-center p-2 mb-3 text-sm font-medium rounded-md duration-200 dark:text-gray-300 bg-red-300/20 hover:bg-red-300/40 hover:bg-opacity-75 group">
+				class="flex justify-center items-center p-2 mb-3 text-sm font-medium rounded-md duration-200 dark:text-gray-300 bg-red-300/20 hover:bg-red-300/40 hover:bg-opacity-75 group"
+				@click="logout">
 				<IconLogout class="w-5 h-5" aria-hidden="true" />
 			</button>
 			<RouterLink

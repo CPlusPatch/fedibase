@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import generator, { detector } from "megalodon";
+import generator from "megalodon";
+import { ref } from "vue";
+import { IconUser } from "@tabler/icons-vue";
 import { store } from "../../utils/store";
 import Button from "../button/Button.vue";
-import { ref } from "vue";
 import Input from "../input/Input.vue";
-import { IconUser } from "@tabler/icons-vue";
 
 const loading = ref<boolean>(false);
 
@@ -23,13 +23,8 @@ if (token) {
 				token,
 				`http://${window.location.host}`
 			)
-			.then(async tokenData => {
+			.then(tokenData => {
 				store.auth.token = tokenData.accessToken;
-				const client = generator(
-					store.auth.type as any,
-					store.auth.url,
-					store.auth.token
-				);
 
 				setTimeout(() => {
 					window.location.href = "/";
@@ -42,7 +37,7 @@ const submit = async (e: Event) => {
 	e.preventDefault();
 	loading.value = true;
 
-	const handle = ((e.target as HTMLFormElement)["handle"] as HTMLInputElement)
+	const handle = ((e.target as HTMLFormElement).handle as HTMLInputElement)
 		.value;
 
 	let domain = "";
@@ -58,9 +53,8 @@ const submit = async (e: Event) => {
 	}
 
 	store.auth.url = `https://${domain}`;
-	store.auth.type = (
-		(e.target as HTMLFormElement)["type"] as HTMLInputElement
-	).value as any;
+	store.auth.type = ((e.target as HTMLFormElement).type as HTMLInputElement)
+		.value as any;
 
 	const client = generator(store.auth.type as any, store.auth.url);
 
@@ -149,14 +143,14 @@ const submit = async (e: Event) => {
 						@submit="submit">
 						<div class="flex flex-col gap-y-2">
 							<Input
-								:icon="IconUser"
 								id="handle"
+								:icon="IconUser"
 								name="handle"
 								type="handle"
-								autoComplete="url"
+								auto-complete="url"
 								required
 								placeholder="@username@instance.com"
-								isLoading="{isLoading}"
+								is-loading="{isLoading}"
 								class="block focus:outline-none sm:text-sm"
 								:loading="loading" />
 						</div>
@@ -172,7 +166,7 @@ const submit = async (e: Event) => {
 						<div>
 							<Button
 								type="submit"
-								ringColor="orange-500"
+								ring-color="orange-500"
 								theme="gray"
 								class="w-full text-white !bg-[radial-gradient(ellipse_at_top_left,_var(--tw-gradient-stops))] !from-pink-500 !via-red-500 !to-yellow-500"
 								:loading="loading">

@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { Entity } from "megalodon";
+import { ref } from "vue";
 import Button from "../button/Button.vue";
 import { fromNow } from "../../utils/functions";
 import { store } from "../../utils/store";
-import { ref } from "vue";
 
 const props = defineProps<{
 	status: Entity.Status;
@@ -17,9 +17,9 @@ const onSubmit = (e: Event) => {
 
 	if (!_poll.value) return false;
 
-	for (let i = 0; i < (e.target as any)["poll"].length; i++) {
-		if ((e.target as any)["poll"][i].checked)
-			value.push((e.target as any)["poll"][i].value);
+	for (let i = 0; i < (e.target as any).poll.length; i++) {
+		if ((e.target as any).poll[i].checked)
+			value.push((e.target as any).poll[i].value);
 	}
 	store.client
 		?.votePoll(_poll.value?.id, value, props.status.id)
@@ -31,14 +31,14 @@ const onSubmit = (e: Event) => {
 
 <template>
 	<form
+		v-if="_poll"
 		class="list-inside flex-col gap-y-2 flex"
 		action="#"
 		@submit="onSubmit">
 		<li
 			v-for="(option, index) of _poll.options"
-			v-if="_poll"
-			class="flex flex-row gap-x-1 items-center relative dark:text-gray-100"
-			:key="index">
+			:key="index"
+			class="flex flex-row gap-x-1 items-center relative dark:text-gray-100">
 			<div
 				:style="{
 					width: `${Math.round(
@@ -80,10 +80,10 @@ const onSubmit = (e: Event) => {
 
 		<div class="text-sm text-gray-500 dark:text-gray-400">
 			<Button
+				v-if="!_poll?.voted"
 				theme="gray"
 				type="submit"
-				class="!px-2 !py-1 mr-2"
-				v-if="!_poll?.voted">
+				class="!px-2 !py-1 mr-2">
 				Vote
 			</Button>
 

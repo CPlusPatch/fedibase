@@ -1,14 +1,15 @@
 <script setup lang="ts">
 import { Entity } from "megalodon";
-import ScaleFadeSlide from "../transitions/ScaleFadeSlide.vue";
-import { withEmojis } from "../../utils/functions";
-import { onMounted, onUnmounted, ref, watch } from "vue";
+import { onMounted, onUnmounted, ref } from "vue";
+import {
+	IconCake,
+	IconUserPlus,
+	IconUsers,
+	IconArticle,
+} from "@tabler/icons-vue";
 import { store } from "../../utils/store";
-import { IconCake } from "@tabler/icons-vue";
-import { IconUserPlus } from "@tabler/icons-vue";
-import { IconUsers } from "@tabler/icons-vue";
-import { IconArticle } from "@tabler/icons-vue";
-import { TransitionRoot } from "@headlessui/vue";
+import { withEmojis } from "../../utils/functions";
+import ScaleFadeSlide from "../transitions/ScaleFadeSlide.vue";
 
 const props = defineProps<{
 	account: Entity.Account;
@@ -97,8 +98,8 @@ onUnmounted(() => {
 				<div class="flex items-center gap-x-1"></div>
 			</div>
 			<div
-				v-html="withEmojis(account.note, account.emojis)"
-				class="p-3 bio mx-4 text-sm rounded-md dark:text-gray-50 break-all"></div>
+				class="p-3 bio mx-4 text-sm rounded-md dark:text-gray-50 break-all"
+				v-html="withEmojis(account.note, account.emojis)"></div>
 
 			<div
 				class="md:flex grow md:flex-row mx-6 text-gray-600 dark:text-gray-300 items-center justify-between grid grid-cols-2 gap-y-3">

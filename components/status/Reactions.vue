@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import Reaction from "./Reaction.vue";
 
-const props = defineProps<{
+defineProps<{
 	status: Entity.Status;
 }>();
 </script>
@@ -10,8 +10,8 @@ const props = defineProps<{
 	<div class="w-full flex flex-row gap-2 mt-2">
 		<Reaction
 			v-for="reaction in status.emoji_reactions"
+			:key="reaction.name"
 			:status="status"
-			:reaction="reaction"
-			:key="reaction.name" />
+			:reaction="reaction" />
 	</div>
 </template>
