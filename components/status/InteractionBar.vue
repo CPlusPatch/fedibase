@@ -111,7 +111,7 @@ const copyUrl = () => {
 <template>
 	<div class="grid grid-cols-6 mt-3 w-full text-gray-700 dark:text-gray-400">
 		<Button
-			class="button"
+			class="gap-x-2 flex justify-center static shadow-none w-full border-none outline-none focus:outline-none"
 			title="Reply to this post"
 			@click="
 				() => {
@@ -124,7 +124,7 @@ const copyUrl = () => {
 			{{ _status.replies_count > 0 ? _status.replies_count : "" }}
 		</Button>
 		<Button
-			class="button hover:text-yellow-400"
+			class="gap-x-2 flex justify-center static shadow-none w-full border-none outline-none focus:outline-none hover:text-yellow-400"
 			title="Favourite this post"
 			@click="toggleFavourite">
 			<IconStarFilled
@@ -134,7 +134,10 @@ const copyUrl = () => {
 			<IconStar v-else aria-hidden="true" class="w-5 h-5" />
 			{{ _status.favourites_count > 0 ? _status.favourites_count : "" }}
 		</Button>
-		<Button title="Boost this post" class="button" @click="toggleReblog">
+		<Button
+			title="Boost this post"
+			class="gap-x-2 flex justify-center static shadow-none w-full border-none outline-none focus:outline-none"
+			@click="toggleReblog">
 			<template
 				v-if="
 					_status.visibility !== 'private' &&
@@ -154,12 +157,12 @@ const copyUrl = () => {
 		</Button>
 
 		<div class="relative">
-			<button
-				class="button"
+			<Button
+				class="gap-x-2 flex justify-center static shadow-none w-full border-none outline-none focus:outline-none"
 				title="Add reaction"
 				@click="emojiDialog = !emojiDialog">
 				<IconMoodHappy aria-hidden="true" class="w-5 h-5" />
-			</button>
+			</Button>
 
 			<ScaleFadeSlide>
 				<div
@@ -191,7 +194,7 @@ const copyUrl = () => {
 			</ScaleFadeSlide>
 		</div>
 		<Button
-			class="button"
+			class="gap-x-2 flex justify-center static shadow-none w-full border-none outline-none focus:outline-none"
 			title="Quote this post"
 			@click="
 				e => {
@@ -205,7 +208,7 @@ const copyUrl = () => {
 
 		<div class="relative">
 			<Button
-				class="button hover:!animate-none"
+				class="gap-x-2 flex justify-center static shadow-none w-full border-none outline-none focus:outline-none hover:!animate-none"
 				title="Quote this post"
 				@click="menu = !menu">
 				<IconDots aria-hidden="true" class="w-5 h-5" />
@@ -219,12 +222,19 @@ const copyUrl = () => {
 					<div
 						v-if="_status.account.id === store.auth.data?.id"
 						as="button"
-						class="menu-item">
-						<IconEdit class="menu-icon" aria-hidden="true" />
+						class="text-gray-700 duration-300 w-full dark:text-gray-50 hover:bg-orange-200 rounded-lg text-sm dark:hover:bg-orange-700/20 flex flex-row items-center py-2">
+						<IconEdit
+							class="mx-2 h-[1.2em] w-[1.2em] mb-0.5"
+							aria-hidden="true" />
 						Edit
 					</div>
-					<div as="button" class="menu-item" @click="copyUrl">
-						<IconLink class="menu-icon" aria-hidden="true" />
+					<div
+						as="button"
+						class="text-gray-700 duration-300 w-full dark:text-gray-50 hover:bg-orange-200 rounded-lg text-sm dark:hover:bg-orange-700/20 flex flex-row items-center py-2"
+						@click="copyUrl">
+						<IconLink
+							class="mx-2 h-[1.2em] w-[1.2em] mb-0.5"
+							aria-hidden="true" />
 						Copy link
 					</div>
 					<div
@@ -233,9 +243,11 @@ const copyUrl = () => {
 							!_status.pinned
 						"
 						as="button"
-						class="menu-item"
+						class="text-gray-700 duration-300 w-full dark:text-gray-50 hover:bg-orange-200 rounded-lg text-sm dark:hover:bg-orange-700/20 flex flex-row items-center py-2"
 						@click="togglePin">
-						<IconPin class="menu-icon" aria-hidden="true" />
+						<IconPin
+							class="mx-2 h-[1.2em] w-[1.2em] mb-0.5"
+							aria-hidden="true" />
 						Pin
 					</div>
 					<div
@@ -244,17 +256,21 @@ const copyUrl = () => {
 							_status.pinned
 						"
 						as="button"
-						class="menu-item"
+						class="text-gray-700 duration-300 w-full dark:text-gray-50 hover:bg-orange-200 rounded-lg text-sm dark:hover:bg-orange-700/20 flex flex-row items-center py-2"
 						@click="togglePin">
-						<IconPinFilled class="menu-icon" aria-hidden="true" />
+						<IconPinFilled
+							class="mx-2 h-[1.2em] w-[1.2em] mb-0.5"
+							aria-hidden="true" />
 						Unpin
 					</div>
 					<div
 						v-if="_status.account.id !== store.auth.data?.id"
 						as="button"
-						class="menu-item"
+						class="text-gray-700 duration-300 w-full dark:text-gray-50 hover:bg-orange-200 rounded-lg text-sm dark:hover:bg-orange-700/20 flex flex-row items-center py-2"
 						@click="block">
-						<IconForbid class="menu-icon" aria-hidden="true" />
+						<IconForbid
+							class="mx-2 h-[1.2em] w-[1.2em] mb-0.5"
+							aria-hidden="true" />
 						Block
 					</div>
 				</div>
@@ -262,17 +278,3 @@ const copyUrl = () => {
 		</div>
 	</div>
 </template>
-
-<style scoped lang="postcss">
-.menu-item {
-	@apply text-gray-700 duration-300 w-full dark:text-gray-50 hover:bg-orange-200 rounded-lg text-sm dark:hover:bg-orange-700/20 flex flex-row items-center py-2;
-}
-
-.menu-icon {
-	@apply mx-2 h-[1.2em] w-[1.2em] mb-0.5;
-}
-
-.button {
-	@apply gap-x-2 flex justify-center static shadow-none w-full border-none outline-none focus:outline-none;
-}
-</style>

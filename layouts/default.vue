@@ -74,7 +74,7 @@ onUnmounted(() => {
 </script>
 
 <template>
-	<template v-if="store.client && store.auth.token" :key="store.auth.token">
+	<template v-if="store.client && store.auth.token">
 		<EditorModal />
 		<div
 			class="relative duration-200 dark:bg-dark-800 flex h-screen w-screen">
@@ -89,7 +89,7 @@ onUnmounted(() => {
 					<LeftSidebar />
 				</div>
 				<div
-					class="overflow-x-hidden md:col-span-5 col-span-6 border-x dark:border-dark-700 dark:bg-dark-800">
+					class="overflow-x-hidden md:col-span-5 col-span-6 md:border-x dark:border-dark-700 dark:bg-dark-800">
 					<slot />
 				</div>
 				<div

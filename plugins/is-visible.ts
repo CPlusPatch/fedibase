@@ -1,4 +1,4 @@
-export default defineNuxtPlugin((nuxtApp) => {
+export default defineNuxtPlugin(nuxtApp => {
 	nuxtApp.vueApp.directive("is-visible", {
 		mounted: (el, binding) => {
 			const options = {
@@ -19,4 +19,4 @@ export default defineNuxtPlugin((nuxtApp) => {
 			observer.observe(el);
 		},
 	});
-})
+});

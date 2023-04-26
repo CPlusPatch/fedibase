@@ -5,6 +5,12 @@ import {
 	presetWebFonts,
 } from "unocss";
 export default defineConfig({
+	shortcuts: {
+		"navbar-element":
+			"!px-0 !py-0 !p-3 h-full !rounded-none grow dark:hover:!bg-dark-600 flex items-center justify-center text-xs flex-col gap-y-1; hover:!bg-gray-300 !bg-transparent !border-none !shadow-none !bg-white dark:!bg-transparent",
+		"navbar-link":
+			"flex items-center justify-center text-xs flex-col gap-y-1;",
+	},
 	presets: [
 		presetUno(),
 		presetTypography({

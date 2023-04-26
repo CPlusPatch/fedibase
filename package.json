@@ -22,6 +22,7 @@
 		"@types/node": "^18.15.11",
 		"@types/uuid": "^9.0.1",
 		"@unocss/nuxt": "^0.51.8",
+		"@unocss/postcss": "^0.51.8",
 		"@vite-pwa/nuxt": "^0.0.7",
 		"eslint": "^8.38.0",
 		"eslint-config-prettier": "^8.8.0",

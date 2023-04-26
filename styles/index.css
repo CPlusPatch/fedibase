@@ -2,9 +2,7 @@
 @import "poppins.css";
 @import "inter.css";
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@unocss;
 
 * {
 	box-sizing: border-box;

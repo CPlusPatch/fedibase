@@ -12,13 +12,13 @@ export default defineNuxtPlugin(app => {
 
 	app.vueApp.directive(directiveName, {
 		...vWave,
-		getSSRProps(binding, vnode) {
+		getSSRProps() {
 			return {};
 		},
 	});
 	app.vueApp.directive(`${directiveName}-trigger`, {
 		...vWaveTrigger,
-		getSSRProps(binding, vnode) {
+		getSSRProps() {
 			return {};
 		},
 	});
