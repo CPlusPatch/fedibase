@@ -20,7 +20,12 @@ export default defineConfig({
 				},
 			},
 		}),
-		presetWebFonts(),
+		presetWebFonts({
+			provider: "google",
+			fonts: {
+				sans: "Noto Sans",
+			},
+		}),
 	],
 	preflights: [
 		{

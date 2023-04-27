@@ -4,7 +4,6 @@ export default defineNuxtConfig({
 		"@nuxtjs/robots",
 		"@nuxt/image-edge",
 		"@vite-pwa/nuxt",
-		"@nuxtjs/google-fonts",
 		"@unocss/nuxt",
 		"@nuxtjs/eslint-module",
 		"nuxt-headlessui",
@@ -23,13 +22,6 @@ export default defineNuxtConfig({
 			title: "Fedibase",
 			htmlAttrs: { lang: "en-us" },
 		},
-	},
-	googleFonts: {
-		families: {
-			NotoSans: [100, 300, 400, 600, 700, 900],
-		},
-		subsets: "latin",
-		preload: true,
 	},
 	vite: {
 		resolve: {
