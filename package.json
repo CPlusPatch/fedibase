@@ -39,7 +39,7 @@
 		"@tailwindcss/typography": "^0.5.9",
 		"events": "^3.3.0",
 		"fastclick": "^1.0.6",
-		"megalodon": "^5.4.3",
+		"megalodon": "npm:hyperodon",
 		"querystring-es3": "^0.2.1",
 		"uuid": "^9.0.0",
 		"v-wave": "^1.5.0"
