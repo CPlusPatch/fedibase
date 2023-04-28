@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import FederatedFeed from "~/components/feed/FederatedFeed.vue";
+import Feed, { FeedType } from "~/components/feed/Feed.vue";
 </script>
 
 <template>
-	<FederatedFeed />
+	<Feed :type="FeedType.Federated" />
 </template>

@@ -5,6 +5,8 @@
 		height="24"
 		stroke="#000"
 		viewBox="0 0 24 24"
+		class="dark:text-white"
+		fill="currentColor"
 		xmlns="http://www.w3.org/2000/svg">
 		<g class="spinner_V8m1">
 			<circle

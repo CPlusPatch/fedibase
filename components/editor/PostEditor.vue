@@ -358,64 +358,64 @@ const submit = (e: Event) => {
 			</ScaleFadeSlide>
 
 			<div
-				class="flex inset-x-0 bottom-0 py-2 px-2 flex-row space-x-1 items-center">
-				<button
-					type="button"
-					title="Attach a file"
-					class="flex relative flex-row gap-x-1 items-center p-2 text-gray-600 rounded duration-200 cursor-default dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
-					@click="clickOnFileInput">
-					<IconPaperclip class="w-6 h-6" aria-hidden="true" />
-				</button>
+				class="flex inset-x-0 bottom-0 py-2 px-2 flex-row justify-between items-center">
+				<div class="flex flex-row">
+					<button
+						type="button"
+						title="Attach a file"
+						class="flex relative flex-row gap-x-1 items-center p-2 text-gray-600 rounded duration-200 cursor-default dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+						@click="clickOnFileInput">
+						<IconPaperclip class="w-6 h-6" aria-hidden="true" />
+					</button>
 
-				<input
-					id="fileUpload"
-					type="file"
-					aria-hidden="true"
-					class="hidden"
-					multiple
-					@change="clickOnFiles" />
+					<input
+						id="fileUpload"
+						type="file"
+						aria-hidden="true"
+						class="hidden"
+						multiple
+						@change="clickOnFiles" />
 
-				<SmallSelect
-					:items="modes"
-					:default-value="0"
-					:direction="SelectDirection.Center"
-					:orientation="SelectOrientation.Up"
-					name="mode" />
+					<SmallSelect
+						:items="modes"
+						:default-value="0"
+						:direction="SelectDirection.Center"
+						:orientation="SelectOrientation.Up"
+						name="mode" />
 
-				<SmallSelect
-					:items="visibilities"
-					:default-value="
-						store.replyingTo || store.quotingTo
-							? visibilities.findIndex(
-									v =>
-										(store.replyingTo ?? store.quotingTo)
-											?.visibility == v.value
-							  )
-							: 0
-					"
-					:orientation="SelectOrientation.Up"
-					name="visibility" />
+					<SmallSelect
+						:items="visibilities"
+						:default-value="
+							store.replyingTo || store.quotingTo
+								? visibilities.findIndex(
+										v =>
+											(
+												store.replyingTo ??
+												store.quotingTo
+											)?.visibility == v.value
+								  )
+								: 0
+						"
+						:orientation="SelectOrientation.Up"
+						name="visibility" />
 
-				<button
-					type="button"
-					title="Create poll"
-					class="flex relative flex-row gap-x-1 items-center p-2 text-gray-600 rounded duration-200 cursor-default dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">
-					<IconChartBar class="w-6 h-6" aria-hidden="true" />
-				</button>
+					<button
+						type="button"
+						title="Create poll"
+						class="flex relative flex-row gap-x-1 items-center p-2 text-gray-600 rounded duration-200 cursor-default dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">
+						<IconChartBar class="w-6 h-6" aria-hidden="true" />
+					</button>
 
-				<button
-					type="button"
-					title="Add content warning"
-					class="flex relative flex-row gap-x-1 items-center p-2 text-gray-600 rounded duration-200 cursor-default dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
-					@click="toggleCW">
-					<IconAlertTriangle class="w-6 h-6" aria-hidden="true" />
-				</button>
+					<button
+						type="button"
+						title="Add content warning"
+						class="flex relative flex-row gap-x-1 items-center p-2 text-gray-600 rounded duration-200 cursor-default dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+						@click="toggleCW">
+						<IconAlertTriangle class="w-6 h-6" aria-hidden="true" />
+					</button>
+				</div>
 
-				<Button
-					:loading="loading"
-					theme="orangeLight"
-					type="submit"
-					class="!px-4 !py-2 hover:shadow-lg !text-base !ml-auto text-white dark:text-white !border-none !bg-[radial-gradient(ellipse_at_top_left,_var(--tw-gradient-stops))] !from-pink-500 !via-red-500 !to-yellow-500">
+				<Button :loading="loading" theme="gradientOrange" type="submit">
 					Post
 				</Button>
 			</div>

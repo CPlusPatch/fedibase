@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import HomeFeed from "~/components/feed/HomeFeed.vue";
+import Feed, { FeedType } from "~/components/feed/Feed.vue";
 </script>
 
 <template>
-	<HomeFeed />
+	<Feed :type="FeedType.Home" />
 </template>

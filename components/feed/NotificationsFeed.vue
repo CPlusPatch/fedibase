@@ -5,7 +5,7 @@ import {
 	IconRocket,
 	IconStarFilled,
 } from "@tabler/icons-vue";
-import { Ref, ref } from "vue";
+import { ref } from "vue";
 import SmallSelect, {
 	SelectDirection,
 	SelectItem,
@@ -44,7 +44,7 @@ const modes: SelectItem[] = [
 	},
 ];
 
-const mode: Ref<string> = ref(modes[0].value);
+const mode = ref(modes[0].value);
 </script>
 
 <template>

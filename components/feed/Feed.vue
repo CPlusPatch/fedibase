@@ -1,7 +1,5 @@
 <script lang="ts">
-import { IconHandStop } from "@tabler/icons-vue";
 import { store } from "../../utils/store";
-import DummyStatus from "../status/DummyStatus.vue";
 import Notification from "../notifications/Notification.vue";
 import Post from "./Post.vue";
 export enum FeedType {
@@ -26,76 +24,77 @@ const props = withDefaults(
 	}
 );
 
-const entities = ref([]);
+const entities = ref<any[]>([]);
 
 const DEFAULT_LOAD = 20;
 const loading = ref(false);
-const reachedEnd = ref<boolean>(false);
+const reachedEnd = ref(false);
 
 const interval = window.setInterval(async () => {
+	console.log(entities.value);
 	const latestEntities = await getEntitiesSinceId(
 		(entities.value[0] as any).id
 	);
 	entities.value = [...latestEntities, ...entities.value] as any;
-
-	/* if (props.type === FeedType.Notifications) latestEntities.map((entity: Entity.Notification) => {
-		addNotification(entity, NotificationType.NewMention)
-	}) */
 }, 15000);
 
 const getEntitiesSinceId = async (sinceId: string) => {
 	if (loading.value) return;
-	if (!store.client?.getLocalTimeline) return;
 	loading.value = true;
-	let res;
-	switch (props.type) {
-		case FeedType.Home: {
-			res = (await store.client?.getHomeTimeline({
-				limit: DEFAULT_LOAD,
-				since_id: sinceId,
-			})) as any;
-			break;
-		}
-		case FeedType.User: {
-			if (!props.id)
-				throw new Error("Feed needs a user ID to work in user mode!");
-			res = (await store.client?.getAccountStatuses(props.id, {
-				limit: DEFAULT_LOAD,
-				since_id: sinceId,
-			})) as any;
-			break;
-		}
 
-		case FeedType.Notifications: {
-			res = (await store.client?.getNotifications({
-				limit: DEFAULT_LOAD,
-				since_id: sinceId,
-			})) as any;
-			break;
-		}
+	let res: any = [];
+	try {
+		switch (props.type) {
+			case FeedType.Home:
+				res = await store.client?.getHomeTimeline({
+					limit: DEFAULT_LOAD,
+					since_id: sinceId,
+				});
+				break;
 
-		case FeedType.Local: {
-			res = (await store.client?.getLocalTimeline({
-				limit: DEFAULT_LOAD,
-				since_id: sinceId,
-			})) as any;
-			break;
-		}
+			case FeedType.User:
+				if (!props.id)
+					throw new Error(
+						"Feed needs a user ID to work in user mode!"
+					);
+				res = await store.client?.getAccountStatuses(props.id, {
+					limit: DEFAULT_LOAD,
+					since_id: sinceId,
+				});
+				break;
 
-		case FeedType.Federated: {
-			res = (await store.client?.getPublicTimeline({
-				limit: DEFAULT_LOAD,
-				since_id: sinceId,
-			})) as any;
-			break;
+			case FeedType.Notifications:
+				res = await store.client?.getNotifications({
+					limit: DEFAULT_LOAD,
+					since_id: sinceId,
+				});
+				break;
+
+			case FeedType.Local:
+				res = await store.client?.getLocalTimeline({
+					limit: DEFAULT_LOAD,
+					since_id: sinceId,
+				});
+				break;
+
+			case FeedType.Federated:
+				res = await store.client?.getPublicTimeline({
+					limit: DEFAULT_LOAD,
+					since_id: sinceId,
+				});
+				break;
 		}
+	} catch (error) {
+		console.error(error);
+	} finally {
+		loading.value = false;
 	}
-	loading.value = false;
-	return res.data;
+
+	return res;
 };
 
 const getEntitiesBeforeId = async (beforeId: string) => {
-	let res;
+	let res: any = [];
 	loading.value = true;
 
 	switch (props.type) {
@@ -147,23 +146,14 @@ const getEntitiesBeforeId = async (beforeId: string) => {
 const loadMoreEntities = async () => {
 	if (loading.value) return false;
 	if (reachedEnd.value) return false;
-	const beforeId = (entities.value[entities.value.length - 1] as any).id;
+
+	const beforeId =
+		(entities.value[entities.value.length - 1] as any)?.id ?? "";
 
 	const newEntities = await getEntitiesBeforeId(beforeId);
 
-	entities.value = [...entities.value, ...newEntities] as any;
-
-	if (props.type === FeedType.Home) store.savedFeed = entities.value;
+	entities.value = [...entities.value, ...newEntities];
 };
-
-onMounted(async () => {
-	if (loading.value) return;
-
-	entities.value = [
-		...(await getEntitiesSinceId("")),
-		...entities.value,
-	] as any;
-});
 
 onUnmounted(() => {
 	window.clearInterval(interval);
@@ -180,24 +170,16 @@ onUnmounted(() => {
 	</template>
 	<template v-if="entities.length > 0 && type === FeedType.Notifications">
 		<Notification
-			v-for="entity of entities.filter(e => {
+			v-for="entity of entities.filter((e: Entity.Notification) => {
 				switch (props.mode) {
 					case 'all':
 						return true;
 					case 'reblogs':
-						return (
-							(e as Entity.Notification).type === 'reblog'
-						);
+						return (e.type === 'reblog');
 					case 'mention':
-						return (
-							(e as Entity.Notification).type ===
-							'mention'
-						);
+						return (e.type === 'mention');
 					case 'favourites':
-						return (
-							(e as Entity.Notification).type ===
-							'favourite'
-						);
+						return (e.type === 'favourite');
 				}
 			})"
 			:key="(entity as any).id"
@@ -205,24 +187,15 @@ onUnmounted(() => {
 	</template>
 
 	<div
-		v-if="entities.length === 0 && !reachedEnd"
-		class="grow w-full h-full flex items-center justify-center">
-		<!-- <img src="/images/icons/logo.svg" class="w-20 h-20 animate-hithere" /> -->
+		v-if="!reachedEnd"
+		v-is-visible="loadMoreEntities"
+		class="grow w-full h-full flex items-center justify-center min-h-40">
 		<Spinner class="w-10 h-10" />
 	</div>
 
-	<DummyStatus
-		v-if="!loading && !reachedEnd && entities.length > 0"
-		v-is-visible="loadMoreEntities" />
-	<DummyStatus v-if="!reachedEnd && entities.length > 0" />
-	<DummyStatus v-if="!reachedEnd && entities.length > 0" />
-	<!-- Only show 3 dummy statuses once posts are loaded to prevent the user from scrolling too far
-		down and loading posts infinitely without seeing them -->
-	<div v-if="reachedEnd" class="flex justify-center">
-		<div class="mx-4 flex flex-col dark:text-gray-300 items-center gap-y-3">
-			<IconHandStop class="w-10 h-10" />
-			<span>No more posts!</span>
-			<span>You've reached the end of this timeline</span>
-		</div>
+	<div
+		v-if="reachedEnd"
+		class="flex justify-center text-gray-300 dark:text-gray-600">
+		No more posts
 	</div>
 </template>

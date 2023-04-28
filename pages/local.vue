@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import LocalFeed from "~/components/feed/LocalFeed.vue";
+import Feed, { FeedType } from "~/components/feed/Feed.vue";
 </script>
 
 <template>
-	<LocalFeed />
+	<Feed :type="FeedType.Local" />
 </template>

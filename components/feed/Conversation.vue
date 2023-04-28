@@ -114,7 +114,7 @@ onUnmounted(() => {
 						:interaction="true" />
 				</div>
 				<div
-					class="px-4 py-4 border-y-2 dark:border-gray-700 bg-gray-300/10">
+					class="px-4 py-4 border-y dark:border-gray-700 border-gray-200 bg-gray-300/10">
 					<Status :type="type" :interaction="true" :status="post" />
 				</div>
 				<div class="flex flex-col gap-y-4 mb-20">

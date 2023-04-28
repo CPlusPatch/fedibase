@@ -7,7 +7,7 @@ export interface StateType {
 		clientId: string;
 		data: Entity.Account | null;
 		url: string;
-		type: "mastodon" | "pleroma" | "misskey" | "";
+		type: "mastodon" | "pleroma";
 		clientSecret: string;
 		instance: Entity.Instance | null;
 	};

@@ -5,12 +5,15 @@ import { store } from "../../utils/store";
 import PostEditor from "../editor/PostEditor.vue";
 import Conversation from "../feed/Conversation.vue";
 import NotificationsFeed from "../feed/NotificationsFeed.vue";
+import useWindowDimensions from "../hooks/useWindowDimensions";
 
 const uuid = ref<string>(v4());
 
 const reRender = () => {
 	uuid.value = v4();
 };
+
+const { width } = useWindowDimensions();
 </script>
 
 <template>
@@ -28,6 +31,7 @@ const reRender = () => {
 		<PostEditor :key="uuid" :close-button="true" :re-render="reRender" />
 
 		<div
+			v-if="width >= 768 && width < 1280"
 			class="hidden overflow-x-hidden p-4 md:flex xl:hidden dark:bg-dark-800 rounded-md border dark:border-dark-700">
 			<NotificationsFeed :title="true" />
 		</div>

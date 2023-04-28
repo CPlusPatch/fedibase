@@ -7,6 +7,7 @@ export default defineNuxtConfig({
 		"@unocss/nuxt",
 		"@nuxtjs/eslint-module",
 		"nuxt-headlessui",
+		"nuxt-icon",
 	],
 	ssr: false,
 	app: {

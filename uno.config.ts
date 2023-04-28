@@ -10,6 +10,9 @@ export default defineConfig({
 			"!px-0 !py-0 !p-3 h-full !rounded-none grow dark:hover:!bg-dark-600 flex items-center justify-center text-xs flex-col gap-y-1; hover:!bg-gray-300 !bg-transparent !border-none !shadow-none !bg-white dark:!bg-transparent",
 		"navbar-link":
 			"flex items-center justify-center text-xs flex-col gap-y-1;",
+		"modal-overlay":
+			"fixed inset-0 bg-gray-500/40 transition-opacity backdrop-blur-md",
+		button: "inline-flex justify-center items-center px-4 py-2 text-base font-medium rounded-md border shadow-sm duration-200 focus:outline-none sm:text-sm",
 	},
 	presets: [
 		presetUno(),

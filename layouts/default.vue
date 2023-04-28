@@ -2,6 +2,7 @@
 import { FastClick } from "fastclick";
 import generator from "megalodon";
 import NotificationsFeed from "~/components/feed/NotificationsFeed.vue";
+import useWindowDimensions from "~/components/hooks/useWindowDimensions";
 import MobileNavbar from "~/components/layout/MobileNavbar.vue";
 import LeftSidebar from "~/components/sidebar/LeftSidebar.vue";
 import { store } from "~/utils/store";
@@ -11,7 +12,6 @@ const updateOffset = (event: any) => {
 };
 
 if (store.auth.type && store.auth.url && store.auth.token) {
-	console.log("yay");
 	store.client = generator(store.auth.type, store.auth.url, store.auth.token);
 } else {
 	store.client = null;
@@ -39,10 +39,6 @@ if (store.theme === "dark") {
 	document.getElementsByTagName("html")[0].classList.add("dark");
 }
 
-store.notifications = [];
-store.savedFeed = [];
-store.feedScroll = 0;
-
 watch(
 	() => store.auth.token,
 	() => {
@@ -66,6 +62,8 @@ onMounted(() => {
 	}, 1000);
 });
 
+const { width } = useWindowDimensions();
+
 onUnmounted(() => {
 	document
 		.getElementById("feed")
@@ -77,23 +75,22 @@ onUnmounted(() => {
 	<template v-if="store.client && store.auth.token">
 		<EditorModal />
 		<div
-			class="relative duration-200 dark:bg-dark-800 flex h-screen w-screen">
+			class="relative duration-200 dark:bg-dark-800 flex h-screen w-screen font-sans">
 			<Nav />
 
 			<div
 				class="grid grid-cols-6 justify-between overflow-hidden gap-x-4 px-4 grid-flow-row md:grid-cols-8 xl:grid-cols-12 w-full max-w-[90rem] mx-auto">
 				<div
-					:class="[
-						'hidden md:col-span-3 md:block no-scroll overflow-y-scroll',
-					]">
+					class="hidden md:col-span-3 md:block no-scroll overflow-y-scroll">
 					<LeftSidebar />
 				</div>
 				<div
-					class="overflow-x-hidden md:col-span-5 col-span-6 md:border-x dark:border-dark-700 dark:bg-dark-800">
+					class="flex overflow-x-hidden flex-col py-4 pb-20 h-full w-full no-scroll overflow-x-hidden md:col-span-5 col-span-6 md:border-x border-gray-300 dark:border-dark-700 dark:bg-dark-800">
 					<slot />
 				</div>
 				<div
-					class="hidden overflow-x-hidden p-4 md:col-span-0 max-h-screen xl:col-span-4 xl:flex dark:bg-dark-800 rounded-md dark:border-dark-700">
+					v-if="width >= 1280"
+					class="hidden overflow-x-hidden p-4 max-h-screen xl:col-span-4 xl:flex dark:bg-dark-800 rounded-md dark:border-dark-700">
 					<NotificationsFeed :title="true" />
 				</div>
 			</div>
