@@ -31,14 +31,17 @@ const loading = ref(false);
 const reachedEnd = ref(false);
 
 const interval = window.setInterval(async () => {
-	console.log(entities.value);
-	const latestEntities = await getEntitiesSinceId(
-		(entities.value[0] as any).id
+	const latestEntities = await getEntities(
+		(entities.value[0] as any).id,
+		undefined
 	);
 	entities.value = [...latestEntities, ...entities.value] as any;
 }, 15000);
 
-const getEntitiesSinceId = async (sinceId: string) => {
+const getEntities = async (
+	sinceId: string | undefined,
+	beforeId: string | undefined
+) => {
 	if (loading.value) return;
 	loading.value = true;
 
@@ -49,6 +52,7 @@ const getEntitiesSinceId = async (sinceId: string) => {
 				res = await store.client?.getHomeTimeline({
 					limit: DEFAULT_LOAD,
 					since_id: sinceId,
+					max_id: beforeId,
 				});
 				break;
 
@@ -60,6 +64,7 @@ const getEntitiesSinceId = async (sinceId: string) => {
 				res = await store.client?.getAccountStatuses(props.id, {
 					limit: DEFAULT_LOAD,
 					since_id: sinceId,
+					max_id: beforeId,
 				});
 				break;
 
@@ -67,6 +72,7 @@ const getEntitiesSinceId = async (sinceId: string) => {
 				res = await store.client?.getNotifications({
 					limit: DEFAULT_LOAD,
 					since_id: sinceId,
+					max_id: beforeId,
 				});
 				break;
 
@@ -74,6 +80,7 @@ const getEntitiesSinceId = async (sinceId: string) => {
 				res = await store.client?.getLocalTimeline({
 					limit: DEFAULT_LOAD,
 					since_id: sinceId,
+					max_id: beforeId,
 				});
 				break;
 
@@ -81,6 +88,7 @@ const getEntitiesSinceId = async (sinceId: string) => {
 				res = await store.client?.getPublicTimeline({
 					limit: DEFAULT_LOAD,
 					since_id: sinceId,
+					max_id: beforeId,
 				});
 				break;
 		}
@@ -90,67 +98,16 @@ const getEntitiesSinceId = async (sinceId: string) => {
 		loading.value = false;
 	}
 
-	return res;
-};
-
-const getEntitiesBeforeId = async (beforeId: string) => {
-	let res: any = [];
-	loading.value = true;
-
-	switch (props.type) {
-		case FeedType.Home: {
-			res = (await store.client?.getHomeTimeline({
-				limit: DEFAULT_LOAD,
-				max_id: beforeId,
-			})) as any;
-			break;
-		}
-		case FeedType.User: {
-			if (!props.id)
-				throw new Error("Feed needs a user ID to work in user mode!");
-			res = (await store.client?.getAccountStatuses(props.id, {
-				limit: DEFAULT_LOAD,
-				max_id: beforeId,
-			})) as any;
-			break;
-		}
-		case FeedType.Notifications: {
-			res = (await store.client?.getNotifications({
-				limit: DEFAULT_LOAD,
-				max_id: beforeId,
-			})) as any;
-			break;
-		}
-		case FeedType.Local: {
-			res = (await store.client?.getLocalTimeline({
-				limit: DEFAULT_LOAD,
-				max_id: beforeId,
-			})) as any;
-			break;
-		}
-		case FeedType.Federated: {
-			res = (await store.client?.getPublicTimeline({
-				limit: DEFAULT_LOAD,
-				max_id: beforeId,
-			})) as any;
-			break;
-		}
-	}
-
-	if (res.data.length === 0) reachedEnd.value = true;
-
-	loading.value = false;
 	return res.data;
 };
 
 const loadMoreEntities = async () => {
-	if (loading.value) return false;
-	if (reachedEnd.value) return false;
+	if (loading.value || reachedEnd.value) return false;
 
 	const beforeId =
 		(entities.value[entities.value.length - 1] as any)?.id ?? "";
 
-	const newEntities = await getEntitiesBeforeId(beforeId);
+	const newEntities = await getEntities(undefined, beforeId);
 
 	entities.value = [...entities.value, ...newEntities];
 };

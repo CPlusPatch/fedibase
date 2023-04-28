@@ -6,7 +6,6 @@
 		stroke="#000"
 		viewBox="0 0 24 24"
 		class="dark:text-white"
-		fill="currentColor"
 		xmlns="http://www.w3.org/2000/svg">
 		<g class="spinner_V8m1">
 			<circle
@@ -14,6 +13,7 @@
 				cy="12"
 				r="9.5"
 				fill="none"
+				stroke="currentColor"
 				stroke-width="3"></circle>
 		</g>
 	</svg>
