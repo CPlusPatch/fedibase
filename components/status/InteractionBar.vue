@@ -22,6 +22,7 @@ import ScaleFadeSlide from "../transitions/ScaleFadeSlide.vue";
 import { NotificationType, addNotification } from "../snackbar/Snackbar.vue";
 import Input from "../input/Input.vue";
 import Button from "../button/Button.vue";
+import InteractionBarButton from "./InteractionBarButton.vue";
 
 const props = defineProps<{
 	status: Entity.Status;
@@ -110,8 +111,7 @@ const copyUrl = () => {
 
 <template>
 	<div class="grid grid-cols-6 mt-3 w-full text-gray-700 dark:text-gray-400">
-		<Button
-			class="gap-x-2 flex justify-center static shadow-none w-full border-none outline-none focus:outline-none"
+		<InteractionBarButton
 			title="Reply to this post"
 			@click="
 				() => {
@@ -122,9 +122,9 @@ const copyUrl = () => {
 			">
 			<IconMessageCircle2 aria-hidden="true" class="w-5 h-5" />
 			{{ _status.replies_count > 0 ? _status.replies_count : "" }}
-		</Button>
-		<Button
-			class="gap-x-2 flex justify-center static shadow-none w-full border-none outline-none focus:outline-none hover:text-yellow-400"
+		</InteractionBarButton>
+		<InteractionBarButton
+			class="hover:text-yellow-400"
 			title="Favourite this post"
 			@click="toggleFavourite">
 			<IconStarFilled
@@ -133,11 +133,8 @@ const copyUrl = () => {
 				class="w-5 h-5 text-yellow-400 animate-[spin_1s_ease-in-out]" />
 			<IconStar v-else aria-hidden="true" class="w-5 h-5" />
 			{{ _status.favourites_count > 0 ? _status.favourites_count : "" }}
-		</Button>
-		<Button
-			title="Boost this post"
-			class="gap-x-2 flex justify-center static shadow-none w-full border-none outline-none focus:outline-none"
-			@click="toggleReblog">
+		</InteractionBarButton>
+		<InteractionBarButton @click="toggleReblog">
 			<template
 				v-if="
 					_status.visibility !== 'private' &&
@@ -154,47 +151,14 @@ const copyUrl = () => {
 				{{ _status.reblogs_count > 0 ? _status.reblogs_count : "" }}
 			</template>
 			<IconLock v-else aria-hidden="true" class="w-5 h-5 text-gray-300" />
-		</Button>
+		</InteractionBarButton>
 
-		<div class="relative">
-			<Button
-				class="gap-x-2 flex justify-center static shadow-none w-full border-none outline-none focus:outline-none"
-				title="Add reaction"
-				@click="emojiDialog = !emojiDialog">
-				<IconMoodHappy aria-hidden="true" class="w-5 h-5" />
-			</Button>
-
-			<ScaleFadeSlide>
-				<div
-					v-if="emojiDialog"
-					class="z-50 absolute bottom-6 -translate-x-1/2">
-					<div
-						class="w-80 flex flex-col m-4 p-3 z-50 bg-orange-100/50 backdrop-blur-md dark:bg-dark-800/75 border dark:border-gray-700 shadow rounded-xl h-72">
-						<Input
-							:icon="IconMoodHappy"
-							class="dark:border-gray-700"
-							placeholder="Search for emoji here"
-							name="emoji"
-							@input="filterReactions" />
-						<div
-							className="grid grid-cols-6 justify-around no-scroll p-3 gap-4 overflow-scroll">
-							<button
-								v-for="emoji of reactionFilter"
-								:key="emoji.url"
-								title="{emoji.shortcode}"
-								class="flex items-center justify-center w-full"
-								@click="() => react(emoji)">
-								<img
-									:src="emoji.url"
-									className="w-7 h-7 rounded" />
-							</button>
-						</div>
-					</div>
-				</div>
-			</ScaleFadeSlide>
-		</div>
-		<Button
-			class="gap-x-2 flex justify-center static shadow-none w-full border-none outline-none focus:outline-none"
+		<InteractionBarButton
+			title="Add reaction"
+			@click="emojiDialog = !emojiDialog">
+			<IconMoodHappy aria-hidden="true" class="w-5 h-5" />
+		</InteractionBarButton>
+		<InteractionBarButton
 			title="Quote this post"
 			@click="
 				e => {
@@ -204,15 +168,12 @@ const copyUrl = () => {
 				}
 			">
 			<IconQuote aria-hidden="true" class="w-5 h-5" />
-		</Button>
+		</InteractionBarButton>
 
 		<div class="relative">
-			<Button
-				class="gap-x-2 flex justify-center static shadow-none w-full border-none outline-none focus:outline-none hover:!animate-none"
-				title="Quote this post"
-				@click="menu = !menu">
+			<InteractionBarButton title="Quote this post" @click="menu = !menu">
 				<IconDots aria-hidden="true" class="w-5 h-5" />
-			</Button>
+			</InteractionBarButton>
 
 			<ScaleFadeSlide>
 				<div
