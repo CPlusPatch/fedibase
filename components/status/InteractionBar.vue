@@ -20,8 +20,6 @@ import { ref } from "vue";
 import { store } from "../../utils/store";
 import ScaleFadeSlide from "../transitions/ScaleFadeSlide.vue";
 import { NotificationType, addNotification } from "../snackbar/Snackbar.vue";
-import Input from "../input/Input.vue";
-import Button from "../button/Button.vue";
 import InteractionBarButton from "./InteractionBarButton.vue";
 
 const props = defineProps<{
@@ -29,8 +27,8 @@ const props = defineProps<{
 }>();
 
 const _status = ref<Entity.Status>(props.status);
-const reacting = ref<boolean>(false);
-const reactionFilter = ref<Entity.Emoji[]>(store.emojis);
+/* const reacting = ref<boolean>(false);
+const reactionFilter = ref<Entity.Emoji[]>(store.emojis); */
 
 const toggleFavourite = () => {
 	if (_status.value.favourited) {
@@ -81,7 +79,7 @@ const togglePin = () => {
 const menu = ref(false);
 const emojiDialog = ref(false);
 
-const filterReactions = (event: Event) => {
+/* const filterReactions = (event: Event) => {
 	reactionFilter.value = store.emojis.filter(e =>
 		e.shortcode.includes((event.target as HTMLInputElement).value)
 	);
@@ -102,7 +100,7 @@ const react = (emoji: Entity.Emoji) => {
 		.finally(() => {
 			emojiDialog.value = false;
 		});
-};
+}; */
 
 const copyUrl = () => {
 	navigator.clipboard.writeText(_status.value.url);
