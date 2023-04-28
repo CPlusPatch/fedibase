@@ -45,7 +45,7 @@ const buttons = [
 
 <template>
 	<button
-		class="fixed md:hidden bottom-20 right-5 flex items-center justify-center p-4 rounded-2xl shadow-lg font-medium bg-orange-100 dark:bg-orange-700 dark:text-orange-100"
+		class="border-none fixed md:hidden bottom-20 right-5 flex items-center justify-center p-4 rounded-2xl shadow-lg font-medium bg-orange-100 dark:bg-orange-700 dark:text-orange-100"
 		@click="store.state.composer = true">
 		<Icon name="ic:twotone-edit" class="w-7 h-7" />
 	</button>
@@ -57,7 +57,7 @@ const buttons = [
 			v-for="button of buttons"
 			:key="button.name"
 			v-ripple
-			class="dark:text-white h-full w-full py-2 text-black flex flex-col items-center gap-y-1"
+			class="dark:text-white h-full w-full py-2 border-none text-black flex flex-col items-center gap-y-1"
 			@click="button.onClick">
 			<Icon :name="button.icon" class="h-6 w-6" aria-hidden="true" />
 			<span class="text-xs font-bold font-sans">{{ button.name }}</span>
