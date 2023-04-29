@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { IconX } from "@tabler/icons-vue";
 import { useStore } from "../../utils/store";
 import Status, { PostType } from "../status/Status.vue";
 import ConversationChildPost from "../status/ConversationChildPost.vue";
@@ -91,34 +90,21 @@ onUnmounted(() => {
 </script>
 
 <template>
-	<div class="flex overflow-y-hidden flex-col pt-6 h-full">
-		<div class="flex justify-between px-4">
-			<h1 class="text-lg font-medium text-gray-900 dark:text-gray-50">
-				Conversation
-			</h1>
-			<button
-				class="flex items-center justify-center"
-				title="Close conversation"
-				@click="onClose">
-				<IconX v-if="closeButton" class="w-5 h-5 dark:text-gray-50" />
-			</button>
-		</div>
+	<div class="flex overflow-y-hidden flex-col h-full">
 		<div class="flex overflow-hidden relative mt-6 max-w-full grow">
 			<div
 				v-if="post"
-				class="flex overflow-y-scroll flex-col gap-y-5 py-4 w-full h-full no-scroll">
-				<div class="flex flex-col gap-y-4 px-2">
+				class="flex overflow-y-scroll flex-col gap-y-5 py-4 w-full h-full no-scroll px-2">
+				<div class="flex flex-col gap-y-4">
 					<Status
 						v-for="ancestor of ancestors"
 						:key="ancestor.id"
+						:has-left-line="true"
 						:type="type"
 						:status="ancestor"
 						:interaction="true" />
 				</div>
-				<div
-					class="px-4 py-4 border-y dark:border-gray-700 border-gray-200 bg-gray-300/10">
-					<Status :type="type" :interaction="true" :status="post" />
-				</div>
+				<Status :type="type" :interaction="true" :status="post" />
 				<div class="flex flex-col gap-y-4 mb-20">
 					<ConversationChildPost
 						:key="JSON.stringify(descendants)"

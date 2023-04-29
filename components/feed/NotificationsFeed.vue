@@ -64,7 +64,7 @@ const mode = ref(modes[0].value);
 
 		<ul
 			:id="id"
-			class="flex overflow-y-scroll flex-col max-w-full h-full no-scroll">
+			class="flex overflow-y-scroll flex-col max-w-full h-full no-scroll gap-y-4">
 			<Feed :type="FeedType.Notifications" :mode="mode" />
 		</ul>
 	</div>

@@ -110,7 +110,7 @@ const copyUrl = () => {
 </script>
 
 <template>
-	<div class="grid grid-cols-6 mt-3 w-full text-gray-700 dark:text-gray-400">
+	<div class="grid grid-cols-6 w-full text-gray-700 dark:text-gray-400">
 		<InteractionBarButton
 			title="Reply to this post"
 			@click="

@@ -47,7 +47,10 @@ const getEntities = async (
 	if (loading.value) return;
 	loading.value = true;
 
-	let res: any = [];
+	let res: any = {
+		data: [],
+	};
+
 	try {
 		switch (props.type) {
 			case FeedType.Home:

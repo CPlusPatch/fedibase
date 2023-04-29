@@ -4,6 +4,8 @@ import {
 	presetTypography,
 	presetWebFonts,
 } from "unocss";
+import transformerDirectives from "@unocss/transformer-directives";
+
 export default defineConfig({
 	shortcuts: {
 		"modal-overlay":
@@ -26,6 +28,7 @@ export default defineConfig({
 			},
 		}),
 	],
+	transformers: [transformerDirectives()],
 	theme: {
 		colors: {
 			dark: {

@@ -20,6 +20,7 @@ export enum PostType {
 const props = defineProps<{
 	status: Entity.Status;
 	interaction: boolean;
+	hasLeftLine?: boolean;
 	type: PostType;
 }>();
 
@@ -48,8 +49,7 @@ const toggleShow = () => {
 </script>
 
 <template>
-	<div
-		class="flex flex-col max-w-full gap-y-1 cursor-pointer p-4 rounded fill-red-400">
+	<div class="flex flex-col max-w-full gap-y-1 cursor-pointer rounded">
 		<div
 			v-if="type !== PostType.Tiny"
 			class="flex flex-row overflow-hidden text-[0.95rem] text-ellipsis whitespace-nowrap w-full">
@@ -119,54 +119,72 @@ const toggleShow = () => {
 				@{{ status.account.acct.split("@")[0] }}
 			</h5>
 		</div>
-		<div class="flex flex-col gap-y-1 text-sm">
-			<ReplyTo v-if="status.in_reply_to_id" :status="status" />
-
-			<div
-				v-if="status.sensitive"
-				class="flex gap-x-2 items-center font-bold dark:text-gray-100">
-				{{
-					status.spoiler_text === ""
-						? "Marked as sensitive"
-						: withEmojis(status.spoiler_text, status.emojis)
-				}}
-
-				<Button class="!py-1 !px-2" theme="gray" @click="toggleShow">
-					{{ show ? "Hide" : "Show" }}
-				</Button>
+		<div class="flex">
+			<div v-if="hasLeftLine" class="h-full pr-14 relative -z-1">
+				<div
+					class="border-l-2 dark:border-gray-300 absolute inset-x-0 -top-3 left-5 -bottom-10"></div>
 			</div>
+			<div class="flex flex-col gap-y-1 text-sm grow">
+				<ReplyTo v-if="status.in_reply_to_id" :status="status" />
 
-			<p
-				ref="textRef"
-				:class="
-					classNames(
-						'mt-1 status-text rounded text-sm duration-200 status-text dark:text-gray-50 break-words max-w-full',
-						status.sensitive && !show && 'filter blur-lg',
-						clamps && !expand && 'line-clamp-6'
-					)
-				"
-				v-html="withEmojis(status.content, status.emojis)"></p>
+				<div
+					v-if="status.sensitive"
+					class="flex gap-x-2 items-center font-bold dark:text-gray-100">
+					{{
+						status.spoiler_text === ""
+							? "Marked as sensitive"
+							: withEmojis(status.spoiler_text, status.emojis)
+					}}
 
-			<button
-				v-if="clamps"
-				class="mx-auto w-full text-sm text-blue-800 dark:text-blue-100 hover:underline"
-				@click="toggleExpand">
-				<template v-if="expand">Less</template>
-				<template v-else>More</template>
-			</button>
+					<Button
+						class="!py-1 !px-2"
+						theme="gray"
+						@click="toggleShow">
+						{{ show ? "Hide" : "Show" }}
+					</Button>
+				</div>
 
-			<Poll v-if="status.poll" :status="status" />
+				<p
+					ref="textRef"
+					:class="
+						classNames(
+							'mt-1 status-text rounded text-sm duration-200 status-text dark:text-gray-50 break-words max-w-full',
+							status.sensitive && !show && 'filter blur-lg',
+							clamps && !expand && 'line-clamp-6'
+						)
+					"
+					v-html="withEmojis(status.content, status.emojis)"></p>
 
-			<Reactions
-				v-if="status.emoji_reactions.length > 0"
-				:status="status" />
+				<button
+					v-if="clamps"
+					class="mx-auto w-full text-sm text-blue-800 dark:text-blue-100 hover:underline"
+					@click="toggleExpand">
+					<template v-if="expand">Less</template>
+					<template v-else>More</template>
+				</button>
 
-			<StatusAttachments
-				v-if="status.media_attachments.length > 0"
-				:type="type"
-				:status="status" />
+				<Poll v-if="status.poll" :status="status" />
+
+				<Reactions
+					v-if="status.emoji_reactions.length > 0"
+					:status="status" />
+
+				<StatusAttachments
+					v-if="status.media_attachments.length > 0"
+					:type="type"
+					:status="status" />
+
+				<InteractionBar
+					v-if="props.interaction"
+					v-once
+					:status="status" />
+			</div>
 		</div>
-
-		<InteractionBar v-if="props.interaction" v-once :status="status" />
 	</div>
 </template>
+
+<style lang="css" scoped>
+.status_text blockquote {
+	@apply text-red-500;
+}
+</style>

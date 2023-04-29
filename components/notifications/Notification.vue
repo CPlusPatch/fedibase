@@ -17,18 +17,18 @@ const props = defineProps<{
 			)
 		"
 		:class="[
-			'flex flex-col max-w-full rounded duration-200 ease-in-out',
+			'flex flex-col max-w-full rounded duration-200 ease-in-out px-3 gap-y-1',
 			props.notification.type === 'favourite' &&
-				'border-yellow-500 border-l-2 opacity-75 mx-4 my-2',
+				'border-yellow-500 border-l-2 opacity-75',
 			props.notification.type === 'reblog' &&
-				'border-blue-500 border-l-2 opacity-75 mx-4 my-2',
+				'border-blue-500 border-l-2 opacity-75',
 			props.notification.type === 'emoji_reaction' &&
-				'border-red-500 border-l-2 opacity-75 mx-4 my-2',
+				'border-red-500 border-l-2 opacity-75',
 		]">
 		<RouterLink
 			v-if="props.notification.type === 'favourite'"
 			:to="`/user/${notification.account.id}`"
-			class="overflow-hidden px-4 gap-x-1 max-w-full font-semibold text-gray-500 overflow-ellipsis dark:text-gray-400 hover:underline">
+			class="overflow-hidden gap-x-1 max-w-full font-semibold text-gray-500 overflow-ellipsis dark:text-gray-400 hover:underline">
 			<IconStarFilled
 				aria-hidden="true"
 				class="inline mr-1 w-[1em] pb-0.5 text-yellow-500 hover:animate-spin" />
@@ -49,7 +49,7 @@ const props = defineProps<{
 		<RouterLink
 			v-if="props.notification.type === 'emoji_reaction'"
 			:to="`/user/${notification.account.id}`"
-			class="overflow-hidden px-4 gap-x-1 max-w-full font-semibold text-gray-500 overflow-ellipsis dark:text-gray-400 hover:underline">
+			class="overflow-hidden gap-x-1 max-w-full font-semibold text-gray-500 overflow-ellipsis dark:text-gray-400 hover:underline">
 			<img
 				loading="lazy"
 				:src="props.notification.account.avatar"
@@ -76,7 +76,7 @@ const props = defineProps<{
 		<RouterLink
 			v-if="props.notification.type === 'reblog'"
 			:to="`/user/${notification.account.id}`"
-			class="overflow-hidden px-4 gap-x-1 max-w-full font-semibold text-gray-500 overflow-ellipsis dark:text-gray-400 hover:underline">
+			class="overflow-hidden gap-x-1 max-w-full font-semibold text-gray-500 overflow-ellipsis dark:text-gray-400 hover:underline">
 			<svg
 				aria-hidden="true"
 				xmlns="http://www.w3.org/2000/svg"
