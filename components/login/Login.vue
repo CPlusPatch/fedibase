@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import generator from "megalodon";
 import { ref } from "vue";
-import { IconUser } from "@tabler/icons-vue";
 import { useStore } from "../../utils/store";
 import Button from "../button/Button.vue";
 import Input from "../input/Input.vue";
@@ -146,7 +145,7 @@ const submit = async (e: Event) => {
 						<div class="flex flex-col gap-y-2">
 							<Input
 								id="handle"
-								:icon="IconUser"
+								icon="ic:round-supervised-user-circle"
 								name="handle"
 								type="handle"
 								auto-complete="url"

@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { IconDots } from "@tabler/icons-vue";
 import { Entity } from "megalodon";
 import Status, { PostType } from "./Status.vue";
 
@@ -23,7 +22,9 @@ const children = props.posts.filter(
 	<template v-if="recursionDepth > 10">
 		<div
 			class="flex flex-col gap-y-4 dark:border-gray-500 rounded justify-center items-center p-4 w-full">
-			<IconDots class="w-5 h-5 dark:text-white" />
+			<Icon
+				name="ic:twotone-more-horiz"
+				class="w-5 h-5 dark:text-white" />
 		</div>
 	</template>
 	<template v-else>

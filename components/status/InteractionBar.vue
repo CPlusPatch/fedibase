@@ -1,20 +1,4 @@
 <script setup lang="ts">
-import {
-	IconStar,
-	IconRocket,
-	IconMoodHappy,
-	IconQuote,
-	IconLock,
-	IconStarFilled,
-	IconPin,
-	IconEdit,
-	IconForbid,
-	IconCheck,
-	IconDots,
-	IconLink,
-	IconMessageCircle2,
-	IconPinFilled,
-} from "@tabler/icons-vue";
 import { Entity } from "megalodon";
 import { ref } from "vue";
 import { useStore } from "../../utils/store";
@@ -54,7 +38,11 @@ const toggleReblog = () => {
 
 const block = () => {
 	store.client?.blockAccount(_status.value.account.id).then(_ => {
-		addNotification("Blocked account!", NotificationType.Normal, IconCheck);
+		addNotification(
+			"Blocked account!",
+			NotificationType.Normal,
+			"ic:twotone-check"
+		);
 	});
 };
 
@@ -64,7 +52,7 @@ const togglePin = () => {
 			addNotification(
 				"Unpinned status!",
 				NotificationType.Normal,
-				IconPin
+				"ic:twotone-pin-off"
 			);
 		});
 	} else {
@@ -72,7 +60,7 @@ const togglePin = () => {
 			addNotification(
 				"Pinned status!",
 				NotificationType.Normal,
-				IconPinFilled
+				"ic:twotone-push-pin"
 			);
 		});
 	}
@@ -120,18 +108,23 @@ const copyUrl = () => {
 					store.state.composer = true;
 				}
 			">
-			<IconMessageCircle2 aria-hidden="true" class="w-5 h-5" />
+			<Icon name="ic:outline-chat" aria-hidden="true" class="w-5 h-5" />
 			{{ _status.replies_count > 0 ? _status.replies_count : "" }}
 		</InteractionBarButton>
 		<InteractionBarButton
 			class="hover:text-yellow-400"
 			title="Favourite this post"
 			@click="toggleFavourite">
-			<IconStarFilled
+			<Icon
 				v-if="_status.favourited"
+				name="ic:outline-star"
 				aria-hidden="true"
 				class="w-5 h-5 text-yellow-400 animate-[spin_1s_ease-in-out]" />
-			<IconStar v-else aria-hidden="true" class="w-5 h-5" />
+			<Icon
+				v-else
+				name="ic:outline-star-border"
+				aria-hidden="true"
+				class="w-5 h-5" />
 			{{ _status.favourites_count > 0 ? _status.favourites_count : "" }}
 		</InteractionBarButton>
 		<InteractionBarButton @click="toggleReblog">
@@ -140,23 +133,32 @@ const copyUrl = () => {
 					_status.visibility !== 'private' &&
 					_status.visibility !== 'direct'
 				">
-				<IconRocket
+				<Icon
 					v-if="_status.reblogged"
+					name="ic:outline-autorenew"
 					aria-hidden="true"
 					class="w-5 h-5 text-green-400 animate-[spin_1s_ease-in-out]" />
-				<IconRocket
+				<Icon
 					v-else
+					name="ic:outline-autorenew"
 					aria-hidden="true"
 					class="w-5 h-5 hover:text-green-400" />
 				{{ _status.reblogs_count > 0 ? _status.reblogs_count : "" }}
 			</template>
-			<IconLock v-else aria-hidden="true" class="w-5 h-5 text-gray-300" />
+			<Icon
+				v-else
+				name="ic:outline-lock"
+				aria-hidden="true"
+				class="w-5 h-5 text-gray-300" />
 		</InteractionBarButton>
 
 		<InteractionBarButton
 			title="Add reaction"
 			@click="emojiDialog = !emojiDialog">
-			<IconMoodHappy aria-hidden="true" class="w-5 h-5" />
+			<Icon
+				name="ic:outline-emoji-emotions"
+				aria-hidden="true"
+				class="w-5 h-5" />
 		</InteractionBarButton>
 		<InteractionBarButton
 			title="Quote this post"
@@ -167,12 +169,18 @@ const copyUrl = () => {
 					store.state.composer = true;
 				}
 			">
-			<IconQuote aria-hidden="true" class="w-5 h-5" />
+			<Icon
+				name="ic:outline-format-quote"
+				aria-hidden="true"
+				class="w-5 h-5" />
 		</InteractionBarButton>
 
 		<div class="relative">
 			<InteractionBarButton title="Quote this post" @click="menu = !menu">
-				<IconDots aria-hidden="true" class="w-5 h-5" />
+				<Icon
+					name="ic:outline-more-horiz"
+					aria-hidden="true"
+					class="w-5 h-5" />
 			</InteractionBarButton>
 
 			<ScaleFadeSlide>
@@ -184,7 +192,8 @@ const copyUrl = () => {
 						v-if="_status.account.id === store.auth.data?.id"
 						as="button"
 						class="text-gray-700 duration-300 w-full dark:text-gray-50 hover:bg-orange-200 rounded-lg text-sm dark:hover:bg-orange-700/20 flex flex-row items-center py-2">
-						<IconEdit
+						<Icon
+							name="ic:outline-edit"
 							class="mx-2 h-[1.2em] w-[1.2em] mb-0.5"
 							aria-hidden="true" />
 						Edit
@@ -193,7 +202,8 @@ const copyUrl = () => {
 						as="button"
 						class="text-gray-700 duration-300 w-full dark:text-gray-50 hover:bg-orange-200 rounded-lg text-sm dark:hover:bg-orange-700/20 flex flex-row items-center py-2"
 						@click="copyUrl">
-						<IconLink
+						<Icon
+							name="ic:outline-insert-link"
 							class="mx-2 h-[1.2em] w-[1.2em] mb-0.5"
 							aria-hidden="true" />
 						Copy link
@@ -206,7 +216,8 @@ const copyUrl = () => {
 						as="button"
 						class="text-gray-700 duration-300 w-full dark:text-gray-50 hover:bg-orange-200 rounded-lg text-sm dark:hover:bg-orange-700/20 flex flex-row items-center py-2"
 						@click="togglePin">
-						<IconPin
+						<Icon
+							name="ic:outline-push-pin"
 							class="mx-2 h-[1.2em] w-[1.2em] mb-0.5"
 							aria-hidden="true" />
 						Pin
@@ -219,7 +230,8 @@ const copyUrl = () => {
 						as="button"
 						class="text-gray-700 duration-300 w-full dark:text-gray-50 hover:bg-orange-200 rounded-lg text-sm dark:hover:bg-orange-700/20 flex flex-row items-center py-2"
 						@click="togglePin">
-						<IconPinFilled
+						<Icon
+							name="ic:outline-pin-off"
 							class="mx-2 h-[1.2em] w-[1.2em] mb-0.5"
 							aria-hidden="true" />
 						Unpin
@@ -229,7 +241,8 @@ const copyUrl = () => {
 						as="button"
 						class="text-gray-700 duration-300 w-full dark:text-gray-50 hover:bg-orange-200 rounded-lg text-sm dark:hover:bg-orange-700/20 flex flex-row items-center py-2"
 						@click="block">
-						<IconForbid
+						<Icon
+							name="ic:outline-block"
 							class="mx-2 h-[1.2em] w-[1.2em] mb-0.5"
 							aria-hidden="true" />
 						Block

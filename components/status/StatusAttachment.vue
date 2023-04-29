@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import { IconX } from "@tabler/icons-vue";
 import Button from "../button/Button.vue";
 import { PostType } from "./Status.vue";
 
@@ -68,7 +67,7 @@ const toggleRevealed = () => {
 			class="!px-1 !py-1 mt-2 mr-2 !absolute top-0 right-0 !bg-opacity-70"
 			title="Hide this media"
 			@click="toggleRevealed">
-			<IconX class="w-4 h-4" aria-hidden="true" />
+			<Icon name="ic:outline-close" class="w-4 h-4" aria-hidden="true" />
 		</Button>
 	</div>
 </template>

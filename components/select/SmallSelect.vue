@@ -21,7 +21,7 @@ export enum SelectOrientation {
 export interface SelectItem {
 	text: string;
 	value: string;
-	icon: any;
+	icon: string;
 	description?: string;
 }
 </script>
@@ -50,8 +50,8 @@ const selected = ref<SelectItem>(props.items[props.defaultValue]);
 		@update:model-value="value => emit('update:model-value', value)">
 		<ListboxButton
 			class="flex relative flex-row gap-x-1 items-center p-2 text-gray-600 rounded duration-200 cursor-default dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">
-			<component
-				:is="selected.icon"
+			<Icon
+				:name="selected.icon"
 				:stroke-width="2"
 				class="w-6 h-6"
 				aria-hidden="true" />
@@ -75,8 +75,8 @@ const selected = ref<SelectItem>(props.items[props.defaultValue]);
 							'bg-orange-100 dark:bg-orange-500/10',
 						'm-2 rounded flex relative flex-row gap-x-3 items-center py-2 px-3 text-gray-800 dark:text-gray-100 duration-200 cursor-default select-none hover:bg-gray-200 dark:hover:bg-gray-700',
 					]">
-					<component
-						:is="item.icon"
+					<Icon
+						:name="item.icon"
 						class="w-5 h-auto text-gray-500"
 						aria-hidden="true" />
 					<div class="flex flex-col">

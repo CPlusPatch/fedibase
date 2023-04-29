@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { IconX, IconFile, IconMovie } from "@tabler/icons-vue";
 import Button from "../button/Button.vue";
 
 defineProps<{
@@ -28,7 +27,7 @@ const _window = window;
 			<div
 				v-if="file.metadata.type.includes('video')"
 				class="w-20 h-full flex items-center justify-center">
-				<IconMovie class="w-6 h-6" />
+				<Icon name="ic:twotone-movie" class="w-6 h-6" />
 			</div>
 			<audio
 				v-if="file.metadata.type.includes('audio')"
@@ -36,7 +35,7 @@ const _window = window;
 				controls
 				class="w-full h-full" />
 			<div v-else class="w-20 h-full flex items-center justify-center">
-				<IconFile class="w-6 h-6" />
+				<Icon name="ic:twotone-insert-drive-file" class="w-6 h-6" />
 			</div>
 
 			<Button
@@ -48,7 +47,10 @@ const _window = window;
 						onRemove(file.uuid);
 					}
 				">
-				<IconX class="w-4 h-4" aria-hidden="true" />
+				<Icon
+					name="ic:round-close"
+					class="w-4 h-4"
+					aria-hidden="true" />
 			</Button>
 		</div>
 	</div>

@@ -1,10 +1,4 @@
 <script setup lang="ts">
-import {
-	IconList,
-	IconListDetails,
-	IconRocket,
-	IconStarFilled,
-} from "@tabler/icons-vue";
 import { ref } from "vue";
 import SmallSelect, {
 	SelectDirection,
@@ -19,25 +13,25 @@ const props = defineProps<{
 
 const modes: SelectItem[] = [
 	{
-		icon: IconList,
+		icon: "ic:twotone-list",
 		text: "All posts",
 		value: "all",
 		description: "Show all posts",
 	},
 	{
-		icon: IconListDetails,
+		icon: "ic:twotone-mark-unread-chat-alt",
 		text: "Mentions",
 		value: "mention",
 		description: "Only show mentions",
 	},
 	{
-		icon: IconRocket,
+		icon: "ic:twotone-rocket-launch",
 		text: "Boosts",
 		value: "reblogs",
 		description: "Only show boosts",
 	},
 	{
-		icon: IconStarFilled,
+		icon: "ic:twotone-star",
 		text: "Favourites",
 		value: "favourites",
 		description: "Only show favourites",

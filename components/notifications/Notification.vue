@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { IconStarFilled } from "@tabler/icons-vue";
 import { Entity } from "megalodon";
 import { withEmojis, withEmojiReactions } from "../../utils/functions";
 import Status, { PostType } from "../status/Status.vue";
@@ -29,9 +28,10 @@ const props = defineProps<{
 			v-if="props.notification.type === 'favourite'"
 			:to="`/user/${notification.account.id}`"
 			class="overflow-hidden gap-x-1 max-w-full font-semibold text-gray-500 overflow-ellipsis dark:text-gray-400 hover:underline">
-			<IconStarFilled
+			<Icon
+				name="ic:twotone-star"
 				aria-hidden="true"
-				class="inline mr-1 w-[1em] pb-0.5 text-yellow-500 hover:animate-spin" />
+				class="inline mr-1 h-6 w-6 pb-0.5 text-yellow-500 hover:animate-spin" />
 			<img
 				loading="lazy"
 				:src="props.notification.account.avatar"

@@ -24,7 +24,7 @@ const notifications = ref<
 export const addNotification = (
 	content: any,
 	type?: NotificationType,
-	icon?: any
+	icon?: string
 ) => {
 	const uuid = v4();
 	notifications.value.push({

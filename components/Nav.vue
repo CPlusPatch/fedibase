@@ -1,33 +1,23 @@
 <script lang="ts" setup>
-import {
-	IconSun,
-	IconSettings,
-	IconPlus,
-	IconUsers,
-	IconWorld,
-	IconHome2,
-	IconMoon,
-	IconLogout,
-} from "@tabler/icons-vue";
 import NavElement, { NavigationItem } from "./NavElement.vue";
 import { useStore } from "~/utils/store";
 
 const navigation: NavigationItem[] = [
 	{
 		name: "Home",
-		icon: IconHome2,
+		icon: "ic:twotone-home",
 		href: "/",
 		type: "",
 	},
 	{
 		name: "Instance",
-		icon: IconUsers,
+		icon: "ic:twotone-people",
 		href: "/local",
 		type: "local",
 	},
 	{
 		name: "Federated",
-		icon: IconWorld,
+		icon: "ic:twotone-public",
 		href: "/federated",
 		type: "federated",
 	},
@@ -71,31 +61,42 @@ const logout = () => {
 				title="Toggle light/dark mode"
 				class="flex justify-center items-center p-2 mb-3 text-sm font-medium rounded-md duration-200 dark:text-gray-300 hover:bg-gray-300/40 hover:dark:bg-gray-700/40 hover:bg-opacity-75 group"
 				@click="toggleTheme">
-				<IconSun
+				<Icon
 					v-if="store.theme === 'light'"
+					name="ic:outline-light-mode"
 					class="w-5 h-5"
 					aria-hidden="true" />
-				<IconMoon
+				<Icon
 					v-if="store.theme === 'dark'"
+					name="ic:outline-dark-mode"
 					class="w-5 h-5"
 					aria-hidden="true" />
 			</button>
 			<button
 				title="Open settings"
 				class="flex justify-center items-center p-2 mb-3 text-sm font-medium rounded-md duration-200 dark:text-gray-300 hover:bg-gray-300/40 hover:dark:bg-gray-700/40 hover:bg-opacity-75 group">
-				<IconSettings class="w-5 h-5" aria-hidden="true" />
+				<Icon
+					name="ic:outline-settings"
+					class="w-5 h-5"
+					aria-hidden="true" />
 			</button>
 			<button
 				title="Compose new post"
 				class="flex justify-center items-center p-2 mb-3 text-sm font-medium rounded-md duration-200 dark:text-gray-300 bg-orange-300/20 hover:bg-orange-300/40 hover:bg-opacity-75 group"
 				@click="() => (store.state.composer = true)">
-				<IconPlus class="w-5 h-5" aria-hidden="true" />
+				<Icon
+					name="ic:outline-plus"
+					class="w-5 h-5"
+					aria-hidden="true" />
 			</button>
 			<button
 				title="Logout"
 				class="flex justify-center items-center p-2 mb-3 text-sm font-medium rounded-md duration-200 dark:text-gray-300 bg-red-300/20 hover:bg-red-300/40 hover:bg-opacity-75 group"
 				@click="logout">
-				<IconLogout class="w-5 h-5" aria-hidden="true" />
+				<Icon
+					name="ic:outline-logout"
+					class="w-5 h-5"
+					aria-hidden="true" />
 			</button>
 			<RouterLink
 				:to="`/user/${store.auth.data?.id}`"

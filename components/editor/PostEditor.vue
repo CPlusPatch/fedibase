@@ -1,21 +1,4 @@
 <script setup lang="ts">
-import {
-	IconAlignLeft,
-	IconLock,
-	IconLockOpen,
-	IconMail,
-	IconMarkdown,
-	IconMessageCircle,
-	IconQuote,
-	IconWorld,
-	IconX,
-	IconPaperclip,
-	IconChartBar,
-	IconAlertTriangle,
-	IconSend,
-	IconForbid2,
-	IconFileUpload,
-} from "@tabler/icons-vue";
 import { onMounted, ref } from "vue";
 import { v4 as uuidv4 } from "uuid";
 import { withEmojis, findMentions } from "../../utils/functions";
@@ -63,13 +46,13 @@ const modes: PostMode[] = [
 		text: "Plaintext",
 		value: "text",
 		description: "Just plain text",
-		icon: IconAlignLeft,
+		icon: "ic:outline-format-align-left",
 	},
 	{
 		text: "Markdown",
 		value: "markdown",
 		description: "Use Markdown syntax",
-		icon: IconMarkdown,
+		icon: "ic:outline-format-color-text",
 	},
 ];
 
@@ -78,25 +61,25 @@ const visibilities: PostVisibility[] = [
 		text: "Public",
 		value: "public",
 		description: "Post to public timelines",
-		icon: IconWorld,
+		icon: "ic:outline-public",
 	},
 	{
 		text: "Unlisted",
 		value: "unlisted",
 		description: "Don't post to public timelines",
-		icon: IconLockOpen,
+		icon: "ic:outline-lock-open",
 	},
 	{
 		text: "Private",
 		value: "private",
 		description: "Followers-only",
-		icon: IconLock,
+		icon: "ic:outline-lock",
 	},
 	{
 		text: "Direct",
 		value: "direct",
 		description: "Send as Direct Message",
-		icon: IconMail,
+		icon: "ic:outline-email",
 	},
 ];
 
@@ -181,7 +164,11 @@ const uploadFiles = async (toUpload: FileList) => {
 		})
 	);
 
-	addNotification("Files uploaded!", NotificationType.Normal, IconFileUpload);
+	addNotification(
+		"Files uploaded!",
+		NotificationType.Normal,
+		"twotone-upload-file"
+	);
 	loading.value = false;
 	files.value = [...files.value, ...newFiles];
 };
@@ -222,7 +209,11 @@ const submit = (e: Event) => {
 					: undefined,
 		})
 		.then(_ => {
-			addNotification("Post sent!", NotificationType.Normal, IconSend);
+			addNotification(
+				"Post sent!",
+				NotificationType.Normal,
+				"ic:twotone-send"
+			);
 			closeModal(e);
 		})
 		.catch(err => {
@@ -230,7 +221,7 @@ const submit = (e: Event) => {
 			addNotification(
 				"Error sending post",
 				NotificationType.Normal,
-				IconForbid2
+				"ic:twotone-error"
 			);
 		})
 		.finally(() => {
@@ -259,13 +250,15 @@ const submit = (e: Event) => {
 			<div class="flex justify-between p-3 w-full gap-x-2">
 				<div class="flex flex-row items-center gap-x-3">
 					<button v-if="closeButton" @click="closeModal">
-						<IconX class="w-5 h-5" />
+						<Icon name="ic:twotone-close" class="w-5 h-5" />
 					</button>
 
 					<h1
 						v-if="store.replyingTo"
 						class="text-lg font-bold dark:text-gray-50 overflow-hidden whitespace-nowrap text-ellipsis">
-						<IconMessageCircle class="inline mr-2 mb-0.5" />
+						<Icon
+							name="ic:twotone-chat-bubble"
+							class="inline mr-2 mb-0.5" />
 						<span
 							v-html="
 								withEmojis(
@@ -277,7 +270,9 @@ const submit = (e: Event) => {
 					<h1
 						v-if="store.quotingTo"
 						class="text-lg font-bold dark:text-gray-50 overflow-hidden whitespace-nowrap text-ellipsis">
-						<IconQuote class="inline mr-2 mb-0.5" />
+						<Icon
+							name="ic:twotone-format-quote"
+							class="inline mr-2 mb-0.5" />
 						<span
 							v-html="
 								withEmojis(
@@ -367,7 +362,10 @@ const submit = (e: Event) => {
 						title="Attach a file"
 						class="flex relative flex-row gap-x-1 items-center p-2 text-gray-600 rounded duration-200 cursor-default dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
 						@click="clickOnFileInput">
-						<IconPaperclip class="w-6 h-6" aria-hidden="true" />
+						<Icon
+							name="ic:outline-attach-file"
+							class="w-6 h-6"
+							aria-hidden="true" />
 					</button>
 
 					<input
@@ -405,7 +403,10 @@ const submit = (e: Event) => {
 						type="button"
 						title="Create poll"
 						class="flex relative flex-row gap-x-1 items-center p-2 text-gray-600 rounded duration-200 cursor-default dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">
-						<IconChartBar class="w-6 h-6" aria-hidden="true" />
+						<Icon
+							name="ic:outline-insert-chart"
+							class="w-6 h-6"
+							aria-hidden="true" />
 					</button>
 
 					<button
@@ -413,7 +414,10 @@ const submit = (e: Event) => {
 						title="Add content warning"
 						class="flex relative flex-row gap-x-1 items-center p-2 text-gray-600 rounded duration-200 cursor-default dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
 						@click="toggleCW">
-						<IconAlertTriangle class="w-6 h-6" aria-hidden="true" />
+						<Icon
+							name="ic:outline-warning"
+							class="w-6 h-6"
+							aria-hidden="true" />
 					</button>
 				</div>
 

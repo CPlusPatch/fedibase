@@ -5,7 +5,7 @@ interface InputProps extends InputHTMLAttributes {
 	loading?: boolean;
 	name: string;
 	class?: string;
-	icon?: any;
+	icon?: string;
 }
 
 const props = defineProps<InputProps>();
@@ -28,7 +28,7 @@ export default {
 			]"
 			v-bind="$attrs" />
 		<div v-if="icon" class="absolute left-2 inset-y-0 flex items-center">
-			<component :is="icon" class="w-5 h-5 text-gray-400" />
+			<Icon :name="icon" class="w-5 h-5 text-gray-400" />
 		</div>
 	</div>
 </template>

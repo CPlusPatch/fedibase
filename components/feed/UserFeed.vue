@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { Entity } from "megalodon";
 import { ref, watch } from "vue";
-import { IconPinFilled } from "@tabler/icons-vue";
 import { useStore } from "../../utils/store";
 import UserProfile from "../profiles/UserProfile.vue";
 import StatusVue, { PostType } from "../status/Status.vue";
@@ -60,7 +59,9 @@ store.client
 				class="flex flex-col gap-y-2 duration-200 ease-in-out">
 				<div
 					class="px-4 overflow-hidden gap-x-1 max-w-full font-semibold text-gray-500 overflow-ellipsis dark:text-gray-400">
-					<IconPinFilled class="w-[1em] inline pb-0.5 mr-1" />
+					<Icon
+						name="ic:twotone-push-pin"
+						class="w-[1em] inline pb-0.5 mr-1" />
 					Pinned
 				</div>
 				<StatusVue

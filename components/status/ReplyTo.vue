@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { IconMessage } from "@tabler/icons-vue";
 import { ref } from "vue";
 import { withEmojis } from "../../utils/functions";
 import { useStore } from "../../utils/store";
@@ -24,7 +23,7 @@ if (props.status.in_reply_to_id && !replyStatus.value) {
 		<NuxtLink
 			:to="`/posts/${status.id}`"
 			class="text-xs text-gray-600 hover:underline dark:text-gray-300">
-			<IconMessage class="inline mr-1 w-4 h-4" />
+			<Icon name="ic:outline-chat" class="inline mr-1 w-4 h-4" />
 			Replying to
 			<span
 				v-if="replyStatus"

@@ -7,7 +7,7 @@ const themes: { [key: string]: string } = {
 	orangeLight:
 		"text-orange-700 dark:text-orange-200 bg-orange-100 dark:bg-orange-800 hover:bg-orange-200 border-transparent",
 	gradientOrange:
-		"text-white dark:text-white border-none bg-gradient-to-tr from-pink-500 via-red-500 to-yellow-500",
+		"text-white dark:text-white border-none !bg-gradient-to-tr from-pink-500 via-red-500 to-yellow-500",
 };
 
 interface ButtonProps extends ButtonHTMLAttributes {

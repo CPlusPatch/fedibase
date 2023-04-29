@@ -1,12 +1,6 @@
 <script setup lang="ts">
 import { Entity } from "megalodon";
 import { onMounted, onUnmounted, ref } from "vue";
-import {
-	IconCake,
-	IconUserPlus,
-	IconUsers,
-	IconArticle,
-} from "@tabler/icons-vue";
 import { useStore } from "../../utils/store";
 import { withEmojis } from "../../utils/functions";
 import ScaleFadeSlide from "../transitions/ScaleFadeSlide.vue";
@@ -85,7 +79,9 @@ onUnmounted(() => {
 			<div
 				class="md:flex grow md:flex-row mx-6 text-gray-600 dark:text-gray-300 items-center justify-between grid grid-cols-2 gap-y-3">
 				<div class="flex items-center gap-x-1 justify-center">
-					<IconCake class="inline w-5 h-5 mb-0.5" />
+					<Icon
+						name="ic:twotone-cake"
+						class="inline w-5 h-5 mb-0.5" />
 					{{
 						new Intl.DateTimeFormat("en-US", {
 							day: "numeric",
@@ -95,15 +91,21 @@ onUnmounted(() => {
 					}}
 				</div>
 				<div class="flex items-center gap-x-1 justify-center">
-					<IconArticle class="inline w-5 h-5 mb-0.5" />
+					<Icon
+						name="ic:twotone-article"
+						class="inline w-5 h-5 mb-0.5" />
 					{{ account.statuses_count }} statuses
 				</div>
 				<div class="flex items-center gap-x-1 justify-center">
-					<IconUserPlus class="inline w-5 h-5 mb-0.5" />
+					<Icon
+						name="ic:twotone-person"
+						class="inline w-5 h-5 mb-0.5" />
 					{{ account.followers_count }} followers
 				</div>
 				<div class="flex items-center gap-x-1 justify-center">
-					<IconUsers class="inline w-5 h-5 mb-0.5" />
+					<Icon
+						name="ic:twotone-person"
+						class="inline w-5 h-5 mb-0.5" />
 					{{ account.following_count }} following
 				</div>
 			</div>
