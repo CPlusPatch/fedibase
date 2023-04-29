@@ -9,11 +9,11 @@ defineProps<{
 </script>
 
 <template>
-	<div class="flex flex-col duration-200 ease-in-out">
+	<div class="flex flex-col duration-200 ease-in-out gap-y-2 first:mt-4">
 		<RouterLink
 			v-if="status.reblog"
 			:to="`/user/${status.account.id}`"
-			class="px-4 overflow-hidden gap-x-1 max-w-full font-semibold text-gray-500 overflow-ellipsis dark:text-gray-400 hover:underline">
+			class="overflow-hidden gap-x-1 max-w-full font-semibold text-gray-500 overflow-ellipsis dark:text-gray-400 hover:underline">
 			<svg
 				aria-hidden="true"
 				xmlns="http://www.w3.org/2000/svg"

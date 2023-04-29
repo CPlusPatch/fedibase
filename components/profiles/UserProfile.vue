@@ -44,27 +44,6 @@ onUnmounted(() => {
 <template>
 	<ScaleFadeSlide>
 		<div
-			v-if="showHeader && !store.viewingConversation"
-			class="fixed md:hidden top-0 inset-x-0 bg-gray-50/75 dark:bg-dark-800/75 backdrop-blur-lg items-center z-10 flex p-4 gap-x-4">
-			<img
-				:src="account.avatar"
-				class="w-10 h-10 rounded-lg border dark:border-gray-700" />
-			<div class="grow flex flex-col">
-				<h4
-					class="flex-shrink font-bold font-poppins dark:text-white"
-					v-html="
-						withEmojis(account.display_name, account.emojis)
-					"></h4>
-				<h6
-					:title="account.acct"
-					class="text-sm text-gray-500 dark:text-gray-400">
-					@{{ account.acct }}
-				</h6>
-			</div>
-		</div>
-	</ScaleFadeSlide>
-	<ScaleFadeSlide>
-		<div
 			class="flex flex-col gap-y-4 w-full bg-gray-50 pb-5 dark:bg-dark-800 rounded-b">
 			<div class="w-full relative">
 				<div
