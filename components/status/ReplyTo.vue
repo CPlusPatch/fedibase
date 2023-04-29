@@ -2,7 +2,9 @@
 import { IconMessage } from "@tabler/icons-vue";
 import { ref } from "vue";
 import { withEmojis } from "../../utils/functions";
-import { store } from "../../utils/store";
+import { useStore } from "../../utils/store";
+
+const store = useStore();
 
 const props = defineProps<{
 	status: Entity.Status;

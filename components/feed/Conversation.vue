@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import { IconX } from "@tabler/icons-vue";
-import { store } from "../../utils/store";
+import { useStore } from "../../utils/store";
 import Status, { PostType } from "../status/Status.vue";
 import ConversationChildPost from "../status/ConversationChildPost.vue";
+
+const store = useStore();
 
 const props = withDefaults(
 	defineProps<{

@@ -7,6 +7,9 @@ dependencies:
   '@nuxtjs/robots':
     specifier: ^3.0.0
     version: 3.0.0(rollup@2.79.1)
+  '@pinia/nuxt':
+    specifier: ^0.4.9
+    version: 0.4.9(rollup@2.79.1)(typescript@5.0.4)(vue@3.2.47)
   '@tabler/icons-vue':
     specifier: ^2.17.0
     version: 2.17.0(vue@3.2.47)
@@ -39,6 +42,9 @@ devDependencies:
   '@nuxtjs/eslint-module':
     specifier: ^4.0.2
     version: 4.0.2(eslint@8.39.0)(rollup@2.79.1)(vite@4.3.3)(webpack@5.81.0)
+  '@pinia-plugin-persistedstate/nuxt':
+    specifier: ^1.1.1
+    version: 1.1.1(@pinia/nuxt@0.4.9)(pinia@2.0.35)(rollup@2.79.1)
   '@types/events':
     specifier: ^3.0.0
     version: 3.0.0
@@ -1904,6 +1910,33 @@ packages:
       - supports-color
     dev: false
 
+  /@pinia-plugin-persistedstate/nuxt@1.1.1(@pinia/nuxt@0.4.9)(pinia@2.0.35)(rollup@2.79.1):
+    resolution: {integrity: sha512-b6ZNP3Re8COmfZEpj4KQmbp2TuDKrLggDFLZa8FiJF68xE/oCsPXIuXUvAt8E4ht/5sq4Z/grlA+iGXaI2aeKQ==}
+    peerDependencies:
+      '@pinia/nuxt': ^0.4.4
+    dependencies:
+      '@nuxt/kit': 3.4.2(rollup@2.79.1)
+      '@pinia/nuxt': 0.4.9(rollup@2.79.1)(typescript@5.0.4)(vue@3.2.47)
+      defu: 6.1.2
+      pinia-plugin-persistedstate: 3.1.0(pinia@2.0.35)
+    transitivePeerDependencies:
+      - pinia
+      - rollup
+      - supports-color
+    dev: true
+
+  /@pinia/nuxt@0.4.9(rollup@2.79.1)(typescript@5.0.4)(vue@3.2.47):
+    resolution: {integrity: sha512-ojzUMHKrQ7ZFjhWqMYKYetcqHSfgtIhjc6Hxw4alfQaGTlFdj38Vpz8Ol36YvmNdSjLFTNWYAgxEWCvg6HcSSg==}
+    dependencies:
+      '@nuxt/kit': 3.4.2(rollup@2.79.1)
+      pinia: 2.0.35(typescript@5.0.4)(vue@3.2.47)
+    transitivePeerDependencies:
+      - '@vue/composition-api'
+      - rollup
+      - supports-color
+      - typescript
+      - vue
+
   /@pkgr/utils@2.3.1:
     resolution: {integrity: sha512-wfzX8kc1PMyUILA+1Z/EqoE4UCXGy0iRGMhPwdfae1+f0OXlLqCk+By+aMzgJBzR9AzS4CDizioG6Ss1gvAFJw==}
     engines: {node: ^12.20.0 || ^14.18.0 || >=16.0.0}
@@ -2795,7 +2828,6 @@ packages:
 
   /@vue/devtools-api@6.5.0:
     resolution: {integrity: sha512-o9KfBeaBmCKl10usN4crU53fYtC1r7jJwdGKjPT24t348rHxgfpZ0xL3Xm/gLUYnc0oTp8LAmrxOeLyu6tbk2Q==}
-    dev: true
 
   /@vue/reactivity-transform@3.2.47:
     resolution: {integrity: sha512-m8lGXw8rdnPVVIdIFhf0LeQ/ixyHkH5plYuS83yop5n7ggVJU+z5v0zecwEnX7fa7HNLBhh2qngJJkxpwEEmYA==}
@@ -6583,6 +6615,31 @@ packages:
     engines: {node: '>=0.10.0'}
     dev: true
 
+  /pinia-plugin-persistedstate@3.1.0(pinia@2.0.35):
+    resolution: {integrity: sha512-8UN+vYMEPBdgNLwceY08mi5olI0wkYaEb8b6hD6xW7SnBRuPydWHlEhZvUWgNb/ibuf4PvufpvtS+dmhYjJQOw==}
+    peerDependencies:
+      pinia: ^2.0.0
+    dependencies:
+      pinia: 2.0.35(typescript@5.0.4)(vue@3.2.47)
+    dev: true
+
+  /pinia@2.0.35(typescript@5.0.4)(vue@3.2.47):
+    resolution: {integrity: sha512-P1IKKQWhxGXiiZ3atOaNI75bYlFUbRxtJdhPLX059Z7+b9Z04rnTZdSY8Aph1LA+/4QEMAYHsTQ638Wfe+6K5g==}
+    peerDependencies:
+      '@vue/composition-api': ^1.4.0
+      typescript: '>=4.4.4'
+      vue: ^2.6.14 || ^3.2.0
+    peerDependenciesMeta:
+      '@vue/composition-api':
+        optional: true
+      typescript:
+        optional: true
+    dependencies:
+      '@vue/devtools-api': 6.5.0
+      typescript: 5.0.4
+      vue: 3.2.47
+      vue-demi: 0.14.0(vue@3.2.47)
+
   /pkg-types@1.0.2:
     resolution: {integrity: sha512-hM58GKXOcj8WTqUXnsQyJYXdeAPbythQgEF3nTcEo+nkD49chjQ9IKm/QJy9xf6JakXptz86h7ecP2024rrLaQ==}
     dependencies:
@@ -8460,6 +8517,20 @@ packages:
     dependencies:
       ufo: 1.1.1
     dev: true
+
+  /vue-demi@0.14.0(vue@3.2.47):
+    resolution: {integrity: sha512-gt58r2ogsNQeVoQ3EhoUAvUsH9xviydl0dWJj7dabBC/2L4uBId7ujtCwDRD0JhkGsV1i0CtfLAeyYKBht9oWg==}
+    engines: {node: '>=12'}
+    hasBin: true
+    requiresBuild: true
+    peerDependencies:
+      '@vue/composition-api': ^1.0.0-rc.1
+      vue: ^3.0.0-0 || ^2.6.0
+    peerDependenciesMeta:
+      '@vue/composition-api':
+        optional: true
+    dependencies:
+      vue: 3.2.47
 
   /vue-devtools-stub@0.1.0:
     resolution: {integrity: sha512-RutnB7X8c5hjq39NceArgXg28WZtZpGc3+J16ljMiYnFhKvd8hITxSWQSQ5bvldxMDU6gG5mkxl1MTQLXckVSQ==}

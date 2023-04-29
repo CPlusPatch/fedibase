@@ -1,5 +1,7 @@
 <script setup lang="ts">
-import { store } from "../../utils/store";
+import { useStore } from "../../utils/store";
+
+const store = useStore();
 
 const toggleTheme = () => {
 	if (store.theme === "dark") {
@@ -38,7 +40,7 @@ const buttons = [
 	{
 		name: "Profile",
 		icon: "ic:twotone-account-circle",
-		onClick: () => false,
+		onClick: () => router.push(`/user/${store.auth.data?.id}`),
 	},
 ];
 </script>

@@ -19,7 +19,7 @@ import {
 import { onMounted, ref } from "vue";
 import { v4 as uuidv4 } from "uuid";
 import { withEmojis, findMentions } from "../../utils/functions";
-import { store } from "../../utils/store";
+import { useStore } from "../../utils/store";
 import Button from "../button/Button.vue";
 import Status, { PostType } from "../status/Status.vue";
 import SmallSelect, {
@@ -30,6 +30,8 @@ import { NotificationType, addNotification } from "../snackbar/Snackbar.vue";
 import Input from "../input/Input.vue";
 import ScaleFadeSlide from "../transitions/ScaleFadeSlide.vue";
 import Files from "./Files.vue";
+
+const store = useStore();
 
 const props = withDefaults(
 	defineProps<{

@@ -1,5 +1,5 @@
 <script lang="ts">
-import { store } from "../../utils/store";
+import { useStore } from "../../utils/store";
 import Notification from "../notifications/Notification.vue";
 import Post from "./Post.vue";
 export enum FeedType {
@@ -12,6 +12,8 @@ export enum FeedType {
 </script>
 
 <script setup lang="ts">
+const store = useStore();
+
 const props = withDefaults(
 	defineProps<{
 		type: FeedType;

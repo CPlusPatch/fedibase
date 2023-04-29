@@ -1,11 +1,13 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { v4 } from "uuid";
-import { store } from "../../utils/store";
+import { useStore } from "../../utils/store";
 import PostEditor from "../editor/PostEditor.vue";
 import Conversation from "../feed/Conversation.vue";
 import NotificationsFeed from "../feed/NotificationsFeed.vue";
 import useWindowDimensions from "../hooks/useWindowDimensions";
+
+const store = useStore();
 
 const uuid = ref<string>(v4());
 

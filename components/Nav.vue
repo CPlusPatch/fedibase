@@ -9,8 +9,8 @@ import {
 	IconMoon,
 	IconLogout,
 } from "@tabler/icons-vue";
-import { store } from "../utils/store";
 import NavElement, { NavigationItem } from "./NavElement.vue";
+import { useStore } from "~/utils/store";
 
 const navigation: NavigationItem[] = [
 	{
@@ -32,6 +32,8 @@ const navigation: NavigationItem[] = [
 		type: "federated",
 	},
 ];
+
+const store = useStore();
 
 const toggleTheme = () => {
 	if (store.theme === "dark") {

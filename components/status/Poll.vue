@@ -3,7 +3,9 @@ import { Entity } from "megalodon";
 import { ref } from "vue";
 import Button from "../button/Button.vue";
 import { fromNow } from "../../utils/functions";
-import { store } from "../../utils/store";
+import { useStore } from "../../utils/store";
+
+const store = useStore();
 
 const props = defineProps<{
 	status: Entity.Status;

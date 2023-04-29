@@ -2,9 +2,11 @@
 import generator from "megalodon";
 import { ref } from "vue";
 import { IconUser } from "@tabler/icons-vue";
-import { store } from "../../utils/store";
+import { useStore } from "../../utils/store";
 import Button from "../button/Button.vue";
 import Input from "../input/Input.vue";
+
+const store = useStore();
 
 const loading = ref<boolean>(false);
 
@@ -58,8 +60,8 @@ const submit = async (e: Event) => {
 
 	const client = generator(store.auth.type as any, store.auth.url);
 
-	let scope = ["read", "write", "follow"];
-	if (store.auth.type === "misskey")
+	const scope = ["read", "write", "follow"];
+	/* if (store.auth.type === "misskey")
 		scope = [
 			"read:account",
 			"write:account",
@@ -93,7 +95,7 @@ const submit = async (e: Event) => {
 			"write:gallery",
 			"read:gallery-likes",
 			"write:gallery-likes",
-		];
+		]; */
 
 	const { clientId, clientSecret, url } = await client.registerApp(
 		"Fedibase Web",

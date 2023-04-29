@@ -17,10 +17,12 @@ import {
 } from "@tabler/icons-vue";
 import { Entity } from "megalodon";
 import { ref } from "vue";
-import { store } from "../../utils/store";
+import { useStore } from "../../utils/store";
 import ScaleFadeSlide from "../transitions/ScaleFadeSlide.vue";
 import { NotificationType, addNotification } from "../snackbar/Snackbar.vue";
 import InteractionBarButton from "./InteractionBarButton.vue";
+
+const store = useStore();
 
 const props = defineProps<{
 	status: Entity.Status;

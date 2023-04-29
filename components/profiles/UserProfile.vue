@@ -7,9 +7,11 @@ import {
 	IconUsers,
 	IconArticle,
 } from "@tabler/icons-vue";
-import { store } from "../../utils/store";
+import { useStore } from "../../utils/store";
 import { withEmojis } from "../../utils/functions";
 import ScaleFadeSlide from "../transitions/ScaleFadeSlide.vue";
+
+const store = useStore();
 
 const props = defineProps<{
 	account: Entity.Account;

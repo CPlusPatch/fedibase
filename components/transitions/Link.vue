@@ -5,7 +5,9 @@
 </template>
 
 <script setup lang="ts">
-import { store } from "../../utils/store";
+import { useStore } from "../../utils/store";
+
+const store = useStore();
 
 const props = defineProps<{
 	sidebar?: string;

@@ -1,4 +1,3 @@
-import { reactive, watch } from "vue";
 import { Entity, MegalodonInterface } from "megalodon";
 
 export interface StateType {
@@ -7,7 +6,7 @@ export interface StateType {
 		clientId: string;
 		data: Entity.Account | null;
 		url: string;
-		type: "mastodon" | "pleroma";
+		type: "mastodon" | "pleroma" | "";
 		clientSecret: string;
 		instance: Entity.Instance | null;
 	};
@@ -37,7 +36,7 @@ export interface StateType {
 	emojis: Entity.Emoji[];
 }
 
-let initialData: StateType = {
+const initialData: StateType = {
 	auth: {
 		token: null,
 		data: null,
@@ -68,7 +67,13 @@ let initialData: StateType = {
 	emojis: [],
 };
 
-if (localStorage.getItem("store")) {
+export const useStore = defineStore("main", {
+	// a function that returns a fresh state
+	state: () => initialData,
+	persist: true,
+});
+
+/* if (localStorage.getItem("store")) {
 	initialData = JSON.parse(
 		(localStorage.getItem("store") as any) ?? initialData
 	);
@@ -84,4 +89,4 @@ watch(
 	{
 		deep: true,
 	}
-);
+); */

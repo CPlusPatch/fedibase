@@ -2,10 +2,12 @@
 import { Entity } from "megalodon";
 import { ref, watch } from "vue";
 import { IconPinFilled } from "@tabler/icons-vue";
-import { store } from "../../utils/store";
+import { useStore } from "../../utils/store";
 import UserProfile from "../profiles/UserProfile.vue";
 import StatusVue, { PostType } from "../status/Status.vue";
 import Feed, { FeedType } from "./Feed.vue";
+
+const store = useStore();
 
 const route = useRoute();
 

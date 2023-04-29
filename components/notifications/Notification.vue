@@ -19,11 +19,11 @@ const props = defineProps<{
 		:class="[
 			'flex flex-col max-w-full rounded duration-200 ease-in-out',
 			props.notification.type === 'favourite' &&
-				'border-yellow-500 border-l-2 opacity-75',
+				'border-yellow-500 border-l-2 opacity-75 mx-4 my-2',
 			props.notification.type === 'reblog' &&
-				'border-blue-500 border-l-2 opacity-75',
+				'border-blue-500 border-l-2 opacity-75 mx-4 my-2',
 			props.notification.type === 'emoji_reaction' &&
-				'border-red-500 border-l-2 opacity-75',
+				'border-red-500 border-l-2 opacity-75 mx-4 my-2',
 		]">
 		<RouterLink
 			v-if="props.notification.type === 'favourite'"
@@ -103,7 +103,11 @@ const props = defineProps<{
 		</RouterLink>
 		<Status
 			v-if="props.notification.status"
-			:type="PostType.Small"
+			:type="
+				props.notification.type === 'mention'
+					? PostType.Small
+					: PostType.Tiny
+			"
 			:interaction="props.notification.type === 'mention'"
 			:status="props.notification.status" />
 	</li>

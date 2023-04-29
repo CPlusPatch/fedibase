@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import { store } from "../../utils/store";
+import { useStore } from "../../utils/store";
 import { addNotification } from "../snackbar/Snackbar.vue";
+
+const store = useStore();
 
 const props = defineProps<{
 	status: Entity.Status;

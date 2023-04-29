@@ -8,7 +8,12 @@ export default defineNuxtConfig({
 		"@nuxtjs/eslint-module",
 		"nuxt-headlessui",
 		"nuxt-icon",
+		"@pinia/nuxt",
+		"@pinia-plugin-persistedstate/nuxt",
 	],
+	pinia: {
+		autoImports: ["defineStore"],
+	},
 	ssr: false,
 	app: {
 		keepalive: true,

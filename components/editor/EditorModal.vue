@@ -5,9 +5,11 @@ import {
 	TransitionChild,
 	DialogPanel,
 } from "@headlessui/vue";
-import { store } from "../../utils/store";
+import { useStore } from "../../utils/store";
 import ModalOverlay from "../modals/ModalOverlay.vue";
 import PostEditor from "./PostEditor.vue";
+
+const store = useStore();
 
 const closeModal = () => {
 	store.state.composer = false;
