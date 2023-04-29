@@ -3,10 +3,10 @@ pipeline:
     image: woodpeckerci/plugin-docker-buildx
     settings:
       platforms: linux/amd64,linux/arm/v6,linux/arm64/v8
-      repo: codeberg.org/CPlusPatch/fedibase
+      repo: codeberg.org/cpluspatch/fedibase
       registry: codeberg.org
       tags: latest
-      username: CPlusPatch
+      username: cpluspatch
       compress: true
       password:
         from_secret: codeberg_token
