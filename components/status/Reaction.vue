@@ -35,7 +35,7 @@ const react = () => {
 		@click="react">
 		<img
 			v-if="_reaction.name.includes('@')"
-			loading="lazy"
+			v-once
 			:src="
 				status.emojis.find(e => `:${e.shortcode}:` == _reaction.name)
 					?.static_url

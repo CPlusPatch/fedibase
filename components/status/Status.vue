@@ -29,7 +29,7 @@ const clamps = ref<boolean>(true);
 const show = ref<boolean>(false);
 const textRef = ref<HTMLParagraphElement>();
 
-onMounted(() => {
+/* onMounted(() => {
 	if (textRef.value) {
 		const lineHeight = parseInt(getComputedStyle(textRef.value).lineHeight);
 		const overflowHeight = lineHeight * 6;
@@ -37,7 +37,7 @@ onMounted(() => {
 
 		clamps.value = elementHeight > overflowHeight;
 	}
-});
+}); */
 
 const toggleExpand = () => {
 	expand.value = !expand.value;
@@ -125,7 +125,7 @@ const toggleShow = () => {
 					class="border-l-2 dark:border-gray-300 absolute inset-x-0 -top-3 left-5 -bottom-10"></div>
 			</div>
 			<div class="flex flex-col gap-y-1 text-sm grow">
-				<ReplyTo v-if="status.in_reply_to_id" :status="status" />
+				<ReplyTo v-if="status.in_reply_to_id" v-once :status="status" />
 
 				<div
 					v-if="status.sensitive"
@@ -145,6 +145,7 @@ const toggleShow = () => {
 				</div>
 
 				<p
+					v-once
 					ref="textRef"
 					:class="
 						classNames(
@@ -163,14 +164,16 @@ const toggleShow = () => {
 					<template v-else>More</template>
 				</button>
 
-				<Poll v-if="status.poll" :status="status" />
+				<Poll v-if="status.poll" v-once :status="status" />
 
 				<Reactions
 					v-if="status.emoji_reactions.length > 0"
+					v-once
 					:status="status" />
 
 				<StatusAttachments
 					v-if="status.media_attachments.length > 0"
+					v-once
 					:type="type"
 					:status="status" />
 

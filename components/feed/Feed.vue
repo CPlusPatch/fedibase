@@ -37,7 +37,8 @@ const interval = window.setInterval(async () => {
 		(entities.value[0] as any).id,
 		undefined
 	);
-	entities.value = [...latestEntities, ...entities.value] as any;
+
+	entities.value = [...latestEntities, ...entities.value];
 }, 15000);
 
 const getEntities = async (
@@ -123,36 +124,39 @@ onUnmounted(() => {
 </script>
 
 <template>
-	<template v-if="entities.length > 0 && type !== FeedType.Notifications">
-		<Post
-			v-for="entity of entities"
-			:key="(entity as any).id"
-			:status="entity"
-			:interaction="true" />
-	</template>
-	<template v-if="entities.length > 0 && type === FeedType.Notifications">
-		<Notification
-			v-for="entity of entities.filter((e: Entity.Notification) => {
-				switch (props.mode) {
-					case 'all':
-						return true;
-					case 'reblogs':
-						return (e.type === 'reblog');
-					case 'mention':
-						return (e.type === 'mention');
-					case 'favourites':
-						return (e.type === 'favourite');
-				}
-			})"
-			:key="(entity as any).id"
-			:notification="entity" />
-	</template>
+	<div>
+		<template v-if="entities.length > 0 && type !== FeedType.Notifications">
+			<Post
+				v-for="entity of entities"
+				:key="(entity as any).id"
+				v-memo="entity"
+				:status="entity"
+				:interaction="true" />
+		</template>
+		<template v-if="entities.length > 0 && type === FeedType.Notifications">
+			<Notification
+				v-for="entity of entities.filter((e: Entity.Notification) => {
+					switch (props.mode) {
+						case 'all':
+							return true;
+						case 'reblogs':
+							return (e.type === 'reblog');
+						case 'mention':
+							return (e.type === 'mention');
+						case 'favourites':
+							return (e.type === 'favourite');
+					}
+				})"
+				:key="(entity as any).id"
+				:notification="entity" />
+		</template>
+	</div>
 
 	<div
 		v-if="!reachedEnd"
 		v-is-visible="loadMoreEntities"
-		class="grow w-full h-full flex items-center justify-center min-h-40">
-		<Spinner class="w-10 h-10" />
+		class="min-h-40 w-full">
+		<Spinner class="w-10 h-10 mx-auto" />
 	</div>
 
 	<div
