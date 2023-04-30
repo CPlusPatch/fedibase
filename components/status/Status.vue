@@ -1,7 +1,6 @@
 <script lang="ts">
 import { Entity } from "megalodon";
-import { onMounted, ref } from "vue";
-import { classNames, withEmojis, fromNow } from "../../utils/functions";
+import { withEmojis, fromNow } from "../../utils/functions";
 import Button from "../button/Button.vue";
 import InteractionBar from "./InteractionBar.vue";
 import StatusAttachments from "./StatusAttachments.vue";
@@ -25,8 +24,8 @@ const props = defineProps<{
 }>();
 
 const expand = ref<boolean>(false);
-const clamps = ref<boolean>(true);
-const show = ref<boolean>(false);
+const clamps = ref<boolean>(false);
+const show = ref<boolean>(props.status.spoiler_text === "");
 const textRef = ref<HTMLParagraphElement>();
 
 /* onMounted(() => {
@@ -145,15 +144,12 @@ const toggleShow = () => {
 				</div>
 
 				<p
-					v-once
 					ref="textRef"
-					:class="
-						classNames(
-							'mt-1 status-text rounded text-sm duration-200 status-text dark:text-gray-50 break-words max-w-full',
-							status.sensitive && !show && 'filter blur-lg',
-							clamps && !expand && 'line-clamp-6'
-						)
-					"
+					:class="[
+						'mt-1 status-text rounded text-sm duration-200 status-text dark:text-gray-50 break-words max-w-full',
+						!show && 'filter blur-lg',
+						clamps && !expand && 'line-clamp-6',
+					]"
 					v-html="withEmojis(status.content, status.emojis)"></p>
 
 				<button
@@ -185,9 +181,3 @@ const toggleShow = () => {
 		</div>
 	</div>
 </template>
-
-<style lang="css" scoped>
-.status_text blockquote {
-	@apply text-red-500;
-}
-</style>

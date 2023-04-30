@@ -124,18 +124,17 @@ onUnmounted(() => {
 </script>
 
 <template>
-	<div>
-		<template v-if="entities.length > 0 && type !== FeedType.Notifications">
-			<Post
-				v-for="entity of entities"
-				:key="(entity as any).id"
-				v-memo="entity"
-				:status="entity"
-				:interaction="true" />
-		</template>
-		<template v-if="entities.length > 0 && type === FeedType.Notifications">
-			<Notification
-				v-for="entity of entities.filter((e: Entity.Notification) => {
+	<template v-if="entities.length > 0 && type !== FeedType.Notifications">
+		<Post
+			v-for="entity of entities"
+			:key="(entity as any).id"
+			v-memo="entity"
+			:status="entity"
+			:interaction="true" />
+	</template>
+	<template v-if="entities.length > 0 && type === FeedType.Notifications">
+		<Notification
+			v-for="entity of entities.filter((e: Entity.Notification) => {
 					switch (props.mode) {
 						case 'all':
 							return true;
@@ -147,10 +146,9 @@ onUnmounted(() => {
 							return (e.type === 'favourite');
 					}
 				})"
-				:key="(entity as any).id"
-				:notification="entity" />
-		</template>
-	</div>
+			:key="(entity as any).id"
+			:notification="entity" />
+	</template>
 
 	<div
 		v-if="!reachedEnd"
