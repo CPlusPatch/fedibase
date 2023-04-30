@@ -4,8 +4,10 @@ import "@unocss/reset/tailwind.css";
 </script>
 
 <template>
-	<NuxtLayout>
-		<NuxtPage />
-	</NuxtLayout>
+	<div class="dark">
+		<NuxtLayout>
+			<NuxtPage />
+		</NuxtLayout>
+	</div>
 	<VitePwaManifest />
 </template>

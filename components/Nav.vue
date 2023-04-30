@@ -25,7 +25,7 @@ const navigation: NavigationItem[] = [
 
 const store = useStore();
 
-const toggleTheme = () => {
+/* const toggleTheme = () => {
 	if (store.theme === "dark") {
 		store.theme = "light";
 
@@ -35,7 +35,7 @@ const toggleTheme = () => {
 
 		document.getElementsByTagName("html")[0].classList.add("dark");
 	}
-};
+}; */
 
 const logout = () => {
 	store.auth.token = "";
@@ -57,7 +57,7 @@ const logout = () => {
 					:key="nav.name"
 					:element="nav" />
 			</nav>
-			<button
+			<!-- <button
 				title="Toggle light/dark mode"
 				class="flex justify-center items-center p-2 mb-3 text-sm font-medium rounded-md duration-200 dark:text-gray-300 hover:bg-gray-300/40 hover:dark:bg-gray-700/40 hover:bg-opacity-75 group"
 				@click="toggleTheme">
@@ -71,7 +71,7 @@ const logout = () => {
 					name="ic:outline-dark-mode"
 					class="w-5 h-5"
 					aria-hidden="true" />
-			</button>
+			</button> -->
 			<button
 				title="Open settings"
 				class="flex justify-center items-center p-2 mb-3 text-sm font-medium rounded-md duration-200 dark:text-gray-300 hover:bg-gray-300/40 hover:dark:bg-gray-700/40 hover:bg-opacity-75 group">

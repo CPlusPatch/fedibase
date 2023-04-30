@@ -30,6 +30,7 @@ const toggleRevealed = () => {
 				!revealed && 'blur-2xl',
 			]"
 			:src="media.url"
+			:title="media.description ?? ''"
 			:alt="media.description ?? ''" />
 
 		<audio
