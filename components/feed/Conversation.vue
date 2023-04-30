@@ -93,7 +93,6 @@ onUnmounted(() => {
 	<div class="flex overflow-y-hidden flex-col h-full">
 		<div class="flex overflow-hidden relative mt-6 max-w-full grow">
 			<div
-				v-if="post"
 				class="flex overflow-y-scroll flex-col gap-y-5 py-4 w-full h-full no-scroll px-2">
 				<div class="flex flex-col gap-y-4">
 					<Status
@@ -104,20 +103,23 @@ onUnmounted(() => {
 						:status="ancestor"
 						:interaction="true" />
 				</div>
-				<Status :type="type" :interaction="true" :status="post" />
-				<div class="flex flex-col gap-y-4 mb-20">
+				<StatusDummyStatus
+					v-if="
+						post && post.in_reply_to_id && ancestors.length == 0
+					" />
+				<Status
+					v-if="post"
+					:type="type"
+					:interaction="true"
+					:status="post" />
+				<StatusDummyStatus v-else />
+				<div v-if="post" class="flex flex-col gap-y-4 mb-20">
 					<ConversationChildPost
 						:key="JSON.stringify(descendants)"
 						:posts="descendants"
 						:mode="PostType.Normal"
 						:parent-id="post.id" />
 				</div>
-			</div>
-
-			<div
-				v-else
-				class="grow w-full h-full flex items-center justify-center">
-				<Spinner class="w-10 h-10" />
 			</div>
 		</div>
 	</div>
