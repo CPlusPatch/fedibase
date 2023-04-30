@@ -150,12 +150,13 @@ onUnmounted(() => {
 			:notification="entity" />
 	</template>
 
-	<div
-		v-if="!reachedEnd"
-		v-is-visible="loadMoreEntities"
-		class="min-h-40 w-full">
-		<Spinner class="w-10 h-10 mx-auto" />
-	</div>
+	<template v-if="!reachedEnd">
+		<StatusDummyStatus v-is-visible="loadMoreEntities" />
+		<StatusDummyStatus />
+		<StatusDummyStatus v-if="entities.length === 0" />
+		<StatusDummyStatus v-if="entities.length === 0" />
+		<StatusDummyStatus v-if="entities.length === 0" />
+	</template>
 
 	<div
 		v-if="reachedEnd"
