@@ -92,6 +92,15 @@ const react = (emoji: Entity.Emoji) => {
 		});
 }; */
 
+const copyToClipboard = (str: string) => {
+	navigator.clipboard.writeText(str);
+	addNotification(
+		"Copied!",
+		NotificationType.Normal,
+		"ic:round-content-copy"
+	);
+};
+
 const copyUrl = () => {
 	navigator.clipboard.writeText(_status.value.url);
 };
@@ -175,20 +184,21 @@ const copyUrl = () => {
 				class="w-5 h-5" />
 		</InteractionBarButton>
 
-		<div class="relative">
-			<InteractionBarButton title="Quote this post" @click="menu = !menu">
+		<HeadlessMenu as="div" class="relative">
+			<HeadlessMenuButton
+				:as="InteractionBarButton"
+				title="Quote this post">
 				<Icon
 					name="ic:outline-more-horiz"
 					aria-hidden="true"
 					class="w-5 h-5" />
-			</InteractionBarButton>
+			</HeadlessMenuButton>
 
 			<ScaleFadeSlide>
-				<div
-					v-if="menu"
-					class="p-1.5 gap-x-4 origin-top-right outline-none text-base absolute right-0 w-44 overflow-hidden sm:text-sm rounded-lg shadow-lg bg-white/60 dark:bg-dark-700/60 backdrop-blur-lg focus:outline-none"
+				<HeadlessMenuItems
+					class="z-9999 p-1.5 gap-x-4 origin-top-right outline-none text-base absolute right-0 w-44 sm:text-sm rounded-lg shadow-lg bg-white/60 dark:bg-dark-700/60 backdrop-blur-lg focus:outline-none"
 					@click="menu = false">
-					<div
+					<HeadlessMenuItem
 						v-if="_status.account.id === store.auth.data?.id"
 						as="button"
 						class="text-gray-700 duration-300 w-full dark:text-gray-50 hover:bg-orange-200 rounded-lg text-sm dark:hover:bg-orange-700/20 flex flex-row items-center py-2">
@@ -197,8 +207,8 @@ const copyUrl = () => {
 							class="mx-2 h-[1.2em] w-[1.2em] mb-0.5"
 							aria-hidden="true" />
 						Edit
-					</div>
-					<div
+					</HeadlessMenuItem>
+					<HeadlessMenuItem
 						as="button"
 						class="text-gray-700 duration-300 w-full dark:text-gray-50 hover:bg-orange-200 rounded-lg text-sm dark:hover:bg-orange-700/20 flex flex-row items-center py-2"
 						@click="copyUrl">
@@ -207,8 +217,28 @@ const copyUrl = () => {
 							class="mx-2 h-[1.2em] w-[1.2em] mb-0.5"
 							aria-hidden="true" />
 						Copy link
-					</div>
-					<div
+					</HeadlessMenuItem>
+					<HeadlessMenuItem
+						as="button"
+						class="text-gray-700 duration-300 w-full dark:text-gray-50 hover:bg-orange-200 rounded-lg text-sm dark:hover:bg-orange-700/20 flex flex-row items-center py-2"
+						@click="copyToClipboard(_status.plain_content ?? '')">
+						<Icon
+							name="ic:round-content-copy"
+							class="mx-2 h-[1.2em] w-[1.2em] mb-0.5"
+							aria-hidden="true" />
+						Copy as plaintext
+					</HeadlessMenuItem>
+					<HeadlessMenuItem
+						as="button"
+						class="text-gray-700 duration-300 w-full dark:text-gray-50 hover:bg-orange-200 rounded-lg text-sm dark:hover:bg-orange-700/20 flex flex-row items-center py-2"
+						@click="copyToClipboard(_status.content ?? '')">
+						<Icon
+							name="ic:round-content-copy"
+							class="mx-2 h-[1.2em] w-[1.2em] mb-0.5"
+							aria-hidden="true" />
+						Copy as HTML
+					</HeadlessMenuItem>
+					<HeadlessMenuItem
 						v-if="
 							_status.account.id === store.auth.data?.id &&
 							!_status.pinned
@@ -221,8 +251,8 @@ const copyUrl = () => {
 							class="mx-2 h-[1.2em] w-[1.2em] mb-0.5"
 							aria-hidden="true" />
 						Pin
-					</div>
-					<div
+					</HeadlessMenuItem>
+					<HeadlessMenuItem
 						v-if="
 							_status.account.id === store.auth.data?.id &&
 							_status.pinned
@@ -235,8 +265,8 @@ const copyUrl = () => {
 							class="mx-2 h-[1.2em] w-[1.2em] mb-0.5"
 							aria-hidden="true" />
 						Unpin
-					</div>
-					<div
+					</HeadlessMenuItem>
+					<HeadlessMenuItem
 						v-if="_status.account.id !== store.auth.data?.id"
 						as="button"
 						class="text-gray-700 duration-300 w-full dark:text-gray-50 hover:bg-orange-200 rounded-lg text-sm dark:hover:bg-orange-700/20 flex flex-row items-center py-2"
@@ -246,9 +276,9 @@ const copyUrl = () => {
 							class="mx-2 h-[1.2em] w-[1.2em] mb-0.5"
 							aria-hidden="true" />
 						Block
-					</div>
-				</div>
+					</HeadlessMenuItem>
+				</HeadlessMenuItems>
 			</ScaleFadeSlide>
-		</div>
+		</HeadlessMenu>
 	</div>
 </template>
