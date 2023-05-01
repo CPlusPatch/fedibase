@@ -112,8 +112,17 @@ watch(
 	() => {
 		otherPost.value = store.replyingTo ?? store.quotingTo ?? null;
 		characters.value = otherPost.value
-			? findMentions(otherPost.value, store.auth.data?.id ?? "").join(" ")
+			? findMentions(otherPost.value, store.auth.data?.id ?? "").join(
+					" "
+			  ) + " "
 			: "";
+
+		textareaRef.value?.setSelectionRange(
+			textareaRef.value?.value.length,
+			textareaRef.value?.value.length
+		);
+
+		textareaRef.value?.focus();
 	}
 );
 
@@ -123,7 +132,8 @@ const clickOnFileInput = (): void => {
 
 onMounted(() => {
 	characters.value = otherPost.value
-		? findMentions(otherPost.value, store.auth.data?.id ?? "").join(" ")
+		? findMentions(otherPost.value, store.auth.data?.id ?? "").join(" ") +
+		  " "
 		: "";
 	textareaRef.value?.setSelectionRange(
 		textareaRef.value?.value.length,
