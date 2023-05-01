@@ -6,6 +6,7 @@ import "@unocss/reset/tailwind.css";
 <template>
 	<div class="dark">
 		<NuxtLayout>
+			<NuxtLoadingIndicator />
 			<NuxtPage />
 		</NuxtLayout>
 	</div>

@@ -2,6 +2,7 @@
 import { Entity } from "megalodon";
 import { withEmojis, fromNow } from "../../utils/functions";
 import Button from "../button/Button.vue";
+import { NotificationType, addNotification } from "../snackbar/Snackbar.vue";
 import InteractionBar from "./InteractionBar.vue";
 import StatusAttachments from "./StatusAttachments.vue";
 import ReplyTo from "./ReplyTo.vue";
@@ -45,6 +46,15 @@ const toggleExpand = () => {
 const toggleShow = () => {
 	show.value = !show.value;
 };
+
+const copyToClipboard = (str: string) => {
+	navigator.clipboard.writeText(str);
+	addNotification(
+		"Copied!",
+		NotificationType.Normal,
+		"ic:round-content-copy"
+	);
+};
 </script>
 
 <template>
@@ -61,7 +71,7 @@ const toggleShow = () => {
 						alt=""
 						:src="status.account.avatar"
 						:class="[
-							'bg-white overflow-hidden w-10 h-10 dark:bg-dark-800-800 rounded-lg	 border border-gray-300 dark:border-dark-700',
+							'bg-white overflow-hidden w-10 h-10 dark:bg-dark-800-800 hover:rounded-xl duration-200 rounded border border-gray-300 dark:border-dark-700',
 							type === PostType.Normal
 								? 'md:w-12 md:h-12'
 								: 'md:w-10 md:h-10',
@@ -88,9 +98,17 @@ const toggleShow = () => {
 						</NuxtLink>
 					</div>
 					<h5
+						ref="acctField"
 						:title="status.account.acct"
-						class="overflow-hidden ml-0 text-gray-500 overflow-ellipsis dark:text-gray-400">
-						@{{ status.account.acct }}
+						class="overflow-hidden group ml-0 text-gray-500 overflow-ellipsis dark:text-gray-400"
+						@click="copyToClipboard('@' + status.account.acct)">
+						<span class="group-hover:hidden">
+							@{{ status.account.acct }}
+						</span>
+						<span
+							class="group-hover:flex hidden items-center gap-x-1">
+							<Icon name="ic:round-content-copy" /> Click to copy
+						</span>
 					</h5>
 				</div>
 			</div>
