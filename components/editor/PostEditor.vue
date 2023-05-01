@@ -91,13 +91,13 @@ const closeModal = (e: Event): void => {
 	props.reRender();
 };
 
-const otherPost = store.replyingTo ?? store.quotingTo ?? null;
+const otherPost = ref(store.replyingTo ?? store.quotingTo ?? null);
 const characters = ref<string>("");
 const textareaRef = ref<HTMLTextAreaElement | null>(null);
 const loading = ref<boolean>(false);
 const contentWarning = ref<boolean>(
-	(otherPost?.sensitive ?? false) ||
-		(otherPost?.spoiler_text?.length ?? 0) > 0
+	(otherPost.value?.sensitive ?? false) ||
+		(otherPost.value?.spoiler_text?.length ?? 0) > 0
 );
 const files = ref<
 	{
@@ -107,22 +107,24 @@ const files = ref<
 	}[]
 >([]);
 
+watch(
+	() => store.replyingTo ?? store.quotingTo ?? null,
+	() => {
+		otherPost.value = store.replyingTo ?? store.quotingTo ?? null;
+		characters.value = otherPost.value
+			? findMentions(otherPost.value, store.auth.data?.id ?? "").join(" ")
+			: "";
+	}
+);
+
 const clickOnFileInput = (): void => {
 	document.getElementById("fileUpload")?.click();
 };
 
 onMounted(() => {
-	const otherPost = store.replyingTo ?? store.quotingTo ?? null;
-
-	if (otherPost) {
-		const id = store.auth.data?.id ?? "";
-		const mentions = findMentions(otherPost, id).join(" ");
-
-		if (mentions) {
-			characters.value = `${mentions} `;
-		}
-	}
-
+	characters.value = otherPost.value
+		? findMentions(otherPost.value, store.auth.data?.id ?? "").join(" ")
+		: "";
 	textareaRef.value?.setSelectionRange(
 		textareaRef.value?.value.length,
 		textareaRef.value?.value.length
