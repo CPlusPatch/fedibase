@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Entity } from "megalodon";
-import { withEmojis, withEmojiReactions } from "../../utils/functions";
+import { withEmojis } from "../../utils/functions";
 import Status, { PostType } from "../status/Status.vue";
 
 const props = defineProps<{

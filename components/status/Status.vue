@@ -131,7 +131,7 @@ const toggleShow = () => {
 						:status="status" />
 
 					<div
-						v-if="status.sensitive"
+						v-if="status.spoiler_text !== ''"
 						class="flex gap-x-2 items-center font-bold dark:text-gray-100">
 						{{
 							status.spoiler_text === ""
