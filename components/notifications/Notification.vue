@@ -67,9 +67,9 @@ const props = defineProps<{
 			<span
 				v-html="
 					props.notification.status?.emoji_reactions &&
-					withEmojiReactions(
+					withEmojis(
 						props.notification.emoji ?? '',
-						props.notification.status?.emoji_reactions
+						props.notification.account.emojis
 					)
 				"></span>
 		</RouterLink>

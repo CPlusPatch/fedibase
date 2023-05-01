@@ -12,6 +12,12 @@ const props = defineProps<{
 
 const _reaction = ref<Entity.Reaction>(props.reaction);
 
+const url = _reaction.value.accounts
+	? _reaction.value.accounts[0].emojis.find(
+			e => e.shortcode === _reaction.value.name.split("@")[0]
+	  )?.url
+	: "";
+
 const react = () => {
 	if (_reaction.value.me) return addNotification("Already reacted to this!");
 
@@ -35,11 +41,7 @@ const react = () => {
 		@click="react">
 		<img
 			v-if="_reaction.name.includes('@')"
-			v-once
-			:src="
-				status.emojis.find(e => `:${e.shortcode}:` == _reaction.name)
-					?.static_url
-			"
+			:src="url"
 			class="w-[1em] h-[1em]"
 			:alt="`Emoji reaction ${_reaction.name}`" />
 		<span v-else>
