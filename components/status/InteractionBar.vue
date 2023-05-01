@@ -136,7 +136,9 @@ const copyUrl = () => {
 				class="w-5 h-5" />
 			{{ _status.favourites_count > 0 ? _status.favourites_count : "" }}
 		</InteractionBarButton>
-		<InteractionBarButton @click="toggleReblog">
+		<InteractionBarButton
+			class="hover:text-green-400"
+			@click="toggleReblog">
 			<template
 				v-if="
 					_status.visibility !== 'private' &&
