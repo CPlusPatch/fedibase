@@ -199,6 +199,30 @@ const copyToClipboard = (str: string) => {
 						:type="type"
 						:status="status" />
 
+					<a
+						v-if="status.card"
+						target="_blank"
+						:href="status.card.url"
+						class="mt-4 flex ring-1 divide-x divide-gray-600 h-30 rounded overflow-hidden ring-gray-600 duration-200 hover:scale-101 no-bad-scale">
+						<div class="">
+							<img
+								:src="status.card.image"
+								class="w-full h-full object-cover" />
+						</div>
+						<div class="grow flex flex-col p-3 justify-around">
+							<h3 class="text-white font-bold">
+								{{ status.card.title }}
+							</h3>
+							<span class="text-gray-400">{{
+								status.card.description
+							}}</span>
+							<span class="text-gray-300"
+								><Icon name="ic:round-insert-link" />
+								{{ status.card.provider_url }}</span
+							>
+						</div>
+					</a>
+
 					<InteractionBar
 						v-if="props.interaction"
 						v-once
