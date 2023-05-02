@@ -11,7 +11,7 @@ definePageMeta({
 
 const store = useStore();
 
-const account = (await store.client?.verifyAccountCredentials())?.data;
+const account = store.auth.data;
 const note = ref("");
 const displayName = ref("");
 const loading = ref(false);
@@ -34,12 +34,13 @@ const save = () => {
 			display_name: displayName.value,
 			note: note.value,
 		})
-		.then(() => {
+		.then(res => {
 			addNotification(
 				"Changed account!",
 				NotificationType.Normal,
 				"ic:round-check"
 			);
+			store.auth.data = res.data;
 		})
 		.finally(() => {
 			loading.value = false;
