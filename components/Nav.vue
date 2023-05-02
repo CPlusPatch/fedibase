@@ -72,14 +72,15 @@ const logout = () => {
 					class="w-5 h-5"
 					aria-hidden="true" />
 			</button> -->
-			<button
+			<NuxtLink
+				to="/settings/account/"
 				title="Open settings"
 				class="flex justify-center items-center p-2 mb-3 text-sm font-medium rounded-md duration-200 dark:text-gray-300 hover:bg-gray-300/40 hover:dark:bg-gray-700/40 hover:bg-opacity-75 group">
 				<Icon
 					name="ic:outline-settings"
 					class="w-5 h-5"
 					aria-hidden="true" />
-			</button>
+			</NuxtLink>
 			<button
 				title="Compose new post"
 				class="flex justify-center items-center p-2 mb-3 text-sm font-medium rounded-md duration-200 dark:text-gray-300 bg-orange-300/20 hover:bg-orange-300/40 hover:bg-opacity-75 group"

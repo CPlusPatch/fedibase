@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { FastClick } from "fastclick";
-import generator from "megalodon";
 import NotificationsFeed from "~/components/feed/NotificationsFeed.vue";
 import useWindowDimensions from "~/components/hooks/useWindowDimensions";
 import MobileNavbar from "~/components/layout/MobileNavbar.vue";
@@ -12,47 +10,6 @@ const store = useStore();
 const updateOffset = (event: any) => {
 	window.pageYOffset = (event.target as HTMLDivElement).scrollTop;
 };
-
-if (store.auth.type && store.auth.url && store.auth.token) {
-	store.client = generator(store.auth.type, store.auth.url, store.auth.token);
-} else {
-	store.client = null;
-}
-
-if (!store.auth.instance)
-	store.client?.getInstance().then(res => {
-		store.auth.instance = res.data;
-	});
-
-store.client?.getInstanceCustomEmojis().then(res => {
-	store.emojis = res.data;
-});
-
-store.client
-	?.verifyAccountCredentials()
-	.then(res => {
-		store.auth.data = res.data;
-	})
-	.catch(_ => {
-		store.client = null;
-	});
-
-if (store.theme === "dark") {
-	document.getElementsByTagName("html")[0].classList.add("dark");
-}
-
-watch(
-	() => store.auth.token,
-	() => {
-		store.client = generator(
-			store.auth.type as any,
-			store.auth.url,
-			store.auth.token
-		);
-	}
-);
-
-FastClick.attach(document.body);
 
 onMounted(() => {
 	setTimeout(() => {

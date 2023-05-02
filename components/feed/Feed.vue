@@ -156,6 +156,7 @@ onUnmounted(() => {
 		<StatusDummyStatus v-if="entities.length === 0" />
 		<StatusDummyStatus v-if="entities.length === 0" />
 		<StatusDummyStatus v-if="entities.length === 0" />
+		<StatusDummyStatus v-if="entities.length === 0" />
 	</template>
 
 	<div

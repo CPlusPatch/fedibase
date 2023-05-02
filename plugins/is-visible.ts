@@ -12,7 +12,6 @@ export default defineNuxtPlugin(nuxtApp => {
 						if (typeof callback === "function") {
 							callback();
 						}
-						observer.unobserve(el);
 					}
 				});
 			}, options);
