@@ -70,7 +70,9 @@ const initialData: StateType = {
 export const useStore = defineStore("main", {
 	// a function that returns a fresh state
 	state: () => initialData,
-	persist: true,
+	persist: {
+		storage: localStorage,
+	},
 });
 
 /* if (localStorage.getItem("store")) {
