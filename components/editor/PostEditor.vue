@@ -427,7 +427,7 @@ const submit = (e: Event) => {
 						class="flex relative flex-row gap-x-1 items-center p-2 text-gray-600 rounded duration-200 cursor-default dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
 						@click="toggleCW">
 						<Icon
-							name="ic:outline-warning"
+							name="ic:round-warning"
 							class="w-6 h-6"
 							aria-hidden="true" />
 					</button>
