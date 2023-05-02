@@ -151,11 +151,15 @@ const copyToClipboard = (str: string) => {
 					<div
 						v-if="status.spoiler_text !== ''"
 						class="flex gap-x-2 items-center font-bold dark:text-gray-100">
-						{{
-							status.spoiler_text === ""
-								? "Marked as sensitive"
-								: withEmojis(status.spoiler_text, status.emojis)
-						}}
+						<span
+							v-html="
+								status.spoiler_text === ''
+									? 'Marked as sensitive'
+									: withEmojis(
+											status.spoiler_text,
+											status.emojis
+									  )
+							"></span>
 
 						<Button
 							class="!py-1 !px-2"
