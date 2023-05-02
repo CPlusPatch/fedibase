@@ -52,13 +52,13 @@ store.client
 		id="feed"
 		class="flex overflow-y-scroll w-full h-full flex-col gap-y-4 no-scroll">
 		<UserProfile :account="account" />
-		<div class="pb-2 flex flex-col no-scroll">
+		<div class="pb-2 flex flex-col no-scroll gap-y-4">
 			<div
 				v-for="pin of pinned"
 				:key="pin.id"
 				class="flex flex-col gap-y-2 duration-200 ease-in-out">
 				<div
-					class="px-4 overflow-hidden gap-x-1 max-w-full font-semibold text-gray-500 overflow-ellipsis dark:text-gray-400">
+					class="overflow-hidden gap-x-1 max-w-full font-semibold text-gray-500 overflow-ellipsis dark:text-gray-400">
 					<Icon
 						name="ic:twotone-push-pin"
 						class="w-[1em] inline pb-0.5 mr-1" />
