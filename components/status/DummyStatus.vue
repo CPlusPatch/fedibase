@@ -26,6 +26,9 @@
 				<p
 					v-for="chance of Math.ceil(Math.random() * 4)"
 					:key="chance"
+					:style="{
+						animationDelay: Math.random() * 2 + 's',
+					}"
 					class="w-full bg-gray-300 rounded h-5 dark:bg-gray-500/40 animate-pulse"></p>
 				<p
 					:style="{
