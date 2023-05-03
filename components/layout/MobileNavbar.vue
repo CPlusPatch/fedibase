@@ -17,17 +17,17 @@ const buttons = [
 	},
 	{
 		name: "Home",
-		icon: "ic:twotone-home",
+		icon: "ic:round-home",
 		onClick: () => router.push("/"),
 	},
 	{
 		name: "Notifications",
-		icon: "ic:twotone-notifications",
+		icon: "ic:round-notifications",
 		onClick: () => router.push("/notifications"),
 	},
 	{
 		name: "Profile",
-		icon: "ic:twotone-account-circle",
+		icon: "ic:round-account-circle",
 		onClick: () => router.push(`/user/${store.auth.data?.id}`),
 	},
 ];
