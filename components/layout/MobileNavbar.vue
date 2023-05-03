@@ -42,13 +42,13 @@ const buttons = [
 	</button>
 	<header
 		:class="[
-			'z-40 fixed inset-x-0 -bottom-1 border-t border-gray-300 dark:border-dark-600 p-0 overflow-hidden rounded-t items-center justify-around grid grid-cols-4 h-16 bg-white dark:bg-dark-800 md:hidden',
+			'z-40 fixed inset-x-0 -bottom-1 border-t border-gray-300 dark:border-dark-600 p-0 overflow-hidden rounded-t items-center justify-around grid grid-cols-4 h-18 bg-white dark:bg-dark-800 md:hidden',
 		]">
 		<button
 			v-for="button of buttons"
 			:key="button.name"
 			v-ripple
-			class="dark:text-white h-full w-full py-2 border-none text-black flex flex-col items-center gap-y-1"
+			class="dark:text-orange-50 h-full w-full h-full justify-center border-none text-black flex flex-col items-center gap-y-1"
 			@click="button.onClick">
 			<Icon :name="button.icon" class="h-6 w-6" aria-hidden="true" />
 			<span class="text-xs font-bold font-sans">{{ button.name }}</span>
