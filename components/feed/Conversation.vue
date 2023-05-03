@@ -90,7 +90,7 @@ onUnmounted(() => {
 </script>
 
 <template>
-	<div class="flex overflow-y-hidden flex-col h-full">
+	<FeedWrapper>
 		<div class="flex overflow-hidden relative mt-6 max-w-full grow">
 			<div
 				class="flex overflow-y-scroll flex-col gap-y-5 py-4 w-full h-full no-scroll px-2">
@@ -122,5 +122,5 @@ onUnmounted(() => {
 				</div>
 			</div>
 		</div>
-	</div>
+	</FeedWrapper>
 </template>
