@@ -37,6 +37,8 @@ const settings = [
 				<slot />
 			</div>
 		</div>
+
+		<LayoutMobileNavbar :compose="false" />
 	</div>
 	<Snackbar />
 </template>

@@ -3,29 +3,17 @@ import { useStore } from "../../utils/store";
 
 const store = useStore();
 
-const toggleTheme = () => {
-	if (store.theme === "dark") {
-		store.theme = "light";
-
-		document.getElementsByTagName("html")[0].classList.remove("dark");
-	} else if (store.theme === "light") {
-		store.theme = "dark";
-
-		document.getElementsByTagName("html")[0].classList.add("dark");
-	}
-};
+defineProps<{
+	composer?: boolean;
+}>();
 
 const router = useRouter();
 
-const themeIcon = ref(
-	store.theme === "light" ? "ic:twotone-light-mode" : "ic:twotone-dark-mode"
-);
-
 const buttons = [
 	{
-		name: "Theme",
-		icon: themeIcon.value,
-		onClick: toggleTheme,
+		name: "Settings",
+		icon: "ic:round-settings",
+		onClick: () => router.push("/settings/account"),
 	},
 	{
 		name: "Home",
@@ -47,6 +35,7 @@ const buttons = [
 
 <template>
 	<button
+		v-if="composer"
 		class="z-40 border-none fixed md:hidden bottom-20 right-5 flex items-center justify-center p-4 rounded-2xl shadow-lg font-medium bg-orange-100 dark:bg-orange-700 dark:text-orange-100"
 		@click="store.state.composer = true">
 		<Icon name="ic:twotone-edit" class="w-7 h-7" />
