@@ -5,7 +5,6 @@ import {
 	ListboxOption,
 	ListboxOptions,
 } from "@headlessui/vue";
-import ScaleFadeSlide from "../transitions/ScaleFadeSlide.vue";
 
 export enum SelectDirection {
 	Right = "right",
@@ -49,17 +48,24 @@ const selected = ref<SelectItem>(props.items[props.defaultValue]);
 		class="relative"
 		@update:model-value="value => emit('update:model-value', value)">
 		<ListboxButton
-			class="flex relative flex-row gap-x-1 items-center p-2 text-gray-600 rounded duration-200 cursor-default dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">
+			class="flex relative flex-row gap-x-1 items-center p-2 text-gray-600 rounded duration-200 cursor-default dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-dark-700">
 			<Icon
 				:name="selected.icon"
 				:stroke-width="2"
 				class="w-6 h-6"
 				aria-hidden="true" />
 		</ListboxButton>
-		<ScaleFadeSlide>
+		<Transition
+			appear
+			enter-from-class="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+			enter-to-class="opacity-100 translate-y-0 sm:scale-100"
+			enter-active-class="ease-out duration-100"
+			leave-active-class="ease-in duration-100"
+			leave-from-class="opacity-100 translate-y-0 sm:scale-100"
+			leave-to-class="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95">
 			<ListboxOptions
 				:class="[
-					'overflow-auto absolute z-30 dark:border-gray-700 shadow-lg mt-1 w-64 text-base rounded-md border bg-gray-100/75 dark:bg-dark-800/75 backdrop-blur-md',
+					'absolute z-30 shadow-lg mt-1 w-64 text-base rounded-md overflow-hidden bg-gray-100/75 dark:bg-dark-800/75 backdrop-blur-md',
 					direction === SelectDirection.Left &&
 						'right-0 origin-top-right',
 					direction === SelectDirection.Center &&
@@ -73,7 +79,7 @@ const selected = ref<SelectItem>(props.items[props.defaultValue]);
 					:class="[
 						item.value === selected.value &&
 							'bg-orange-100 dark:bg-orange-500/10',
-						'm-2 rounded flex relative flex-row gap-x-3 items-center py-2 px-3 text-gray-800 dark:text-gray-100 duration-200 cursor-default select-none hover:bg-gray-200 dark:hover:bg-gray-700',
+						'flex relative flex-row gap-x-3 items-center py-2 px-3 text-gray-800 dark:text-gray-100 duration-200 cursor-default select-none hover:bg-gray-200 dark:hover:bg-dark-700/75',
 					]">
 					<Icon
 						:name="item.icon"
@@ -90,6 +96,6 @@ const selected = ref<SelectItem>(props.items[props.defaultValue]);
 					</div>
 				</ListboxOption>
 			</ListboxOptions>
-		</ScaleFadeSlide>
+		</Transition>
 	</Listbox>
 </template>
