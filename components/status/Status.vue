@@ -203,21 +203,23 @@ const copyToClipboard = (str: string) => {
 						v-if="status.card"
 						target="_blank"
 						:href="status.card.url"
-						class="mt-4 flex ring-1 divide-x divide-gray-600 h-30 rounded overflow-hidden ring-gray-600 duration-200 hover:scale-101 no-bad-scale">
-						<div class="w-30 h-30 flex-shrink-0">
+						class="mt-4 flex ring-1 group divide-x divide-gray-600 h-30 rounded ring-gray-600 duration-200 hover:scale-101 no-bad-scale">
+						<div
+							v-if="status.card.image"
+							class="w-30 h-30 flex-shrink-0 h-full overflow-hidden rounded-l">
 							<img
 								:src="status.card.image"
-								class="w-full h-full object-cover" />
+								class="w-full h-full object-cover group-hover:scale-120 duration-200 ease-in-out" />
 						</div>
-						<div class="grow flex flex-col p-3 justify-around">
-							<h3 class="text-white font-bold">
+						<div class="grow flex flex-col p-3 justify-around gap-y-1">
+							<h3 class="text-white font-bold line-clamp-1">
 								{{ status.card.title }}
 							</h3>
 							<span
 								class="text-gray-400 line-clamp-2 break-all"
 								>{{ status.card.description }}</span
 							>
-							<span class="text-gray-300"
+							<span class="text-gray-300 line-clamp-1"
 								><Icon name="ic:round-insert-link" />
 								{{ status.card.provider_url }}</span
 							>
