@@ -142,7 +142,7 @@ const copyToClipboard = (str: string) => {
 					<div
 						class="border-l-2 dark:border-gray-400 absolute inset-x-0 -top-3 left-5 -bottom-10"></div>
 				</div>
-				<div class="flex flex-col gap-y-1 text-sm grow">
+				<div class="flex flex-col gap-y-1 text-sm grow max-w-full">
 					<ReplyTo
 						v-if="status.in_reply_to_id"
 						v-once
@@ -211,7 +211,8 @@ const copyToClipboard = (str: string) => {
 								:src="status.card.image"
 								class="w-full h-full object-cover group-hover:scale-120 duration-200 ease-in-out" />
 						</div>
-						<div class="grow flex flex-col p-3 justify-around gap-y-1">
+						<div
+							class="grow flex flex-col p-3 justify-around gap-y-1">
 							<h3 class="text-white font-bold line-clamp-1">
 								{{ status.card.title }}
 							</h3>

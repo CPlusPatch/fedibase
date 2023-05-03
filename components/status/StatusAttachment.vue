@@ -19,7 +19,7 @@ const toggleRevealed = () => {
 <template>
 	<div
 		:class="[
-			'relative rounded grow-0 mx-auto overflow-hidden flex items-center',
+			'relative rounded w-full mx-auto overflow-hidden flex items-center',
 			type === PostType.Small && 'h-44 w-44 border dark:border-dark-700',
 		]">
 		<img
