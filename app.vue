@@ -31,9 +31,9 @@ store.client
 		store.client = null;
 	});
 
-if (store.theme === "dark") {
-	document.getElementsByTagName("html")[0].classList.add("dark");
-}
+// if (store.theme === "dark") {
+document.getElementsByTagName("html")[0].classList.add("dark");
+// }
 
 watch(
 	() => store.auth.token,
