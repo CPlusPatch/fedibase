@@ -47,13 +47,13 @@ const buttons = [
 
 <template>
 	<button
-		class="border-none fixed md:hidden bottom-20 right-5 flex items-center justify-center p-4 rounded-2xl shadow-lg font-medium bg-orange-100 dark:bg-orange-700 dark:text-orange-100"
+		class="z-40 border-none fixed md:hidden bottom-20 right-5 flex items-center justify-center p-4 rounded-2xl shadow-lg font-medium bg-orange-100 dark:bg-orange-700 dark:text-orange-100"
 		@click="store.state.composer = true">
 		<Icon name="ic:twotone-edit" class="w-7 h-7" />
 	</button>
 	<header
 		:class="[
-			'fixed inset-x-0 -bottom-1 border-t border-gray-300 dark:border-dark-600 p-0 overflow-hidden rounded-t items-center justify-around grid grid-cols-4 h-16 bg-white dark:bg-dark-800 md:hidden',
+			'z-40 fixed inset-x-0 -bottom-1 border-t border-gray-300 dark:border-dark-600 p-0 overflow-hidden rounded-t items-center justify-around grid grid-cols-4 h-16 bg-white dark:bg-dark-800 md:hidden',
 		]">
 		<button
 			v-for="button of buttons"
