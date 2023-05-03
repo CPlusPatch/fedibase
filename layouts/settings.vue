@@ -38,7 +38,7 @@ const settings = [
 			</div>
 		</div>
 
-		<LayoutMobileNavbar :compose="false" />
+		<LayoutMobileNavbar :disable-composer="true" />
 	</div>
 	<Snackbar />
 </template>

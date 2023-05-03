@@ -3,5 +3,7 @@ import Feed, { FeedType } from "~/components/feed/Feed.vue";
 </script>
 
 <template>
-	<Feed :type="FeedType.Local" />
+	<FeedWrapper>
+		<Feed :type="FeedType.Local" />
+	</FeedWrapper>
 </template>

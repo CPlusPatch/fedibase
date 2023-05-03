@@ -4,7 +4,7 @@ import { useStore } from "../../utils/store";
 const store = useStore();
 
 defineProps<{
-	composer?: boolean;
+	disableComposer?: boolean;
 }>();
 
 const router = useRouter();
@@ -35,7 +35,7 @@ const buttons = [
 
 <template>
 	<button
-		v-if="composer"
+		v-if="!disableComposer"
 		class="z-40 border-none fixed md:hidden bottom-20 right-5 flex items-center justify-center p-4 rounded-2xl shadow-lg font-medium bg-orange-100 dark:bg-orange-700 dark:text-orange-100"
 		@click="store.state.composer = true">
 		<Icon name="ic:twotone-edit" class="w-7 h-7" />

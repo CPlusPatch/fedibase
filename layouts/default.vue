@@ -44,7 +44,7 @@ onUnmounted(() => {
 					<LeftSidebar />
 				</div>
 				<div
-					class="flex overflow-x-hidden flex-col gap-y-4 px-4 md:py-4 h-full w-full no-scroll md:col-span-5 col-span-6 md:border-x border-gray-300 dark:border-dark-700 dark:bg-dark-800">
+					class="flex overflow-hidden h-full w-full no-scroll md:col-span-5 col-span-6 md:border-x border-gray-300 dark:border-dark-700 dark:bg-dark-800">
 					<slot />
 				</div>
 				<div
