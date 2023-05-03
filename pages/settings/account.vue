@@ -50,7 +50,7 @@ const save = () => {
 
 <template>
 	<div
-		class="flex flex-col gap-y-4 w-full bg-gray-50 pb-5 dark:bg-dark-800 rounded-b"
+		class="flex flex-col gap-y-4 w-full pb-5 rounded-b bg-gray-50 dark:bg-dark-800"
 		@keyup="
 			e => {
 				if (e.key === 's' && (e.ctrlKey || e.metaKey)) {
@@ -121,13 +121,11 @@ const save = () => {
 		</div>
 	</div>
 
-	<div class="flex mt-4">
-		<Button
-			:loading="loading"
-			theme="gradientOrange"
-			class="w-full"
-			@click="save"
-			>Save</Button
-		>
-	</div>
+	<Button
+		:loading="loading"
+		theme="gradientOrange"
+		class="w-full mb-10 mt-5"
+		@click="save"
+		>Save</Button
+	>
 </template>
