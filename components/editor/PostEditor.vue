@@ -91,6 +91,8 @@ const closeModal = (e: Event): void => {
 	props.reRender();
 };
 
+const emojiSuggestions = ref<Entity.Emoji[]>([]);
+
 const otherPost = ref(store.replyingTo ?? store.quotingTo ?? null);
 const characters = ref<string>("");
 const textareaRef = ref<HTMLTextAreaElement | null>(null);
@@ -123,6 +125,21 @@ watch(
 		);
 
 		textareaRef.value?.focus();
+	}
+);
+
+watch(
+	() => characters.value,
+	() => {
+		const matched = characters.value.match(/:[a-zA-Z0-9_]*((?<!:):$|$)/);
+		if (!matched || matched.length === 0) {
+			emojiSuggestions.value = [];
+			return;
+		}
+		// Get first 5 matching emojis
+		emojiSuggestions.value = store.emojis
+			.filter(e => e.shortcode.includes(matched[0].replace(":", "")))
+			.slice(0, 5);
 	}
 );
 
@@ -179,7 +196,7 @@ const uploadFiles = async (toUpload: FileList) => {
 	addNotification(
 		"Files uploaded!",
 		NotificationType.Normal,
-		"twotone-upload-file"
+		"ic:twotone-upload-file"
 	);
 	loading.value = false;
 	files.value = [...files.value, ...newFiles];
@@ -344,6 +361,28 @@ const submit = (e: Event) => {
 							(characters.length ?? 0)
 						}}
 					</span>
+				</div>
+				<div
+					v-if="emojiSuggestions.length > 0"
+					class="flex absolute z-[60] flex-col rounded-lg border dark:bg-dark-800/80 backdrop-blur-md bg-white/80 dark:border-gray-700">
+					<div
+						v-for="emoji of emojiSuggestions"
+						:key="emoji.shortcode"
+						class="flex flex-row gap-x-4 px-3 py-2 duration-200 hover:bg-gray-100 hover:dark:bg-gray-800"
+						@click="
+							() => {
+								characters = characters.replace(
+									characters.match(
+										/:[a-zA-Z0-9_]*((?<!:):$|$)/
+									)?.[0] ?? '',
+									`:${emoji.shortcode}:`
+								);
+								emojiSuggestions = [];
+							}
+						">
+						<img :src="emoji.url" class="w-5 h-5" alt="" />
+						<span>{{ emoji.shortcode }}</span>
+					</div>
 				</div>
 			</div>
 
