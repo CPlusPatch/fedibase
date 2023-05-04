@@ -92,6 +92,7 @@ const closeModal = (e: Event): void => {
 };
 
 const emojiSuggestions = ref<Entity.Emoji[]>([]);
+const userSuggestions = ref<Entity.Account[]>([]);
 
 const otherPost = ref(store.replyingTo ?? store.quotingTo ?? null);
 const characters = ref<string>("");
@@ -140,6 +141,28 @@ watch(
 		emojiSuggestions.value = store.emojis
 			.filter(e => e.shortcode.includes(matched[0].replace(":", "")))
 			.slice(0, 5);
+	}
+);
+
+watch(
+	() => characters.value,
+	async () => {
+		// i hate regex so much owo
+		const matched = characters.value.match(
+			/@\b([A-Z0-9._%+-]+)@?([A-Z0-9.-]+\.?[A-Z]{0,})?\b$/im
+		);
+		if (!matched || matched.length === 0) {
+			userSuggestions.value = [];
+			return;
+		}
+
+		userSuggestions.value = (
+			(
+				await store.client?.searchAccount(matched[0], {
+					limit: 5,
+				})
+			)?.data ?? []
+		).slice(0, 5);
 	}
 );
 
@@ -362,6 +385,7 @@ const submit = (e: Event) => {
 						}}
 					</span>
 				</div>
+
 				<div
 					v-if="emojiSuggestions.length > 0"
 					class="flex absolute z-[60] flex-col rounded-lg border dark:bg-dark-800/80 backdrop-blur-md bg-white/80 dark:border-gray-700">
@@ -382,6 +406,37 @@ const submit = (e: Event) => {
 						">
 						<img :src="emoji.url" class="w-5 h-5" alt="" />
 						<span>{{ emoji.shortcode }}</span>
+					</div>
+				</div>
+
+				<div
+					v-if="userSuggestions.length > 0"
+					class="flex absolute z-[60] flex-col rounded-xl border dark:bg-dark-800/80 backdrop-blur-md bg-white/80 dark:border-gray-700">
+					<div
+						v-for="user of userSuggestions"
+						:key="user.id"
+						class="flex flex-row gap-x-4 px-3 py-2 duration-200 hover:bg-gray-100 hover:dark:bg-gray-800 items-center"
+						@click="
+							() => {
+								characters = characters.replace(
+									characters.match(
+										/@\b([A-Z0-9._%+-]+)@?([A-Z0-9.-]+\.?[A-Z]{0,})?\b$/im
+									)?.[0] ?? '',
+									`@${user.acct}`
+								);
+								userSuggestions = [];
+							}
+						">
+						<img
+							class="w-8 h-8 rounded-md"
+							:src="user.avatar"
+							alt="" />
+						<div class="flex flex-col justify-between">
+							<span>{{ user.display_name }}</span>
+							<span class="text-gray-500 dark:text-gray-400"
+								>@{{ user.acct }}</span
+							>
+						</div>
 					</div>
 				</div>
 			</div>
