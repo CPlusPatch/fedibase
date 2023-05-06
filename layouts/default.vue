@@ -56,6 +56,18 @@ onUnmounted(() => {
 		</div>
 		<MobileNavbar />
 		<Snackbar />
+
+		<TransitionsScaleFadeSlide>
+			<div
+				v-if="store.viewingImage"
+				class="fixed inset-0 flex items-center justify-center z-999 p-10 bg-black/70 backdrop-blur-lg"
+				@click="store.viewingImage = null">
+				<img
+					:src="store.viewingImage.url"
+					class="object-contain max-h-full rounded"
+					@click="$event.stopPropagation()" />
+			</div>
+		</TransitionsScaleFadeSlide>
 	</template>
 	<template v-else>
 		<Login />

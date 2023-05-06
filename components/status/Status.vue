@@ -236,3 +236,14 @@ const copyToClipboard = (str: string) => {
 		</div>
 	</TransitionsScaleFadeSlide>
 </template>
+
+<style>
+.status-text p {
+	margin-bottom: 1em;
+	white-space: pre-wrap;
+}
+
+.status-text p:last-child {
+	margin-bottom: 0;
+}
+</style>

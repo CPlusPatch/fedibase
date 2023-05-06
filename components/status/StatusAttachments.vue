@@ -12,13 +12,7 @@ defineProps<{
 <template>
 	<div
 		v-if="status.media_attachments.length > 0"
-		:class="[
-			'grid gap-3 w-full h-full mt-2 justify-start',
-			status.media_attachments.length === 2 &&
-				'grid-cols-2 !justify-center',
-			status.media_attachments.length > 2 &&
-				'grid-cols-3 !justify-center',
-		]">
+		:class="['flex flex-col gap-3 w-full h-full mt-2']">
 		<StatusAttachment
 			v-for="attachment in status.media_attachments"
 			:key="attachment.id"

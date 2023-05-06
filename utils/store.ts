@@ -16,12 +16,6 @@ export interface StateType {
 		postViewer: boolean;
 		sidebar: boolean;
 	};
-	notifications: {
-		uuid: string;
-		content: string;
-		icon?: any;
-		show: boolean;
-	}[];
 	client: MegalodonInterface | null;
 	replyingTo: null | Entity.Status;
 	savedFeed: Entity.Status[];
@@ -29,8 +23,7 @@ export interface StateType {
 	editing: null | Entity.Status;
 	path: string;
 	quotingTo: null | Entity.Status;
-	viewingConversation: string;
-	settingsOpen: boolean;
+	viewingImage: Entity.Attachment | null;
 	theme: "light" | "dark";
 	loaded: boolean;
 	emojis: Entity.Emoji[];
@@ -46,7 +39,6 @@ const initialData: StateType = {
 		clientSecret: "",
 		instance: null,
 	},
-	notifications: [],
 	client: null,
 	theme: "light",
 	replyingTo: null,
@@ -61,8 +53,7 @@ const initialData: StateType = {
 	},
 	path: "",
 	quotingTo: null,
-	viewingConversation: "",
-	settingsOpen: false,
+	viewingImage: null,
 	loaded: false,
 	emojis: [],
 };
