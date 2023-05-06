@@ -461,7 +461,7 @@ const submit = (e: Event) => {
 			</ScaleFadeSlide>
 
 			<div
-				class="flex inset-x-0 bottom-0 py-2 px-2 flex-row justify-between items-center">
+				class="flex inset-x-0 bottom-0 py-2 px-2 flex-row items-center justify-between">
 				<div class="flex flex-row">
 					<button
 						type="button"
@@ -527,8 +527,12 @@ const submit = (e: Event) => {
 					</button>
 				</div>
 
-				<Button :loading="loading" theme="gradientOrange" type="submit">
-					Post
+				<Button
+					:loading="loading"
+					class="!p-3"
+					theme="gradientOrange"
+					type="submit">
+					<Icon name="ic:round-send" class="w-5 h-5" />
 				</Button>
 			</div>
 		</div>
