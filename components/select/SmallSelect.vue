@@ -65,7 +65,7 @@ const selected = ref<SelectItem>(props.items[props.defaultValue]);
 			leave-to-class="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95">
 			<ListboxOptions
 				:class="[
-					'absolute z-30 shadow-lg mt-1 w-64 text-base rounded-md overflow-hidden bg-gray-100/75 dark:bg-dark-800/75 backdrop-blur-md',
+					'absolute z-30 shadow-lg mt-1 text-base rounded-md overflow-hidden bg-gray-100/75 dark:bg-dark-800/75 backdrop-blur-md',
 					direction === SelectDirection.Left &&
 						'right-0 origin-top-right',
 					direction === SelectDirection.Center &&
@@ -90,7 +90,8 @@ const selected = ref<SelectItem>(props.items[props.defaultValue]);
 							{{ item.text }}
 						</span>
 						<span
-							class="text-sm text-orange-700 dark:text-orange-200">
+							v-if="item.description"
+							class="text-sm min-w-40 text-orange-700 dark:text-orange-200">
 							{{ item.description ?? "" }}
 						</span>
 					</div>

@@ -30,7 +30,6 @@ const props = withDefaults(
 interface PostMode {
 	text: string;
 	value: string;
-	description: string;
 	icon: any;
 }
 
@@ -45,13 +44,13 @@ const modes: PostMode[] = [
 	{
 		text: "Plaintext",
 		value: "text",
-		description: "Just plain text",
+		/* description: "Just plain text", */
 		icon: "ic:outline-format-align-left",
 	},
 	{
 		text: "Markdown",
 		value: "markdown",
-		description: "Use Markdown syntax",
+		/* description: "Use Markdown syntax", */
 		icon: "ic:outline-format-color-text",
 	},
 ];

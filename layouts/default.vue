@@ -38,7 +38,7 @@ onUnmounted(() => {
 			<Nav />
 
 			<div
-				class="grid grid-cols-6 justify-between overflow-hidden gap-x-4 md:px-4 grid-flow-row md:grid-cols-8 xl:grid-cols-12 w-full max-w-[90rem] mx-auto">
+				class="grid grid-cols-6 justify-between gap-x-4 md:px-4 grid-flow-row md:grid-cols-8 xl:grid-cols-12 w-full max-w-[90rem] mx-auto">
 				<div
 					class="hidden md:col-span-3 md:block no-scroll overflow-y-scroll">
 					<LeftSidebar />
