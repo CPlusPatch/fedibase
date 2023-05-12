@@ -7,7 +7,7 @@
 		"generate": "nuxt generate",
 		"preview": "nuxt preview",
 		"postinstall": "nuxt prepare",
-		"lint": "eslint --ext .js,.ts src",
+		"lint": "eslint --ext .js,.ts components/**/* layouts/**/* pages/**/*",
 		"format": "prettier --write components/ layouts/ pages/"
 	},
 	"devDependencies": {

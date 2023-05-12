@@ -59,8 +59,8 @@ const submit = async (e: Event) => {
 
 	const client = generator(store.auth.type as any, store.auth.url);
 
-	const scope = ["read", "write", "follow"];
-	/* if (store.auth.type === "misskey")
+	let scope = ["read", "write", "follow"];
+	if (store.auth.type === "misskey")
 		scope = [
 			"read:account",
 			"write:account",
@@ -94,7 +94,7 @@ const submit = async (e: Event) => {
 			"write:gallery",
 			"read:gallery-likes",
 			"write:gallery-likes",
-		]; */
+		];
 
 	const { clientId, clientSecret, url } = await client.registerApp(
 		"Fedibase Web",
