@@ -1,0 +1,90 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="500" height="350" preserveAspectRatio="xMidYMid" style="margin:auto;background:#fff;display:block;z-index:1;position:relative;shape-rendering:auto">
+  <g>
+    <defs>
+      <linearGradient id="lg-0.17064652333029828" x1="0" x2="0" y1="0" y2="1">
+        <stop offset=".3" stop-color="#890c46"/>
+        <stop offset=".65" stop-color="#3c0226"/>
+        <stop offset="1" stop-color="#3c0226"/>
+      </linearGradient>
+      <linearGradient id="fg-lg-0.17064652333029828" x1="0" x2="0" y1="0" y2="1">
+        <stop offset=".3" stop-color="#890c46"/>
+        <stop offset=".65" stop-color="#3c0226" stop-opacity=".66"/>
+        <stop offset="1" stop-color="#3c0226" stop-opacity="0"/>
+      </linearGradient>
+      <style>
+        path{fill:none;stroke:#0ff;stroke-width:1px}
+      </style>
+    </defs>
+    <rect width="500" height="350" fill="url(#lg-0.17064652333029828)"/>
+    <path d="m0 105-4425 245M3.846 105l-4356.923 245M7.692 105l-4288.846 245M11.538 105-4209.23 350M15.385 105l-4152.693 245M19.23 105l-4084.615 245M23.077 105l-4016.539 245M26.923 105l-3948.461 245M30.77 105l-3880.385 245M34.615 105l-3812.307 245M38.462 105-3705.77 350M42.308 105l-3676.154 245M46.154 105l-3608.077 245M50 105l-3540 245M53.846 105l-3471.923 245M57.692 105l-3403.846 245M61.538 105-3274.23 350M65.385 105l-3267.693 245M69.23 105l-3199.615 245M73.077 105l-3131.539 245M76.923 105l-3063.461 245M80.77 105l-2995.385 245M84.615 105l-2927.307 245M88.462 105-2770.77 350M92.308 105l-2791.154 245M96.154 105l-2723.077 245M100 105l-2655 245M103.846 105l-2586.923 245M107.692 105l-2518.846 245M111.538 105-2339.23 350M115.385 105l-2382.693 245M119.23 105l-2314.615 245M123.077 105l-2246.539 245M126.923 105l-2178.461 245M130.77 105l-2110.385 245M134.615 105l-2042.307 245M138.462 105-1835.77 350M142.308 105l-1906.154 245M146.154 105l-1838.077 245M150 105l-1770 245M153.846 105l-1701.923 245M157.692 105l-1633.846 245M161.538 105-1404.23 350M165.385 105l-1497.693 245M169.23 105l-1429.615 245M173.077 105l-1361.539 245M176.923 105l-1293.461 245M180.77 105l-1225.385 245M184.615 105-972.692 350M188.462 105-900.77 350M192.308 105-828.846 350M196.154 105l-953.077 245M200 105l-885 245M203.846 105l-816.923 245M207.692 105l-748.846 245M211.538 105-469.23 350M215.385 105l-612.693 245M219.23 105l-544.615 245M223.077 105l-476.539 245M226.923 105l-408.461 245M230.77 105l-340.385 245M234.615 105-37.692 350M238.462 105 34.23 350M242.308 105 106.154 350M246.154 105l-68.077 245M250 105v245M253.846 105l68.077 245M257.692 105l136.154 245M261.538 105 465.77 350M265.385 105l272.307 245M269.23 105l340.385 245M273.077 105l408.461 245M276.923 105l476.539 245M280.77 105l544.615 245M284.615 105l612.693 245M288.462 105 969.23 350M292.308 105l748.846 245M296.154 105l816.923 245M300 105l885 245M303.846 105l953.077 245M307.692 105l1021.154 245M311.538 105 1400.77 350M315.385 105l1157.307 245M319.23 105l1225.385 245M323.077 105l1293.461 245M326.923 105l1361.539 245M330.77 105l1429.615 245M334.615 105l1497.693 245M338.462 105 1904.23 350M342.308 105l1633.846 245M346.154 105l1701.923 245M350 105l1770 245M353.846 105l1838.077 245M357.692 105l1906.154 245M361.538 105 2335.77 350M365.385 105l2042.307 245M369.23 105l2110.385 245M373.077 105l2178.461 245M376.923 105l2246.539 245M380.77 105l2314.615 245M384.615 105l2382.693 245M388.462 105 2839.23 350M392.308 105l2518.846 245M396.154 105l2586.923 245M400 105l2655 245M403.846 105l2723.077 245M407.692 105l2791.154 245M411.538 105 3270.77 350M415.385 105l2927.307 245M419.23 105l2995.385 245M423.077 105l3063.461 245M426.923 105l3131.539 245M430.77 105l3199.615 245M434.615 105l3267.693 245M438.462 105 3774.23 350M442.308 105l3403.846 245M446.154 105l3471.923 245M450 105l3540 245M453.846 105l3608.077 245M457.692 105l3676.154 245M461.538 105 4205.77 350M465.385 105l3812.307 245M469.23 105l3880.385 245M473.077 105l3948.461 245M476.923 105l4016.539 245M480.77 105l4084.615 245M484.615 105l4152.693 245M488.462 105 4709.23 350M492.308 105l4288.846 245M496.154 105l4356.923 245M500 105l4425 245"/>
+    <g>
+      <path d="M0 105h500"/>
+      <animateTransform attributeName="transform" begin="0s" calcMode="linear" dur="0.8333333333333334s" keyTimes="0;1" repeatCount="indefinite" type="translate" values="0 0;0 1.8556213017751477"/>
+    </g>
+    <g>
+      <path d="M0 106.856h500"/>
+      <animateTransform attributeName="transform" begin="0s" calcMode="linear" dur="0.8333333333333334s" keyTimes="0;1" repeatCount="indefinite" type="translate" values="0 0;0 3.711242603550295"/>
+    </g>
+    <g>
+      <path d="M0 110.567h500"/>
+      <animateTransform attributeName="transform" begin="0s" calcMode="linear" dur="0.8333333333333334s" keyTimes="0;1" repeatCount="indefinite" type="translate" values="0 0;0 5.566863905325443"/>
+    </g>
+    <g>
+      <path d="M0 116.134h500"/>
+      <animateTransform attributeName="transform" begin="0s" calcMode="linear" dur="0.8333333333333334s" keyTimes="0;1" repeatCount="indefinite" type="translate" values="0 0;0 7.422485207100591"/>
+    </g>
+    <g>
+      <path d="M0 123.556h500"/>
+      <animateTransform attributeName="transform" begin="0s" calcMode="linear" dur="0.8333333333333334s" keyTimes="0;1" repeatCount="indefinite" type="translate" values="0 0;0 9.278106508875739"/>
+    </g>
+    <g>
+      <path d="M0 132.834h500"/>
+      <animateTransform attributeName="transform" begin="0s" calcMode="linear" dur="0.8333333333333334s" keyTimes="0;1" repeatCount="indefinite" type="translate" values="0 0;0 11.133727810650887"/>
+    </g>
+    <g>
+      <path d="M0 143.968h500"/>
+      <animateTransform attributeName="transform" begin="0s" calcMode="linear" dur="0.8333333333333334s" keyTimes="0;1" repeatCount="indefinite" type="translate" values="0 0;0 12.989349112426035"/>
+    </g>
+    <g>
+      <path d="M0 156.957h500"/>
+      <animateTransform attributeName="transform" begin="0s" calcMode="linear" dur="0.8333333333333334s" keyTimes="0;1" repeatCount="indefinite" type="translate" values="0 0;0 14.844970414201182"/>
+    </g>
+    <g>
+      <path d="M0 171.802h500"/>
+      <animateTransform attributeName="transform" begin="0s" calcMode="linear" dur="0.8333333333333334s" keyTimes="0;1" repeatCount="indefinite" type="translate" values="0 0;0 16.70059171597633"/>
+    </g>
+    <g>
+      <path d="M0 188.503h500"/>
+      <animateTransform attributeName="transform" begin="0s" calcMode="linear" dur="0.8333333333333334s" keyTimes="0;1" repeatCount="indefinite" type="translate" values="0 0;0 18.556213017751478"/>
+    </g>
+    <g>
+      <path d="M0 207.06h500"/>
+      <animateTransform attributeName="transform" begin="0s" calcMode="linear" dur="0.8333333333333334s" keyTimes="0;1" repeatCount="indefinite" type="translate" values="0 0;0 20.411834319526626"/>
+    </g>
+    <g>
+      <path d="M0 227.471h500"/>
+      <animateTransform attributeName="transform" begin="0s" calcMode="linear" dur="0.8333333333333334s" keyTimes="0;1" repeatCount="indefinite" type="translate" values="0 0;0 22.267455621301774"/>
+    </g>
+    <g>
+      <path d="M0 249.738h500"/>
+      <animateTransform attributeName="transform" begin="0s" calcMode="linear" dur="0.8333333333333334s" keyTimes="0;1" repeatCount="indefinite" type="translate" values="0 0;0 24.123076923076923"/>
+    </g>
+    <g>
+      <path d="M0 273.862h500"/>
+      <animateTransform attributeName="transform" begin="0s" calcMode="linear" dur="0.8333333333333334s" keyTimes="0;1" repeatCount="indefinite" type="translate" values="0 0;0 25.97869822485207"/>
+    </g>
+    <g>
+      <path d="M0 299.84h500"/>
+      <animateTransform attributeName="transform" begin="0s" calcMode="linear" dur="0.8333333333333334s" keyTimes="0;1" repeatCount="indefinite" type="translate" values="0 0;0 27.83431952662722"/>
+    </g>
+    <g>
+      <path d="M0 327.675h500"/>
+      <animateTransform attributeName="transform" begin="0s" calcMode="linear" dur="0.8333333333333334s" keyTimes="0;1" repeatCount="indefinite" type="translate" values="0 0;0 29.689940828402367"/>
+    </g>
+    <g>
+      <path d="M0 357.364h500"/>
+      <animateTransform attributeName="transform" begin="0s" calcMode="linear" dur="0.8333333333333334s" keyTimes="0;1" repeatCount="indefinite" type="translate" values="0 0;0 31.54556213017751"/>
+    </g>
+    <rect width="500" height="350" fill="url(#fg-lg-0.17064652333029828)"/>
+  </g>
+</svg>

@@ -34,7 +34,10 @@ const playSound = () => {
 		@before-enter="playSound">
 		<div>
 			<div
-				v-if="notif.type === NotificationType.Normal"
+				v-if="
+					notif.type === NotificationType.Normal ||
+					notif.type === NotificationType.Error
+				"
 				class="max-w-sm bg-white/875 backdrop-blur-lg dark:bg-dark-700/75 shadow-lg rounded border dark:border-gray-700 overflow-hidden">
 				<div class="px-3 py-2">
 					<div class="flex items-center gap-x-3 flex-row">

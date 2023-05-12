@@ -4,6 +4,8 @@ import { ref } from "vue";
 import { useStore } from "../../utils/store";
 import Button from "../button/Button.vue";
 import Input from "../input/Input.vue";
+import Select from "../select/Select.vue";
+import { NotificationType, addNotification } from "../snackbar/Snackbar.vue";
 
 const store = useStore();
 
@@ -38,22 +40,30 @@ const submit = async (e: Event) => {
 	e.preventDefault();
 	loading.value = true;
 
-	const handle = ((e.target as HTMLFormElement).handle as HTMLInputElement)
-		.value;
+	// let username = ((e.target as HTMLFormElement).username as HTMLInputElement)
+	// .value;
+	const instance = (
+		(e.target as HTMLFormElement).instance as HTMLInputElement
+	).value;
 
-	let domain = "";
-
-	if (
-		(handle.match(/@/g) ?? []).length <= 2 &&
-		(handle.match(/@/g) ?? []).length >= 0
-	)
-		domain = handle.split("@")[(handle.match(/@/g) ?? []).length];
-	else {
-		console.error("Invalid handle");
-		// TODO: Add error
+	// Placeholder, won't be used
+	let domain = new URL("https://linux.pizza");
+	try {
+		domain = new URL(instance);
+	} catch {
+		try {
+			domain = new URL("https://" + instance);
+		} catch {
+			loading.value = false;
+			return addNotification(
+				"Instance URL is invalid!",
+				NotificationType.Error,
+				"ic:round-error-outline"
+			);
+		}
 	}
 
-	store.auth.url = `https://${domain}`;
+	store.auth.url = `https://${domain.host}`;
 	store.auth.type = ((e.target as HTMLFormElement).type as HTMLInputElement)
 		.value as any;
 
@@ -116,12 +126,12 @@ const submit = async (e: Event) => {
 
 <template>
 	<div
-		class="flex justify-center min-h-screen items-center bg-cover bg-center"
+		class="flex justify-start min-h-screen bg-cover bg-center"
 		:style="{
-			backgroundImage: 'url(/static/wallpaper.webp)',
+			backgroundImage: 'url(/static/loginbg.svg)',
 		}">
 		<div
-			class="py-6 w-[23rem] flex flex-col lg:px-0 bg-gray-100 dark:bg-dark-800 border-2 dark:border-dark-700 shadow-lg backdrop-blur-lg rounded-md">
+			class="flex justify-center py-6 w-110 flex flex-col px-5 bg-gray-100 dark:bg-dark-800/75 backdrop-blur-xl shadow-lg">
 			<div class="sm:mx-auto sm:w-full sm:max-w-md">
 				<div class="flex justify-center w-auto"></div>
 				<h2
@@ -142,34 +152,53 @@ const submit = async (e: Event) => {
 						action="#"
 						method="POST"
 						@submit="submit">
-						<div class="flex flex-col gap-y-2">
-							<Input
-								id="handle"
+						<div class="flex flex-col gap-2">
+							<!-- <Input
+								id="username"
 								icon="ic:round-supervised-user-circle"
-								name="handle"
-								type="handle"
-								auto-complete="url"
+								name="username"
 								required
-								placeholder="@username@instance.com"
-								is-loading="{isLoading}"
-								class="block focus:outline-none sm:text-sm"
+								placeholder="mycleverusername"
+								:loading="loading"
+								class="focus:outline-none" /> -->
+							<Input
+								id="url"
+								icon="ic:round-computer"
+								name="instance"
+								required
+								placeholder="Instance URL (instance.com)"
+								class="focus:outline-none"
 								:loading="loading" />
 						</div>
 
-						<select
+						<Select
 							name="type"
-							class="w-full px-3 py-2 placeholder-gray-500 dark:border-dark-700 bg-white rounded-md border border-gray-300 shadow-sm duration-200 appearance-none outline-none dark:text-gray-100 dark:bg-dark-800 disabled:bg-gray-100 focus:outline-none sm:text-sm">
-							<option value="mastodon">Mastodon</option>
-							<option value="pleroma">Pleroma / Akkoma</option>
-							<option value="misskey">Misskey / *key</option>
-						</select>
+							:items="[
+								{
+									text: 'Mastodon',
+									value: 'mastodon',
+									icon: 'logos:mastodon-icon',
+								},
+								{
+									text: 'Pleroma',
+									value: 'pleroma',
+									icon: 'PleromaIcon',
+								},
+								{
+									text: 'Misskey',
+									value: 'misskey',
+									icon: 'MisskeyIcon',
+								},
+							]"
+							:default-value="0">
+						</Select>
 
 						<div>
 							<Button
 								type="submit"
 								ring-color="orange-500"
-								theme="gray"
-								class="w-full text-white !bg-[radial-gradient(ellipse_at_top_left,_var(--tw-gradient-stops))] !from-pink-500 !via-red-500 !to-yellow-500"
+								theme="gradientOrange"
+								class="w-full"
 								:loading="loading">
 								Sign in
 							</Button>

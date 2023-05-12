@@ -31,6 +31,7 @@ onUnmounted(() => {
 </script>
 
 <template>
+	<Snackbar />
 	<template v-if="store.client && store.auth.token">
 		<EditorModal />
 		<div
@@ -55,7 +56,6 @@ onUnmounted(() => {
 			</div>
 		</div>
 		<MobileNavbar />
-		<Snackbar />
 
 		<TransitionsScaleFadeSlide>
 			<div
