@@ -32,8 +32,8 @@ html {
 	--accentColor: rgba(234, 88, 12, 1);
 }
 
-.status-text a,
-.bio a {
+.status-text a:not(.no-background),
+.bio a:not(.no-background) {
 	--un-text-opacity: 1;
 	color: rgba(251, 146, 60, var(--un-text-opacity));
 	text-decoration: none;
@@ -41,15 +41,15 @@ html {
 	display: inline-block;
 }
 
-.bio a:hover,
-.bio a:active,
-.status-text a:hover,
-.status-text a:active {
+.bio a:not(.no-background):hover,
+.bio a:not(.no-background):active,
+.status-text a:not(.no-background):hover,
+.status-text a:not(.no-background):active {
 	text-decoration: none;
 }
 
-.bio a::after,
-.status-text a::after {
+.bio a:not(.no-background)::after,
+.status-text a:not(.no-background)::after {
 	content: "";
 	position: absolute;
 	bottom: -0.1em;
@@ -61,8 +61,8 @@ html {
 	border-radius: 2px;
 }
 
-.bio a:hover::after,
-.status-text a:hover::after {
+.bio a:not(.no-background):hover::after,
+.status-text a:not(.no-background):hover::after {
 	width: calc(100% + 0.6em);
 	transition: 0.3s ease all;
 }

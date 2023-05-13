@@ -43,29 +43,6 @@ function findParentElements(array: Entity.Status[], elementId: string) {
 	return parentElements;
 }
 
-watch(
-	() => route.params.id,
-	newId => {
-		id.value = newId as string;
-
-		store.client?.getStatus(id.value).then(res => {
-			post.value = res.data;
-
-			store.client?.getStatusContext(id.value).then(res => {
-				if (!post.value) return;
-
-				ancestors.value = findParentElements(
-					[...res.data.ancestors, post.value],
-					post.value.id
-				)
-					.reverse()
-					.slice(0, -1); // Slice because it includes the post, so remove last element
-				descendants.value = res.data.descendants;
-			});
-		});
-	}
-);
-
 store.client?.getStatus(id.value).then(res => {
 	post.value = res.data;
 

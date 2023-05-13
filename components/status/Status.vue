@@ -39,6 +39,42 @@ const textRef = ref<HTMLParagraphElement>();
 	}
 }); */
 
+const parseContent = (content: string) => {
+	let newContent = content
+		.replace(/<a.*?>|<\/a>/gi, "")
+		.replace(/<p.*?>|<\/p>/gi, "")
+		.replace(/<span.*?>|<\/span>/gi, "");
+
+	const mentions =
+		newContent.match(
+			/@\b([A-Z0-9._%+-]+)@?([A-Z0-9.-]+\.?[A-Z]{0,})?\b/gim
+		) ?? [];
+
+	for (const m of mentions) {
+		newContent = newContent.replaceAll(
+			m,
+			`<a href="google.com" target="_blank">${m}</a>`
+		);
+	}
+
+	const urls =
+		newContent.match(
+			/https?:\/\/(?:www\.)?([-a-zA-Z0-9@:%._+~#=]{2,256}\.[a-z]{2,6}\b)*(\/[/\d\w.-]*)*(?:[?])*(.+)*/gi
+		) ?? [];
+
+	console.log(urls);
+
+	for (const u of urls) {
+		const url = new URL(u);
+		newContent = newContent.replaceAll(
+			u,
+			`<a href="${url.href}" target="_blank" class="no-background hover:underline underline-orange-500"><span class="text-orange-500 opacity-75">${url.protocol}//</span><span class="font-bold text-orange-400">${url.host}</span><span class="text-orange-500 opacity-75">${url.pathname}</span><span class="text-orange-400 opacity-75">${url.search}</span>${url.hash}</a>`
+		);
+	}
+
+	return newContent;
+};
+
 const toggleExpand = () => {
 	expand.value = !expand.value;
 };
@@ -176,7 +212,12 @@ const copyToClipboard = (str: string) => {
 							!show && 'filter blur-lg',
 							clamps && !expand && 'line-clamp-6',
 						]"
-						v-html="withEmojis(status.content, status.emojis)"></p>
+						v-html="
+							withEmojis(
+								parseContent(status.content),
+								status.emojis
+							)
+						"></p>
 
 					<button
 						v-if="clamps"
