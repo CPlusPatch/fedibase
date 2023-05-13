@@ -198,7 +198,7 @@ const copyUrl = () => {
 
 			<ScaleFadeSlide>
 				<HeadlessMenuItems
-					class="z-9999 p-1.5 gap-x-4 origin-top-right outline-none text-base absolute right-0 w-44 sm:text-sm rounded-lg shadow-lg bg-white/60 dark:bg-dark-700/60 backdrop-blur-lg focus:outline-none"
+					class="z-9999 p-1.5 gap-x-4 origin-top-right outline-none text-base absolute right-0 w-44 sm:text-sm rounded-lg shadow-lg bg-white/60 dark:bg-dark-700/75 backdrop-blur-lg focus:outline-none"
 					@click="menu = false">
 					<HeadlessMenuItem
 						v-if="_status.account.id === store.auth.data?.id"

@@ -59,7 +59,7 @@ const parseContent = (content: string) => {
 
 	const urls =
 		newContent.match(
-			/https?:\/\/(?:www\.)?([-a-zA-Z0-9@:%._+~#=]{2,256}\.[a-z]{2,6}\b)*(\/[/\d\w.-]*)*(?:[?])*(.+)*/gi
+			/(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#/%?=~_|!:,.;]*[-A-Z0-9+&@#/%=~_|])/gi
 		) ?? [];
 
 	console.log(urls);
@@ -68,7 +68,7 @@ const parseContent = (content: string) => {
 		const url = new URL(u);
 		newContent = newContent.replaceAll(
 			u,
-			`<a href="${url.href}" target="_blank" class="no-background hover:underline underline-orange-500"><span class="text-orange-500 opacity-75">${url.protocol}//</span><span class="font-bold text-orange-400">${url.host}</span><span class="text-orange-500 opacity-75">${url.pathname}</span><span class="text-orange-400 opacity-75">${url.search}</span>${url.hash}</a>`
+			`<a href="${url.href}" target="_blank" class="no-background hover:underline underline-orange-500"><span class="text-orange-500 opacity-75">${url.protocol}//</span><span class="font-bold text-orange-400">${url.host}</span><span class="text-orange-500 opacity-75">${url.pathname}</span><span class="text-orange-400 opacity-75">${url.search}${url.hash}</span></a>`
 		);
 	}
 
@@ -107,9 +107,9 @@ const copyToClipboard = (str: string) => {
 						alt=""
 						:src="status.account.avatar"
 						:class="[
-							'bg-white overflow-hidden w-10 h-10 dark:bg-dark-800-800 hover:rounded-xl duration-200 rounded border border-gray-300 dark:border-dark-700',
+							'bg-white overflow-hidden w-10 h-10 dark:bg-dark-800-800 hover:rounded-7 duration-200 rounded border-gray-300 dark:border-dark-700',
 							type === PostType.Normal
-								? 'md:w-12 md:h-12'
+								? 'md:w-11 md:h-11'
 								: 'md:w-10 md:h-10',
 						]" />
 				</NuxtLink>

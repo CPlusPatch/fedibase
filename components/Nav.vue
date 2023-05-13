@@ -47,7 +47,7 @@ const logout = () => {
 
 <template>
 	<div
-		class="hidden h-full dark:bg-dark-800 bg-white flex-col bg-gradient-to-b border-r dark:border-dark-700 border-gray-300 bg-light dark:dark:bg-dark-800 lg:flex">
+		class="hidden h-full dark:bg-dark-800/75 backdrop-blur-lg bg-white flex-col bg-gradient-to-b border-r dark:border-dark-700 border-gray-300 bg-light dark:dark:bg-dark-800 lg:flex">
 		<div class="flex overflow-y-auto flex-col flex-1 items-center pb-4">
 			<nav
 				class="flex-col flex gap-y-2 grow px-2 mt-5"
