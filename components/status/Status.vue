@@ -29,16 +29,6 @@ const clamps = ref<boolean>(false);
 const show = ref<boolean>(props.status.spoiler_text === "");
 const textRef = ref<HTMLParagraphElement>();
 
-/* onMounted(() => {
-	if (textRef.value) {
-		const lineHeight = parseInt(getComputedStyle(textRef.value).lineHeight);
-		const overflowHeight = lineHeight * 6;
-		const elementHeight = textRef.value.clientHeight;
-
-		clamps.value = elementHeight > overflowHeight;
-	}
-}); */
-
 const parseContent = (content: string) => {
 	let newContent = content
 		.replace(/<a.*?>|<\/a>/gi, "")
@@ -61,8 +51,6 @@ const parseContent = (content: string) => {
 		newContent.match(
 			/(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#/%?=~_|!:,.;]*[-A-Z0-9+&@#/%=~_|])/gi
 		) ?? [];
-
-	console.log(urls);
 
 	for (const u of urls) {
 		const url = new URL(u);

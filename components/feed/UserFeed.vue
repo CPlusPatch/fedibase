@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { Entity } from "megalodon";
-import { ref, watch } from "vue";
 import { useStore } from "../../utils/store";
 import UserProfile from "../profiles/UserProfile.vue";
 import StatusVue, { PostType } from "../status/Status.vue";
@@ -13,25 +12,6 @@ const route = useRoute();
 const account = ref<Entity.Account | null>(null);
 const pinned = ref<Entity.Status[]>([]);
 const id = ref<string>(route.params.id as string);
-
-watch(
-	() => route.params.id,
-	newId => {
-		id.value = newId as string;
-
-		store.client?.getAccount(id.value).then(res => {
-			account.value = res.data;
-		});
-
-		store.client
-			?.getAccountStatuses(id.value, {
-				pinned: true,
-			})
-			.then(res => {
-				pinned.value = res.data;
-			});
-	}
-);
 
 store.client?.getAccount(id.value).then(res => {
 	account.value = res.data;
