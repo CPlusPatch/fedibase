@@ -53,7 +53,6 @@ export const addNotification = (
 		aria-live="assertive"
 		class="fixed inset-0 flex px-4 py-6 pointer-events-none sm:p-6 items-start z-[99999999]">
 		<div class="w-full flex flex-col items-center space-y-3 sm:items-start">
-			<!-- Notification panel, dynamically insert this into the live region when it needs to be displayed -->
 			<Notification
 				v-for="notif of notifications"
 				:key="notif.uuid"

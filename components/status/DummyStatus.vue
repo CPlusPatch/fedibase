@@ -1,5 +1,3 @@
-<script setup lang="ts"></script>
-
 <template>
 	<div class="flex flex-col max-w-full cursor-pointer" aria-hidden="true">
 		<div class="flex flex-col min-w-0 grow gap-y-2">

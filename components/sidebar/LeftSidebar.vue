@@ -1,16 +1,14 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { v4 } from "uuid";
-import { useStore } from "../../utils/store";
 import PostEditor from "../editor/PostEditor.vue";
-import Conversation from "../feed/Conversation.vue";
 import NotificationsFeed from "../feed/NotificationsFeed.vue";
 import useWindowDimensions from "../hooks/useWindowDimensions";
 
-const store = useStore();
-
 const uuid = ref<string>(v4());
 
+// Hacky method to force the re-render of the post,
+// thereby cleaning the post state
 const reRender = () => {
 	uuid.value = v4();
 };
@@ -19,17 +17,7 @@ const { width } = useWindowDimensions();
 </script>
 
 <template>
-	<Conversation
-		v-if="store.viewingConversation"
-		:id="store.viewingConversation"
-		:key="store.viewingConversation"
-		:close-button="true"
-		:on-close="
-			() => {
-				store.viewingConversation = '';
-			}
-		" />
-	<div v-else class="px-3 flex-col flex gap-y-4 pt-10">
+	<div class="px-3 flex-col flex gap-y-4 pt-10">
 		<PostEditor :key="uuid" :close-button="true" :re-render="reRender" />
 
 		<div

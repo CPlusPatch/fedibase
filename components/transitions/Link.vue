@@ -20,7 +20,6 @@ const handleClick = (e: MouseEvent) => {
 			e.preventDefault();
 
 			store.state.postViewer = true;
-			store.viewingConversation = props.sidebar;
 		} else {
 			store.state.notifications = false;
 			store.state.postViewer = false;
