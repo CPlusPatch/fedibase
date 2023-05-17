@@ -26,17 +26,20 @@ const props = withDefaults(
 	}
 );
 
-const entities = ref<any[]>([]);
+const entities = ref<any[] | null>(null);
 
 const DEFAULT_LOAD = 20;
 const loading = ref(false);
 const reachedEnd = ref(false);
 
 const interval = window.setInterval(async () => {
+	if (!entities.value) return;
 	const latestEntities = await getEntities(
-		(entities.value[0] as any).id,
+		(entities.value[0] as any)?.id ?? undefined,
 		undefined
 	);
+
+	if (latestEntities.length === 0) return (reachedEnd.value = true);
 
 	entities.value = [...latestEntities, ...entities.value];
 }, 15000);
@@ -110,12 +113,16 @@ const getEntities = async (
 const loadMoreEntities = async () => {
 	if (loading.value || reachedEnd.value) return false;
 
-	const beforeId =
-		(entities.value[entities.value.length - 1] as any)?.id ?? "";
+	const newEntities = await getEntities(
+		undefined,
+		entities.value
+			? (entities.value[entities.value.length - 1] as any)?.id ?? ""
+			: ""
+	);
 
-	const newEntities = await getEntities(undefined, beforeId);
-
-	entities.value = [...entities.value, ...newEntities];
+	if (entities.value === null && newEntities.length < 20)
+		reachedEnd.value = true;
+	entities.value = [...(entities.value ?? []), ...newEntities];
 };
 
 onUnmounted(() => {
@@ -124,7 +131,7 @@ onUnmounted(() => {
 </script>
 
 <template>
-	<template v-if="entities.length > 0 && type !== FeedType.Notifications">
+	<template v-if="entities && type !== FeedType.Notifications">
 		<Post
 			v-for="entity of entities"
 			:key="(entity as any).id"
@@ -132,7 +139,7 @@ onUnmounted(() => {
 			:status="entity"
 			:interaction="true" />
 	</template>
-	<template v-if="entities.length > 0 && type === FeedType.Notifications">
+	<template v-if="entities && type === FeedType.Notifications">
 		<Notification
 			v-for="entity of entities.filter((e: Entity.Notification) => {
 					switch (props.mode) {
@@ -151,16 +158,24 @@ onUnmounted(() => {
 	</template>
 
 	<template v-if="!reachedEnd">
-		<StatusDummyStatus v-is-visible="loadMoreEntities" />
-		<StatusDummyStatus />
-		<StatusDummyStatus v-if="entities.length === 0" />
-		<StatusDummyStatus v-if="entities.length === 0" />
-		<StatusDummyStatus v-if="entities.length === 0" />
-		<StatusDummyStatus v-if="entities.length === 0" />
+		<StatusDummyStatus
+			v-if="entities?.length !== 0"
+			v-is-visible="loadMoreEntities" />
+		<StatusDummyStatus v-if="entities?.length !== 0" />
+		<StatusDummyStatus v-if="!entities" />
+		<StatusDummyStatus v-if="!entities" />
+		<StatusDummyStatus v-if="!entities" />
+		<StatusDummyStatus v-if="!entities" />
 	</template>
 
 	<div
-		v-if="reachedEnd"
+		v-if="entities?.length === 0"
+		class="flex justify-center grow items-center text-gray-300 dark:text-gray-600">
+		No posts to show
+	</div>
+
+	<div
+		v-if="reachedEnd && entities && entities.length > 0"
 		class="flex justify-center text-gray-300 dark:text-gray-600">
 		No more posts
 	</div>
