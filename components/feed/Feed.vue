@@ -1,5 +1,4 @@
 <script lang="ts">
-import { useStore } from "../../utils/store";
 import Notification from "../notifications/Notification.vue";
 import Post from "./Post.vue";
 export enum FeedType {
@@ -12,13 +11,15 @@ export enum FeedType {
 </script>
 
 <script setup lang="ts">
-const store = useStore();
-
 const props = withDefaults(
 	defineProps<{
 		type: FeedType;
 		mode?: string;
-		id?: string;
+		retrieveResults: (
+			limit: number,
+			since_id?: string,
+			max_id?: string
+		) => Promise<any[]>;
 	}>(),
 	{
 		mode: "all",
@@ -28,10 +29,14 @@ const props = withDefaults(
 
 const entities = ref<any[] | null>(null);
 
+// Load 20 entities every sync by default
 const DEFAULT_LOAD = 20;
 const loading = ref(false);
 const reachedEnd = ref(false);
 
+/**
+ * Fetches new data every 15 seconds
+ */
 const interval = window.setInterval(async () => {
 	if (!entities.value) return;
 	const latestEntities = await getEntities(
@@ -39,77 +44,37 @@ const interval = window.setInterval(async () => {
 		undefined
 	);
 
-	if (latestEntities.length === 0) return (reachedEnd.value = true);
-
 	entities.value = [...latestEntities, ...entities.value];
 }, 15000);
 
+/**
+ * Retrieves feed elements (typically statuses) since an ID or before an ID
+ * @param sinceId
+ * @param beforeId
+ */
 const getEntities = async (
 	sinceId: string | undefined,
 	beforeId: string | undefined
 ) => {
-	if (loading.value) return;
+	if (loading.value) return [];
 	loading.value = true;
 
-	let res: any = {
-		data: [],
-	};
+	let data = [];
 
 	try {
-		switch (props.type) {
-			case FeedType.Home:
-				res = await store.client?.getHomeTimeline({
-					limit: DEFAULT_LOAD,
-					since_id: sinceId,
-					max_id: beforeId,
-				});
-				break;
-
-			case FeedType.User:
-				if (!props.id)
-					throw new Error(
-						"Feed needs a user ID to work in user mode!"
-					);
-				res = await store.client?.getAccountStatuses(props.id, {
-					limit: DEFAULT_LOAD,
-					since_id: sinceId,
-					max_id: beforeId,
-				});
-				break;
-
-			case FeedType.Notifications:
-				res = await store.client?.getNotifications({
-					limit: DEFAULT_LOAD,
-					since_id: sinceId,
-					max_id: beforeId,
-				});
-				break;
-
-			case FeedType.Local:
-				res = await store.client?.getLocalTimeline({
-					limit: DEFAULT_LOAD,
-					since_id: sinceId,
-					max_id: beforeId,
-				});
-				break;
-
-			case FeedType.Federated:
-				res = await store.client?.getPublicTimeline({
-					limit: DEFAULT_LOAD,
-					since_id: sinceId,
-					max_id: beforeId,
-				});
-				break;
-		}
-	} catch (error) {
-		console.error(error);
+		data = await props.retrieveResults(DEFAULT_LOAD, sinceId, beforeId);
+	} catch {
+		console.error("Error while fetching timeline");
 	} finally {
 		loading.value = false;
 	}
 
-	return res.data;
+	return data;
 };
 
+/**
+ * Gets called when the user scrolls down to the end of the feed, loads new entities
+ */
 const loadMoreEntities = async () => {
 	if (loading.value || reachedEnd.value) return false;
 
@@ -120,8 +85,10 @@ const loadMoreEntities = async () => {
 			: ""
 	);
 
-	if (entities.value === null && newEntities.length < 20)
+	if (newEntities.length === 0) {
 		reachedEnd.value = true;
+		console.log(newEntities);
+	}
 	entities.value = [...(entities.value ?? []), ...newEntities];
 };
 

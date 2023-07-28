@@ -49,7 +49,24 @@ store.client
 					:status="pin"
 					:interaction="true" />
 			</div>
-			<Feed :id="account.id" :type="FeedType.User" />
+			<Feed
+				:type="FeedType.User"
+				:retrieve-results="
+					async (limit, since_id, max_id) => {
+						return (
+							(
+								await store.client?.getAccountStatuses(
+									account?.id ?? '',
+									{
+										limit,
+										since_id,
+										max_id,
+									}
+								)
+							)?.data ?? []
+						);
+					}
+				" />
 		</div>
 	</div>
 </template>
