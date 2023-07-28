@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { useStore } from "~/utils/store";
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const store = useStore();
 
 const settings = [
@@ -20,8 +19,11 @@ const fullscreen = ref(false);
 </script>
 
 <template>
-	<HeadlessTransitionRoot :show="true" as="template">
-		<HeadlessDialog as="div" class="block relative z-40">
+	<HeadlessTransitionRoot :show="store.state.settingsOpen" as="template">
+		<HeadlessDialog
+			as="div"
+			class="block relative z-40"
+			@close="store.state.settingsOpen = false">
 			<ModalsModalOverlay />
 			<div
 				class="flex justify-center fixed inset-0 no-scroll py-5 items-start p-2 md:items-center">
@@ -44,7 +46,11 @@ const fullscreen = ref(false);
 							class="md:flex hidden w-50 flex-col gap-y-3 overflow-y-scroll no-scroll py-4">
 							<div
 								class="flex flex-row gap-2 group children:h-3 children:w-3 children:rounded-full children:flex children:items-center children:justify-center">
-								<div class="bg-red hover:cursor-pointer"></div>
+								<div
+									class="bg-red hover:cursor-pointer"
+									@click="
+										store.state.settingsOpen = false
+									"></div>
 								<div
 									class="bg-yellow hover:cursor-pointer"></div>
 								<div
