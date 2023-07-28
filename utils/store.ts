@@ -15,6 +15,7 @@ export interface StateType {
 		notifications: boolean;
 		postViewer: boolean;
 		sidebar: boolean;
+		settingsOpen: boolean;
 	};
 	client: MegalodonInterface | null;
 	replyingTo: null | Entity.Status;
@@ -50,6 +51,7 @@ const initialData: StateType = {
 		notifications: false,
 		postViewer: false,
 		sidebar: false,
+		settingsOpen: false,
 	},
 	path: "",
 	quotingTo: null,

@@ -3,7 +3,6 @@ import { ref } from "vue";
 import { v4 } from "uuid";
 import PostEditor from "../editor/PostEditor.vue";
 import NotificationsFeed from "../feed/NotificationsFeed.vue";
-import useWindowDimensions from "../hooks/useWindowDimensions";
 
 const uuid = ref<string>(v4());
 
@@ -13,7 +12,7 @@ const reRender = () => {
 	uuid.value = v4();
 };
 
-const { width } = useWindowDimensions();
+const { width } = useWindowSize();
 </script>
 
 <template>

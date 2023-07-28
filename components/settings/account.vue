@@ -1,13 +1,11 @@
 <script setup lang="ts">
+import { Mastodon } from "megalodon";
 import { useStore } from "~/utils/store";
 import Button from "~/components/button/Button.vue";
 import {
 	NotificationType,
 	addNotification,
 } from "~/components/snackbar/Snackbar.vue";
-definePageMeta({
-	layout: "settings",
-});
 
 const store = useStore();
 
@@ -46,6 +44,26 @@ const save = () => {
 			loading.value = false;
 		});
 };
+
+const uploadFile = async (files: FileList | null) => {
+	if (!files || files.length === 0) return false;
+
+	loading.value = true;
+
+	const file = files[0];
+
+	(store.client as unknown as Mastodon).client
+		.patchForm("/api/v1/accounts/update_credentials", {
+			avatar: new Blob([await file.arrayBuffer()]),
+		})
+		.then(res => {
+			if (!store.auth.data) return;
+			store.auth.data.avatar = res.data.avatar;
+		})
+		.finally(() => {
+			loading.value = false;
+		});
+};
 </script>
 
 <template>
@@ -77,12 +95,18 @@ const save = () => {
 					alt=""
 					loading="lazy" />
 			</div>
-			<img
+			<!-- <img
 				loading="lazy"
 				class="absolute -bottom-5 left-5 w-20 h-20 rounded border dark:border-dark-700"
 				:src="account.avatar"
-				:alt="account.acct" />
+				:alt="account.acct" /> -->
+			<FormsImageUploader
+				:image="account.avatar"
+				:is-uploading="loading"
+				class="!absolute -bottom-5 left-5 w-20 h-20 rounded border dark:border-dark-700"
+				@upload="uploadFile" />
 		</div>
+
 		<div class="flex flex-row gap-x-2 justify-between mt-4 w-full">
 			<div class="flex flex-col gap-y-2 text-ellipsis ml-4">
 				<input

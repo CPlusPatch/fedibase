@@ -1,9 +1,5 @@
-<script setup lang="ts">
-import { TransitionChild } from "@headlessui/vue";
-</script>
-
 <template>
-	<TransitionChild
+	<HeadlessTransitionChild
 		appear
 		enter="ease-in duration-200"
 		enter-from="opacity-0 backdrop-blur-none"
@@ -13,5 +9,5 @@ import { TransitionChild } from "@headlessui/vue";
 		leave-from="opacity-100 backdrop-blur-lg"
 		leave-to="opacity-0 backdrop-blur-none"
 		class="fixed inset-0 transition-all bg-gray-500/75 dark:bg-dark-700/75">
-	</TransitionChild>
+	</HeadlessTransitionChild>
 </template>
