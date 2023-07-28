@@ -117,21 +117,21 @@ const copyUrl = () => {
 					store.state.composer = true;
 				}
 			">
-			<Icon name="ic:outline-chat" aria-hidden="true" class="w-5 h-5" />
+			<Icon name="fa6-solid:reply" aria-hidden="true" class="w-5 h-5" />
 			{{ _status.replies_count > 0 ? _status.replies_count : "" }}
 		</InteractionBarButton>
 		<InteractionBarButton
-			class="hover:text-yellow-400"
+			class="hover:text-red-400"
 			title="Favourite this post"
 			@click="toggleFavourite">
 			<Icon
 				v-if="_status.favourited"
-				name="ic:outline-star"
+				name="tabler:heart-filled"
 				aria-hidden="true"
-				class="w-5 h-5 text-yellow-400 animate-[spin_1s_ease-in-out]" />
+				class="w-5 h-5 text-red-400 animate-[spin_1s_ease-in-out]" />
 			<Icon
 				v-else
-				name="ic:outline-star-border"
+				name="tabler:heart"
 				aria-hidden="true"
 				class="w-5 h-5" />
 			{{ _status.favourites_count > 0 ? _status.favourites_count : "" }}
@@ -146,19 +146,19 @@ const copyUrl = () => {
 				">
 				<Icon
 					v-if="_status.reblogged"
-					name="ic:outline-autorenew"
+					name="fa6-solid:retweet"
 					aria-hidden="true"
 					class="w-5 h-5 text-green-400 animate-[spin_1s_ease-in-out]" />
 				<Icon
 					v-else
-					name="ic:outline-autorenew"
+					name="fa6-solid:retweet"
 					aria-hidden="true"
 					class="w-5 h-5 hover:text-green-400" />
 				{{ _status.reblogs_count > 0 ? _status.reblogs_count : "" }}
 			</template>
 			<Icon
 				v-else
-				name="ic:outline-lock"
+				name="tabler:lock"
 				aria-hidden="true"
 				class="w-5 h-5 text-gray-300" />
 		</InteractionBarButton>
@@ -166,10 +166,7 @@ const copyUrl = () => {
 		<InteractionBarButton
 			title="Add reaction"
 			@click="emojiDialog = !emojiDialog">
-			<Icon
-				name="ic:outline-emoji-emotions"
-				aria-hidden="true"
-				class="w-5 h-5" />
+			<Icon name="tabler:mood-happy" aria-hidden="true" class="w-5 h-5" />
 		</InteractionBarButton>
 		<InteractionBarButton
 			title="Quote this post"
@@ -180,10 +177,7 @@ const copyUrl = () => {
 					store.state.composer = true;
 				}
 			">
-			<Icon
-				name="ic:outline-format-quote"
-				aria-hidden="true"
-				class="w-5 h-5" />
+			<Icon name="tabler:quote" aria-hidden="true" class="w-5 h-5" />
 		</InteractionBarButton>
 
 		<HeadlessMenu as="div" class="relative">
@@ -198,7 +192,7 @@ const copyUrl = () => {
 
 			<ScaleFadeSlide>
 				<HeadlessMenuItems
-					class="z-9999 p-1.5 gap-x-4 origin-top-right outline-none text-base absolute right-0 w-44 sm:text-sm rounded-lg shadow-lg bg-white/60 dark:bg-dark-700/75 backdrop-blur-lg focus:outline-none"
+					class="z-9999 p-1.5 gap-x-4 origin-top-right outline-none text-base absolute right-0 w-44 sm:text-sm rounded-lg shadow-lg bg-white dark:bg-dark-700 focus:outline-none"
 					@click="menu = false">
 					<HeadlessMenuItem
 						v-if="_status.account.id === store.auth.data?.id"
