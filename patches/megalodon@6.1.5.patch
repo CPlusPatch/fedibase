@@ -1,0 +1,15 @@
+diff --git a/lib/src/proxy_config.js b/lib/src/proxy_config.js
+index ba5d865c601d0e10c578c07c4b482b8efef44a10..0b1c4681e03ab902b2e608da25f5f2f55f625cfa 100644
+--- a/lib/src/proxy_config.js
++++ b/lib/src/proxy_config.js
+@@ -15,8 +15,8 @@ var __extends = (this && this.__extends) || (function () {
+     };
+ })();
+ Object.defineProperty(exports, "__esModule", { value: true });
+-var https_proxy_agent_1 = require("https-proxy-agent");
+-var socks_proxy_agent_1 = require("socks-proxy-agent");
++var https_proxy_agent_1 = {};
++var socks_proxy_agent_1 = {};
+ var ProxyProtocolError = (function (_super) {
+     __extends(ProxyProtocolError, _super);
+     function ProxyProtocolError() {

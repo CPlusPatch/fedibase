@@ -11,43 +11,48 @@
 		"format": "prettier --write components/ layouts/ pages/"
 	},
 	"devDependencies": {
-		"@nuxt/image-edge": "1.0.0-28008586.381b906",
+		"@nuxt/image-edge": "1.0.0-rc.1-28164352.ad7c010",
 		"@nuxtjs/eslint-config-typescript": "^12.0.0",
-		"@nuxtjs/eslint-module": "^4.0.2",
+		"@nuxtjs/eslint-module": "^4.1.0",
 		"@pinia-plugin-persistedstate/nuxt": "^1.1.1",
 		"@types/events": "^3.0.0",
 		"@types/fastclick": "^1.0.30",
-		"@types/marked": "^4.3.0",
-		"@types/node": "^18.16.1",
-		"@types/uuid": "^9.0.1",
-		"@unocss/nuxt": "^0.51.8",
-		"@unocss/postcss": "^0.51.8",
-		"@unocss/transformer-directives": "^0.51.8",
+		"@types/marked": "^5.0.1",
+		"@types/node": "^20.4.5",
+		"@types/uuid": "^9.0.2",
+		"@unocss/nuxt": "^0.53.6",
+		"@unocss/postcss": "^0.53.6",
+		"@unocss/transformer-directives": "^0.53.6",
 		"@virtual-list/vue": "^1.2.0",
-		"@vite-pwa/nuxt": "^0.0.7",
-		"eslint": "^8.39.0",
-		"eslint-config-prettier": "^8.8.0",
-		"eslint-plugin-prettier": "^4.2.1",
-		"nuxt": "^3.4.2",
+		"@vite-pwa/nuxt": "^0.1.0",
+		"eslint": "^8.45.0",
+		"eslint-config-prettier": "^8.9.0",
+		"eslint-plugin-prettier": "^5.0.0",
+		"nuxt": "^3.6.5",
 		"nuxt-headlessui": "^1.1.4",
-		"nuxt-icon": "^0.4.0",
-		"prettier": "^2.8.8"
+		"nuxt-icon": "^0.4.2",
+		"prettier": "^3.0.0"
 	},
 	"dependencies": {
-		"@headlessui/vue": "^1.7.13",
+		"@headlessui/vue": "^1.7.15",
 		"@nuxtjs/robots": "^3.0.0",
-		"@pinia/nuxt": "^0.4.9",
+		"@pinia/nuxt": "^0.4.11",
 		"blurhash": "^2.0.5",
 		"events": "^3.3.0",
 		"fastclick": "^1.0.6",
-		"marked": "^5.0.2",
-		"megalodon": "^6.0.1",
+		"marked": "^5.1.2",
+		"megalodon": "^6.1.5",
 		"querystring-es3": "^0.2.1",
 		"uuid": "^9.0.0",
-		"v-wave": "^1.5.0",
+		"v-wave": "^1.5.1",
 		"vue-virtual-scroller": "2.0.0-beta.8"
 	},
 	"browser": {
 		"fs": false
+	},
+	"pnpm": {
+		"patchedDependencies": {
+			"megalodon@6.1.5": "patches/megalodon@6.1.5.patch"
+		}
 	}
 }
