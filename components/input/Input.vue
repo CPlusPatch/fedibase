@@ -1,5 +1,5 @@
 <script setup lang="ts">
-interface InputProps /* @vue-ignore */ {
+interface InputProps {
 	loading?: boolean;
 	name: string;
 	icon?: string;

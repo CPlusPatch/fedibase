@@ -5,6 +5,7 @@ import SmallSelect, {
 	SelectItem,
 } from "../select/SmallSelect.vue";
 import Feed, { FeedType } from "./Feed.vue";
+import { useStore } from "~/utils/store";
 
 const props = defineProps<{
 	title: boolean;
@@ -38,6 +39,7 @@ const modes: SelectItem[] = [
 	},
 ];
 
+const store = useStore();
 const mode = ref(modes[0].value);
 </script>
 
@@ -61,7 +63,22 @@ const mode = ref(modes[0].value);
 		<ul
 			:id="id"
 			class="flex overflow-y-scroll flex-col max-w-full h-full no-scroll gap-y-4">
-			<Feed :type="FeedType.Notifications" :mode="mode" />
+			<Feed
+				:type="FeedType.Notifications"
+				:mode="mode"
+				:retrieve-results="
+					async (limit, since_id, max_id) => {
+						return (
+							(
+								await store.client?.getNotifications({
+									limit,
+									since_id,
+									max_id,
+								})
+							)?.data ?? []
+						);
+					}
+				" />
 		</ul>
 	</div>
 </template>
