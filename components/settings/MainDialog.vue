@@ -38,7 +38,7 @@ const fullscreen = ref(false);
 							'relative w-full divide-x-1 duration-200 divide-dark-900 ring-1 ring-dark-600 text-left transition-all transform  flex px-4 gap-x-4 rounded-xl bg-dark-800',
 							fullscreen
 								? 'h-full w-full'
-								: 'sm:max-w-6xl max-h-70vh',
+								: 'sm:max-w-6xl sm:max-h-70vh h-full',
 						]">
 						<div
 							class="md:flex hidden w-50 flex-col gap-y-3 overflow-y-scroll no-scroll py-4">
