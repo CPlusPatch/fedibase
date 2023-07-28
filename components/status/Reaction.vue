@@ -33,16 +33,14 @@ const react = () => {
 <template>
 	<button
 		:class="[
-			'text-sm flex items-center dark:text-gray-200 gap-x-1 rounded duration-200 justify-center bg-orange-400/40 dark:bg-orange-800/40 px-2 py-1',
-			_reaction.me
-				? 'bg-orange-700/40 dark:bg-orange-300/40 cursor-not-allowed'
-				: 'no-bad-scale hover:scale-95',
+			'text-sm flex items-center ring-1 ring-dark-600 text-gray-100 bg-dark-700 gap-x-1 rounded duration-200 justify-center px-2 py-1',
+			_reaction.me ? 'cursor-not-allowed' : 'no-bad-scale hover:scale-95',
 		]"
 		@click="react">
 		<img
 			v-if="_reaction.name.includes('@')"
 			:src="url"
-			class="w-[1em] h-[1em]"
+			class="w-[1em] h-[1em] align-middle"
 			:alt="`Emoji reaction ${_reaction.name}`" />
 		<span v-else>
 			{{ _reaction.name }}

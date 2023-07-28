@@ -5,19 +5,19 @@ import { useStore } from "~/utils/store";
 const navigation: NavigationItem[] = [
 	{
 		name: "Home",
-		icon: "ic:twotone-home",
+		icon: "tabler:home",
 		href: "/",
 		type: "",
 	},
 	{
 		name: "Instance",
-		icon: "ic:twotone-people",
+		icon: "tabler:building-community",
 		href: "/local",
 		type: "local",
 	},
 	{
 		name: "Federated",
-		icon: "ic:twotone-public",
+		icon: "tabler:world",
 		href: "/federated",
 		type: "federated",
 	},
@@ -77,27 +77,21 @@ const logout = () => {
 				class="flex justify-center items-center p-2 mb-3 text-sm font-medium rounded-md duration-200 dark:text-gray-300 hover:bg-gray-300/40 hover:dark:bg-gray-700/40 hover:bg-opacity-75 group"
 				@click="store.state.settingsOpen = true">
 				<Icon
-					name="ic:outline-settings"
+					name="tabler:settings-filled"
 					class="w-5 h-5"
 					aria-hidden="true" />
 			</button>
 			<button
 				title="Compose new post"
-				class="flex justify-center items-center p-2 mb-3 text-sm font-medium rounded-md duration-200 dark:text-gray-300 bg-orange-300/20 hover:bg-orange-300/40 hover:bg-opacity-75 group"
+				class="flex justify-center items-center p-2 mb-3 text-sm font-medium rounded-md duration-200 dark:text-gray-300 bg-dark-700 hover:bg-opacity-75 group"
 				@click="store.state.composer = true">
-				<Icon
-					name="ic:outline-plus"
-					class="w-5 h-5"
-					aria-hidden="true" />
+				<Icon name="tabler:plus" class="w-5 h-5" aria-hidden="true" />
 			</button>
 			<button
 				title="Logout"
-				class="flex justify-center items-center p-2 mb-3 text-sm font-medium rounded-md duration-200 dark:text-gray-300 bg-red-300/20 hover:bg-red-300/40 hover:bg-opacity-75 group"
+				class="flex justify-center items-center p-2 mb-3 text-sm font-medium rounded-md duration-200 dark:text-gray-300 bg-dark-700 hover:bg-opacity-75 group"
 				@click="logout">
-				<Icon
-					name="ic:outline-logout"
-					class="w-5 h-5"
-					aria-hidden="true" />
+				<Icon name="tabler:logout" class="w-5 h-5" aria-hidden="true" />
 			</button>
 			<RouterLink
 				:to="`/user/${store.auth.data?.id}`"
