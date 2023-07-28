@@ -29,6 +29,8 @@ const clamps = ref<boolean>(false);
 const show = ref<boolean>(props.status.spoiler_text === "");
 const textRef = ref<HTMLParagraphElement>();
 
+const store = useStore();
+
 const toggleExpand = () => {
 	expand.value = !expand.value;
 };
@@ -179,7 +181,10 @@ const copyToClipboard = (str: string) => {
 					<Poll v-if="status.poll" v-once :status="status" />
 
 					<Reactions
-						v-if="status.emoji_reactions.length > 0"
+						v-if="
+							status.emoji_reactions.length > 0 &&
+							store.settings.showReactions
+						"
 						v-once
 						:status="status" />
 

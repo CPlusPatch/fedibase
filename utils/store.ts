@@ -10,6 +10,11 @@ export interface StateType {
 		clientSecret: string;
 		instance: Entity.Instance | null;
 	};
+	settings: {
+		expandImages?: boolean;
+		showReactions?: boolean;
+		[key: string]: any;
+	};
 	state: {
 		composer: boolean;
 		notifications: boolean;
@@ -40,6 +45,7 @@ const initialData: StateType = {
 		clientSecret: "",
 		instance: null,
 	},
+	settings: {},
 	client: null,
 	theme: "light",
 	replyingTo: null,

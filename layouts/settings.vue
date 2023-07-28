@@ -1,7 +1,13 @@
 <script setup lang="ts">
 import Nav from "~/components/Nav.vue";
 
-const settings = [
+interface Setting {
+	name: string;
+	icon: string;
+	href: string;
+}
+
+const settings: Setting[] = [
 	{
 		name: "Account",
 		icon: "ic:round-account-box",
@@ -13,6 +19,8 @@ const settings = [
 		href: "/settings/appearance/",
 	}, */
 ];
+
+const currentSetting = ref<Setting>(settings[0]);
 </script>
 
 <template>
@@ -22,15 +30,15 @@ const settings = [
 
 		<div class="flex w-full max-w-5xl mx-auto gap-x-4">
 			<div class="md:flex hidden w-50 flex-col gap-y-3 py-10">
-				<NuxtLink
+				<button
 					v-for="setting of settings"
 					:key="setting.name"
-					:to="setting.href"
-					class="text-gray-100 flex gap-x-4 items-center p-2 hover:ring-2 ring-orange-600 bg-dark-700 duration-200 w-full rounded">
+					class="text-gray-100 flex gap-x-4 items-center p-2 hover:ring-2 ring-orange-600 bg-dark-700 duration-200 w-full rounded"
+					@click="currentSetting = setting">
 					<Icon :name="setting.icon" class="h-6 w-6" /><span>{{
 						setting.name
 					}}</span>
-				</NuxtLink>
+				</button>
 			</div>
 			<div
 				class="grow bg-dark-700 py-10 md:px-10 px-4 overflow-y-scroll no-scroll">

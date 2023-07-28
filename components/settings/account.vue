@@ -143,13 +143,13 @@ const uploadFile = async (files: FileList | null) => {
 					:value="field.value" />
 			</div>
 		</div>
-	</div>
 
-	<Button
-		:loading="loading"
-		theme="gradientOrange"
-		class="w-full mb-10 mt-5"
-		@click="save"
-		>Save</Button
-	>
+		<Button
+			:loading="loading"
+			theme="gradientOrange"
+			class="w-full mb-10 mt-5"
+			@click="save"
+			>Save</Button
+		>
+	</div>
 </template>
