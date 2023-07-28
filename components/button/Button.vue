@@ -10,7 +10,7 @@ const themes: { [key: string]: string } = {
 		"text-white dark:text-white border-none !bg-gradient-to-tr from-pink-500 via-red-500 to-yellow-500",
 };
 
-interface ButtonProps extends ButtonHTMLAttributes {
+interface ButtonProps extends /* @vue-ignore */ ButtonHTMLAttributes {
 	theme?: "gray" | "orange" | "orangeLight" | "gradientOrange";
 	loading?: boolean;
 	spinnerClasses?: string;
