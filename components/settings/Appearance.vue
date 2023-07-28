@@ -30,6 +30,12 @@ const settings = ref<Setting[]>([
 		value: getSetting("showReactions", true),
 		type: SettingType.Boolean,
 	},
+	{
+		name: "roundAvatars",
+		title: "Make avatars have a circle shape instead of a rounded rectangle",
+		value: getSetting("roundAvatars", false),
+		type: SettingType.Boolean,
+	},
 ]);
 
 const updateValue = (name: Setting["name"], value: any) => {

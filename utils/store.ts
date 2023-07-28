@@ -13,6 +13,7 @@ export interface StateType {
 	settings: {
 		expandImages?: boolean;
 		showReactions?: boolean;
+		roundAvatars?: boolean;
 		[key: string]: any;
 	};
 	state: {

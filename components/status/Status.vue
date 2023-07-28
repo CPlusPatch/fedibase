@@ -63,10 +63,13 @@ const copyToClipboard = (str: string) => {
 						alt=""
 						:src="status.account.avatar"
 						:class="[
-							'bg-white overflow-hidden w-10 h-10 dark:bg-dark-800-800 hover:rounded-7 duration-200 rounded border-gray-300 dark:border-dark-700',
+							'bg-white overflow-hidden w-10 h-10 dark:bg-dark-800-800 duration-200 border-gray-300 dark:border-dark-700',
 							type === PostType.Normal
 								? 'md:w-11 md:h-11'
 								: 'md:w-10 md:h-10',
+							store.settings.roundAvatars
+								? 'rounded-full'
+								: 'rounded hover:rounded-7',
 						]" />
 				</NuxtLink>
 				<div
@@ -112,7 +115,10 @@ const copyToClipboard = (str: string) => {
 					alt=""
 					:src="status.account.avatar"
 					:class="[
-						'bg-white overflow-hidden w-4 h-4 dark:bg-dark-800-800 rounded border border-gray-300 dark:border-dark-700',
+						'bg-white overflow-hidden w-4 h-4 dark:bg-dark-800 border border-gray-300 dark:border-dark-700',
+						store.settings.roundAvatars
+							? 'rounded-full'
+							: 'rounded',
 					]" />
 				<h4
 					class="font-bold dark:text-gray-200"
