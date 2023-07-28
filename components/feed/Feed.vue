@@ -142,17 +142,17 @@ onUnmounted(() => {
 	<template v-if="entities && type === FeedType.Notifications">
 		<Notification
 			v-for="entity of entities.filter((e: Entity.Notification) => {
-					switch (props.mode) {
-						case 'all':
-							return true;
-						case 'reblogs':
-							return (e.type === 'reblog');
-						case 'mention':
-							return (e.type === 'mention');
-						case 'favourites':
-							return (e.type === 'favourite');
-					}
-				})"
+				switch (props.mode) {
+					case 'all':
+						return true;
+					case 'reblogs':
+						return e.type === 'reblog';
+					case 'mention':
+						return e.type === 'mention';
+					case 'favourites':
+						return e.type === 'favourite';
+				}
+			})"
 			:key="(entity as any).id"
 			:notification="entity" />
 	</template>
