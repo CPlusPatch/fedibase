@@ -285,11 +285,13 @@ const submit = (e: Event) => {
 	<form
 		action="#"
 		class="relative text-sm w-full flex h-full"
-		@keyup="e => {
-		if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
-			(e.currentTarget as any).requestSubmit();
-		}
-	}"
+		@keyup="
+			e => {
+				if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
+					(e.currentTarget as any).requestSubmit();
+				}
+			}
+		"
 		@submit="submit">
 		<div
 			:class="[

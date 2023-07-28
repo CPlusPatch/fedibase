@@ -22,10 +22,7 @@ const _window = window;
 
 <template>
 	<TransitionRoot
-		:show="
-			store.state.composer &&
-			(store.viewingConversation !== '' || _window.innerWidth < 768)
-		"
+		:show="store.state.composer && _window.innerWidth < 768"
 		as="template">
 		<Dialog as="div" class="block relative z-40" @close="closeModal">
 			<ModalOverlay />

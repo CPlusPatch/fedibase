@@ -51,9 +51,11 @@ const mode = ref(modes[0].value);
 				:items="modes"
 				:default-value="0"
 				:direction="SelectDirection.Left"
-				@update:model-value="(item: SelectItem)=> {
-					mode = item.value
-				}" />
+				@update:model-value="
+					(item: SelectItem) => {
+						mode = item.value;
+					}
+				" />
 		</div>
 
 		<ul
