@@ -17,13 +17,11 @@ const closeModal = () => {
 	store.replyingTo = null;
 };
 
-const _window = window;
+const { width } = useWindowSize();
 </script>
 
 <template>
-	<TransitionRoot
-		:show="store.state.composer && _window.innerWidth < 768"
-		as="template">
+	<TransitionRoot :show="store.state.composer && width < 768" as="template">
 		<Dialog as="div" class="block relative z-40" @close="closeModal">
 			<ModalOverlay />
 			<div

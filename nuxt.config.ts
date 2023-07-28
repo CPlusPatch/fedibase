@@ -10,6 +10,7 @@ export default defineNuxtConfig({
 		"nuxt-icon",
 		"@pinia/nuxt",
 		"@pinia-plugin-persistedstate/nuxt",
+		"@vueuse/nuxt",
 	],
 	pinia: {
 		autoImports: ["defineStore"],

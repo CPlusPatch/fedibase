@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import NotificationsFeed from "~/components/feed/NotificationsFeed.vue";
-import useWindowDimensions from "~/components/hooks/useWindowDimensions";
 import MobileNavbar from "~/components/layout/MobileNavbar.vue";
 import LeftSidebar from "~/components/sidebar/LeftSidebar.vue";
 import { useStore } from "~/utils/store";
@@ -8,7 +7,7 @@ import { useStore } from "~/utils/store";
 const store = useStore();
 
 const updateOffset = (event: any) => {
-	window.pageYOffset = (event.target as HTMLDivElement).scrollTop;
+	window.scrollY = (event.target as HTMLDivElement).scrollTop;
 };
 
 onMounted(() => {
@@ -21,7 +20,7 @@ onMounted(() => {
 	}, 1000);
 });
 
-const { width } = useWindowDimensions();
+const { width } = useWindowSize();
 
 onUnmounted(() => {
 	document
@@ -68,6 +67,8 @@ onUnmounted(() => {
 					@click="$event.stopPropagation()" />
 			</div>
 		</TransitionsScaleFadeSlide>
+
+		<SettingsMainDialog />
 	</template>
 	<template v-else>
 		<Login />
