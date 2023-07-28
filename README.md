@@ -20,7 +20,7 @@
 ## Features
 
 - Fully mobile-compatible and responsive
-- Compatible with Mastodon, Pleroma and Misskey
+- Compatible with Mastodon, Pleroma, and Akkoma
 - Dark/light mode support (toggle coming soon)
 - Beautiful animations
 - Simple and clean interface
