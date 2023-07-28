@@ -3,17 +3,23 @@ import { useStore } from "~/utils/store";
 
 const store = useStore();
 
-const settings = [
+interface Setting {
+	name: string;
+	icon: string;
+}
+
+const settings: Setting[] = [
 	{
 		name: "Account",
 		icon: "ic:round-account-box",
 	},
-	/* {
+	{
 		name: "Appearance",
 		icon: "ic:round-color-lens",
-		href: "/settings/appearance/",
-	}, */
+	},
 ];
+
+const currentSetting = ref<Setting>(settings[0]);
 
 const fullscreen = ref(false);
 </script>
@@ -57,20 +63,32 @@ const fullscreen = ref(false);
 									class="bg-green hover:cursor-pointer"
 									@click="fullscreen = !fullscreen"></div>
 							</div>
-							<div
+							<button
 								v-for="setting of settings"
 								:key="setting.name"
-								class="text-gray-100 flex gap-x-4 items-center p-2 ring-1 ring-dark-600 mx-0.5 bg-dark-700 duration-200 hover:cursor-pointer rounded">
+								class="text-gray-100 flex gap-x-4 items-center p-2 ring-1 ring-dark-600 mx-0.5 bg-dark-700 duration-200 hover:cursor-pointer rounded"
+								@click="currentSetting = setting">
 								<Icon
 									:name="setting.icon"
 									class="h-6 w-6" /><span>{{
 									setting.name
 								}}</span>
-							</div>
+							</button>
 						</div>
 						<div
 							class="grow md:px-5 px-4 overflow-y-scroll no-scroll py-4">
-							<SettingsAccount />
+							<Transition
+								enter-active-class="duration-200 ease-in-out"
+								enter-from-class="opacity-0 translate-y-1"
+								mode="out-in"
+								leave-to-class="opacity-100 translate-y-0">
+								<SettingsAccount
+									v-if="currentSetting.name === 'Account'" />
+								<SettingsAppearance
+									v-else-if="
+										currentSetting.name === 'Appearance'
+									" />
+							</Transition>
 						</div>
 					</HeadlessDialogPanel>
 				</HeadlessTransitionChild>

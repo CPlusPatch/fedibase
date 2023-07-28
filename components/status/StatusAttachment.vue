@@ -55,8 +55,9 @@ if (props.media.blurhash) {
 <template>
 	<div
 		:class="[
-			'relative rounded w-full overflow-hidden flex items-center max-h-60',
+			'relative rounded w-full overflow-hidden flex items-center',
 			type === PostType.Small && 'h-44 w-44 border dark:border-dark-700',
+			store.settings.expandImages ? '' : 'max-h-60',
 		]">
 		<img
 			v-if="media.type === 'image' || (media.blurhash && !loaded)"
