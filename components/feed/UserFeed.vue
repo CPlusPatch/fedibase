@@ -24,6 +24,13 @@ store.client
 	.then(res => {
 		pinned.value = res.data;
 	});
+
+useHead({
+	title: () =>
+		`${
+			account.value ? "@" + account.value?.username : "Loading..."
+		} · Fedibase`,
+});
 </script>
 
 <template>
@@ -32,7 +39,7 @@ store.client
 		id="feed"
 		class="flex overflow-y-scroll w-full h-full flex-col gap-y-2 no-scroll">
 		<UserProfile :account="account" />
-		<div class="pb-2 flex flex-col no-scroll gap-y-4 px-4">
+		<div class="pb-2 flex flex-col no-scroll gap-y-4 px-6">
 			<div
 				v-for="pin of pinned"
 				:key="pin.id"

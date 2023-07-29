@@ -15,6 +15,7 @@ export default defineNuxtConfig({
 	pinia: {
 		autoImports: ["defineStore"],
 	},
+	spaLoadingTemplate: false,
 	ssr: false,
 	app: {
 		keepalive: true,

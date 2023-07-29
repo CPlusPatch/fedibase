@@ -1,7 +1,6 @@
 <script lang="ts">
 import { Entity } from "megalodon";
 import { withEmojis, fromNow } from "../../utils/functions";
-import Button from "../button/Button.vue";
 import { NotificationType, addNotification } from "../snackbar/Snackbar.vue";
 import InteractionBar from "./InteractionBar.vue";
 import StatusAttachments from "./StatusAttachments.vue";
@@ -115,7 +114,7 @@ const copyToClipboard = (str: string) => {
 					alt=""
 					:src="status.account.avatar"
 					:class="[
-						'bg-white overflow-hidden w-4 h-4 dark:bg-dark-800 border border-gray-300 dark:border-dark-700',
+						'bg-white overflow-hidden shrink-0 w-4 h-4 dark:bg-dark-800 border border-gray-300 dark:border-dark-700',
 						store.settings.roundAvatars
 							? 'rounded-full'
 							: 'rounded',
@@ -138,7 +137,7 @@ const copyToClipboard = (str: string) => {
 			<div class="flex">
 				<div v-if="hasLeftLine" class="h-full pr-14 relative">
 					<div
-						class="border-l-2 dark:border-gray-400 absolute inset-x-0 -top-3 left-5 -bottom-10"></div>
+						class="border-l-2 dark:border-gray-400 absolute inset-x-0 top-0 left-5 -bottom-3"></div>
 				</div>
 				<div class="flex flex-col gap-y-1 text-sm grow max-w-full">
 					<ReplyTo
@@ -159,18 +158,17 @@ const copyToClipboard = (str: string) => {
 									  )
 							"></span>
 
-						<Button
-							class="!py-1 !px-2"
-							theme="gray"
+						<button
+							class="!py-1 !px-2 rounded bg-dark-800 ring-1 ring-dark-600 !font-semibold"
 							@click="toggleShow">
 							{{ show ? "Hide" : "Show" }}
-						</Button>
+						</button>
 					</div>
 
 					<p
 						ref="textRef"
 						:class="[
-							'mt-1 status-text rounded text-sm duration-200 status-text dark:text-gray-50 break-words max-w-full',
+							'mt-2 status-text rounded text-sm duration-200 whitespace-pre-line status-text dark:text-gray-50 break-words max-w-full',
 							!show && 'filter blur-lg',
 							clamps && !expand && 'line-clamp-6',
 						]"

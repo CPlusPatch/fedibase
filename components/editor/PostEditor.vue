@@ -301,14 +301,15 @@ const submit = (e: Event) => {
 					: 'bg-white dark:bg-dark-800/75',
 			]">
 			<div class="flex justify-between p-3 w-full gap-x-2">
-				<div class="flex flex-row items-center gap-x-3">
+				<div
+					class="flex flex-row items-center gap-x-3 overflow-hidden whitespace-nowrap text-ellipsis">
 					<button v-if="closeButton" @click="closeModal">
 						<Icon name="ic:twotone-close" class="w-5 h-5" />
 					</button>
 
 					<h1
 						v-if="store.replyingTo"
-						class="text-lg font-bold dark:text-gray-50 overflow-hidden whitespace-nowrap text-ellipsis">
+						class="text-lg font-bold dark:text-gray-50">
 						<Icon
 							name="ic:twotone-chat-bubble"
 							class="inline mr-2 mb-0.5" />
@@ -322,7 +323,7 @@ const submit = (e: Event) => {
 					</h1>
 					<h1
 						v-if="store.quotingTo"
-						class="text-lg font-bold dark:text-gray-50 overflow-hidden whitespace-nowrap text-ellipsis">
+						class="text-lg font-bold dark:text-gray-50">
 						<Icon
 							name="ic:twotone-format-quote"
 							class="inline mr-2 mb-0.5" />
@@ -366,7 +367,7 @@ const submit = (e: Event) => {
 					v-model="characters"
 					name="comment"
 					rows="7"
-					class="flex p-3 text-base outline-none no-scroll w-full bg-transparent border-0 resize-none disabled:text-gray-400 focus:ring-0 dark:placeholder:text-gray-400"
+					class="flex p-3 text-sm outline-none no-scroll w-full bg-transparent border-0 resize-none disabled:text-gray-400 focus:ring-0 dark:placeholder:text-gray-400"
 					placeholder="What's happening?"
 					@paste="onPasteFile" />
 

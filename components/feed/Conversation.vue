@@ -68,9 +68,9 @@ onUnmounted(() => {
 
 <template>
 	<FeedWrapper>
-		<div class="flex overflow-hidden relative mt-6 max-w-full grow">
+		<div class="flex overflow-hidden relative max-w-full grow">
 			<div
-				class="flex overflow-y-scroll flex-col gap-y-5 py-4 w-full h-full no-scroll px-2">
+				class="flex overflow-y-scroll flex-col gap-y-5 w-full h-full no-scroll px-2">
 				<div class="flex flex-col gap-y-4">
 					<Status
 						v-for="ancestor of ancestors"
