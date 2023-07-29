@@ -77,7 +77,7 @@ onUnmounted(() => {
 				v-html="withEmojis(account.note, account.emojis)"></div>
 
 			<div
-				class="md:flex grow md:flex-row mx-6 text-gray-600 dark:text-gray-300 items-center justify-between grid grid-cols-2 gap-y-3">
+				class="md:flex grow md:flex-row mx-6 text-gray-600 dark:text-gray-300 text-sm items-center justify-between grid grid-cols-2 gap-y-3">
 				<div class="flex items-center gap-x-1 justify-center">
 					<Icon
 						name="ic:twotone-cake"

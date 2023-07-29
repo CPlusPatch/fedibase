@@ -29,7 +29,7 @@ const children = props.posts.filter(
 	</template>
 	<template v-else>
 		<div
-			class="flex flex-col gap-y-4 pl-1.5 border-l-4 dark:border-gray-500 rounded">
+			class="flex flex-col gap-y-4 pl-2 border-l-4 dark:border-gray-500 rounded">
 			<template v-for="post in children" :key="post.id">
 				<Status
 					:interaction="true"

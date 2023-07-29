@@ -38,18 +38,18 @@ onUnmounted(() => {
 			<Nav />
 
 			<div
-				class="bg-gradient-light grid p-3 grid-cols-6 justify-between gap-x-4 md:px-4 grid-flow-row md:grid-cols-8 xl:grid-cols-12 w-full max-w-[90rem] mx-auto">
+				class="bg-gradient-light grid p-3 grid-cols-6 justify-between gap-x-4 md:px-4 grid-flow-row md:grid-cols-9 xl:grid-cols-13 w-full max-w-[90rem] mx-auto">
 				<div
-					class="hidden md:col-span-3 md:block no-scroll overflow-y-scroll">
+					class="hidden md:col-span-4 md:block no-scroll overflow-y-scroll">
 					<LeftSidebar />
 				</div>
 				<div
-					class="flex overflow-hidden h-full w-full rounded no-scroll md:col-span-5 col-span-6 md:border border-gray-300 dark:border-dark-700 dark:bg-dark-800/75 backdrop-blur-lg">
+					class="flex overflow-hidden h-full w-full rounded-lg no-scroll md:col-span-5 col-span-6 md:border border-gray-300 dark:border-dark-700 dark:bg-dark-800/75 backdrop-blur-lg">
 					<slot />
 				</div>
 				<div
 					v-if="width >= 1280"
-					class="hidden overflow-x-hidden px-4 py-4 max-h-screen xl:col-span-4 xl:flex border dark:bg-dark-800/75 backdrop-blur-lg rounded dark:border-dark-700">
+					class="hidden overflow-x-hidden px-4 py-4 max-h-screen xl:col-span-4 xl:flex border dark:bg-dark-800/75 backdrop-blur-lg rounded-lg dark:border-dark-700">
 					<NotificationsFeed :title="true" />
 				</div>
 			</div>

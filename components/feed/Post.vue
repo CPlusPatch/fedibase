@@ -9,7 +9,7 @@ defineProps<{
 </script>
 
 <template>
-	<div class="flex flex-col duration-200 ease-in-out gap-y-2 first:mt-4">
+	<div class="flex flex-col duration-200 ease-in-out gap-y-2">
 		<RouterLink
 			v-if="status.reblog"
 			:to="`/user/${status.account.id}`"

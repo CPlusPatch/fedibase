@@ -1,3 +1,446 @@
+diff --git a/lib/src/friendica/api_client.d.ts b/lib/src/friendica/api_client.d.ts
+deleted file mode 100644
+index 8fc63420c0d158e024aa61ee82a38fb5dbe8b0f9..0000000000000000000000000000000000000000
+diff --git a/lib/src/friendica/api_client.js b/lib/src/friendica/api_client.js
+deleted file mode 100644
+index db461f63e43f5d850ef804b4973531fa1f6a1fc5..0000000000000000000000000000000000000000
+diff --git a/lib/src/friendica/entities/account.d.ts b/lib/src/friendica/entities/account.d.ts
+deleted file mode 100644
+index 776d35e71e431081a925c06074520eb7e58f2329..0000000000000000000000000000000000000000
+diff --git a/lib/src/friendica/entities/account.js b/lib/src/friendica/entities/account.js
+deleted file mode 100644
+index 3918c74e446336be4151ea3bdad00f4d9e6df47a..0000000000000000000000000000000000000000
+diff --git a/lib/src/friendica/entities/activity.d.ts b/lib/src/friendica/entities/activity.d.ts
+deleted file mode 100644
+index 6fcf9df88dd3f36c6ee2cd6c2233d32954d6fb38..0000000000000000000000000000000000000000
+diff --git a/lib/src/friendica/entities/activity.js b/lib/src/friendica/entities/activity.js
+deleted file mode 100644
+index 3918c74e446336be4151ea3bdad00f4d9e6df47a..0000000000000000000000000000000000000000
+diff --git a/lib/src/friendica/entities/application.d.ts b/lib/src/friendica/entities/application.d.ts
+deleted file mode 100644
+index 5341b055a0455f579af055911285df9e918d99be..0000000000000000000000000000000000000000
+diff --git a/lib/src/friendica/entities/application.js b/lib/src/friendica/entities/application.js
+deleted file mode 100644
+index 3918c74e446336be4151ea3bdad00f4d9e6df47a..0000000000000000000000000000000000000000
+diff --git a/lib/src/friendica/entities/async_attachment.d.ts b/lib/src/friendica/entities/async_attachment.d.ts
+deleted file mode 100644
+index f1eff4af9b3262cc50dc3305307878a52bc5d33b..0000000000000000000000000000000000000000
+diff --git a/lib/src/friendica/entities/async_attachment.js b/lib/src/friendica/entities/async_attachment.js
+deleted file mode 100644
+index 3918c74e446336be4151ea3bdad00f4d9e6df47a..0000000000000000000000000000000000000000
+diff --git a/lib/src/friendica/entities/attachment.d.ts b/lib/src/friendica/entities/attachment.d.ts
+deleted file mode 100644
+index 5d7cc9a723329f1ec5d37c94bbb344a23c404a9a..0000000000000000000000000000000000000000
+diff --git a/lib/src/friendica/entities/attachment.js b/lib/src/friendica/entities/attachment.js
+deleted file mode 100644
+index 3918c74e446336be4151ea3bdad00f4d9e6df47a..0000000000000000000000000000000000000000
+diff --git a/lib/src/friendica/entities/card.d.ts b/lib/src/friendica/entities/card.d.ts
+deleted file mode 100644
+index 96be2035c5cdd6be8e830ec4190086273154613e..0000000000000000000000000000000000000000
+diff --git a/lib/src/friendica/entities/card.js b/lib/src/friendica/entities/card.js
+deleted file mode 100644
+index 3918c74e446336be4151ea3bdad00f4d9e6df47a..0000000000000000000000000000000000000000
+diff --git a/lib/src/friendica/entities/context.d.ts b/lib/src/friendica/entities/context.d.ts
+deleted file mode 100644
+index cdc7a17d7957e8135ee869a4ddd96f9e50dee2e5..0000000000000000000000000000000000000000
+diff --git a/lib/src/friendica/entities/context.js b/lib/src/friendica/entities/context.js
+deleted file mode 100644
+index 3918c74e446336be4151ea3bdad00f4d9e6df47a..0000000000000000000000000000000000000000
+diff --git a/lib/src/friendica/entities/conversation.d.ts b/lib/src/friendica/entities/conversation.d.ts
+deleted file mode 100644
+index dd541bfbf19aa3184b7a56d82107817a683cc908..0000000000000000000000000000000000000000
+diff --git a/lib/src/friendica/entities/conversation.js b/lib/src/friendica/entities/conversation.js
+deleted file mode 100644
+index 3918c74e446336be4151ea3bdad00f4d9e6df47a..0000000000000000000000000000000000000000
+diff --git a/lib/src/friendica/entities/emoji.d.ts b/lib/src/friendica/entities/emoji.d.ts
+deleted file mode 100644
+index a4f5b92fb2cf9e641747481f88b891cc086cde65..0000000000000000000000000000000000000000
+diff --git a/lib/src/friendica/entities/emoji.js b/lib/src/friendica/entities/emoji.js
+deleted file mode 100644
+index 3918c74e446336be4151ea3bdad00f4d9e6df47a..0000000000000000000000000000000000000000
+diff --git a/lib/src/friendica/entities/featured_tag.d.ts b/lib/src/friendica/entities/featured_tag.d.ts
+deleted file mode 100644
+index d9c6cda9c9b8674838391218db84328d717abde5..0000000000000000000000000000000000000000
+diff --git a/lib/src/friendica/entities/featured_tag.js b/lib/src/friendica/entities/featured_tag.js
+deleted file mode 100644
+index 3918c74e446336be4151ea3bdad00f4d9e6df47a..0000000000000000000000000000000000000000
+diff --git a/lib/src/friendica/entities/field.d.ts b/lib/src/friendica/entities/field.d.ts
+deleted file mode 100644
+index 84dea47cd88f36f858fddca1914fae59619fefa2..0000000000000000000000000000000000000000
+diff --git a/lib/src/friendica/entities/field.js b/lib/src/friendica/entities/field.js
+deleted file mode 100644
+index 3918c74e446336be4151ea3bdad00f4d9e6df47a..0000000000000000000000000000000000000000
+diff --git a/lib/src/friendica/entities/filter.d.ts b/lib/src/friendica/entities/filter.d.ts
+deleted file mode 100644
+index 9fd1c31a5347e540b794b140857cf6196e88a7bf..0000000000000000000000000000000000000000
+diff --git a/lib/src/friendica/entities/filter.js b/lib/src/friendica/entities/filter.js
+deleted file mode 100644
+index 3918c74e446336be4151ea3bdad00f4d9e6df47a..0000000000000000000000000000000000000000
+diff --git a/lib/src/friendica/entities/follow_request.d.ts b/lib/src/friendica/entities/follow_request.d.ts
+deleted file mode 100644
+index fcc94d0084e775e81151ede0c63ca631f3d848ae..0000000000000000000000000000000000000000
+diff --git a/lib/src/friendica/entities/follow_request.js b/lib/src/friendica/entities/follow_request.js
+deleted file mode 100644
+index 3918c74e446336be4151ea3bdad00f4d9e6df47a..0000000000000000000000000000000000000000
+diff --git a/lib/src/friendica/entities/history.d.ts b/lib/src/friendica/entities/history.d.ts
+deleted file mode 100644
+index 406fe2df53b763f7aa9af60dcd32823be524b5ee..0000000000000000000000000000000000000000
+diff --git a/lib/src/friendica/entities/history.js b/lib/src/friendica/entities/history.js
+deleted file mode 100644
+index 3918c74e446336be4151ea3bdad00f4d9e6df47a..0000000000000000000000000000000000000000
+diff --git a/lib/src/friendica/entities/identity_proof.d.ts b/lib/src/friendica/entities/identity_proof.d.ts
+deleted file mode 100644
+index d5ef13bf15fe061e6438e9af5a5ead6bcb34c61e..0000000000000000000000000000000000000000
+diff --git a/lib/src/friendica/entities/identity_proof.js b/lib/src/friendica/entities/identity_proof.js
+deleted file mode 100644
+index 3918c74e446336be4151ea3bdad00f4d9e6df47a..0000000000000000000000000000000000000000
+diff --git a/lib/src/friendica/entities/instance.d.ts b/lib/src/friendica/entities/instance.d.ts
+deleted file mode 100644
+index 1a57b46610a33f23616c3cabae321c91674829e4..0000000000000000000000000000000000000000
+diff --git a/lib/src/friendica/entities/instance.js b/lib/src/friendica/entities/instance.js
+deleted file mode 100644
+index 3918c74e446336be4151ea3bdad00f4d9e6df47a..0000000000000000000000000000000000000000
+diff --git a/lib/src/friendica/entities/list.d.ts b/lib/src/friendica/entities/list.d.ts
+deleted file mode 100644
+index f10108ce989ed19e9f19f046925ee7e359877588..0000000000000000000000000000000000000000
+diff --git a/lib/src/friendica/entities/list.js b/lib/src/friendica/entities/list.js
+deleted file mode 100644
+index 3918c74e446336be4151ea3bdad00f4d9e6df47a..0000000000000000000000000000000000000000
+diff --git a/lib/src/friendica/entities/marker.d.ts b/lib/src/friendica/entities/marker.d.ts
+deleted file mode 100644
+index 47be9525939b8f4ab44d37be1fa65e5829a9e4a9..0000000000000000000000000000000000000000
+diff --git a/lib/src/friendica/entities/marker.js b/lib/src/friendica/entities/marker.js
+deleted file mode 100644
+index 3918c74e446336be4151ea3bdad00f4d9e6df47a..0000000000000000000000000000000000000000
+diff --git a/lib/src/friendica/entities/mention.d.ts b/lib/src/friendica/entities/mention.d.ts
+deleted file mode 100644
+index 499512e0cacd6fe0e0997ac75f8c2f8943cb863b..0000000000000000000000000000000000000000
+diff --git a/lib/src/friendica/entities/mention.js b/lib/src/friendica/entities/mention.js
+deleted file mode 100644
+index 3918c74e446336be4151ea3bdad00f4d9e6df47a..0000000000000000000000000000000000000000
+diff --git a/lib/src/friendica/entities/notification.d.ts b/lib/src/friendica/entities/notification.d.ts
+deleted file mode 100644
+index 3b270c886c2d7d9ff6ab709ffecc0b21d999bf2b..0000000000000000000000000000000000000000
+diff --git a/lib/src/friendica/entities/notification.js b/lib/src/friendica/entities/notification.js
+deleted file mode 100644
+index 3918c74e446336be4151ea3bdad00f4d9e6df47a..0000000000000000000000000000000000000000
+diff --git a/lib/src/friendica/entities/poll.d.ts b/lib/src/friendica/entities/poll.d.ts
+deleted file mode 100644
+index 9ebebf04956f864934359e7d60ea98b53a18d305..0000000000000000000000000000000000000000
+diff --git a/lib/src/friendica/entities/poll.js b/lib/src/friendica/entities/poll.js
+deleted file mode 100644
+index 3918c74e446336be4151ea3bdad00f4d9e6df47a..0000000000000000000000000000000000000000
+diff --git a/lib/src/friendica/entities/poll_option.d.ts b/lib/src/friendica/entities/poll_option.d.ts
+deleted file mode 100644
+index 21e2cfb21d237bf9b7d4d2195034552126d9ad3b..0000000000000000000000000000000000000000
+diff --git a/lib/src/friendica/entities/poll_option.js b/lib/src/friendica/entities/poll_option.js
+deleted file mode 100644
+index 3918c74e446336be4151ea3bdad00f4d9e6df47a..0000000000000000000000000000000000000000
+diff --git a/lib/src/friendica/entities/preferences.d.ts b/lib/src/friendica/entities/preferences.d.ts
+deleted file mode 100644
+index 2621871eef76a1f4fe6f2e923e31e5ec98464448..0000000000000000000000000000000000000000
+diff --git a/lib/src/friendica/entities/preferences.js b/lib/src/friendica/entities/preferences.js
+deleted file mode 100644
+index 3918c74e446336be4151ea3bdad00f4d9e6df47a..0000000000000000000000000000000000000000
+diff --git a/lib/src/friendica/entities/push_subscription.d.ts b/lib/src/friendica/entities/push_subscription.d.ts
+deleted file mode 100644
+index 26db8665324e4cc9e66db39ddc20372229d9d07c..0000000000000000000000000000000000000000
+diff --git a/lib/src/friendica/entities/push_subscription.js b/lib/src/friendica/entities/push_subscription.js
+deleted file mode 100644
+index 3918c74e446336be4151ea3bdad00f4d9e6df47a..0000000000000000000000000000000000000000
+diff --git a/lib/src/friendica/entities/relationship.d.ts b/lib/src/friendica/entities/relationship.d.ts
+deleted file mode 100644
+index 4626d218a4ef724d53c0d4e48fa34e4c065f1f8a..0000000000000000000000000000000000000000
+diff --git a/lib/src/friendica/entities/relationship.js b/lib/src/friendica/entities/relationship.js
+deleted file mode 100644
+index 3918c74e446336be4151ea3bdad00f4d9e6df47a..0000000000000000000000000000000000000000
+diff --git a/lib/src/friendica/entities/report.d.ts b/lib/src/friendica/entities/report.d.ts
+deleted file mode 100644
+index 94eecfbf2c35e62685f4f6c6c417255cde76393b..0000000000000000000000000000000000000000
+diff --git a/lib/src/friendica/entities/report.js b/lib/src/friendica/entities/report.js
+deleted file mode 100644
+index 3918c74e446336be4151ea3bdad00f4d9e6df47a..0000000000000000000000000000000000000000
+diff --git a/lib/src/friendica/entities/results.d.ts b/lib/src/friendica/entities/results.d.ts
+deleted file mode 100644
+index 9a9776b91c30293279d4b51c6cda90cc83af33c9..0000000000000000000000000000000000000000
+diff --git a/lib/src/friendica/entities/results.js b/lib/src/friendica/entities/results.js
+deleted file mode 100644
+index 3918c74e446336be4151ea3bdad00f4d9e6df47a..0000000000000000000000000000000000000000
+diff --git a/lib/src/friendica/entities/scheduled_status.d.ts b/lib/src/friendica/entities/scheduled_status.d.ts
+deleted file mode 100644
+index 6b5c23c94dc185e9915219a563990760ed8e693b..0000000000000000000000000000000000000000
+diff --git a/lib/src/friendica/entities/scheduled_status.js b/lib/src/friendica/entities/scheduled_status.js
+deleted file mode 100644
+index 3918c74e446336be4151ea3bdad00f4d9e6df47a..0000000000000000000000000000000000000000
+diff --git a/lib/src/friendica/entities/source.d.ts b/lib/src/friendica/entities/source.d.ts
+deleted file mode 100644
+index 415b4659989f212162c0a2eed9cea67ad8d95f13..0000000000000000000000000000000000000000
+diff --git a/lib/src/friendica/entities/source.js b/lib/src/friendica/entities/source.js
+deleted file mode 100644
+index 3918c74e446336be4151ea3bdad00f4d9e6df47a..0000000000000000000000000000000000000000
+diff --git a/lib/src/friendica/entities/stats.d.ts b/lib/src/friendica/entities/stats.d.ts
+deleted file mode 100644
+index c8e1868fbb67adffb5547b82a3405e253f0495f0..0000000000000000000000000000000000000000
+diff --git a/lib/src/friendica/entities/stats.js b/lib/src/friendica/entities/stats.js
+deleted file mode 100644
+index 3918c74e446336be4151ea3bdad00f4d9e6df47a..0000000000000000000000000000000000000000
+diff --git a/lib/src/friendica/entities/status.d.ts b/lib/src/friendica/entities/status.d.ts
+deleted file mode 100644
+index 4d4102abf431047ac01882aede83a68c9cb26883..0000000000000000000000000000000000000000
+diff --git a/lib/src/friendica/entities/status.js b/lib/src/friendica/entities/status.js
+deleted file mode 100644
+index 3918c74e446336be4151ea3bdad00f4d9e6df47a..0000000000000000000000000000000000000000
+diff --git a/lib/src/friendica/entities/status_params.d.ts b/lib/src/friendica/entities/status_params.d.ts
+deleted file mode 100644
+index a4958305f7a628b951b8d856592db57a926676e1..0000000000000000000000000000000000000000
+diff --git a/lib/src/friendica/entities/status_params.js b/lib/src/friendica/entities/status_params.js
+deleted file mode 100644
+index 3918c74e446336be4151ea3bdad00f4d9e6df47a..0000000000000000000000000000000000000000
+diff --git a/lib/src/friendica/entities/status_source.d.ts b/lib/src/friendica/entities/status_source.d.ts
+deleted file mode 100644
+index 371e8d8a4b07c57e8c6bcc0768c3b607abcf0a14..0000000000000000000000000000000000000000
+diff --git a/lib/src/friendica/entities/status_source.js b/lib/src/friendica/entities/status_source.js
+deleted file mode 100644
+index 3918c74e446336be4151ea3bdad00f4d9e6df47a..0000000000000000000000000000000000000000
+diff --git a/lib/src/friendica/entities/tag.d.ts b/lib/src/friendica/entities/tag.d.ts
+deleted file mode 100644
+index c831c431b440207462be84a52cfe16ebaa159a23..0000000000000000000000000000000000000000
+diff --git a/lib/src/friendica/entities/tag.js b/lib/src/friendica/entities/tag.js
+deleted file mode 100644
+index 3918c74e446336be4151ea3bdad00f4d9e6df47a..0000000000000000000000000000000000000000
+diff --git a/lib/src/friendica/entities/token.d.ts b/lib/src/friendica/entities/token.d.ts
+deleted file mode 100644
+index f82b8cb81fea8886e07b06a57c89b6b9f057cbe9..0000000000000000000000000000000000000000
+diff --git a/lib/src/friendica/entities/token.js b/lib/src/friendica/entities/token.js
+deleted file mode 100644
+index 3918c74e446336be4151ea3bdad00f4d9e6df47a..0000000000000000000000000000000000000000
+diff --git a/lib/src/friendica/entities/urls.d.ts b/lib/src/friendica/entities/urls.d.ts
+deleted file mode 100644
+index b7dc2cae4f95fcfa21c3871b214254b86334bca4..0000000000000000000000000000000000000000
+diff --git a/lib/src/friendica/entities/urls.js b/lib/src/friendica/entities/urls.js
+deleted file mode 100644
+index 3918c74e446336be4151ea3bdad00f4d9e6df47a..0000000000000000000000000000000000000000
+diff --git a/lib/src/friendica/entity.d.ts b/lib/src/friendica/entity.d.ts
+deleted file mode 100644
+index 35293d19a1da1c528f21ea1febb3ad9578499d5d..0000000000000000000000000000000000000000
+diff --git a/lib/src/friendica/entity.js b/lib/src/friendica/entity.js
+deleted file mode 100644
+index c8ad2e549bdc6801e0d1c80b0308d4b9bd4985ce..0000000000000000000000000000000000000000
+diff --git a/lib/src/friendica/notification.d.ts b/lib/src/friendica/notification.d.ts
+deleted file mode 100644
+index 021e48c710d38a3ca267650f55edb4b162baa7c0..0000000000000000000000000000000000000000
+diff --git a/lib/src/friendica/notification.js b/lib/src/friendica/notification.js
+deleted file mode 100644
+index 094712b347ba20f3900499cf4b2fffad708e3a9d..0000000000000000000000000000000000000000
+diff --git a/lib/src/friendica/web_socket.d.ts b/lib/src/friendica/web_socket.d.ts
+deleted file mode 100644
+index cd6c9063a82b4f68dedc89730b738392aef23a0c..0000000000000000000000000000000000000000
+diff --git a/lib/src/friendica/web_socket.js b/lib/src/friendica/web_socket.js
+deleted file mode 100644
+index c424ac9f9a2ff35d5a2d0e0e4ad8dc0dea70943d..0000000000000000000000000000000000000000
+diff --git a/lib/src/friendica.js b/lib/src/friendica.js
+deleted file mode 100644
+index 04a296febc59181a04894fc918bf2cc74e7ff2c9..0000000000000000000000000000000000000000
+diff --git a/lib/src/index.js b/lib/src/index.js
+index 081adccd825a6df5c8cd64cff9e6bf927f6875ec..5ca1fb9caf63217058125ec67468ed9ed19ab959 100644
+--- a/lib/src/index.js
++++ b/lib/src/index.js
+@@ -16,8 +16,7 @@ var mastodon_1 = __importDefault(require("./mastodon"));
+ exports.Mastodon = mastodon_1.default;
+ var pleroma_1 = __importDefault(require("./pleroma"));
+ exports.Pleroma = pleroma_1.default;
+-var misskey_1 = __importDefault(require("./misskey"));
+-exports.Misskey = misskey_1.default;
++exports.Misskey = {};
+ var notification_1 = __importDefault(require("./notification"));
+ exports.NotificationType = notification_1.default;
+ var filter_context_1 = __importDefault(require("./filter_context"));
+diff --git a/lib/src/megalodon.js b/lib/src/megalodon.js
+index df72ed6bf0ada038e9e73841a09919f89f3eb9a0..4bea96d3baaccd51c0cf1feac381ff1ce7366219 100644
+--- a/lib/src/megalodon.js
++++ b/lib/src/megalodon.js
+@@ -21,8 +21,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
+ exports.NodeinfoError = exports.UnexpectedError = exports.ArgumentError = exports.NoImplementedError = void 0;
+ var pleroma_1 = __importDefault(require("./pleroma"));
+ var mastodon_1 = __importDefault(require("./mastodon"));
+-var misskey_1 = __importDefault(require("./misskey"));
+-var friendica_1 = __importDefault(require("./friendica"));
++var misskey_1 = {};
++var friendica_1 = {};
+ var NoImplementedError = (function (_super) {
+     __extends(NoImplementedError, _super);
+     function NoImplementedError(err) {
+diff --git a/lib/src/misskey/api_client.d.ts b/lib/src/misskey/api_client.d.ts
+deleted file mode 100644
+index 1a35bad66b0fc44bf330948e62bd3c4030573a8c..0000000000000000000000000000000000000000
+diff --git a/lib/src/misskey/api_client.js b/lib/src/misskey/api_client.js
+deleted file mode 100644
+index 3c2451375d1edcd0a37fcf0ec9b8192e4350f4f9..0000000000000000000000000000000000000000
+diff --git a/lib/src/misskey/entities/announcement.d.ts b/lib/src/misskey/entities/announcement.d.ts
+deleted file mode 100644
+index a42e74d20e640a411fd75e584c480d5a8e7f2407..0000000000000000000000000000000000000000
+diff --git a/lib/src/misskey/entities/announcement.js b/lib/src/misskey/entities/announcement.js
+deleted file mode 100644
+index 3918c74e446336be4151ea3bdad00f4d9e6df47a..0000000000000000000000000000000000000000
+diff --git a/lib/src/misskey/entities/app.d.ts b/lib/src/misskey/entities/app.d.ts
+deleted file mode 100644
+index 244e2f80040e7400cf7e50cc4c46d82daa5c5ce0..0000000000000000000000000000000000000000
+diff --git a/lib/src/misskey/entities/app.js b/lib/src/misskey/entities/app.js
+deleted file mode 100644
+index 3918c74e446336be4151ea3bdad00f4d9e6df47a..0000000000000000000000000000000000000000
+diff --git a/lib/src/misskey/entities/blocking.d.ts b/lib/src/misskey/entities/blocking.d.ts
+deleted file mode 100644
+index c4ac3ca101e40eb8ca97b277a654d7acc400896b..0000000000000000000000000000000000000000
+diff --git a/lib/src/misskey/entities/blocking.js b/lib/src/misskey/entities/blocking.js
+deleted file mode 100644
+index 3918c74e446336be4151ea3bdad00f4d9e6df47a..0000000000000000000000000000000000000000
+diff --git a/lib/src/misskey/entities/createdNote.d.ts b/lib/src/misskey/entities/createdNote.d.ts
+deleted file mode 100644
+index 42f4d26dfdee231a0dcfb2263071d2154bd7cba3..0000000000000000000000000000000000000000
+diff --git a/lib/src/misskey/entities/createdNote.js b/lib/src/misskey/entities/createdNote.js
+deleted file mode 100644
+index 3918c74e446336be4151ea3bdad00f4d9e6df47a..0000000000000000000000000000000000000000
+diff --git a/lib/src/misskey/entities/emoji.d.ts b/lib/src/misskey/entities/emoji.d.ts
+deleted file mode 100644
+index 0e231fe574d7a12605466a6193636f2c7b8e38e6..0000000000000000000000000000000000000000
+diff --git a/lib/src/misskey/entities/emoji.js b/lib/src/misskey/entities/emoji.js
+deleted file mode 100644
+index 3918c74e446336be4151ea3bdad00f4d9e6df47a..0000000000000000000000000000000000000000
+diff --git a/lib/src/misskey/entities/favorite.d.ts b/lib/src/misskey/entities/favorite.d.ts
+deleted file mode 100644
+index be76f6fcefcabdeafdd826524bcf920d2d2292ae..0000000000000000000000000000000000000000
+diff --git a/lib/src/misskey/entities/favorite.js b/lib/src/misskey/entities/favorite.js
+deleted file mode 100644
+index 3918c74e446336be4151ea3bdad00f4d9e6df47a..0000000000000000000000000000000000000000
+diff --git a/lib/src/misskey/entities/file.d.ts b/lib/src/misskey/entities/file.d.ts
+deleted file mode 100644
+index 734efd34640338a60c6417214dcb8c91e98375f8..0000000000000000000000000000000000000000
+diff --git a/lib/src/misskey/entities/file.js b/lib/src/misskey/entities/file.js
+deleted file mode 100644
+index 3918c74e446336be4151ea3bdad00f4d9e6df47a..0000000000000000000000000000000000000000
+diff --git a/lib/src/misskey/entities/followRequest.d.ts b/lib/src/misskey/entities/followRequest.d.ts
+deleted file mode 100644
+index f22595c928dbc3d165e35c588b953f4eb94460ab..0000000000000000000000000000000000000000
+diff --git a/lib/src/misskey/entities/followRequest.js b/lib/src/misskey/entities/followRequest.js
+deleted file mode 100644
+index 3918c74e446336be4151ea3bdad00f4d9e6df47a..0000000000000000000000000000000000000000
+diff --git a/lib/src/misskey/entities/follower.d.ts b/lib/src/misskey/entities/follower.d.ts
+deleted file mode 100644
+index 50e11286a40ca4c86baf0c8f4d25773c284d19f0..0000000000000000000000000000000000000000
+diff --git a/lib/src/misskey/entities/follower.js b/lib/src/misskey/entities/follower.js
+deleted file mode 100644
+index 3918c74e446336be4151ea3bdad00f4d9e6df47a..0000000000000000000000000000000000000000
+diff --git a/lib/src/misskey/entities/following.d.ts b/lib/src/misskey/entities/following.d.ts
+deleted file mode 100644
+index 1538a5e2a60f7cc11ebfcb97389935294aa1aac9..0000000000000000000000000000000000000000
+diff --git a/lib/src/misskey/entities/following.js b/lib/src/misskey/entities/following.js
+deleted file mode 100644
+index 3918c74e446336be4151ea3bdad00f4d9e6df47a..0000000000000000000000000000000000000000
+diff --git a/lib/src/misskey/entities/hashtag.d.ts b/lib/src/misskey/entities/hashtag.d.ts
+deleted file mode 100644
+index 341f7fcb31a86ef2d59fa78768ebce81d8f780c2..0000000000000000000000000000000000000000
+diff --git a/lib/src/misskey/entities/hashtag.js b/lib/src/misskey/entities/hashtag.js
+deleted file mode 100644
+index 3918c74e446336be4151ea3bdad00f4d9e6df47a..0000000000000000000000000000000000000000
+diff --git a/lib/src/misskey/entities/list.d.ts b/lib/src/misskey/entities/list.d.ts
+deleted file mode 100644
+index 076ebf9f8b462d9fd4b3f1fc82bd0d943b4c7a0d..0000000000000000000000000000000000000000
+diff --git a/lib/src/misskey/entities/list.js b/lib/src/misskey/entities/list.js
+deleted file mode 100644
+index 3918c74e446336be4151ea3bdad00f4d9e6df47a..0000000000000000000000000000000000000000
+diff --git a/lib/src/misskey/entities/meta.d.ts b/lib/src/misskey/entities/meta.d.ts
+deleted file mode 100644
+index 4d0bab001cd3de934986689fbd04b5a202d49113..0000000000000000000000000000000000000000
+diff --git a/lib/src/misskey/entities/meta.js b/lib/src/misskey/entities/meta.js
+deleted file mode 100644
+index 3918c74e446336be4151ea3bdad00f4d9e6df47a..0000000000000000000000000000000000000000
+diff --git a/lib/src/misskey/entities/mute.d.ts b/lib/src/misskey/entities/mute.d.ts
+deleted file mode 100644
+index 7028a03b5ee344aec95f0405598b0e307aa83283..0000000000000000000000000000000000000000
+diff --git a/lib/src/misskey/entities/mute.js b/lib/src/misskey/entities/mute.js
+deleted file mode 100644
+index 3918c74e446336be4151ea3bdad00f4d9e6df47a..0000000000000000000000000000000000000000
+diff --git a/lib/src/misskey/entities/note.d.ts b/lib/src/misskey/entities/note.d.ts
+deleted file mode 100644
+index 7132b95884673c828e26daf9a9011e1fcd74ffa4..0000000000000000000000000000000000000000
+diff --git a/lib/src/misskey/entities/note.js b/lib/src/misskey/entities/note.js
+deleted file mode 100644
+index 3918c74e446336be4151ea3bdad00f4d9e6df47a..0000000000000000000000000000000000000000
+diff --git a/lib/src/misskey/entities/notification.d.ts b/lib/src/misskey/entities/notification.d.ts
+deleted file mode 100644
+index dbb86bff64fe9b427c95bf9902108e972a9606d8..0000000000000000000000000000000000000000
+diff --git a/lib/src/misskey/entities/notification.js b/lib/src/misskey/entities/notification.js
+deleted file mode 100644
+index 3918c74e446336be4151ea3bdad00f4d9e6df47a..0000000000000000000000000000000000000000
+diff --git a/lib/src/misskey/entities/poll.d.ts b/lib/src/misskey/entities/poll.d.ts
+deleted file mode 100644
+index 22236d53254112f63dccd7245294f9482e7f20c5..0000000000000000000000000000000000000000
+diff --git a/lib/src/misskey/entities/poll.js b/lib/src/misskey/entities/poll.js
+deleted file mode 100644
+index 3918c74e446336be4151ea3bdad00f4d9e6df47a..0000000000000000000000000000000000000000
+diff --git a/lib/src/misskey/entities/reaction.d.ts b/lib/src/misskey/entities/reaction.d.ts
+deleted file mode 100644
+index a886291783bcc911e168cdb0799dde0c7ef39e60..0000000000000000000000000000000000000000
+diff --git a/lib/src/misskey/entities/reaction.js b/lib/src/misskey/entities/reaction.js
+deleted file mode 100644
+index 3918c74e446336be4151ea3bdad00f4d9e6df47a..0000000000000000000000000000000000000000
+diff --git a/lib/src/misskey/entities/relation.d.ts b/lib/src/misskey/entities/relation.d.ts
+deleted file mode 100644
+index fce7a86f0001ad220db9608ab2470031ffec465d..0000000000000000000000000000000000000000
+diff --git a/lib/src/misskey/entities/relation.js b/lib/src/misskey/entities/relation.js
+deleted file mode 100644
+index 3918c74e446336be4151ea3bdad00f4d9e6df47a..0000000000000000000000000000000000000000
+diff --git a/lib/src/misskey/entities/session.d.ts b/lib/src/misskey/entities/session.d.ts
+deleted file mode 100644
+index 7aef59d25b7c82b083cf70682b447eaec6ea6d29..0000000000000000000000000000000000000000
+diff --git a/lib/src/misskey/entities/session.js b/lib/src/misskey/entities/session.js
+deleted file mode 100644
+index 3918c74e446336be4151ea3bdad00f4d9e6df47a..0000000000000000000000000000000000000000
+diff --git a/lib/src/misskey/entities/stats.d.ts b/lib/src/misskey/entities/stats.d.ts
+deleted file mode 100644
+index 43ca653533800bf2a286ef1558ae89bfce56d09a..0000000000000000000000000000000000000000
+diff --git a/lib/src/misskey/entities/stats.js b/lib/src/misskey/entities/stats.js
+deleted file mode 100644
+index 3918c74e446336be4151ea3bdad00f4d9e6df47a..0000000000000000000000000000000000000000
+diff --git a/lib/src/misskey/entities/user.d.ts b/lib/src/misskey/entities/user.d.ts
+deleted file mode 100644
+index 3f51d64e31393691631c38a3d8ef8d7f48ba7ecf..0000000000000000000000000000000000000000
+diff --git a/lib/src/misskey/entities/user.js b/lib/src/misskey/entities/user.js
+deleted file mode 100644
+index 3918c74e446336be4151ea3bdad00f4d9e6df47a..0000000000000000000000000000000000000000
+diff --git a/lib/src/misskey/entities/userDetail.d.ts b/lib/src/misskey/entities/userDetail.d.ts
+deleted file mode 100644
+index 9cdd5eaa7d57b277b3ae2553e4ecdd65e2ff862e..0000000000000000000000000000000000000000
+diff --git a/lib/src/misskey/entities/userDetail.js b/lib/src/misskey/entities/userDetail.js
+deleted file mode 100644
+index 3918c74e446336be4151ea3bdad00f4d9e6df47a..0000000000000000000000000000000000000000
+diff --git a/lib/src/misskey/entities/userkey.d.ts b/lib/src/misskey/entities/userkey.d.ts
+deleted file mode 100644
+index a7dfe75c7a0efae39c887e76bca04a06a4a158ea..0000000000000000000000000000000000000000
+diff --git a/lib/src/misskey/entities/userkey.js b/lib/src/misskey/entities/userkey.js
+deleted file mode 100644
+index 3918c74e446336be4151ea3bdad00f4d9e6df47a..0000000000000000000000000000000000000000
+diff --git a/lib/src/misskey/entity.d.ts b/lib/src/misskey/entity.d.ts
+deleted file mode 100644
+index 1607ef7fa62474a71610053ba2e2c1953ae75b15..0000000000000000000000000000000000000000
+diff --git a/lib/src/misskey/entity.js b/lib/src/misskey/entity.js
+deleted file mode 100644
+index c8ad2e549bdc6801e0d1c80b0308d4b9bd4985ce..0000000000000000000000000000000000000000
+diff --git a/lib/src/misskey/notification.d.ts b/lib/src/misskey/notification.d.ts
+deleted file mode 100644
+index fe63a8bd6ce3fa3ecf15b57781c399fd7060f5a1..0000000000000000000000000000000000000000
+diff --git a/lib/src/misskey/notification.js b/lib/src/misskey/notification.js
+deleted file mode 100644
+index 9de44d5fdb7472c0d01e9e88b151497697e74b13..0000000000000000000000000000000000000000
+diff --git a/lib/src/misskey/web_socket.d.ts b/lib/src/misskey/web_socket.d.ts
+deleted file mode 100644
+index 0ea599a59a85c5e0ef71c1bc003dfd3d3783d29f..0000000000000000000000000000000000000000
+diff --git a/lib/src/misskey/web_socket.js b/lib/src/misskey/web_socket.js
+deleted file mode 100644
+index df27e50dd30500e6c0c8775af216adcc7cc49991..0000000000000000000000000000000000000000
+diff --git a/lib/src/misskey.js b/lib/src/misskey.js
+deleted file mode 100644
+index 7b4ca7dd2c27e40beb5d08eb93a5a1e6b671e3a4..0000000000000000000000000000000000000000
 diff --git a/lib/src/proxy_config.js b/lib/src/proxy_config.js
 index ba5d865c601d0e10c578c07c4b482b8efef44a10..0b1c4681e03ab902b2e608da25f5f2f55f625cfa 100644
 --- a/lib/src/proxy_config.js

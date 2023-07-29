@@ -117,7 +117,7 @@ const copyUrl = () => {
 					store.state.composer = true;
 				}
 			">
-			<Icon name="fa6-solid:reply" aria-hidden="true" class="w-5 h-5" />
+			<Icon name="tabler:message" aria-hidden="true" class="w-5 h-5" />
 			{{ _status.replies_count > 0 ? _status.replies_count : "" }}
 		</InteractionBarButton>
 		<InteractionBarButton

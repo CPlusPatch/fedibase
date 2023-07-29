@@ -6,7 +6,7 @@ settings:
 
 patchedDependencies:
   megalodon@6.1.5:
-    hash: bi2sxvz5tvwhunwxhap7lfqgse
+    hash: lbmzixmasncbjbcvfbiuuztedy
     path: patches/megalodon@6.1.5.patch
 
 dependencies:
@@ -36,7 +36,7 @@ dependencies:
     version: 5.1.2
   megalodon:
     specifier: ^6.1.5
-    version: 6.1.5(patch_hash=bi2sxvz5tvwhunwxhap7lfqgse)
+    version: 6.1.5(patch_hash=lbmzixmasncbjbcvfbiuuztedy)
   querystring-es3:
     specifier: ^0.2.1
     version: 0.2.1
@@ -5979,7 +5979,7 @@ packages:
   /mdn-data@2.0.30:
     resolution: {integrity: sha512-GaqWWShW4kv/G9IEucWScBx9G1/vsFZZJUO+tD26M8J8z3Kw5RDQjaoZe03YAClgeS/SWPOcb4nkFBTEi5DUEA==}
 
-  /megalodon@6.1.5(patch_hash=bi2sxvz5tvwhunwxhap7lfqgse):
+  /megalodon@6.1.5(patch_hash=lbmzixmasncbjbcvfbiuuztedy):
     resolution: {integrity: sha512-6+1Lg6XDfKbwpOtvI8YZOV0HBhEfArncdhlbM0ndb8XBtZ8OBWMVR2aFtlxPOzzVs+BMpNR0ob32n5sjFj2JHQ==}
     engines: {node: '>=15.0.0'}
     dependencies:
