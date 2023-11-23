@@ -52,8 +52,9 @@ Then, [install PNPM](https://pnpm.io/installation) and Node.js 18.
 To build and start:
 
 ```sh
+pnpm i
 pnpm build
-pnpm start
+pnpm preview
 ```
 
 ## Collaborators
