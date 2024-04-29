@@ -1,3 +1,8 @@
+> [!WARNING]
+> Fedibase is no longer being maintained or hosted
+> 
+> Development is now focused on the [Lysand-FE](https://github.com/lysand-org/lysand-fe) project, which is a much better version of what Fedibase was.
+
 # Fedibase
 
 ### A beautiful, simple client for the Fediverse.
